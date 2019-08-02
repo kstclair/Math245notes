@@ -269,8 +269,8 @@ Cereals &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span cla
 <pre><code>```{r, fig.cap="Figure 1: Distributions of calories per gram by cereal type"}
 boxplot(calgram ~ type, data=Cereals, main="Calories by type", ylab="Calories per gram")
 ```</code></pre>
-<div class="figure"><span id="fig:unnamed-chunk-2"></span>
-<img src="Math245notes_files/figure-html/unnamed-chunk-2-1.png" alt="Distributions of calories per gram by cereal type" width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="Math245notes_files/figure-html/unnamed-chunk-4-1.png" alt="Distributions of calories per gram by cereal type" width="672" />
 <p class="caption">
 Figure C.1: Distributions of calories per gram by cereal type
 </p>
@@ -278,8 +278,8 @@ Figure C.1: Distributions of calories per gram by cereal type
 <pre><code>```{r, fig.cap="Figure 2: Calories vs. Carbs per gram"}
 plot(carbsgram ~ calgram, data=Cereals, main="Carbs vs Calories")
 ```</code></pre>
-<div class="figure"><span id="fig:unnamed-chunk-3"></span>
-<img src="Math245notes_files/figure-html/unnamed-chunk-3-1.png" alt="Calories vs. Carbs per gram" width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-5"></span>
+<img src="Math245notes_files/figure-html/unnamed-chunk-5-1.png" alt="Calories vs. Carbs per gram" width="672" />
 <p class="caption">
 Figure C.2: Calories vs. Carbs per gram
 </p>
@@ -290,15 +290,15 @@ boxplot(calgram ~ type, data=Cereals, main="Calories by type", ylab="Calories pe
 plot(carbsgram ~ calgram, data=Cereals, main="Carbs vs Calories")
 ```</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(calgram <span class="op">~</span><span class="st"> </span>type, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Calories by type&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Calories per gram&quot;</span>)</code></pre>
-<div class="figure"><span id="fig:unnamed-chunk-41"></span>
-<img src="Math245notes_files/figure-html/unnamed-chunk-4-1.png" alt="Distributions of calories per gram by cereal type" width="480" />
+<div class="figure"><span id="fig:unnamed-chunk-61"></span>
+<img src="Math245notes_files/figure-html/unnamed-chunk-6-1.png" alt="Distributions of calories per gram by cereal type" width="480" />
 <p class="caption">
 Figure C.3: Distributions of calories per gram by cereal type
 </p>
 </div>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Carbs vs Calories&quot;</span>)</code></pre>
-<div class="figure"><span id="fig:unnamed-chunk-42"></span>
-<img src="Math245notes_files/figure-html/unnamed-chunk-4-2.png" alt="Calories vs. Carbs per gram" width="480" />
+<div class="figure"><span id="fig:unnamed-chunk-62"></span>
+<img src="Math245notes_files/figure-html/unnamed-chunk-6-2.png" alt="Calories vs. Carbs per gram" width="480" />
 <p class="caption">
 Figure C.4: Calories vs. Carbs per gram
 </p>
@@ -310,8 +310,8 @@ Figure C.4: Calories vs. Carbs per gram
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
 <span class="kw">boxplot</span>(calgram <span class="op">~</span><span class="st"> </span>type, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Calories by type&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Calories per gram&quot;</span>)
 <span class="kw">plot</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Carbs vs Calories&quot;</span>)</code></pre>
-<div class="figure"><span id="fig:unnamed-chunk-5"></span>
-<img src="Math245notes_files/figure-html/unnamed-chunk-5-1.png" alt="Distribution of calories per gram  by cereal type and calories vs. carbs per gram." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-7"></span>
+<img src="Math245notes_files/figure-html/unnamed-chunk-7-1.png" alt="Distribution of calories per gram  by cereal type and calories vs. carbs per gram." width="672" />
 <p class="caption">
 Figure C.5: Distribution of calories per gram by cereal type and calories vs. carbs per gram.
 </p>
@@ -323,8 +323,8 @@ Figure C.5: Distribution of calories per gram by cereal type and calories vs. c
 <pre><code>```{r, echo=FALSE, fig.cap="Figure 6: Distributions of calories per gram and shelf placement by cereal type", fig.height=3, fig.width=4}
 boxplot(carbsgram ~ type, data=Cereals, main="Carbs by type", ylab="Carbs per gram")
 ```</code></pre>
-<div class="figure"><span id="fig:unnamed-chunk-6"></span>
-<img src="Math245notes_files/figure-html/unnamed-chunk-6-1.png" alt="Distributions of calories per gram and shelf placement by cereal type" width="384" />
+<div class="figure"><span id="fig:unnamed-chunk-8"></span>
+<img src="Math245notes_files/figure-html/unnamed-chunk-8-1.png" alt="Distributions of calories per gram and shelf placement by cereal type" width="384" />
 <p class="caption">
 Figure C.6: Distributions of calories per gram and shelf placement by cereal type
 </p>
@@ -415,7 +415,7 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)
 <span class="kw">kable</span>(<span class="kw">head</span>(Cereals), <span class="dt">digits=</span><span class="dv">3</span>, <span class="dt">caption=</span><span class="st">&quot;Cereals data (first 6 cases)&quot;</span>)</code></pre>
 <table>
-<caption><span id="tab:unnamed-chunk-10">Table C.1: </span>Cereals data (first 6 cases)</caption>
+<caption><span id="tab:unnamed-chunk-12">Table C.1: </span>Cereals data (first 6 cases)</caption>
 <thead>
 <tr class="header">
 <th align="left">brand</th>
@@ -515,7 +515,7 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 <p>Or you can use <code>kable</code> on a two-way table of counts or proportions:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">kable</span>(<span class="kw">table</span>(Cereals<span class="op">$</span>brand, Cereals<span class="op">$</span>type), <span class="dt">caption=</span><span class="st">&quot;Table 2: Cereal brand and type&quot;</span>)</code></pre>
 <table>
-<caption><span id="tab:unnamed-chunk-12">Table C.2: </span>Cereal brand and type</caption>
+<caption><span id="tab:unnamed-chunk-14">Table C.2: </span>Cereal brand and type</caption>
 <thead>
 <tr class="header">
 <th></th>

@@ -148,10 +148,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="B.1" data-path="renviron.html"><a href="renviron.html#workspace"><i class="fa fa-check"></i><b>B.1</b> Workspace</a></li>
 <li class="chapter" data-level="B.2" data-path="renviron.html"><a href="renviron.html#working-directory"><i class="fa fa-check"></i><b>B.2</b> Working directory</a></li>
 <li class="chapter" data-level="B.3" data-path="renviron.html"><a href="renviron.html#project"><i class="fa fa-check"></i><b>B.3</b> Rstudio projects</a></li>
-<li class="chapter" data-level="B.4" data-path="renviron.html"><a href="renviron.html#markdown"><i class="fa fa-check"></i><b>B.4</b> R Markdown</a></li>
 </ul></li>
-<li class="chapter" data-level="C" data-path="rreview.html"><a href="rreview.html"><i class="fa fa-check"></i><b>C</b> R review for data analysis</a></li>
-<li class="chapter" data-level="D" data-path="mathreview.html"><a href="mathreview.html"><i class="fa fa-check"></i><b>D</b> Math review</a></li>
+<li class="chapter" data-level="C" data-path="markdown.html"><a href="markdown.html"><i class="fa fa-check"></i><b>C</b> R Markdown</a><ul>
+<li class="chapter" data-level="C.1" data-path="markdown.html"><a href="markdown.html#how-to-write-an-r-markdown-document"><i class="fa fa-check"></i><b>C.1</b> How to write an R Markdown document</a></li>
+<li class="chapter" data-level="C.2" data-path="markdown.html"><a href="markdown.html#hints"><i class="fa fa-check"></i><b>C.2</b> Hints</a></li>
+<li class="chapter" data-level="C.3" data-path="markdown.html"><a href="markdown.html#changing-r-markdown-chunk-evaluation-behavior"><i class="fa fa-check"></i><b>C.3</b> Changing R Markdown chunk evaluation behavior</a></li>
+<li class="chapter" data-level="C.4" data-path="markdown.html"><a href="markdown.html#creating-a-new-r-markdown-document"><i class="fa fa-check"></i><b>C.4</b> Creating a new R Markdown document</a></li>
+<li class="chapter" data-level="C.5" data-path="markdown.html"><a href="markdown.html#markdown-graphs"><i class="fa fa-check"></i><b>C.5</b> Extra: Graph formatting</a><ul>
+<li class="chapter" data-level="C.5.1" data-path="markdown.html"><a href="markdown.html#adding-figure-numbers-and-captions"><i class="fa fa-check"></i><b>C.5.1</b> Adding figure numbers and captions</a></li>
+<li class="chapter" data-level="C.5.2" data-path="markdown.html"><a href="markdown.html#resizing-graphs-in-markdown"><i class="fa fa-check"></i><b>C.5.2</b> Resizing graphs in Markdown</a></li>
+<li class="chapter" data-level="C.5.3" data-path="markdown.html"><a href="markdown.html#changing-graph-formatting-in-r"><i class="fa fa-check"></i><b>C.5.3</b> Changing graph formatting in R</a></li>
+<li class="chapter" data-level="C.5.4" data-path="markdown.html"><a href="markdown.html#hiding-r-commands"><i class="fa fa-check"></i><b>C.5.4</b> Hiding R commands</a></li>
+<li class="chapter" data-level="C.5.5" data-path="markdown.html"><a href="markdown.html#global-changes-in-graph-format"><i class="fa fa-check"></i><b>C.5.5</b> Global changes in graph format</a></li>
+<li class="chapter" data-level="C.5.6" data-path="markdown.html"><a href="markdown.html#comments"><i class="fa fa-check"></i><b>C.5.6</b> Comments:</a></li>
+</ul></li>
+<li class="chapter" data-level="C.6" data-path="markdown.html"><a href="markdown.html#markdown-tables"><i class="fa fa-check"></i><b>C.6</b> Extra: Table formatting</a><ul>
+<li class="chapter" data-level="C.6.1" data-path="markdown.html"><a href="markdown.html#hiding-r-commands-and-r-output"><i class="fa fa-check"></i><b>C.6.1</b> Hiding R commands and R output</a></li>
+<li class="chapter" data-level="C.6.2" data-path="markdown.html"><a href="markdown.html#markdown-tables-1"><i class="fa fa-check"></i><b>C.6.2</b> Markdown tables</a></li>
+<li class="chapter" data-level="C.6.3" data-path="markdown.html"><a href="markdown.html#markdown-tables-via-kable"><i class="fa fa-check"></i><b>C.6.3</b> Markdown tables via <code>kable</code></a></li>
+<li class="chapter" data-level="C.6.4" data-path="markdown.html"><a href="markdown.html#the-pander-package"><i class="fa fa-check"></i><b>C.6.4</b> The <code>pander</code> package</a></li>
+<li class="chapter" data-level="C.6.5" data-path="markdown.html"><a href="markdown.html#the-stargazer-package"><i class="fa fa-check"></i><b>C.6.5</b> The <code>stargazer</code> package</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="D" data-path="rreview.html"><a href="rreview.html"><i class="fa fa-check"></i><b>D</b> R review for data analysis</a></li>
+<li class="chapter" data-level="E" data-path="mathreview.html"><a href="mathreview.html"><i class="fa fa-check"></i><b>E</b> Math review</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -225,6 +245,19 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
