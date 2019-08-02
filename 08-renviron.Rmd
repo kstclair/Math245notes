@@ -1,0 +1,53 @@
+# The R enviroment {#renviron}
+
+## Workspace
+
+Anything that you load or create in Rstudio (data, vectors, models) are called *objects*. You can see your current objects in your  RStudio **Environment** pane (upper right). These objects, along with your command history, are contained in what R calls your "Workspace". 
+
+When you exit Rstudio, you may be asked if you want to save your workspace as a .RData file before exiting. I strongly encourage you **not** to do this since it can make it very hard to reproduce your workflow (and it can slow down Rstudio start up). Instead, use R markdown (Section \@ref(markdown)) to document your workflow so you can redo any analysis that you've previously done.  
+
+To change Rstudio's default startup and exit workspace behavior:
+
+- From the **Tools** drop down menu (at the top), select **Global Options...**
+- Under the **General** tab, *uncheck* the "Restore .RData into workspace at startup"
+- In the "Save workspace to .RData on exit:" dropdown, select **Never**
+
+## Working directory
+
+The default location that R looks for "stuff" or saves "stuff" is called your **Working Directory**. For example, the default location of this folder is typically your Documents folder for a Windows machine. You can run the `getwd()` command to see where your current working directory is located. For my desktop Windows computer, the default working directory location is
+
+```
+> getwd()
+[1] "C:/Users/kstclair/Documents"
+```
+
+Or from the mirage server, 
+
+```
+> getwd()
+[1] "/Accounts/kstclair"
+```
+
+
+## Rstudio projects {#project}
+
+RStudio (not standalone R) has a feature called **Projects** that make it easy to start RStudio in a particular working directory. You can create different Projects for different classes (or research projects).  
+
+Your first task in Rstudio for Math 245 will be to create a Math 245 project: 
+
+1. Find the **Project** button in the upper right-hand corner of Rstudio. Select **New Project**.  
+2. Click **New Directory** from the New Project dialog box.
+
+![](http://www.rstudio.com/images/docs/projects_new.png)
+
+3. Click on **New project** (again), then enter **Math245** as your Directory name (no spaces). Use the **Browse** button to put this project in a good spot on your computer or accept the default location on mirage. 
+4. Click on **Create Project**. Your Rstudio session should not change in looks all that much but check your computer should now contain a **Math245** folder in the location you chose. This folder will contain a **Math245.Rproj** icon. 
+5. Your working directory is now set to this **Math245** folder. Check this with the `getwd()` command.
+
+Starting your Math245 project:
+
+1. Rstudio default settings are to start up your last project when you reopen Rstudio. So just opening Rstudio (or loggin onto mirage) usually opens your Math245 project. You will see your project name in the upper right-hand project button location.
+2. Alternatively, start your R project by **double clicking on the project icon** in your Math245 folder. You will know you are in
+3. You can also open or change projects with the drop-down project menu. 
+
+

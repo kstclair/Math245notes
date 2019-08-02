@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Simple Linear Regression | Math 245 Notes</title>
+  <title>B The R enviroment | Math 245 Notes</title>
   <meta name="description" content="Course notes and examples for Applied Regression Analysis" />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Simple Linear Regression | Math 245 Notes" />
+  <meta property="og:title" content="B The R enviroment | Math 245 Notes" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="kstclair/Math245notes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Simple Linear Regression | Math 245 Notes" />
+  <meta name="twitter:title" content="B The R enviroment | Math 245 Notes" />
   
   <meta name="twitter:description" content="Course notes and examples for Applied Regression Analysis" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="review.html">
-<link rel="next" href="mlr.html">
+<link rel="prev" href="rrstudio.html">
+<link rel="next" href="markdown.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -148,10 +148,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="B.1" data-path="renviron.html"><a href="renviron.html#workspace"><i class="fa fa-check"></i><b>B.1</b> Workspace</a></li>
 <li class="chapter" data-level="B.2" data-path="renviron.html"><a href="renviron.html#working-directory"><i class="fa fa-check"></i><b>B.2</b> Working directory</a></li>
 <li class="chapter" data-level="B.3" data-path="renviron.html"><a href="renviron.html#project"><i class="fa fa-check"></i><b>B.3</b> Rstudio projects</a></li>
-<li class="chapter" data-level="B.4" data-path="renviron.html"><a href="renviron.html#markdown"><i class="fa fa-check"></i><b>B.4</b> R Markdown</a></li>
 </ul></li>
-<li class="chapter" data-level="C" data-path="rreview.html"><a href="rreview.html"><i class="fa fa-check"></i><b>C</b> R review for data analysis</a></li>
-<li class="chapter" data-level="D" data-path="mathreview.html"><a href="mathreview.html"><i class="fa fa-check"></i><b>D</b> Math review</a></li>
+<li class="chapter" data-level="C" data-path="markdown.html"><a href="markdown.html"><i class="fa fa-check"></i><b>C</b> R Markdown</a></li>
+<li class="chapter" data-level="D" data-path="rreview.html"><a href="rreview.html"><i class="fa fa-check"></i><b>D</b> R review for data analysis</a></li>
+<li class="chapter" data-level="E" data-path="mathreview.html"><a href="mathreview.html"><i class="fa fa-check"></i><b>E</b> Math review</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -173,17 +173,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="slr" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Simple Linear Regression</h1>
+<div id="renviron" class="section level1">
+<h1><span class="header-section-number">B</span> The R enviroment</h1>
+<div id="workspace" class="section level2">
+<h2><span class="header-section-number">B.1</span> Workspace</h2>
+<p>Anything that you load or create in Rstudio (data, vectors, models) are called <em>objects</em>. You can see your current objects in your RStudio <strong>Environment</strong> pane (upper right). These objects, along with your command history, are contained in what R calls your “Workspace”.</p>
+<p>When you exit Rstudio, you may be asked if you want to save your workspace as a .RData file before exiting. I strongly encourage you <strong>not</strong> to do this since it can make it very hard to reproduce your workflow (and it can slow down Rstudio start up). Instead, use R markdown (Section <a href="markdown.html#markdown">C</a>) to document your workflow so you can redo any analysis that you’ve previously done.</p>
+<p>To change Rstudio’s default startup and exit workspace behavior:</p>
+<ul>
+<li>From the <strong>Tools</strong> drop down menu (at the top), select <strong>Global Options…</strong></li>
+<li>Under the <strong>General</strong> tab, <em>uncheck</em> the “Restore .RData into workspace at startup”</li>
+<li>In the “Save workspace to .RData on exit:” dropdown, select <strong>Never</strong></li>
+</ul>
+</div>
+<div id="working-directory" class="section level2">
+<h2><span class="header-section-number">B.2</span> Working directory</h2>
+<p>The default location that R looks for “stuff” or saves “stuff” is called your <strong>Working Directory</strong>. For example, the default location of this folder is typically your Documents folder for a Windows machine. You can run the <code>getwd()</code> command to see where your current working directory is located. For my desktop Windows computer, the default working directory location is</p>
+<pre><code>&gt; getwd()
+[1] &quot;C:/Users/kstclair/Documents&quot;</code></pre>
+<p>Or from the mirage server,</p>
+<pre><code>&gt; getwd()
+[1] &quot;/Accounts/kstclair&quot;</code></pre>
+</div>
+<div id="project" class="section level2">
+<h2><span class="header-section-number">B.3</span> Rstudio projects</h2>
+<p>RStudio (not standalone R) has a feature called <strong>Projects</strong> that make it easy to start RStudio in a particular working directory. You can create different Projects for different classes (or research projects).</p>
+<p>Your first task in Rstudio for Math 245 will be to create a Math 245 project:</p>
+<ol style="list-style-type: decimal">
+<li>Find the <strong>Project</strong> button in the upper right-hand corner of Rstudio. Select <strong>New Project</strong>.<br />
+</li>
+<li>Click <strong>New Directory</strong> from the New Project dialog box.</li>
+</ol>
+<p><img src="http://www.rstudio.com/images/docs/projects_new.png" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Click on <strong>New project</strong> (again), then enter <strong>Math245</strong> as your Directory name (no spaces). Use the <strong>Browse</strong> button to put this project in a good spot on your computer or accept the default location on mirage.</li>
+<li>Click on <strong>Create Project</strong>. Your Rstudio session should not change in looks all that much but check your computer should now contain a <strong>Math245</strong> folder in the location you chose. This folder will contain a <strong>Math245.Rproj</strong> icon.</li>
+<li>Your working directory is now set to this <strong>Math245</strong> folder. Check this with the <code>getwd()</code> command.</li>
+</ol>
+<p>Starting your Math245 project:</p>
+<ol style="list-style-type: decimal">
+<li>Rstudio default settings are to start up your last project when you reopen Rstudio. So just opening Rstudio (or loggin onto mirage) usually opens your Math245 project. You will see your project name in the upper right-hand project button location.</li>
+<li>Alternatively, start your R project by <strong>double clicking on the project icon</strong> in your Math245 folder. You will know you are in</li>
+<li>You can also open or change projects with the drop-down project menu.</li>
+</ol>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="review.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="mlr.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="rrstudio.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="markdown.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

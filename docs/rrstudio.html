@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Simple Linear Regression | Math 245 Notes</title>
+  <title>A R and Rstudio | Math 245 Notes</title>
   <meta name="description" content="Course notes and examples for Applied Regression Analysis" />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Simple Linear Regression | Math 245 Notes" />
+  <meta property="og:title" content="A R and Rstudio | Math 245 Notes" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="kstclair/Math245notes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Simple Linear Regression | Math 245 Notes" />
+  <meta name="twitter:title" content="A R and Rstudio | Math 245 Notes" />
   
   <meta name="twitter:description" content="Course notes and examples for Applied Regression Analysis" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="review.html">
-<link rel="next" href="mlr.html">
+<link rel="prev" href="poisson.html">
+<link rel="next" href="renviron.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -173,17 +173,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="slr" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Simple Linear Regression</h1>
+<div id="rrstudio" class="section level1">
+<h1><span class="header-section-number">A</span> R and Rstudio</h1>
+<p><strong>R</strong> is a free professional statistical software that is available for use on windows, mac and linux computers. R is a popular tool for researchers from many fields so acquiring basic R skills from our stats classes will be beneficial for this course and career plans!</p>
+<p><strong>RStudio</strong> is a free software that provides a user-friendly interface with R. We will be running R through RStudio in our stats classes.</p>
+<p>R can be more challenging for a brand new user than other software (like Excel, SPSS, etc) because analyzes are done using written commands rather than using a drop down (point-and-click) menu. But R is very powerful because of the huge variety of statistical methods that it supports (due to the addition of free user contributed packages) and the user’s ability to customize their experience (graphics, new functions, data manipulation, etc). Because R is based on written commands that can be recorded in a variety of ways, it is easy for a user to reproduce, re-do or continue analyzes that were started at a different point in time. This is much harder to do when you are using a bunch of drop-down menu commands to run your analysis! We will emphasize <strong>reproducibility</strong> in this course by using R Markdown scripts (Section <a href="renviron.html#markdown">B.4</a>) to complete our analyzes.</p>
+<div id="running-rstudio" class="section level2">
+<h2><span class="header-section-number">A.1</span> Running Rstudio</h2>
+<ul>
+<li><strong>Browser:</strong> You can access an online version of Rstudio from <a href="">mirage.mathcs.carleton.edu</a>. If you are new to using Rstudio, I encourage you to use mirage rather than installing R/Rstudio on your computer. You can access mirage from anywhere on campus using Eduroam wireless if on a laptop, but <strong>from off campus</strong> you will first need to turn on <a href="https://wiki.carleton.edu/display/itskb/GlobalProtect+VPN">Carleton’s VPN</a> prior to logging in. <strong>Please install this software!</strong>
+<ul>
+<li><strong>Why use mirage?</strong> Any work you create (R scripts, Markdown, pdf, or word docs) are saved on your account located on this server (file path /Accounts/username). If you want to download files from this account, use the “More &gt; Export” drop down menu from the “Files” pane (lower right panel). Mirage also has most R packages that we use in our classes preinstalled so you don’t need to install them before using them.</li>
+</ul></li>
+<li><strong>Personal computer:</strong> You can download R (Section <a href="rrstudio.html#r">A.2</a>) and Rstudio (Section <a href="rrstudio.html#rstudio">A.3</a>) software onto your personal computer. You then open Rstudio to start an R session. You will need install certain R packages that we used in our class that aren’t part of the default package installation. See Section~@ref{packages}.</li>
+</ul>
+</div>
+<div id="r" class="section level2">
+<h2><span class="header-section-number">A.2</span> Installing R</h2>
+<p>Follow the appropriate link below and complete the default installation.</p>
+<ul>
+<li><p>Windows: <a href="http://cran.r-project.org/bin/windows/base/" class="uri">http://cran.r-project.org/bin/windows/base/</a></p></li>
+<li><p>Mac: <a href="http://cran.r-project.org/bin/macosx/" class="uri">http://cran.r-project.org/bin/macosx/</a></p></li>
+</ul>
+</div>
+<div id="rstudio" class="section level2">
+<h2><span class="header-section-number">A.3</span> Installing Rstudio</h2>
+<p>Follow the link below and download the free <strong>RStudio Desktop Open Source Edition</strong>.</p>
+<ul>
+<li>Windows or Mac: <a href="http://www.rstudio.com/ide/download/" class="uri">http://www.rstudio.com/ide/download/</a></li>
+</ul>
+</div>
+<div id="packages" class="section level2">
+<h2><span class="header-section-number">A.4</span> Installing R packages</h2>
+<p>R packages provided added analysis tools that R users contribute to the R community. The default R installation only provides us with a fraction of the available packages. The most straightforward way to install a needed package in Rstudio is to click the <strong>Packages</strong> tab in the lower right pane. Click the <strong>Install</strong> button and start typing the package name into Packages field, then click <strong>Install</strong> to add the package to your available package library. You should only need to install a package once.</p>
+<p>Alternatively, you can install a package by typing an <code>install.packages</code> command into the Console window. For example, the following command installs the R data package <code>Sleuth3</code> for <em>The Statistical Sleuth</em> textbook:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;Sleuth3&quot;</span>)</code></pre>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="review.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="mlr.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="poisson.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="renviron.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

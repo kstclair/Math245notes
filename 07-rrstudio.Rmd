@@ -1,0 +1,47 @@
+# R and Rstudio {#rrstudio}
+
+
+
+**R** is a free professional statistical software that is available for use on windows, mac and linux computers. R is a popular tool for researchers from many fields so acquiring basic R skills from our stats classes will be beneficial for this course and career plans! 
+
+**RStudio** is a free software that provides a user-friendly interface with R. We will be running R through RStudio in our stats classes. 
+
+R can be more challenging for a brand new user than other software (like Excel, SPSS, etc) because analyzes are done using written commands rather than using a drop down (point-and-click) menu. But R is very powerful because of the huge variety of statistical methods that it supports (due to the addition of free user contributed packages) and the user's ability to customize their experience (graphics, new functions, data manipulation, etc). Because R is based on written commands that can be recorded in a variety of ways, it is easy for a user to reproduce, re-do or continue analyzes that were started at a different point in time. This is much harder to do when you are using a bunch of drop-down menu commands to run your analysis! We will emphasize **reproducibility** in this course by using R Markdown scripts (Section \@ref(markdown)) to complete our analyzes. 
+
+
+## Running Rstudio
+
+
+- **Browser:** You can access an online version of Rstudio from [mirage.mathcs.carleton.edu](). If you are new to using Rstudio, I  encourage you to use mirage rather than installing R/Rstudio on your computer. You can access mirage from anywhere on campus using Eduroam  wireless if on a laptop, but **from off campus** you will first need to turn on [Carleton's VPN](https://wiki.carleton.edu/display/itskb/GlobalProtect+VPN) prior to logging in. **Please install this software!** 
+    - **Why use mirage?** Any work you create (R scripts, Markdown, pdf, or word docs) are saved on your account located on this server (file path /Accounts/username). If you want to download files from this account, use the "More > Export" drop down menu from the "Files" pane (lower right panel). Mirage also has most R packages that we use in our classes preinstalled so you don't need to install them before using them.  
+
+    
+- **Personal computer:** You can download R (Section \@ref(r)) and Rstudio (Section \@ref(rstudio)) software onto your personal computer. You then open Rstudio to start an R session. You will need install certain R packages that we used in our class that aren't part of the default package installation. See Section~\@ref{packages}.
+
+
+## Installing R {#r}
+
+Follow the appropriate link below and complete the default installation.
+
+- Windows: http://cran.r-project.org/bin/windows/base/
+
+- Mac: http://cran.r-project.org/bin/macosx/
+
+
+
+## Installing Rstudio {#rstudio} 
+
+Follow the link below and download the free **RStudio Desktop Open Source Edition**.
+
+- Windows or Mac: http://www.rstudio.com/ide/download/
+
+## Installing R packages {#packages}
+
+R packages provided added analysis tools that R users contribute to the R community. The default R installation only provides us with a fraction of the available packages. The most straightforward way to install a needed package in Rstudio is to click the **Packages** tab in the lower right pane. Click the **Install** button and start typing the package name into Packages field, then click **Install** to add the package to your available package library. You should only need to install a package once. 
+
+Alternatively, you can install a package by typing an `install.packages` command into the Console window. For example, the following command installs the R data package `Sleuth3` for *The Statistical Sleuth* textbook: 
+```{r, eval = FALSE}
+install.packages("Sleuth3")
+```
+
+
