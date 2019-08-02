@@ -16,7 +16,7 @@ R can be more challenging for a brand new user than other software (like Excel, 
     - **Why use mirage?** Any work you create (R scripts, Markdown, pdf, or word docs) are saved on your account located on this server (file path /Accounts/username). If you want to download files from this account, use the "More > Export" drop down menu from the "Files" pane (lower right panel). Mirage also has most R packages that we use in our classes preinstalled so you don't need to install them before using them.  
 
     
-- **Personal computer:** You can download R (Section \@ref(r)) and Rstudio (Section \@ref(rstudio)) software onto your personal computer. You then open Rstudio to start an R session. You will need install certain R packages that we used in our class that aren't part of the default package installation. See Section~\@ref{packages}.
+- **Personal computer:** You can download R (Section \@ref(r)) and Rstudio (Section \@ref(rstudio)) software onto your personal computer. You then open Rstudio to start an R session. You will need install certain R packages that we used in our class that aren't part of the default package installation. See Section \@ref(packages).
 
 
 ## Installing R {#r}

@@ -4,7 +4,7 @@
 
 Anything that you load or create in Rstudio (data, vectors, models) are called *objects*. You can see your current objects in your  RStudio **Environment** pane (upper right). These objects, along with your command history, are contained in what R calls your "Workspace". 
 
-When you exit Rstudio, you may be asked if you want to save your workspace as a .RData file before exiting. I strongly encourage you **not** to do this since it can make it very hard to reproduce your workflow (and it can slow down Rstudio start up). Instead, use R markdown (Section \@ref(markdown)) to document your workflow so you can redo any analysis that you've previously done.  
+When you exit Rstudio, you may be asked if you want to save your workspace as a .RData file before exiting. I strongly encourage you **not** to do this since it can make it very hard to reproduce your workflow (and it can slow down Rstudio start up). Instead, use R markdown (Chapter \@ref(markdown)) to document your workflow so you can redo any analysis that you've previously done.  
 
 To change Rstudio's default startup and exit workspace behavior:
 
