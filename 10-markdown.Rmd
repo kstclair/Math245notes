@@ -16,9 +16,6 @@ An R Markdown (`.Rmd`) file will allow you to integrate your R commands, output 
 
 - Write your commands in R chunks, not in the console. Run chunk commands using the suggestions in the Hints section below.
 - Knit your document often. This allows you to catch errors/typos as you make them. 
-
-## Hints
-
 - You can knit a `.Rmd` by pressing the `Knit` button at the top of the doc. You can change output types (e.g. switch from HTML to Word) by typing in the preferred doc type in the header, or by using the drop down menu option found by clicking the down triangle to the right of the `Knit` button. 
 - You can run a line of code in the R console by putting your cursor in the line and selecting **Run > Run Selected Line(s)**.
 - You can run all commands in a chunk by clicking the green triangle on the right side of the chunk.

@@ -1,0 +1,543 @@
+# R for basic data analysis {#rreview}
+
+## Basics {#basics}
+
+### Quick Tips
+
+- In the **Console** window: You type commands after the prompt `>` and hit **Enter** to execute the command. The results of the command will be displayed below the command and preceded by a line counter enclosed in brackets (e.g. [1]).
+-  You can scroll back to, edit, and execute previous commands using the up arrow on your keyboard.
+-  If you prematurely hit enter before a command is completed to R's satisfaction you will see a + prompt which asks you to finish the command. Simply complete the command after the + and hit **Enter**. If you get stuck in a cycle of + prompts you can get back to a fresh command prompt `>` by hitting the **Esc** key. For example, try: 
+```
+    > 1+3   <ENTER>
+    [1] 4
+    > 1+
+    + 3    <ENTER>
+    [1] 4
+    > 1+
+    +    <ESC>
+    User interrupt requested
+```
+
+- For information about a command type `?commandname`.
+
+### Objects
+Everything in R is an **object**. You can assign a name to an object by using the assignment operator `<-`. You can see the current list of objects in your R workspace by typing `ls()` or by looking in the **Environment** tab in Rstudio. You can remove objects from your workspace with the command  `rm(name)` where `name` is the name of the object you want to delete.
+
+### Vectors
+Vectors are a simple type of object and even single numbers (called scalars) are vectors with a length of 1. Here are a few ways to create vectors.
+
+The `:` operator creates a sequence of numbers that increase or decrease by 1. 
+```{r}
+3:10 
+0:-3  
+```
+The `seq` function also creates sequences of a given length or increment.  
+```{r}
+seq(1,3,by=.5) 
+seq(1,3,length=10)  
+```
+Use the combine function `c()` to create any particular arrangement: 
+```{r}
+c(5,2,4,-1) 
+x <- c(5,2,4,-1) 
+x 
+y <- c(x,0:3,x) 
+y  
+```
+The `rep` command allows repetition:
+```{r}
+rep(0,5) 
+rep(c(0,1),c(3,2))  
+```
+You can also create vectors of characters (letters or words): 
+```{r}
+c("a","b","c") 
+c("abc","de")  
+```
+Logical (true/false) vectors do not use double quotes: 
+```{r}
+c(T,T,F)  
+```
+
+### Arithmetic
+Here's some basic commands: 
+```{r}
+x <- 1:4 
+x*2 
+x^2 
+(x-2)/3  
+```
+Arithmetic involving vectors is done elementwise. 
+```{r}
+y <- c(-1,1,-1,1) 
+x*y 
+x-y  
+```
+Special functions are available that work elementwise or on the entire vector. Here are a few: 
+```{r}
+sqrt(x) 
+log(x) 
+exp(x) 
+sum(x) 
+mean(x) 
+sd(x) 
+sqrt(sum(x^2))  
+```
+More summary stats can be found with the commands `min`, `max`, `median`, `quantile`, `summary`, and `var`.
+
+You usually use the special functions above with numeric vectors (`int` or `num`), but you can use these functions with logical vectors too. The logical vector is coerced into a integer vector with `1` for `TRUE` and `0` for `FALSE`. 
+```{r}
+y <- c(T,T,F)
+y
+sum(y)  # number of TRUE's in y
+mean(y)  # proportion of TRUE's in y
+```
+
+
+### Subsetting
+You can access one or more elements in a vector by specifying a certain  *index* of elements within the vector: `vector[index]`. 
+```{r}
+w<-c(30,50,20,60,40,20) 
+length(w)  
+```
+The first element of `w`:  
+```{r}
+w[1]  
+```
+The first and third elements:  
+```{r}
+w[c(1,3)]  
+```
+All elements except the first and third:  
+```{r}
+w[-c(1,3)]  
+```
+The elements that are at most 40:  
+```{r}
+w[w <= 40]  
+```
+The *position* of these elements that are at most 40:  
+```{r}
+which(w <= 40)  
+```
+The mean of `w` and the mean of only the elements in `w` that are less than or equal to 4:  
+```{r}
+mean(w) 
+mean(w[w <= 40])  
+```
+Expressions involving inequalities create a logical vector which is `TRUE` when the expression is true:  
+```{r}
+w <= 40 
+w == 40  
+```
+So when a vector is indexed by a TRUE/FALSE vector only the `TRUE` entries will be displayed (and used in any command involving this vector). Here is the logical vector for entries in `w` that are not  equal to 40:  
+```{r}
+w != 40  
+```
+Here are the values of the  entries of `w` excluding those equal to 40:  
+```{r}
+w[w != 40]  
+```
+Here is the sum of the values of the  entries of `w` excluding those equal to 40:  
+```{r}
+sum(w[w != 40])  
+```
+Adding a logical (T/F) vector tells you how many elements in the vector are equal to `TRUE`. Here is the number of entries in  `w` that are not  equal to 40:  
+```{r}
+sum(w != 40)  
+```
+Finally, the vector operators `|` and `&` mean **OR** and **AND**, respectively. We can find the entries in `w` that are less than 30 OR greater than 50 with  
+```{r}
+(w < 30) | (w > 50)  
+```
+We can find the entries that are at most 50 AND at least 30 with  
+```{r}
+(w >= 30) & (w <= 50)  
+```
+
+## Data {#data}
+
+### Reading  Data into R
+The most common way to read data into R is by storing it in a *comma separated values* (`.csv`)  format.  Non-textbook data files for this class will either be on my webpage [http://people.carleton.edu/~kstclair/data](http://people.carleton.edu/~kstclair/data).
+
+You can read a .csv file into R using its URL or file path (which is system dependent):
+```{r, eval=FALSE}
+mydata <- read.csv("<data file path>/mydata.csv") 
+```
+
+Alternatively, you can download (then upload if using mirage) a needed data set to your **data** folder located in your **Mathxxx** folder. Once this is done, and your **Mathxxx project** is started, you can easily read the data set into R using the command
+```{r, eval=FALSE}
+mydata <- read.csv("data/mydata.csv")
+```
+You don't need an extended file path name because your project should set your working directory to your **Mathxxx** folder and the **data** folder containing you `.csv` is a subfolder in this working directory. 
+
+Many textbooks have R packages that contain data sets used in the book. Here I'll use the `SDaA` packge used in my Math 255 (Sampling) course. Once you load this library you have automatic access to add textbook data files identified by the name given in the book. 
+```{r}
+# install.packages("SDaA")  # only run this once, ever
+library(SDaA)
+class(agstrat)
+```
+The object `agstrat` is called a *data frame*. The rest of this handout will explain how R data frames can be explored, used and changed.
+
+### Investigating a Data Frame
+You can see an entire data frame by typing its name. You can see the first or last 5 rows of a data frame with the following commands:    
+```{r}
+head(agstrat)  
+tail(agstrat)   
+```
+You can get the dimensions (# rows by # columns) and variable names is a data frame with    
+```{r}
+dim(agstrat)  
+```
+You can see the variable names with    
+```{r}
+names(agstrat)   
+```
+or variable names and types with the structure command    
+```{r}
+str(agstrat)   
+```
+You can view the data frame in Rstudio's viewer window with
+```{r, eval=FALSE}
+View(agstrat) 
+```
+
+
+### Accessing Data {#access}
+You can also access and edit information in a data frame by subscripting the data frame. Suppose you want to look at the variable `farms92` (the number of farms per county in 1992). This variable is the 6th column in the data frame. You can access its contents with either command:    
+```{r}
+agstrat[,6]  
+agstrat$farms92  
+agstrat[,"farms92"]    
+```
+If you just want the first two entries in `farms92`:    
+```{r}
+agstrat[1:2,6] 
+agstrat$farms92[1:2]   
+```
+
+The variable region is a categorical variable, or `factor` variable to R. We can see the `levels` of region with    
+```{r}
+str(agstrat$region)
+levels(agstrat$region)   
+```
+So region has 4 levels called NC, NE, S, and W. Note that these levels are ordered alphabetically, which is typically done with factor variables from data sets that are read into R. 
+
+### Subsetting a Data Frame
+You can subset a data frame just as you can subset a vector (see the Basics handout). We might want to subset a data frame to extract certain columns (variables), or we may want to extract certain rows (observations), or some combination of both. 
+
+Suppose you want a data frame that only contains the variables `region` and `farms92`: One way to do this is with the `select` command from the `dplyr` package:
+```{r}
+library(dplyr)
+agstrat2 <- select(agstrat, region, farms92) 
+str(agstrat2) 
+```
+
+Suppose you want a data frame that only contains data from the north central (`NC`) and west (`W`) regions. Here we use the `dplyr` command `filter` to specify the criteria that tells us that `region` should be either `"W"` or `"NC"`:   
+```{r}
+agstrat3 <- filter(agstrat, region %in% c("W", "NC"))
+str(agstrat3)   
+```
+Note one problem with this new data frame: the region variable still thinks it has 4 levels even though S and NE are not in this data frame    
+```{r}
+levels(agstrat3$region)  
+table(agstrat3$region)   
+```
+This could create a problem when we want to use the region variable in future analyzes. An easy solution exists using the `droplevels` command on the data frame   
+```{r}
+agstrat3 <- droplevels(agstrat3)  
+table(agstrat3$region)   
+```
+
+### Creating a data frame
+One way to create a data frame is to create vectors that will form the variables (columns), then binding them together in a data frame:    
+```{r}
+x <- 1:10  
+y <- rep(c("a","b"),c(5,5))  
+my.data <- data.frame(x=x,y=y)  
+str(my.data)  
+my.data 
+```
+
+### Adding a new column to a data frame
+Suppose you want to add a variable called `w` to the data frame `my.data`.  
+```{r}
+w <- rnorm(10, mean=0, sd=1)  
+my.data <- data.frame(my.data,w=w)  
+my.data 
+```
+
+### Missing Data
+The missing data value in R is NA. Any blank field (or NA field) in the .csv file will be recognized as a missing value when the data is read into R with the `read.csv` command. But suppose we have missing data in a data set we've entered by hand    
+```{r}
+u <- c(NA,2,3,4,5,NA,7,8,9,10) 
+v <- c(rep(NA,5), 1:5)
+my.data <- data.frame(my.data,u=u, v=v)  
+my.data   
+```
+We can see which entries in u are missing with the `is.na` command    
+```{r}
+is.na(my.data$u)  
+```
+or with the `summary` command:
+```{r}
+summary(my.data)
+```
+
+We can use the `drop_na` command from the `tidyr` package to create an `NA`-free version of our data frame. Applying it to the entire data frame returns only rows that have observations for all variables:
+```{r}
+library(tidyr)
+my.data.noNA <- drop_na(my.data)
+my.data.noNA
+```
+There are times when you only want to remove NA's for a limited number of variables. Add these variable names as arguments to the `drop_na` command to only remove rows with NA's for those variables. Here we only remove `NA`s from `u` (rows 1 and 6):
+```{r}
+my.data.noNAu <- drop_na(my.data, u)
+my.data.noNAu
+```
+
+
+Sometimes data sets (especially "read-world"" data) do not use blank fields to indicate missing data. For example, perhaps an unrealistic value is given as filler for a missing data point, like `-99` for a positive integer variable or `9999` for a smaller scale variable. The source where you find your data should tell you if special fields (like `-99` or `9999`) are used to indicate missing data. Once you determine what the missing data indicator is, you can import the data set using the `read.csv` command with the added argument `na.strings = c("-99"," ")`. This argument tells R that missing data is coded either as an `NA`, a blank entry or as a `-99` entry.
+```{r, eval = FALSE}
+mydata <- read.csv("<file path>", na.strings = c("NA", " ", "-99"))
+```
+
+
+## EDA {#eda}
+
+We are using the `agstrat` data frame from the `SDaA` package (see Section \@ref(data)).
+
+### Categorical: 
+The `table` command is useful when summarizing a categorical variable like region 
+```{r}
+table(agstrat$region) 
+```
+There are 103 counties in the north central region, 21 in the northeast, 135 in the south, and 41 in the west. We get a contingency table by entering two categorical variables 
+```{r}
+table(agstrat$state,agstrat$region)  
+```
+So, for example, the data contains 5 counties in Alabama that are classified as southern. (Note that this isn't a very interesting summary of two categorical variables, just an easy one to demonstrate the table command using this data set.)
+
+### Quantitative: 
+Basic summary stats commands are  
+```{r}
+summary(agstrat$farms92) 
+mean(agstrat$farms92) 
+median(agstrat$farms92) 
+sd(agstrat$farms92) 
+min(agstrat$farms92) 
+max(agstrat$farms92)  
+```
+We can explore which county(s) have the highest number of farms (3157) in 1992 with 
+```{r}
+which(agstrat$farms92 == 3157) 
+agstrat[274,]  
+```
+The 0.05 and 0.95 quantiles (i.e. 5th and 95th percentiles) of farms92 are 
+```{r}
+quantile(agstrat$farms92, c(.05, .95))  
+```
+meaning that 5% of counties have fewer than 89.2 farms and 95% of counties have fewer than 1441.15 farms.
+
+### Quantitative grouped by a categorical
+Suppose we want to know the average number of farms per county for each region. The R function `tapply(var, grp, fun)` will apply the function `fun` to the variable `var` for each group in `grp` and produces a `table` of output (hence the `t` in `tapply`). Here is this command in action for the farms variable 
+```{r}
+tapply(agstrat$farms92, agstrat$region, summary)  
+```
+The average number of farms per county in the northeast region is 528.1. 
+
+The R package `dplyr` can also be used to get numerical summaries by groups using the `group_by` and `summarize` commands. Here we string together these two commands with the *piping* command `%>%` to get the mean and standard deviation of `farms92` for each level of `region`:
+```{r}
+library(dplyr)
+agstrat %>% 
+    group_by(region) %>%
+    summarize(mean(farms92), sd(farms92))
+```
+The output produced by this string of commands is actually a type of a data frame called a `tibble`. 
+
+
+
+### Graphs
+R has very sophisticated graphing capabilities. This handout just gives you a summary of some of the most basic graphs. More complicated graphic features will be explained as needed in class. R has *high-level* plotting commands that create a complete graph, *low-level* commands which add to an existing graph, and a graphing window layout `par` command. Use the help command to see these options, e.g. `?hist` for the histogram options.
+
+A bar graph of the categorical variable region is given by 
+```{r}
+barplot(table(agstrat$region))  
+```
+
+The southern region contains the most counties in our sample (135) and the north east region the fewest counties (21). We can add a label to the y-axis and a title to the plot by adding the arguments 
+```{r}
+barplot(table(agstrat$region), ylab="count", main="Number of counties per region")  
+```
+
+A histogram and boxplot of farms92 are given by 
+```{r}
+hist(agstrat$farms92, main = "Number of farms per county in 1992") 
+boxplot(agstrat$farms92, main = "Number of farms per county in 1992")  
+```
+
+We can get a side-by-side boxplot of farms92 by region with 
+```{r}
+boxplot(farms92 ~ region, data = agstrat, main = "Number of farms per county in 1992")  
+```
+
+Suppose we want to look at the distribution of counties across regions grouped by counties with fewer than 500 farms vs. 500 or more farms. First we need to create a factor variable that identifies counties as having less or more than 500 farms: 
+```{r}
+agstrat$farms500 <- ifelse(agstrat$farms92 < 500, "fewer than 500 farms", "500 or more farms")
+table(agstrat$farms500)  
+```
+
+The we create the stacked bar graph for `farms500` grouped by `region` using `ggplot2`:
+```{r}
+library(ggplot2)
+ggplot(agstrat, aes(x=region, fill = farms500)) + 
+  geom_bar(position = "fill") + 
+  labs(y="proportion", fill = "Number of farms", 
+       title = "Number of farms (categorized) by region")
+prop.table(table(agstrat$region, agstrat$farms500), 1)
+```
+
+Of the 103 counties in the North Central region, about 72.8% have 500 or more farms. Of the 135 counties in the Southern region,  about 44.4% have 500 or more farms.
+
+We can also use `ggplot2` to create histograms of `farms92` by `region`:
+```{r}
+ggplot(agstrat, aes(x=farms92)) + 
+  geom_histogram() + 
+  facet_wrap(~region) + 
+  labs(title = "Number of farms by region")
+```
+
+We can also use the `ggplot2` package to get side-by-side boxplots grouped by a third variable. Here we can compare the distribution of total farm acreage in 1992 (`acres92`) by region for counties that have fewer than 500 farms vs. 500 or more farms: 
+```{r}
+ggplot(agstrat, aes(x = farms500, y=acres92)) + 
+  geom_boxplot() + 
+  facet_wrap(~region) + 
+  labs(title = "Farm acres by number of farms and region") 
+```
+
+The relationship between median acreage across the four regions looks similar regardless of how many farms are present in a county (with western counties having the highest acreage). But for all four regions, it looks like the median acreage is highest for counties with fewer than 500 farms. Counties with fewer farms may tend to have larger farms than counties with more (smaller) farms across all four regions.
+
+
+### Reporting Results
+Homework and reports should be done using an R Markdown document in RStudio (see Section \@ref(markdown)). If you do need to copy a graph from Rstudio into another document,  use the **Copy Plot to Clipboard** option in the **Export** menu.
+
+
+## Factor variables {#factors}
+
+Section \@ref(access) showed how to determine the levels of a factor variable. There are many more things you may want to do with a categorical variable that is a factor type. Here are a few hints for manipulating a factor. 
+
+### Renaming factor levels
+The R package `forcats` has a `fct_recode` command to rename the levels of your factor variable
+```{r}
+library(forcats)
+mydata <- data.frame(myfac=c("a","b","c","c","d","e"))
+table(mydata$myfac)
+mydata$new_myfac <- fct_recode(mydata$myfac, 
+                              "Aman" = "a",
+                              "Barb" = "b", 
+                              "Chad" = "c",
+                              "Daryl" = "d",
+                              "Eliza" = "e")
+table(mydata$new_myfac)  # check work
+```
+
+
+### Recode a categorical variable with many levels
+Suppose you have a variable `var` with response levels `strongly agree`, `agree`, `disagree`, and `strongly disagree`. You want to create a new version of this variable by combining all agree and all disagree answers. Here is one way to do this:
+```{r, eval=FALSE}
+mydata$new_var <- ifelse(mydata$var %in% c("strongly agree", "agree"), "agree", "disagree")
+```
+Any row in the dataset where `var` is in the set of responses listed (`c("strongly agree", "agree")`) will be coded at `agree` in the `newvar`. All other responses (`disagree`, and `strongly disagree`) will be recoded as `disagree` in the `newvar`. 
+
+If you have lots of levels that you want to collapse into fewer (or you just don't want to use the `ifelse` command), then you should use the `forcats` package command `fct_collapse`. Here we have a variable called `myfac` that has levels a-e that we want to collapose into new groups `low` (just level `a`), mid (levels `b` and `c`) and high (levels `d` and `e`)
+```{r}
+mydata <- data.frame(myfac=c("a","b","c","c","d","e"))
+mydata$new_myfac <- fct_collapse(mydata$myfac, 
+                          low = c("a"),
+                          mid = c("b","c"),
+                          high = c("d","e"))
+table(mydata$myfac,mydata$new_myfac)
+```
+Just make sure that original factor levels of `myfac` are correctly spelled in the right-hand side of the assignment expressions.
+
+### Converting some factor levels to `NA`s
+Sometimes you have too many levels to handle in a factor variable. Collapsing many levels into fewer is one solution (3.1), or we can create a version of the data that ignores the levels we don't want to analyze. One way to do this is to turn those levels in `NA` (missing values) that R usually ignores. We can do this in the `read.csv` command (see section 1.3) or we can do this in the `fct_collapse` command or `fct_recode`
+
+Here we convert the `d` and `e` responses in `myfac` to missing values, while all other levels stay the same:
+```{r}
+mydata$try1 <- fct_recode(mydata$myfac, NULL = "d", NULL = "e")
+summary(mydata$try1)
+```
+We can use similar syntax in the `fct_collapse` to both collapse levels and turn `d` and `e` into `NA`:
+```{r}
+mydata$try2 <- fct_collapse(mydata$myfac, 
+                          low = c("a"),
+                          mid = c("b","c"),
+                          NULL = c("d","e"))
+summary(mydata$try2)
+```
+
+
+### Changing the order of levels
+You can reorder the levels of a factor variable. Suppose `newmyfac` has responses that are ordered `low`, `mid`, and `high`. You can rearrange the order of these levels using the `forcats` package is `fct_relevel` command:
+```{r}
+table(mydata$new_myfac) # first check original order and exact spelling
+mydata$new_myfac2 <- fct_relevel(mydata$new_myfac, "high","mid","low")
+table(mydata$new_myfac2)
+```
+
+
+### Recode a numerically coded categorical variable
+Suppose you have a variable `quant` that is a categorical variable that was numerically coded (e.g. a 1=a, 2=b, 3=c, etc). You will need to convert this to a factor variable to analyze it correctly. Here is one way to do this:
+```{r, eval=FALSE}
+library(dplyr)
+mydata$quant <- c(1,2,3,3,4,5)
+mydata$quant
+mydata$quant_fac <- fct_recode(factor(mydata$quant), 
+                               "a" = "1",
+                               "b" = "2",
+                               "c" = "3",
+                               "d" = "4",
+                               "e" = "5")
+mydata$quant_fac
+```
+
+
+### Recode a factor into a numeric
+There are times that a quantitative variable (like age) turns up as a factor after you read your data into R. This is due to at least one response in the column being a text response (non-numeric). R then defaults this column to the factor type. 
+
+Suppose you've identified all character (text) entries in a variable that need to be either recoded into a number or turned into an `NA` to be ignored. You can use the `readr` package's command `parse_number` to convert a factor variable into a numeric variable with a "best guess" at how to do this.
+
+For the `ages` variable with "over 90", we see that `parse_number` strips away the "over" text and just leaves the number 90:
+```{r}
+library(readr)
+ages <- factor(c(20, 18, 45, 34,"over 90"))
+ages
+new.ages <- parse_number(as.character(ages))
+new.ages
+```
+
+For this version of `ages`, the function pulls the numbers that occur prior to the first character (`-`):
+```{r}
+ages <- factor(c(20, 18, 45, 34,"90-100"))
+ages
+new.ages <- parse_number(as.character(ages))
+new.ages
+```
+Rather than 90, we may want the entry to be the midpoint between 90 and 100:
+```{r, message=FALSE}
+library(dplyr)
+ages2 <- recode(ages, '90-100' = "95")
+ages2
+new.ages <- parse_number(as.character(ages2))
+new.ages
+```
+
+Finally, if there is no numeric value in an entry then `parse_number` will recode it automatically into an `NA` and give you a warning that lets you know it did this action:
+```{r}
+ages <- factor(c(20, 18, 45, 34,"way old"))
+ages
+new.ages <- parse_number(as.character(ages))
+new.ages
+summary(new.ages)
+```

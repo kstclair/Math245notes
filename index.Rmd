@@ -30,4 +30,7 @@ Try to start your homework or projects early enough to seek help from me! You ca
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
+knitr::opts_chunk$set(echo = TRUE, eval=TRUE, prompt=TRUE, collapse = TRUE, message = FALSE, warning = FALSE)
 ```
+
+
