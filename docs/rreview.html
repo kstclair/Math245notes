@@ -612,17 +612,17 @@ User interrupt requested</code></pre></li>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>w &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>)  
 <span class="op">&gt;</span><span class="st"> </span>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">w=</span>w)  
 <span class="op">&gt;</span><span class="st"> </span>my.data 
-##     x y          w
-## 1   1 a  0.1309459
-## 2   2 a -0.4793474
-## 3   3 a -0.4637141
-## 4   4 a  0.7467057
-## 5   5 a -0.8547989
-## 6   6 b -0.3288277
-## 7   7 b  1.3363009
-## 8   8 b -0.1291170
-## 9   9 b -1.1390907
-## 10 10 b  0.3740168</code></pre></div>
+##     x y           w
+## 1   1 a  0.87109557
+## 2   2 a  0.69592270
+## 3   3 a  0.01706575
+## 4   4 a -0.13009745
+## 5   5 a  0.50848975
+## 6   6 b  1.50006732
+## 7   7 b  1.12895028
+## 8   8 b -0.69082146
+## 9   9 b -1.46125760
+## 10 10 b -0.11738514</code></pre></div>
 </div>
 <div id="missing-data" class="section level3">
 <h3><span class="header-section-number">C.2.7</span> Missing Data</h3>
@@ -631,51 +631,51 @@ User interrupt requested</code></pre></li>
 <span class="op">&gt;</span><span class="st"> </span>v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>,<span class="dv">5</span>), <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)
 <span class="op">&gt;</span><span class="st"> </span>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">u=</span>u, <span class="dt">v=</span>v)  
 <span class="op">&gt;</span><span class="st"> </span>my.data   
-##     x y          w  u  v
-## 1   1 a  0.1309459 NA NA
-## 2   2 a -0.4793474  2 NA
-## 3   3 a -0.4637141  3 NA
-## 4   4 a  0.7467057  4 NA
-## 5   5 a -0.8547989  5 NA
-## 6   6 b -0.3288277 NA  1
-## 7   7 b  1.3363009  7  2
-## 8   8 b -0.1291170  8  3
-## 9   9 b -1.1390907  9  4
-## 10 10 b  0.3740168 10  5</code></pre></div>
+##     x y           w  u  v
+## 1   1 a  0.87109557 NA NA
+## 2   2 a  0.69592270  2 NA
+## 3   3 a  0.01706575  3 NA
+## 4   4 a -0.13009745  4 NA
+## 5   5 a  0.50848975  5 NA
+## 6   6 b  1.50006732 NA  1
+## 7   7 b  1.12895028  7  2
+## 8   8 b -0.69082146  8  3
+## 9   9 b -1.46125760  9  4
+## 10 10 b -0.11738514 10  5</code></pre></div>
 <p>We can see which entries in u are missing with the <code>is.na</code> command</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">is.na</span>(my.data<span class="op">$</span>u)  
 ##  [1]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</code></pre></div>
 <p>or with the <code>summary</code> command:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(my.data)
-##        x         y           w                  u               v    
-##  Min.   : 1.00   a:5   Min.   :-1.13909   Min.   : 2.00   Min.   :1  
-##  1st Qu.: 3.25   b:5   1st Qu.:-0.47544   1st Qu.: 3.75   1st Qu.:2  
-##  Median : 5.50         Median :-0.22897   Median : 6.00   Median :3  
-##  Mean   : 5.50         Mean   :-0.08069   Mean   : 6.00   Mean   :3  
-##  3rd Qu.: 7.75         3rd Qu.: 0.31325   3rd Qu.: 8.25   3rd Qu.:4  
-##  Max.   :10.00         Max.   : 1.33630   Max.   :10.00   Max.   :5  
-##                                           NA&#39;s   :2       NA&#39;s   :5</code></pre></div>
+##        x         y           w                 u               v    
+##  Min.   : 1.00   a:5   Min.   :-1.4613   Min.   : 2.00   Min.   :1  
+##  1st Qu.: 3.25   b:5   1st Qu.:-0.1269   1st Qu.: 3.75   1st Qu.:2  
+##  Median : 5.50         Median : 0.2628   Median : 6.00   Median :3  
+##  Mean   : 5.50         Mean   : 0.2322   Mean   : 6.00   Mean   :3  
+##  3rd Qu.: 7.75         3rd Qu.: 0.8273   3rd Qu.: 8.25   3rd Qu.:4  
+##  Max.   :10.00         Max.   : 1.5001   Max.   :10.00   Max.   :5  
+##                                          NA&#39;s   :2       NA&#39;s   :5</code></pre></div>
 <p>We can use the <code>drop_na</code> command from the <code>tidyr</code> package to create an <code>NA</code>-free version of our data frame. Applying it to the entire data frame returns only rows that have observations for all variables:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(tidyr)
 <span class="op">&gt;</span><span class="st"> </span>my.data.noNA &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data)
 <span class="op">&gt;</span><span class="st"> </span>my.data.noNA
 ##     x y          w  u v
-## 7   7 b  1.3363009  7 2
-## 8   8 b -0.1291170  8 3
-## 9   9 b -1.1390907  9 4
-## 10 10 b  0.3740168 10 5</code></pre></div>
+## 7   7 b  1.1289503  7 2
+## 8   8 b -0.6908215  8 3
+## 9   9 b -1.4612576  9 4
+## 10 10 b -0.1173851 10 5</code></pre></div>
 <p>There are times when you only want to remove NA’s for a limited number of variables. Add these variable names as arguments to the <code>drop_na</code> command to only remove rows with NA’s for those variables. Here we only remove <code>NA</code>s from <code>u</code> (rows 1 and 6):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>my.data.noNAu &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data, u)
 <span class="op">&gt;</span><span class="st"> </span>my.data.noNAu
-##     x y          w  u  v
-## 2   2 a -0.4793474  2 NA
-## 3   3 a -0.4637141  3 NA
-## 4   4 a  0.7467057  4 NA
-## 5   5 a -0.8547989  5 NA
-## 7   7 b  1.3363009  7  2
-## 8   8 b -0.1291170  8  3
-## 9   9 b -1.1390907  9  4
-## 10 10 b  0.3740168 10  5</code></pre></div>
+##     x y           w  u  v
+## 2   2 a  0.69592270  2 NA
+## 3   3 a  0.01706575  3 NA
+## 4   4 a -0.13009745  4 NA
+## 5   5 a  0.50848975  5 NA
+## 7   7 b  1.12895028  7  2
+## 8   8 b -0.69082146  8  3
+## 9   9 b -1.46125760  9  4
+## 10 10 b -0.11738514 10  5</code></pre></div>
 <p>Sometimes data sets (especially “read-world”&quot; data) do not use blank fields to indicate missing data. For example, perhaps an unrealistic value is given as filler for a missing data point, like <code>-99</code> for a positive integer variable or <code>9999</code> for a smaller scale variable. The source where you find your data should tell you if special fields (like <code>-99</code> or <code>9999</code>) are used to indicate missing data. Once you determine what the missing data indicator is, you can import the data set using the <code>read.csv</code> command with the added argument <code>na.strings = c(&quot;-99&quot;,&quot; &quot;)</code>. This argument tells R that missing data is coded either as an <code>NA</code>, a blank entry or as a <code>-99</code> entry.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>mydata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;&lt;file path&gt;&quot;</span>, <span class="dt">na.strings =</span> <span class="kw">c</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot; &quot;</span>, <span class="st">&quot;-99&quot;</span>))</code></pre></div>
 </div>

@@ -9,11 +9,13 @@ Suppose we take a random sample of size $n$ from a large population of individua
 
 ## Central Limit Theorem
 Under the right conditions, the distribution of many sample means $\bar{x}$ or proportions  $\hat{p}$ will look like a normal distribution that is centered at the true population parameter (mean $\mu$ or proportion $p$) value. 
+
 - Shape: normally distributed ("bell-shaped")
 - Center: true population parameter value
 - Variation: called the **standard error** of the statistic which measures the standard deviation of your statistic over many samples
 
 The conditions for "normality" (symmetry) have to do with both the sample sized and the distribution of your variable.
+
 - If your measurements are very symmetric (e.g. heights of woman in an adult population) then the sample size $n$ can be very small and the sample mean will behave normally.
 - As your measurements get more skewed (e.g. income per person in a large city), then the sample size $n$ needs to get larger for the sample mean to behave normally.
 - Outliers are always a problem, even if you have a large sample size, since means can be easily influenced by one or two very unusual cases. 
