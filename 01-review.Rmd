@@ -1,4 +1,46 @@
-# Review {#review}
+# Review of Statistical Inference {#review}
 
+Suppose we take a random sample of size $n$ from a large population of individuals. We record a variable and compute a **statistic** like a sample mean or sample proportion from this data. The **sampling distribution** of the statistic describes how the stat is distributed over many random samples:
+1. collect a random sample of size $n$
+2. record the variable of interest (data)
+3. compute the statistic from the data
+4. repeat 1-3 many, many times
+5. plot the distribution of your statistics from step 4.
 
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+## Central Limit Theorem
+Under the right conditions, the distribution of many sample means $\bar{x}$ or proportions  $\hat{p}$ will look like a normal distribution that is centered at the true population parameter (mean $\mu$ or proportion $p$) value. 
+- Shape: normally distributed ("bell-shaped")
+- Center: true population parameter value
+- Variation: called the **standard error** of the statistic which measures the standard deviation of your statistic over many samples
+
+The conditions for "normality" (symmetry) have to do with both the sample sized and the distribution of your variable.
+- If your measurements are very symmetric (e.g. heights of woman in an adult population) then the sample size $n$ can be very small and the sample mean will behave normally.
+- As your measurements get more skewed (e.g. income per person in a large city), then the sample size $n$ needs to get larger for the sample mean to behave normally.
+- Outliers are always a problem, even if you have a large sample size, since means can be easily influenced by one or two very unusual cases. 
+
+### Standard error
+The standard error of the sample mean $\bar{x}$ measures the variability of this statistic and is the standard deviation of the sampling distribution for $\bar{x}$. Roughly, the SE of any statistic tells us how it will vary from sample to sample. 
+
+For the sample mean statistic, the SE is equal to 
+$$
+SE(\bar{x}) = \dfrac{\sigma}{\sqrt{n}}
+$$
+where $\sigma$ is the **population standard deviation** of your variable. For the **difference of two sample means, $\bar{x}_1 - \bar{x}_2$, the standard error is
+$$
+SE(\bar{x}_1 - \bar{x}_2) = \sqrt{\dfrac{\sigma^2_1}{n_1} + \dfrac{\sigma^2_2}{n_2}}
+$$
+where $n_i$ is the sample size of sample $i$ and $\sigma_i$ is the population SD of population $i$. 
+
+For the sample proportion $\hat{p}$, the standard error is 
+$$
+SE(\hat{p}) = \sqrt{\dfrac{p(1-p)}{n}}
+$$
+where $p$ is the true population proportion.
+
+## Hypothesis testing
+
+The sampling distribution is used to compute the p-value in a hypothesis test by assuming the null is true and comparing the observed results to what we expect under the null. 
+
+## Confidence Intervals
+
+The sampling distribution is used to construct the correct margin of error for any level of "confidence". The usual CI form is  estimate $\pm$ margin of error. The margin of error is computed so that, say, 95% of the time the estimate will be within the "margin of error" of the truth. A rough guess at a 95% margin of error is $2\times SE$. 
