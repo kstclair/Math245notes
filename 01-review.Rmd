@@ -52,7 +52,7 @@ The alternative hypothesis specifies another, more general, scenario for the pop
 - $H_0: p > 0.5$ (population proportion greater than 0.50)
 - $H_0: \mu_1 - \mu_2 \neq 0$ (the two populations have difference means)
 
-You then use a **test statistic** to measure how far the data (e.g. sample statistic) deviates from what is expected **assuming the null is true**. Often these test stats take form of a standardized values. 
+You then use a **test statistic** to measure how far the data (e.g. sample statistic) deviates from what is expected **assuming the null is true**. Often these test stats take form of a standardized values so large absolute values indicate data that deviates a lot from what is expected if the null is true. 
 
 For a hypothesis about one population mean $H_0: \mu = \mu_0$, we use a **t-test statistic**:
 $$
@@ -64,7 +64,7 @@ t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}
 $$
 
 
-We then construct the sampling distribution of The sampling distribution is used to compute the p-value in a hypothesis test by assuming the null is true and comparing the observed results to what we expect under the null. 
+We then construct the sampling distribution of the test statistic under the assumption that **the null hypothesis is true**. Using this model, we compute a **p-value** by finding the probability of getting a test stat as, or more, extreme as the observed test stat. The p-value measures the probability of observing data as unusual, or more usual, than the observed data if the null is true. Small p-values indicate data that would rarely be seen if the null is true which means we have evidence (data) that supports the alternative hypothesis. 
 
 ## Confidence Intervals
 
