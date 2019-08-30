@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-08-28">
+<meta name="date" content="2019-08-30">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,6 +50,43 @@
 
 
 
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -199,14 +236,14 @@
 <div id="standard-error" class="section level3">
 <h3><span class="header-section-number">1.2.1</span> Standard error</h3>
 <p>The standard error of the sample mean <span class="math inline">\(\bar{x}\)</span> measures the variability of this statistic and is the standard deviation of the sampling distribution for <span class="math inline">\(\bar{x}\)</span>. Roughly, the SE of any statistic tells us how it will vary from sample to sample.</p>
-<p>For the sample mean statistic, the SE is equal to <span class="math display">\[
-SE(\bar{x}) = \dfrac{\sigma}{\sqrt{n}}
-\]</span> where <span class="math inline">\(\sigma\)</span> is the <strong>population standard deviation</strong> of your variable. For the **difference of two sample means, <span class="math inline">\(\bar{x}_1 - \bar{x}_2\)</span>, the standard error is <span class="math display">\[
-SE(\bar{x}_1 - \bar{x}_2) = \sqrt{\dfrac{\sigma^2_1}{n_1} + \dfrac{\sigma^2_2}{n_2}}
-\]</span> where <span class="math inline">\(n_i\)</span> is the sample size of sample <span class="math inline">\(i\)</span> and <span class="math inline">\(\sigma_i\)</span> is the population SD of population <span class="math inline">\(i\)</span>.</p>
+<p>For the sample mean statistic, the <strong>estimated SE</strong> is equal to <span class="math display">\[
+SE(\bar{x}) = \dfrac{s}{\sqrt{n}}
+\]</span> where <span class="math inline">\(s\)</span> is the <strong>sample standard deviation</strong> of your variable. For the <strong>difference of two sample means</strong>, <span class="math inline">\(\bar{x}_1 - \bar{x}_2\)</span>, the standard error is <span class="math display">\[
+SE(\bar{x}_1 - \bar{x}_2) = \sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}{n_2}}
+\]</span> where <span class="math inline">\(n_i\)</span> is the sample size of sample <span class="math inline">\(i\)</span> and <span class="math inline">\(s_i\)</span> is the sample SD of population <span class="math inline">\(i\)</span>.</p>
 <p>For the sample proportion <span class="math inline">\(\hat{p}\)</span>, the standard error is <span class="math display">\[
 SE(\hat{p}) = \sqrt{\dfrac{p(1-p)}{n}}
-\]</span> where <span class="math inline">\(p\)</span> is the true population proportion.</p>
+\]</span> where <span class="math inline">\(p\)</span> is the true population proportion. To <strong>estimate</strong> this SE we just use the sample proportion <span class="math inline">\(\hat{p}\)</span> in the SE formula.</p>
 </div>
 </div>
 <div id="hypothesis-testing" class="section level2">
@@ -221,6 +258,12 @@ SE(\hat{p}) = \sqrt{\dfrac{p(1-p)}{n}}
 <li><span class="math inline">\(H_0: p &gt; 0.5\)</span> (population proportion greater than 0.50)</li>
 <li><span class="math inline">\(H_0: \mu_1 - \mu_2 \neq 0\)</span> (the two populations have difference means)</li>
 </ul>
+<p>You then use a <strong>test statistic</strong> to measure how far the data (e.g. sample statistic) deviates from what is expected <strong>assuming the null is true</strong>. Often these test stats take form of a standardized values.</p>
+<p>For a hypothesis about one population mean <span class="math inline">\(H_0: \mu = \mu_0\)</span>, we use a <strong>t-test statistic</strong>: <span class="math display">\[
+t = \dfrac{\bar{x} - \mu_0}{s/\sqrt{n}}
+\]</span> To test for a <strong>difference in two means</strong>, we use another t-test stat: <span class="math display">\[
+t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}{n_2}}}
+\]</span></p>
 <p>We then construct the sampling distribution of The sampling distribution is used to compute the p-value in a hypothesis test by assuming the null is true and comparing the observed results to what we expect under the null.</p>
 </div>
 <div id="confidence-intervals" class="section level2">

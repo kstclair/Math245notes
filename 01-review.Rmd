@@ -25,21 +25,21 @@ The conditions for "normality" (symmetry) have to do with both the sample sized 
 ### Standard error
 The standard error of the sample mean $\bar{x}$ measures the variability of this statistic and is the standard deviation of the sampling distribution for $\bar{x}$. Roughly, the SE of any statistic tells us how it will vary from sample to sample. 
 
-For the sample mean statistic, the SE is equal to 
+For the sample mean statistic, the **estimated SE** is equal to 
 $$
-SE(\bar{x}) = \dfrac{\sigma}{\sqrt{n}}
+SE(\bar{x}) = \dfrac{s}{\sqrt{n}}
 $$
-where $\sigma$ is the **population standard deviation** of your variable. For the **difference of two sample means, $\bar{x}_1 - \bar{x}_2$, the standard error is
+where $s$ is the **sample standard deviation** of your variable. For the **difference of two sample means**, $\bar{x}_1 - \bar{x}_2$, the standard error is
 $$
-SE(\bar{x}_1 - \bar{x}_2) = \sqrt{\dfrac{\sigma^2_1}{n_1} + \dfrac{\sigma^2_2}{n_2}}
+SE(\bar{x}_1 - \bar{x}_2) = \sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}{n_2}}
 $$
-where $n_i$ is the sample size of sample $i$ and $\sigma_i$ is the population SD of population $i$. 
+where $n_i$ is the sample size of sample $i$ and $s_i$ is the sample SD of population $i$. 
 
 For the sample proportion $\hat{p}$, the standard error is 
 $$
 SE(\hat{p}) = \sqrt{\dfrac{p(1-p)}{n}}
 $$
-where $p$ is the true population proportion.
+where $p$ is the true population proportion. To **estimate** this SE we just use the sample proportion $\hat{p}$ in the SE formula. 
 
 ## Hypothesis testing
 Your null hypothesis $H_0$ is a specific claim about a **population parameter** of interest. Examples include:
@@ -51,6 +51,17 @@ The alternative hypothesis specifies another, more general, scenario for the pop
 
 - $H_0: p > 0.5$ (population proportion greater than 0.50)
 - $H_0: \mu_1 - \mu_2 \neq 0$ (the two populations have difference means)
+
+You then use a **test statistic** to measure how far the data (e.g. sample statistic) deviates from what is expected **assuming the null is true**. Often these test stats take form of a standardized values. 
+
+For a hypothesis about one population mean $H_0: \mu = \mu_0$, we use a **t-test statistic**:
+$$
+t = \dfrac{\bar{x} - \mu_0}{s/\sqrt{n}}
+$$
+To test for a **difference in two means**, we use another t-test stat:
+$$
+t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}{n_2}}}
+$$
 
 
 We then construct the sampling distribution of The sampling distribution is used to compute the p-value in a hypothesis test by assuming the null is true and comparing the observed results to what we expect under the null. 
