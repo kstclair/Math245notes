@@ -1,1 +1,138 @@
 # Math review {#mathreview}
+
+## Linear equations {#math-linear}
+
+## Logarithms {#math-log}
+
+Let $b>0$ and $x>0$. The logarithm (base-$b$) of $x$ is denoted $\log_b(x)$ and equal to 
+$$
+\log_b(x) = a
+$$
+where $a$ tells us what power we must raise $b$ to to obtain the value $x$:
+$$
+b^a = x
+$$
+
+Easy examples are: $b=2$, $x=8$ and $a=3$,
+$$
+\log_2(8) = 3
+$$
+since $2^3 = 8$. Or using base $b=10$, then
+$$
+\log_{10}(0.01) = -2
+$$
+since $10^{-2} = 0.01$. 
+
+Some basic facts logarithm facts are
+$$
+\log_b(b) = 1
+$$
+since $b^1 = b$ and 
+$$
+\log_b(1) = 0
+$$
+since $b^0 = 1$. 
+
+### Interpreting logged variables
+**Multiplicative** changes in $x$ result in **additive** changes in $\log_b(x)$. If $m>0$, then 
+$$
+\log_b(mx) = \log_b(m)  + \log_b(x) 
+$$
+For example, a doubling of $x=8$ results in an increase in $\log_2(8)$ of one unit:
+$$
+\log_2(16) = \log_2(2\times 8) = \log_2(2) + \log_2(8) = 1 + 3 = 4
+$$
+More generally if we use a base-2 logarithm, a doubling of $x$ results in an additive increase in $\log(x)$ of 1 unit:
+$$
+\log_2(2\times x) = \log_2(2) + \log_2(x)  = 1 + \log_2(x)
+$$
+
+### Inverse (i.e. reversing the log, getting rid of the log, ...)
+The logarithm and exponential functions are inverses of one another. This means we can "get rid" of the log by calculating $b$ raised to the logged-function:
+$$
+b^{\log_b(x)} = x
+$$
+This will be useful in regression when we have a linear relationship between logged-response $y$ and a set of predictors. 
+
+For example, suppose we know that 
+$$
+\log_2(y) = 3 + 5x + \epsilon
+$$
+To return this to an expression on the original (unlogged) scale of $y$, we need take both sides raised to the base 2:
+$$
+2^{\log_2(y)} = 2^{3 + 5x+ \epsilon}
+$$
+Simplifying both sides gives
+$$
+y = 2^3 \times 2^{5x} \times x^{\epsilon}
+$$
+
+### Logarithms in R
+The R function `log` gives the natural logarithm (base-$e$):
+```{r}
+log(2)
+log(exp(1))
+```
+Other common logarithm bases are base-2 and base-10:
+```{r}
+log2(8)
+log10(100)
+```
+General bases can be added as an argument:
+```{r}
+log(49, base = 7)
+```
+
+
+
+## Exercises {#math-exercises}
+
+1. Write the following as the sum of two logarithms. Simplify as much as possible:
+ 
+    a. $\log_2(2x)$
+    b. $\log_2(0.5x)$
+    c. $\ln(2x)$ where $\ln$ is the natural log (base-$e$)
+
+2. Write the following expressions in terms of $y$, not $\log(y)$. Simplify as much as possible:
+
+    a. $\log_2(y) = 1 - 3x$
+    b. $\log_{10}(y) = -2 + 0.4x$
+    c. $\ln(y) = 1 - 3x$
+    
+3. Write the following expressions in terms of $y$ and $x$, not $\log(y)$ and $\log(x)$. Simplify as much as possible:
+
+    a. $\log_2(y) = 1 - 3\log_2(x)$
+    b. $\ln(y) = -2 + 0.4\ln(x)$
+    c. $\ln(y) = 1 - 3\log_2(x)$
+    
+4. Logarithmic model: Regression of $Y$ on $\log(x)$ obtains the following estimated mean of $Y$:
+$$
+\hat{\mu}(Y \mid x) = 1 - 3 \log_2(x)
+$$
+
+    a. What is the  change in estimated mean response if we double the value of $x$?
+    b. What is the  change in estimated mean response if we triple the value of $x$?
+    c. What is the  change in estimated mean response if we reduce the value of $x$ by 20%?
+
+
+5. Exponential model: Regression of $\log_2(Y)$ on $x$ obtains the following estimated *median* of $Y$:
+$$
+\hat{median}(\log_2(Y) \mid x) = -2 + 0.4x
+$$
+
+    a. Write the median in terms of $Y$ instead of $\log_2(Y)$. Simplify as much as possible. 
+    b. What is the multiplicative change in estimated median response if we increase $x$ by 1 unit?
+    c. What is the percent change in estimated median response if we increase $x$ by 1 unit?
+    d. What is the multiplicative change in estimated median response if we decrease $x$ by 2 units?
+    e. What is the percent change in estimated median response if we decrease $x$ by 2 units?
+
+6. Power model: Regression of $\log_2(Y)$ on $\log_2(x)$ obtains the following estimated *median* of $Y$:
+$$
+\hat{median}(\log_2(Y) \mid x) = 1 -3\log_2(x)
+$$
+
+    a. Write the median in terms of $Y$  and $x$ instead of $\log$s. Simplify as much as possible. 
+    b. What is the multiplicative change in estimated median response if we increase $x$ by 50%?
+    c. What is the percent change in estimated median response if we increase $x$ by 50%?
+    d. What is the multiplicative change in estimated median response if we reduce the value of $x$ by 20%?
+    e. What is the percent change in estimated median response if we reduce the value of $x$ by 20%?

@@ -202,7 +202,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="D.5.5" data-path="markdown.html"><a href="markdown.html#the-stargazer-package"><i class="fa fa-check"></i><b>D.5.5</b> The <code>stargazer</code> package</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="E" data-path="mathreview.html"><a href="mathreview.html"><i class="fa fa-check"></i><b>E</b> Math review</a></li>
+<li class="chapter" data-level="E" data-path="mathreview.html"><a href="mathreview.html"><i class="fa fa-check"></i><b>E</b> Math review</a><ul>
+<li class="chapter" data-level="E.1" data-path="mathreview.html"><a href="mathreview.html#math-linear"><i class="fa fa-check"></i><b>E.1</b> Linear equations</a></li>
+<li class="chapter" data-level="E.2" data-path="mathreview.html"><a href="mathreview.html#math-log"><i class="fa fa-check"></i><b>E.2</b> Logarithms</a><ul>
+<li class="chapter" data-level="E.2.1" data-path="mathreview.html"><a href="mathreview.html#interpreting-logged-variables"><i class="fa fa-check"></i><b>E.2.1</b> Interpreting logged variables</a></li>
+<li class="chapter" data-level="E.2.2" data-path="mathreview.html"><a href="mathreview.html#inverse-i.e.-reversing-the-log-getting-rid-of-the-log"><i class="fa fa-check"></i><b>E.2.2</b> Inverse (i.e. reversing the log, getting rid of the log, …)</a></li>
+<li class="chapter" data-level="E.2.3" data-path="mathreview.html"><a href="mathreview.html#logarithms-in-r"><i class="fa fa-check"></i><b>E.2.3</b> Logarithms in R</a></li>
+</ul></li>
+<li class="chapter" data-level="E.3" data-path="mathreview.html"><a href="mathreview.html#math-exercises"><i class="fa fa-check"></i><b>E.3</b> Exercises</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -226,7 +234,144 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="mathreview" class="section level1">
 <h1><span class="header-section-number">E</span> Math review</h1>
+<div id="math-linear" class="section level2">
+<h2><span class="header-section-number">E.1</span> Linear equations</h2>
+</div>
+<div id="math-log" class="section level2">
+<h2><span class="header-section-number">E.2</span> Logarithms</h2>
+<p>Let <span class="math inline">\(b&gt;0\)</span> and <span class="math inline">\(x&gt;0\)</span>. The logarithm (base-<span class="math inline">\(b\)</span>) of <span class="math inline">\(x\)</span> is denoted <span class="math inline">\(\log_b(x)\)</span> and equal to
+<span class="math display">\[
+\log_b(x) = a
+\]</span>
+where <span class="math inline">\(a\)</span> tells us what power we must raise <span class="math inline">\(b\)</span> to to obtain the value <span class="math inline">\(x\)</span>:
+<span class="math display">\[
+b^a = x
+\]</span></p>
+<p>Easy examples are: <span class="math inline">\(b=2\)</span>, <span class="math inline">\(x=8\)</span> and <span class="math inline">\(a=3\)</span>,
+<span class="math display">\[
+\log_2(8) = 3
+\]</span>
+since <span class="math inline">\(2^3 = 8\)</span>. Or using base <span class="math inline">\(b=10\)</span>, then
+<span class="math display">\[
+\log_{10}(0.01) = -2
+\]</span>
+since <span class="math inline">\(10^{-2} = 0.01\)</span>.</p>
+<p>Some basic facts logarithm facts are
+<span class="math display">\[
+\log_b(b) = 1
+\]</span>
+since <span class="math inline">\(b^1 = b\)</span> and
+<span class="math display">\[
+\log_b(1) = 0
+\]</span>
+since <span class="math inline">\(b^0 = 1\)</span>.</p>
+<div id="interpreting-logged-variables" class="section level3">
+<h3><span class="header-section-number">E.2.1</span> Interpreting logged variables</h3>
+<p><strong>Multiplicative</strong> changes in <span class="math inline">\(x\)</span> result in <strong>additive</strong> changes in <span class="math inline">\(\log_b(x)\)</span>. If <span class="math inline">\(m&gt;0\)</span>, then
+<span class="math display">\[
+\log_b(mx) = \log_b(m)  + \log_b(x) 
+\]</span>
+For example, a doubling of <span class="math inline">\(x=8\)</span> results in an increase in <span class="math inline">\(\log_2(8)\)</span> of one unit:
+<span class="math display">\[
+\log_2(16) = \log_2(2\times 8) = \log_2(2) + \log_2(8) = 1 + 3 = 4
+\]</span>
+More generally if we use a base-2 logarithm, a doubling of <span class="math inline">\(x\)</span> results in an additive increase in <span class="math inline">\(\log(x)\)</span> of 1 unit:
+<span class="math display">\[
+\log_2(2\times x) = \log_2(2) + \log_2(x)  = 1 + \log_2(x)
+\]</span></p>
+</div>
+<div id="inverse-i.e.-reversing-the-log-getting-rid-of-the-log" class="section level3">
+<h3><span class="header-section-number">E.2.2</span> Inverse (i.e. reversing the log, getting rid of the log, …)</h3>
+<p>The logarithm and exponential functions are inverses of one another. This means we can “get rid” of the log by calculating <span class="math inline">\(b\)</span> raised to the logged-function:
+<span class="math display">\[
+b^{\log_b(x)} = x
+\]</span>
+This will be useful in regression when we have a linear relationship between logged-response <span class="math inline">\(y\)</span> and a set of predictors.</p>
+<p>For example, suppose we know that
+<span class="math display">\[
+\log_2(y) = 3 + 5x + \epsilon
+\]</span>
+To return this to an expression on the original (unlogged) scale of <span class="math inline">\(y\)</span>, we need take both sides raised to the base 2:
+<span class="math display">\[
+2^{\log_2(y)} = 2^{3 + 5x+ \epsilon}
+\]</span>
+Simplifying both sides gives
+<span class="math display">\[
+y = 2^3 \times 2^{5x} \times x^{\epsilon}
+\]</span></p>
+</div>
+<div id="logarithms-in-r" class="section level3">
+<h3><span class="header-section-number">E.2.3</span> Logarithms in R</h3>
+<p>The R function <code>log</code> gives the natural logarithm (base-<span class="math inline">\(e\)</span>):</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">log</span>(<span class="dv">2</span>)
+<span class="co">## [1] 0.6931472</span>
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">log</span>(<span class="kw">exp</span>(<span class="dv">1</span>))
+<span class="co">## [1] 1</span></code></pre>
+<p>Other common logarithm bases are base-2 and base-10:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">log2</span>(<span class="dv">8</span>)
+<span class="co">## [1] 3</span>
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">log10</span>(<span class="dv">100</span>)
+<span class="co">## [1] 2</span></code></pre>
+<p>General bases can be added as an argument:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">log</span>(<span class="dv">49</span>, <span class="dt">base =</span> <span class="dv">7</span>)
+<span class="co">## [1] 2</span></code></pre>
+</div>
+</div>
+<div id="math-exercises" class="section level2">
+<h2><span class="header-section-number">E.3</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>Write the following as the sum of two logarithms. Simplify as much as possible:</p>
+<ol style="list-style-type: lower-alpha">
+<li><span class="math inline">\(\log_2(2x)\)</span></li>
+<li><span class="math inline">\(\log_2(0.5x)\)</span></li>
+<li><span class="math inline">\(\ln(2x)\)</span> where <span class="math inline">\(\ln\)</span> is the natural log (base-<span class="math inline">\(e\)</span>)</li>
+</ol></li>
+<li><p>Write the following expressions in terms of <span class="math inline">\(y\)</span>, not <span class="math inline">\(\log(y)\)</span>. Simplify as much as possible:</p>
+<ol style="list-style-type: lower-alpha">
+<li><span class="math inline">\(\log_2(y) = 1 - 3x\)</span></li>
+<li><span class="math inline">\(\log_{10}(y) = -2 + 0.4x\)</span></li>
+<li><span class="math inline">\(\ln(y) = 1 - 3x\)</span></li>
+</ol></li>
+<li><p>Write the following expressions in terms of <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span>, not <span class="math inline">\(\log(y)\)</span> and <span class="math inline">\(\log(x)\)</span>. Simplify as much as possible:</p>
+<ol style="list-style-type: lower-alpha">
+<li><span class="math inline">\(\log_2(y) = 1 - 3\log_2(x)\)</span></li>
+<li><span class="math inline">\(\ln(y) = -2 + 0.4\ln(x)\)</span></li>
+<li><span class="math inline">\(\ln(y) = 1 - 3\log_2(x)\)</span></li>
+</ol></li>
+<li><p>Logarithmic model: Regression of <span class="math inline">\(Y\)</span> on <span class="math inline">\(\log(x)\)</span> obtains the following estimated mean of <span class="math inline">\(Y\)</span>:
+<span class="math display">\[
+\hat{\mu}(Y \mid x) = 1 - 3 \log_2(x)
+\]</span></p>
+<ol style="list-style-type: lower-alpha">
+<li>What is the change in estimated mean response if we double the value of <span class="math inline">\(x\)</span>?</li>
+<li>What is the change in estimated mean response if we triple the value of <span class="math inline">\(x\)</span>?</li>
+<li>What is the change in estimated mean response if we reduce the value of <span class="math inline">\(x\)</span> by 20%?</li>
+</ol></li>
+<li><p>Exponential model: Regression of <span class="math inline">\(\log_2(Y)\)</span> on <span class="math inline">\(x\)</span> obtains the following estimated <em>median</em> of <span class="math inline">\(Y\)</span>:
+<span class="math display">\[
+\hat{median}(\log_2(Y) \mid x) = -2 + 0.4x
+\]</span></p>
+<ol style="list-style-type: lower-alpha">
+<li>Write the median in terms of <span class="math inline">\(Y\)</span> instead of <span class="math inline">\(\log_2(Y)\)</span>. Simplify as much as possible.</li>
+<li>What is the multiplicative change in estimated median response if we increase <span class="math inline">\(x\)</span> by 1 unit?</li>
+<li>What is the percent change in estimated median response if we increase <span class="math inline">\(x\)</span> by 1 unit?</li>
+<li>What is the multiplicative change in estimated median response if we decrease <span class="math inline">\(x\)</span> by 2 units?</li>
+<li>What is the percent change in estimated median response if we decrease <span class="math inline">\(x\)</span> by 2 units?</li>
+</ol></li>
+<li><p>Power model: Regression of <span class="math inline">\(\log_2(Y)\)</span> on <span class="math inline">\(\log_2(x)\)</span> obtains the following estimated <em>median</em> of <span class="math inline">\(Y\)</span>:
+<span class="math display">\[
+\hat{median}(\log_2(Y) \mid x) = 1 -3\log_2(x)
+\]</span></p>
+<ol style="list-style-type: lower-alpha">
+<li>Write the median in terms of <span class="math inline">\(Y\)</span> and <span class="math inline">\(x\)</span> instead of <span class="math inline">\(\log\)</span>s. Simplify as much as possible.</li>
+<li>What is the multiplicative change in estimated median response if we increase <span class="math inline">\(x\)</span> by 50%?</li>
+<li>What is the percent change in estimated median response if we increase <span class="math inline">\(x\)</span> by 50%?</li>
+<li>What is the multiplicative change in estimated median response if we reduce the value of <span class="math inline">\(x\)</span> by 20%?</li>
+<li>What is the percent change in estimated median response if we reduce the value of <span class="math inline">\(x\)</span> by 20%?</li>
+</ol></li>
+</ol>
 
+</div>
 </div>
             </section>
 

@@ -202,7 +202,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="D.5.5" data-path="markdown.html"><a href="markdown.html#the-stargazer-package"><i class="fa fa-check"></i><b>D.5.5</b> The <code>stargazer</code> package</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="E" data-path="mathreview.html"><a href="mathreview.html"><i class="fa fa-check"></i><b>E</b> Math review</a></li>
+<li class="chapter" data-level="E" data-path="mathreview.html"><a href="mathreview.html"><i class="fa fa-check"></i><b>E</b> Math review</a><ul>
+<li class="chapter" data-level="E.1" data-path="mathreview.html"><a href="mathreview.html#math-linear"><i class="fa fa-check"></i><b>E.1</b> Linear equations</a></li>
+<li class="chapter" data-level="E.2" data-path="mathreview.html"><a href="mathreview.html#math-log"><i class="fa fa-check"></i><b>E.2</b> Logarithms</a><ul>
+<li class="chapter" data-level="E.2.1" data-path="mathreview.html"><a href="mathreview.html#interpreting-logged-variables"><i class="fa fa-check"></i><b>E.2.1</b> Interpreting logged variables</a></li>
+<li class="chapter" data-level="E.2.2" data-path="mathreview.html"><a href="mathreview.html#inverse-i.e.-reversing-the-log-getting-rid-of-the-log"><i class="fa fa-check"></i><b>E.2.2</b> Inverse (i.e. reversing the log, getting rid of the log, …)</a></li>
+<li class="chapter" data-level="E.2.3" data-path="mathreview.html"><a href="mathreview.html#logarithms-in-r"><i class="fa fa-check"></i><b>E.2.3</b> Logarithms in R</a></li>
+</ul></li>
+<li class="chapter" data-level="E.3" data-path="mathreview.html"><a href="mathreview.html#math-exercises"><i class="fa fa-check"></i><b>E.3</b> Exercises</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -633,17 +641,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>w &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>)  
 <span class="op">&gt;</span><span class="st"> </span>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">w=</span>w)  
 <span class="op">&gt;</span><span class="st"> </span>my.data 
-<span class="co">##     x y           w</span>
-<span class="co">## 1   1 a -0.38130958</span>
-<span class="co">## 2   2 a  0.84892239</span>
-<span class="co">## 3   3 a -1.08961378</span>
-<span class="co">## 4   4 a  0.54501294</span>
-<span class="co">## 5   5 a -0.54256935</span>
-<span class="co">## 6   6 b  0.54689131</span>
-<span class="co">## 7   7 b  0.37023111</span>
-<span class="co">## 8   8 b  1.73947807</span>
-<span class="co">## 9   9 b  0.04311359</span>
-<span class="co">## 10 10 b  0.02678422</span></code></pre>
+<span class="co">##     x y          w</span>
+<span class="co">## 1   1 a -0.3262646</span>
+<span class="co">## 2   2 a  1.0478951</span>
+<span class="co">## 3   3 a -0.5458982</span>
+<span class="co">## 4   4 a  0.2707120</span>
+<span class="co">## 5   5 a -0.6604764</span>
+<span class="co">## 6   6 b -0.8723961</span>
+<span class="co">## 7   7 b -1.5047871</span>
+<span class="co">## 8   8 b  0.4693088</span>
+<span class="co">## 9   9 b -1.4289090</span>
+<span class="co">## 10 10 b -0.4776615</span></code></pre>
 </div>
 <div id="missing-data" class="section level3">
 <h3><span class="header-section-number">C.2.7</span> Missing Data</h3>
@@ -652,51 +660,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span class="op">&gt;</span><span class="st"> </span>v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>,<span class="dv">5</span>), <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)
 <span class="op">&gt;</span><span class="st"> </span>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">u=</span>u, <span class="dt">v=</span>v)  
 <span class="op">&gt;</span><span class="st"> </span>my.data   
-<span class="co">##     x y           w  u  v</span>
-<span class="co">## 1   1 a -0.38130958 NA NA</span>
-<span class="co">## 2   2 a  0.84892239  2 NA</span>
-<span class="co">## 3   3 a -1.08961378  3 NA</span>
-<span class="co">## 4   4 a  0.54501294  4 NA</span>
-<span class="co">## 5   5 a -0.54256935  5 NA</span>
-<span class="co">## 6   6 b  0.54689131 NA  1</span>
-<span class="co">## 7   7 b  0.37023111  7  2</span>
-<span class="co">## 8   8 b  1.73947807  8  3</span>
-<span class="co">## 9   9 b  0.04311359  9  4</span>
-<span class="co">## 10 10 b  0.02678422 10  5</span></code></pre>
+<span class="co">##     x y          w  u  v</span>
+<span class="co">## 1   1 a -0.3262646 NA NA</span>
+<span class="co">## 2   2 a  1.0478951  2 NA</span>
+<span class="co">## 3   3 a -0.5458982  3 NA</span>
+<span class="co">## 4   4 a  0.2707120  4 NA</span>
+<span class="co">## 5   5 a -0.6604764  5 NA</span>
+<span class="co">## 6   6 b -0.8723961 NA  1</span>
+<span class="co">## 7   7 b -1.5047871  7  2</span>
+<span class="co">## 8   8 b  0.4693088  8  3</span>
+<span class="co">## 9   9 b -1.4289090  9  4</span>
+<span class="co">## 10 10 b -0.4776615 10  5</span></code></pre>
 <p>We can see which entries in u are missing with the <code>is.na</code> command</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">is.na</span>(my.data<span class="op">$</span>u)  
 <span class="co">##  [1]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</span></code></pre>
 <p>or with the <code>summary</code> command:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(my.data)
 <span class="co">##        x         y           w                 u               v    </span>
-<span class="co">##  Min.   : 1.00   a:5   Min.   :-1.0896   Min.   : 2.00   Min.   :1  </span>
-<span class="co">##  1st Qu.: 3.25   b:5   1st Qu.:-0.2793   1st Qu.: 3.75   1st Qu.:2  </span>
-<span class="co">##  Median : 5.50         Median : 0.2067   Median : 6.00   Median :3  </span>
-<span class="co">##  Mean   : 5.50         Mean   : 0.2107   Mean   : 6.00   Mean   :3  </span>
-<span class="co">##  3rd Qu.: 7.75         3rd Qu.: 0.5464   3rd Qu.: 8.25   3rd Qu.:4  </span>
-<span class="co">##  Max.   :10.00         Max.   : 1.7395   Max.   :10.00   Max.   :5  </span>
+<span class="co">##  Min.   : 1.00   a:5   Min.   :-1.5048   Min.   : 2.00   Min.   :1  </span>
+<span class="co">##  1st Qu.: 3.25   b:5   1st Qu.:-0.8194   1st Qu.: 3.75   1st Qu.:2  </span>
+<span class="co">##  Median : 5.50         Median :-0.5118   Median : 6.00   Median :3  </span>
+<span class="co">##  Mean   : 5.50         Mean   :-0.4028   Mean   : 6.00   Mean   :3  </span>
+<span class="co">##  3rd Qu.: 7.75         3rd Qu.: 0.1215   3rd Qu.: 8.25   3rd Qu.:4  </span>
+<span class="co">##  Max.   :10.00         Max.   : 1.0479   Max.   :10.00   Max.   :5  </span>
 <span class="co">##                                          NA&#39;s   :2       NA&#39;s   :5</span></code></pre>
 <p>We can use the <code>drop_na</code> command from the <code>tidyr</code> package to create an <code>NA</code>-free version of our data frame. Applying it to the entire data frame returns only rows that have observations for all variables:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(tidyr)
 <span class="op">&gt;</span><span class="st"> </span>my.data.noNA &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data)
 <span class="op">&gt;</span><span class="st"> </span>my.data.noNA
 <span class="co">##     x y          w  u v</span>
-<span class="co">## 7   7 b 0.37023111  7 2</span>
-<span class="co">## 8   8 b 1.73947807  8 3</span>
-<span class="co">## 9   9 b 0.04311359  9 4</span>
-<span class="co">## 10 10 b 0.02678422 10 5</span></code></pre>
+<span class="co">## 7   7 b -1.5047871  7 2</span>
+<span class="co">## 8   8 b  0.4693088  8 3</span>
+<span class="co">## 9   9 b -1.4289090  9 4</span>
+<span class="co">## 10 10 b -0.4776615 10 5</span></code></pre>
 <p>There are times when you only want to remove NA’s for a limited number of variables. Add these variable names as arguments to the <code>drop_na</code> command to only remove rows with NA’s for those variables. Here we only remove <code>NA</code>s from <code>u</code> (rows 1 and 6):</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>my.data.noNAu &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data, u)
 <span class="op">&gt;</span><span class="st"> </span>my.data.noNAu
-<span class="co">##     x y           w  u  v</span>
-<span class="co">## 2   2 a  0.84892239  2 NA</span>
-<span class="co">## 3   3 a -1.08961378  3 NA</span>
-<span class="co">## 4   4 a  0.54501294  4 NA</span>
-<span class="co">## 5   5 a -0.54256935  5 NA</span>
-<span class="co">## 7   7 b  0.37023111  7  2</span>
-<span class="co">## 8   8 b  1.73947807  8  3</span>
-<span class="co">## 9   9 b  0.04311359  9  4</span>
-<span class="co">## 10 10 b  0.02678422 10  5</span></code></pre>
+<span class="co">##     x y          w  u  v</span>
+<span class="co">## 2   2 a  1.0478951  2 NA</span>
+<span class="co">## 3   3 a -0.5458982  3 NA</span>
+<span class="co">## 4   4 a  0.2707120  4 NA</span>
+<span class="co">## 5   5 a -0.6604764  5 NA</span>
+<span class="co">## 7   7 b -1.5047871  7  2</span>
+<span class="co">## 8   8 b  0.4693088  8  3</span>
+<span class="co">## 9   9 b -1.4289090  9  4</span>
+<span class="co">## 10 10 b -0.4776615 10  5</span></code></pre>
 <p>Sometimes data sets (especially “read-world”" data) do not use blank fields to indicate missing data. For example, perhaps an unrealistic value is given as filler for a missing data point, like <code>-99</code> for a positive integer variable or <code>9999</code> for a smaller scale variable. The source where you find your data should tell you if special fields (like <code>-99</code> or <code>9999</code>) are used to indicate missing data. Once you determine what the missing data indicator is, you can import the data set using the <code>read.csv</code> command with the added argument <code>na.strings = c("-99"," ")</code>. This argument tells R that missing data is coded either as an <code>NA</code>, a blank entry or as a <code>-99</code> entry.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>mydata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;&lt;file path&gt;&quot;</span>, <span class="dt">na.strings =</span> <span class="kw">c</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot; &quot;</span>, <span class="st">&quot;-99&quot;</span>))</code></pre>
 </div>
