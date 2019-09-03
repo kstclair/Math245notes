@@ -49,6 +49,68 @@
 
 
 
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -244,10 +306,59 @@ To test for a <strong>difference in two means</strong>, we use another t-test st
 t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}{n_2}}}
 \]</span></p>
 <p>We then construct the sampling distribution of the test statistic under the assumption that <strong>the null hypothesis is true</strong>. Using this model, we compute a <strong>p-value</strong> by finding the probability of getting a test stat as, or more, extreme as the observed test stat. The p-value measures the probability of observing data as unusual, or more usual, than the observed data if the null is true. Small p-values indicate data that would rarely be seen if the null is true which means we have evidence (data) that supports the alternative hypothesis.</p>
+<p>If we use a t-test statistic, then we use a t-distribution to compute a p-value. If <code>t</code> is the test stat value then either command below will give a <strong>one-sided</strong> (<span class="math inline">\(&lt;\)</span> or <span class="math inline">\(&gt;\)</span>) p-value:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(t), <span class="dt">df =</span> , <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)  <span class="co"># method 1 (gives right tail value)</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pt</span>(<span class="op">-</span><span class="kw">abs</span>(t), <span class="dt">df =</span> )  <span class="co"># method 2 (gives left tail value)</span></a></code></pre></div>
+<p>If your alternative is two-sided, you need to double the value given by either command above.</p>
+<p>The degrees of freedom depends on the type of estimate:</p>
+<ul>
+<li>for a one-sample mean problem, use <span class="math inline">\(df = n-1\)</span></li>
+<li>for a two-sample difference in means problem, let technology get the value!</li>
+</ul>
 </div>
 <div id="confidence-intervals" class="section level2">
 <h2><span class="header-section-number">1.4</span> Confidence Intervals</h2>
-<p>The sampling distribution is used to construct the correct margin of error for any level of “confidence”. The usual CI form is estimate <span class="math inline">\(\pm\)</span> margin of error. The margin of error is computed so that, say, 95% of the time the estimate will be within the “margin of error” of the truth. A rough guess at a 95% margin of error is <span class="math inline">\(2\times SE\)</span>.</p>
+<p>A confidence interval for a population parameter gives us a range of likely values of the parameter. Most confidence intervals we use in this class are of the form:
+<span class="math display">\[
+\textrm{estimate} \pm \textrm{ margin of error}
+\]</span></p>
+<p>The idea behind constructing a confidence interval starts with our estimate’s (statistic’s) sampling distribution and <strong>margin of error</strong> for some level of <strong>confidence</strong>:</p>
+<ul>
+<li>The sampling distribution tells us how an estimate varies from sample to sample around the true population parameter.</li>
+<li>The margin of error for a “C%” confidence interval is computed so that the estimate will be within the margin of error of the true parameter value C% of the time.</li>
+<li>Another “confidence” interpretation: of all possible samples, C% will yield a confidence interval (using the C% margin of error) that contains the true parameter value.</li>
+<li>Examples:
+<ul>
+<li>E.g. for 95% confidence: 95% of all possible samples will give an estimate that is within the (95% level) margin of error of the truth.</li>
+<li>E.g. for 90% confidence: 90% of all possible samples will give 90% confidence interval that contains the truth.</li>
+</ul></li>
+<li><strong>Normally distributed estimates</strong>: when a sampling distribution is roughly normally distributed, we can approximately say that
+<ul>
+<li>95% margin of error <span class="math inline">\(\approx 1.96 \times SE\)</span></li>
+<li>90% margin of error <span class="math inline">\(\approx 1.65 \times SE\)</span></li>
+<li>99% margin of error <span class="math inline">\(\approx 2.58 \times SE\)</span></li>
+</ul></li>
+<li>A <strong>higher</strong> level of confidence will lead to a <strong>larger</strong> margin of error: We need a larger margin of error to get a higher fraction of samples that close to the population parameter.</li>
+</ul>
+<p>The margin of errors given above are ballpark values. We will mostly be using a more trustworthy distribution in our class, the t-distribution, to compute how many SE’s we go to be a certain level of confidence:
+<span class="math display">\[
+\textrm{margin of error } = t^*_{df} \times SE
+\]</span>
+where <span class="math inline">\(t^*\)</span> is the <span class="math inline">\((100-C)/2\)</span> percentile from the t-distribution with <span class="math inline">\(df\)</span> degrees of freedom.</p>
+<p>Examples of confidence levels:</p>
+<ul>
+<li>for 95% confidence, <span class="math inline">\(t^*\)</span> is the 2.5% percentile (or 97.5%)</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">025</span>, <span class="dt">df=</span> )   <span class="co"># for 95% confidence</span></a></code></pre></div>
+<ul>
+<li>for 90% confidence, <span class="math inline">\(t^*\)</span> is the 5% percentile (or 95%)</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">05</span>, <span class="dt">df=</span> )   <span class="co"># for 90% confidence</span></a></code></pre></div>
+<p>Examples of degrees of freedom:</p>
+<ul>
+<li>for a one-sample mean problem, use <span class="math inline">\(df = n-1\)</span></li>
+<li>for a two-sample difference in means problem, let technology get the value!</li>
+</ul>
 
 </div>
 </div>

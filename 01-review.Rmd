@@ -66,7 +66,58 @@ $$
 
 We then construct the sampling distribution of the test statistic under the assumption that **the null hypothesis is true**. Using this model, we compute a **p-value** by finding the probability of getting a test stat as, or more, extreme as the observed test stat. The p-value measures the probability of observing data as unusual, or more usual, than the observed data if the null is true. Small p-values indicate data that would rarely be seen if the null is true which means we have evidence (data) that supports the alternative hypothesis. 
 
-## Confidence Intervals
+If we use a t-test statistic, then we use a t-distribution to compute a p-value. If `t` is the test stat value then either command below will give a **one-sided** ($<$ or $>$) p-value:
+```{r, eval = FALSE}
+pt(abs(t), df = , lower.tail = FALSE)  # method 1 (gives right tail value)
+pt(-abs(t), df = )  # method 2 (gives left tail value)
+```
+If your alternative is two-sided, you need to double the value given by either command above. 
 
-The sampling distribution is used to construct the correct margin of error for any level of "confidence". The usual CI form is  estimate $\pm$ margin of error. The margin of error is computed so that, say, 95% of the time the estimate will be within the "margin of error" of the truth. A rough guess at a 95% margin of error is $2\times SE$. 
+The degrees of freedom depends on the type of estimate:
+
+- for a one-sample mean problem, use $df = n-1$
+- for a two-sample difference in means problem, let technology get the value! 
+
+
+## Confidence Intervals
+A confidence interval for a population parameter gives us a range of likely values of the parameter. Most confidence intervals we use in this class are of the form:
+$$
+\textrm{estimate} \pm \textrm{ margin of error}
+$$
+
+The idea behind constructing a confidence interval starts with our estimate's (statistic's) sampling distribution and **margin of error** for some level of **confidence**:
+
+- The sampling distribution tells us how an estimate varies from sample to sample around the true population parameter.
+- The margin of error for a "C%" confidence interval is computed so that the estimate will be within the margin of error of the true parameter value C% of the time.
+- Another "confidence" interpretation: of all possible samples, C% will yield a confidence interval (using the C% margin of error) that contains the true parameter value. 
+- Examples:
+    - E.g. for 95% confidence: 95% of all possible samples will give an estimate that is within the (95% level) margin of error of the truth.
+    - E.g. for 90% confidence: 90% of all possible samples will give 90% confidence interval that contains the truth.
+- **Normally distributed estimates**: when a sampling distribution is roughly normally distributed, we can approximately say that
+    - 95% margin of error  $\approx 1.96 \times SE$
+    - 90% margin of error $\approx 1.65 \times SE$
+    - 99% margin of error $\approx 2.58 \times SE$ 
+- A **higher** level of confidence will lead to a **larger** margin of error: We need a larger margin of error to get a higher fraction of samples that close to the population parameter.
+
+The margin of errors given above are ballpark values. We will mostly be using a more trustworthy distribution in our class, the t-distribution, to compute how many SE's we go to be a certain level of confidence:
+$$
+\textrm{margin of error } = t^*_{df} \times SE
+$$
+where $t^*$ is the $(100-C)/2$ percentile from the t-distribution with $df$ degrees of freedom. 
+
+Examples of confidence levels:
+
+- for 95% confidence, $t^*$ is the 2.5% percentile (or 97.5%)
+```{r, eval = FALSE}
+qt(.025, df= )   # for 95% confidence
+```
+- for 90% confidence, $t^*$ is the 5% percentile (or 95%)
+```{r, eval = FALSE}
+qt(.05, df= )   # for 90% confidence
+```
+
+Examples of degrees of freedom:
+
+- for a one-sample mean problem, use $df = n-1$
+- for a two-sample difference in means problem, let technology get the value! 
 
