@@ -12,7 +12,7 @@ R can be more challenging for a brand new user than other software (like Excel, 
 ## Running Rstudio
 
 
-- **Browser:** You can access an online version of Rstudio from [mirage.mathcs.carleton.edu](). If you are new to using Rstudio, I  encourage you to use mirage rather than installing R/Rstudio on your computer. You can access mirage from anywhere on campus using Eduroam  wireless if on a laptop, but **from off campus** you will first need to turn on [Carleton's VPN](https://wiki.carleton.edu/display/itskb/GlobalProtect+VPN) prior to logging in. **Please install this software!** 
+- **Browser:** You can access an online version of Rstudio from [https://mirage.mathcs.carleton.edu](https://mirage.mathcs.carleton.edu). If you are new to using Rstudio, I  encourage you to use mirage rather than installing R/Rstudio on your computer. You can access mirage from anywhere on campus using Eduroam  wireless if on a laptop, but **from off campus** you will first need to turn on [Carleton's VPN](https://wiki.carleton.edu/display/itskb/GlobalProtect+VPN) prior to logging in. **Please install this software!** 
     - **Why use mirage?** Any work you create (R scripts, Markdown, pdf, or word docs) are saved on your account located on this server (file path /Accounts/username). If you want to download files from this account, use the "More > Export" drop down menu from the "Files" pane (lower right panel). Mirage also has most R packages that we use in our classes preinstalled so you don't need to install them before using them.  
 
     
