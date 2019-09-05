@@ -27,10 +27,18 @@ Everything in R is an **object**. You can assign a name to an object by using th
 Vectors are a simple type of object and even single numbers (called scalars) are vectors with a length of 1. Here are a few ways to create vectors.
 
 The `:` operator creates a sequence of numbers that increase or decrease by 1. 
-```{r}
+```{r, eval = FALSE}
 3:10 
 0:-3  
 ```
+
+<div class = "solution">
+```{r,  eval=TRUE}
+3:10 
+0:-3  
+```
+</div>
+
 The `seq` function also creates sequences of a given length or increment.  
 ```{r}
 seq(1,3,by=.5) 
