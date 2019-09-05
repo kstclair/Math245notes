@@ -49,6 +49,8 @@ I suggest using old `.Rmd` HW file as a template for a new HW assignment. But if
 
 ## Extra: Graph formatting {#markdown-graphs}
 
+The markdown .Rmd for this graph formatting section is linked here: https://kstclair.github.io/Rmaterial/Markdown/Markdown_GraphFormatting.Rmd
+
 The data set Cereals contains information on cereals sold at a local grocery store. 
 
 ```{r}
@@ -127,6 +129,8 @@ The R chunk options that control graph sizes and output features (like `echo`) c
 - Markdown is very sensitive to spaces, or lack-there-of. If you get odd formatting issues, try adding a spaces between R chunks, paragrahs, lists, section headers, etc. For example,  you always need a space between an R chunk or text and a section header. 
 
 ## Extra: Table formatting {#markdown-tables}
+
+The markdown .Rmd for this table formatting section is linked here: https://kstclair.github.io/Rmaterial/Markdown/Markdown_TableFormatting.Rmd
 
 This handout gives some basic ways to format numerical output produced in your R chunks.  Some of the methods mentioned below might only work when knitting to a PDF.  Additional info about formatting text in R Markdown can be found online:
 
