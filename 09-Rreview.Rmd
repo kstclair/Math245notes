@@ -231,7 +231,7 @@ levels(agstrat$region)
 ```
 So region has 4 levels called NC, NE, S, and W. Note that these levels are ordered alphabetically, which is typically done with factor variables from data sets that are read into R. 
 
-### Subsetting a Data Frame
+### Subsetting a Data Frame {#Rreview-subset}
 You can subset a data frame just as you can subset a vector (see the Basics handout). We might want to subset a data frame to extract certain columns (variables), or we may want to extract certain rows (observations), or some combination of both. 
 
 Suppose you want a data frame that only contains the variables `region` and `farms92`: One way to do this is with the `select` command from the `dplyr` package:
@@ -347,7 +347,7 @@ quantile(agstrat$farms92, c(.05, .95))
 ```
 meaning that 5% of counties have fewer than 89.2 farms and 95% of counties have fewer than 1441.15 farms.
 
-### Quantitative grouped by a categorical
+### Quantitative grouped by a categorical {#Rreview-stats}
 Suppose we want to know the average number of farms per county for each region. The R function `tapply(var, grp, fun)` will apply the function `fun` to the variable `var` for each group in `grp` and produces a `table` of output (hence the `t` in `tapply`). Here is this command in action for the farms variable 
 ```{r}
 tapply(agstrat$farms92, agstrat$region, summary)  
@@ -365,7 +365,7 @@ The output produced by this string of commands is actually a type of a data fram
 
 
 
-### Graphs
+### Graphs {#Rreview-graphs}
 R has very sophisticated graphing capabilities. This handout just gives you a summary of some of the most basic graphs. More complicated graphic features will be explained as needed in class. R has *high-level* plotting commands that create a complete graph, *low-level* commands which add to an existing graph, and a graphing window layout `par` command. Use the help command to see these options, e.g. `?hist` for the histogram options.
 
 A bar graph of the categorical variable region is given by 
