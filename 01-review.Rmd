@@ -170,7 +170,7 @@ Our basic plan for analysis looks like:
 ####  Data
 
 Read in the data and check variable names:
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 agstrat<- read.csv("http://people.carleton.edu/~kstclair/data/agstrat.csv")
 names(agstrat)
 ```
@@ -187,7 +187,7 @@ We want to focus on W and NC for our comparison. I will do a lot of data manipul
 
 The `filter` command from the `dplyr` package selects **rows** from a data set that we want to keep (Section \@ref(Rreview-subset)). E.g. only rows from the W or NC regions. The argument used in this command is a **logical** statement and the row of a given case is kept in the data set when the statement is `TRUE`. 
  
-```{r}
+```{r, eval = FALSE}
 library(dplyr)  # need to load the package commands
 agstrat2 <- filter(agstrat, region %in% c("W", "NC"))
 table(agstrat2$region)
@@ -196,25 +196,25 @@ table(agstrat2$region)
 Notice that `filter` it does not drop the unused levels (S and NE) from the `region` factor variable. We can use `droplevels` on the new data frame `agstrat2` to get rid of these unused levels. We assign this new and improved data set the name `agstrat2` again. (This overwrites the previous version without the dropped levels.)
 
 
-```{r}
+```{r, eval = FALSE}
 agstrat2 <- droplevels(agstrat2)
 table(agstrat2$region)
 ```
 
 #### EDA
 
-**2a. Compare the distributions (shape, center, spread) of `farms92` by `region` (W vs. NC).**
+**(2a) In 2-3 sentences, compare the distributions (shape, center, spread) of `farms92` by `region` (W vs. NC).**
 
 Note that the commands below give basic R commands for comparing distributions graphically and numerically. You do not necessarily need to use or show all output below when answering this type of question for homework, exams or reports. 
 
 Graphical options (Section \@ref(Rreview-graphs)) include boxplots:
-```{r, fig.width=5, fig.height=3}
+```{r, eval = FALSE}
 boxplot(farms92 ~ region, data = agstrat2, horizontal=TRUE, main="Number of farms (1992) by region",
         ylab = "region", xlab = "# of farms per county in 1992")
 ```
 
 or faceted histograms from the `ggplot2` package:
-```{r}
+```{r, eval = FALSE}
 library(ggplot2)  # load ggplot2 package
 ggplot(agstrat2, aes(x=farms92)) + 
   geom_histogram() + 
@@ -223,35 +223,35 @@ ggplot(agstrat2, aes(x=farms92)) +
 ```
 
 Summary stats, by region, can be found using multiple tools in R (Section \@ref(Rreview-stats)). The `tapply` command is an option:
-```{r}
+```{r, eval = FALSE}
 tapply(agstrat2$farms92, agstrat2$region, summary)
 ```
 
 So is using the `group_by` and `summarize` combination in `dplyr`. Here we get the mean and SD of `farms92` for both regions:
-```{r}
+```{r, eval = FALSE}
 agstrat2 %>% 
     group_by(region) %>%
     summarize(mean(farms92), sd(farms92))
 ```
 
 
-**2b. What county has the unusually high number of farms in the western region? How many farms do they have? Any ideas why it is so large? How do the summary stats change when this county is omitted?**
+**(2b) What county has the unusually high number of farms in the western region? How many farms do they have? Any ideas why it is so large? How do the summary stats change when this county is omitted?**
 
-Here we find which row in `agstrat2` has a `farms92` value greater than 3000:
-```{r}
+Here we find which row in `agstrat2` has a `farms92` value greater than 3000 (Section \@ref(Rreview-subset)):
+```{r, eval = FALSE}
 which(agstrat2$farms92 > 3000)   
 ```
 
-What county is this?
-```{r}
+What county is this? We need to access row 118 in `agstrat2`. We use use `[]` subsetting or the `slice` command from `dplyr`:
+```{r, eval = FALSE}
 agstrat2[118,]  # see row 118
 slice(agstrat2, 118)  # another way to see row 118
 ```
 
 We can use the `dplyr` commands for (2a) with the `slice` command added to get stats without row 118
-```{r}
+```{r, eval = FALSE}
 agstrat2 %>% slice(-118) %>%    # slice removes row 118
-    group_by(region) %>%
+    group_by(region) %>%  # then get stats by region
     summarize(mean(farms92), sd(farms92))
 
 ```
@@ -259,20 +259,20 @@ agstrat2 %>% slice(-118) %>%    # slice removes row 118
 
 #### Inference
 
-**3a. What hypotheses are being tested with the `t.test` command below? What are the p-value and test statistics values for this test? How do you interepret the test statistic? Are the assumptions met for this t-test?**
+**(3a) What hypotheses are being tested with the `t.test` command below? What are the p-value and test statistics values for this test? How do you interepret the test statistic? How do you interpret the p-value? Are the assumptions met for this t-test?**
 
 
-```{r}
+```{r, eval = FALSE}
 # run t test to compare mean number of farms 
 t.test(farms92 ~ region, data = agstrat2)
 ```
 
-**3b How and why do the test stat and p-value change when we omit row 118? Does your test conclusion change when omitting 118? Why?**
+**(3b) How and why do the test stat and p-value change when we omit row 118? Does your test conclusion change when omitting 118? Why?**
 
-```{r}
+```{r, eval = FALSE}
 # redo without row 118 outlier
 t.test(farms92 ~ region, subset = -118, data = agstrat2)
 ```
 
 #### Conclusion
-**Do the average number of farms per county differ in the western and north central regions in 1992? If they do differ, by how much? Answer these question in context using numbers from the results above to support your conclusions.**
+**(4a) Do the average number of farms per county differ in the western and north central regions in 1992? If they do differ, by how much? Answer these question in context using numbers from the results above to support your conclusions.**
