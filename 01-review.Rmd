@@ -183,7 +183,7 @@ table(agstrat$region)
 ```
 
 
-We want to focus on W and NC for our comparison. I will do a lot of data manipulation in this class using the R package `dplyr`. This package is already available on the mirage server, but if you are using a newly installed version of Rstudio on your computer you will need to install the package first. (See Appendix ). 
+We want to focus on W and NC for our comparison. I will do a lot of data manipulation in this class using the R package `dplyr`. This package is already available on the mirage server, but if you are using a newly installed version of Rstudio on your computer you will need to install the package first. (See Appendix \@ref(packages)). 
 
 The `filter` command from the `dplyr` package selects **rows** from a data set that we want to keep (Section \@ref(Rreview-subset)). E.g. only rows from the W or NC regions. The argument used in this command is a **logical** statement and the row of a given case is kept in the data set when the statement is `TRUE`. 
  
@@ -252,8 +252,7 @@ We can use the `dplyr` commands for (2a) with the `slice` command added to get s
 ```{r, eval = FALSE}
 agstrat2 %>% slice(-118) %>%    # slice removes row 118
     group_by(region) %>%  # then get stats by region
-    summarize(mean(farms92), sd(farms92))
-
+    summarize(mean(farms92), sd(farms92), median(farms92), IQR(farms92))
 ```
 
 
