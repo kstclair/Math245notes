@@ -1,2 +1,124 @@
 # Simple Linear Regression {#slr}
 
+This chapter contains content from Sleuth Chapters 7 and 8. 
+
+## The model form 
+Let $Y_i$ be the response from unit $i$ that has explanatory (aka predictor) value $x_i$. There are two **equivalent** ways to express the SLR model for $Y$:
+
+- Conditional normal model: Given a value $x_i$, the response $Y_i$ follows a normal model with mean and SD given below:
+$$
+Y_i \mid x_i \sim N(\mu_{y\mid x} = \beta_0 + \beta_1 x_i, \sigma)
+$$
+
+- Mean + error: Statisticians are more likely to use a model specification that expresses $Y$ as a function of the **expected value/mean** of $Y$ plus an **error** term that models variation in responses around the mean:
+$$
+Y_i = \beta_0 + \beta_1 x_i + \epsilon_i \ \ \ \ \ \epsilon_i \sim N(0, \sigma)
+$$
+
+**Both** expressions of the SLR model above say the same thing: 
+
+- **Linear Mean:** $\mu_{y\mid x} = E(Y \mid x) =  \beta_0 + \beta_1 x$ describes the population mean value of $Y$ given a predictor value $x$. This mean value varies linearly with $x$ and the population parameters are $\beta_0$ and $\beta_1$. 
+- **Constant SD:** $SD(Y\mid x)=\sigma$ describes the SD of $Y$'s in the population around a given mean value $\mu_{y\mid x}$. The fact that this SD **does not** depend on the value of $x$ is called the contant variance, or homoscedastic, assumption. 
+- **Normality:** The shape of population response values around $\mu_{y\mid x}$ is described by a normal distribution model.  
+
+Finally, one last assumption is made for the SLR model:
+
+- **Indepedence:** Given a predictor value of $x$, all responses $Y$ occur independently of each other. 
+
+-----------
+
+## Estimation {#slr-est}
+
+
+
+
+
+-----------
+
+## SLR model simulation {#slr-sim}
+
+Download the Markdown of this activity: [.Rmd](https://kstclair.github.io/Math245/Rhandouts/day3RegLineSim.Rmd).
+
+
+### Simulation function
+This chunk contains code that defines our function `reg.sim` that **simulates $n$ responses from a given regression model and given set of $n$ predictor values $x$**. I've excluded it from our compiled document so see the .Rmd file to take a look at how this was created. 
+
+```{r, include=FALSE}
+reg.sim <- function(x, beta0, beta1, sigma, grph=T)
+{
+  # function takes a sample of responses y generated from the given model/x values
+  # returns estimated intercept and slope
+  # x = explantory variable
+  # beta0, beta1 = true model intercept and slope
+  # sigma = true model SD
+  # grph = print simulation graphs (y vs. x)? (default is true)
+  n<- length(x)
+  muy.x <- beta0 + beta1 * x
+
+  # simulate some y's, then fit lm using these y's:
+  y <- rnorm(n, muy.x,sigma)
+  mylm <- lm(y~x)
+
+  # plot data, LS line, true line
+  if (grph){
+    plot(x,y,xlab="x",ylab="simulated y values",pch=16, ylim=c(0,30))
+    legend("topright",legend=c("Population line", "Sample line"),col=c("red","black"),lty=c(1,1),lwd=2)
+    abline(mylm,lwd=2)
+    abline(beta0,beta1,lwd=2,col="red")
+    }
+  return(list(b0=mylm$coefficients[[1]], b1=mylm$coefficients[[2]] ))
+}
+```
+
+### Run the function once
+Let's use the function from (1) above. We will use the $n=12$ temps (x-values) from the woodpeckers data and assume that the **true** model is:
+$$\mu(y \mid x) = 20 - 0.4x$$ 
+(red line below) with  $\beta_0=20$, $\beta_1=-0.4$, and $\sigma=2$. In the code below I use the `set.seed()` command to "fix" the random number generator so I get the same answer each time this is run (so my answer in the handout is reproduced each time this file is compiled).
+
+```{r, fig.width=5,fig.height=3}
+wpdata<- read.csv("http://people.carleton.edu/~kstclair/data/woodpeckers.csv")
+set.seed(77)  
+reg.sim(x=wpdata$temp, beta0=20, beta1=-.4, sigma=2)
+```
+
+For this simulated sample (with seed of 77), the estimated regression line is $\hat{\mu}(y \mid x) = 20.889 - 0.468x$ (black line).
+
+### Simulated sampling distribution for $\hat{\beta}_1$
+We will now use the `replicate` command to generate 1000 different samples which create 1000 different estimates of $\beta_1$. A histogram of these estimates simulates the sampling distribution of estimated slope.  
+
+**What is the shape of the sampling distribution? Where is the distribution centered? How variable are these estimated slopes.**
+
+```{r, fig.width=5,fig.height=3.5 }
+set.seed(7)  # just makes simulation reproducible
+slopes<- replicate(1000,reg.sim(x=wpdata$temp, beta0=20, beta1=-.4, sigma=2,grph=F)$b1)
+hist(slopes); abline(v=-0.4,col="red", lwd=2)
+mean(slopes); sd(slopes)
+```
+
+
+### Are slope and intercept estimates correlated?
+In regression, it is not unusual to be interested in estimating a **linear combination** of our model parameters. An easy example of such a combination of parameters is the mean response for a given value $x_0$ of the predictor: 
+$$
+\mu(y \mid x=x_0) = \beta_0 + \beta_1x_0
+$$
+The natural estimate of this is just the estimated mean response: $\hat{\mu}(y \mid x=x_0)=\hat{\beta}_0 + \hat{\beta}_1x_0$. To assess how variable this estimate is (i.e. to get its SE) we need to understand how (if) the individual estimates $\hat{\beta}_0$ and $\hat{\beta}_1$ are correlated. We can use a simulation to look at this issue by generating 1000 samples from our model and plotting each $(\hat{\beta}_0,\hat{\beta}_1)$ pair for each sample. 
+
+**How are estimated slope and intercept associated? Any ideas why?**
+
+```{r}
+set.seed(7)  # this seed MUST match the seed used to get slopes!
+intercepts<- replicate(1000,reg.sim(x=wpdata$temp, beta0=20, beta1=-.4, sigma=2,grph=F)$b0)
+plot(intercepts,slopes); abline(h=-.4,col="red"); abline(v=20,col="red")
+title("Estimated slopes and intercepts")
+cor(intercepts, slopes) # correlation between estimates
+cov(intercepts, slopes) # covariance between estimates
+```
+
+
+## Inference {#slr-inf}
+
+## Example: SLR model (day 3) {#slr-example1}
+
+## Checking model assumptions and fit {#slr-assump}
+
+## Example: SLR assumptions (day 4) {#slr-example2}
