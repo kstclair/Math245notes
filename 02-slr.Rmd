@@ -2,7 +2,24 @@
 
 This chapter contains content from Sleuth Chapters 7 and 8. 
 
-## The model form 
+## The variables
+Suppose we have a quantitative response variable $y$ that we want to relate to an explantory (aka predictor) variable $x$. For now, we will assume that $x$ is also quantitative. 
+
+### R: visualizing
+A scatterplot is the basic graphic that plots each $y_i$ vs. $x_i$ on the x-y coordinate plane. Suppose the data set `mydata` contains variables named `y` and `x. The "base" R command is a simple `plot` command that looks like 
+```{r, eval=FALSE}
+plot(y ~ x, data= mydata)  
+```
+Alternatively, we could use `ggplot2` package to create a scatterplot with the `geom_point()` geometry:
+```{r, eval=FALSE}
+library(ggplot2)
+ggplot(mydata, aes(x=x, y=y)) + geom_point()
+```
+
+
+## The model form {#slr-model}
+This section describes the SLR model for a particular **population** of interest. Another way to frame the model is that it describes a hypothetical **data generating process (DGP)** that was used to generate the sample of data that we have on hand. 
+
 Let $Y_i$ be the response from unit $i$ that has explanatory (aka predictor) value $x_i$. There are two **equivalent** ways to express the SLR model for $Y$:
 
 - Conditional normal model: Given a value $x_i$, the response $Y_i$ follows a normal model with mean and SD given below:
@@ -11,9 +28,9 @@ Y_i \mid x_i \sim N(\mu_{y\mid x} = \beta_0 + \beta_1 x_i, \sigma)
 $$
 
 - Mean + error: Statisticians are more likely to use a model specification that expresses $Y$ as a function of the **expected value/mean** of $Y$ plus an **error** term that models variation in responses around the mean:
-$$
+\begin{equation}
 Y_i = \beta_0 + \beta_1 x_i + \epsilon_i \ \ \ \ \ \epsilon_i \sim N(0, \sigma)
-$$
+\end{equation}
 
 **Both** expressions of the SLR model above say the same thing: 
 
@@ -25,13 +42,57 @@ Finally, one last assumption is made for the SLR model:
 
 - **Indepedence:** Given a predictor value of $x$, all responses $Y$ occur independently of each other. 
 
+There are a total of **three parameters** in the SLR model: 
+
+- the two mean parameters $\beta_0$ and $\beta_1$
+- the SD parameter $\sigma$
+
+### Interpretation
+
+For a SLR model:
+
+- $\beta_0$ is the mean response when the predictor value is 0 since $\mu_{y \mid 0} = \beta_0 + \beta_1(0) = \beta_0$.
+- $\beta_1$ tells us how the mean response changes for a one unit increase in $x$
+
+### Example: Woodpecker nests {#slr-model-ex}
+
+We want to model nest depth (cm) in a tree cavity as a function of ambient air temperature (Celsius). Our SLR model for this relationships says that, given an ambient air temp $x_i$, a randomly selected nest will have a depth $Y_i$ that is modeled as
+$$
+Y_i = \beta_0 + \beta_1 x_i + \epsilon_i \ \ \ \ \ \epsilon_i \sim N(0, \sigma)
+$$
+This means that depth is normally distributed with a mean of $\mu_{depth \mid temp} = \beta_0 + \beta_1 (temp)$ and a SD of $\sigma$. 
+
 -----------
 
-## Estimation {#slr-est}
+## Theory: Estimation {#slr-est}
 
+Let's consider taking a random sample of size $n$ of responses and predictor values from our population (or DGP) for which the SLR model holds: $(x_1, Y_1), \dotsc, (x_n, Y_n)$. The notation here, $(x_i, Y_i)$ implies that the predictor value $x_i$ is fixed, but $Y_i$ is a **random variable** that is generated from the SLR model described in Section \@ref(slr-model). The **estimation** problem is that we need to use the sample of size $n$ to estimate the SLR model parameters $\beta_0$, $\beta_1$ and $\sigma$.
 
+Once we observe a sample of size $n$, then we can use the SLR model to determine the probability of observing the sample. This probability, which depends on the actual model parameters $\beta_0$, $\beta_1$ and $\sigma$, is called a **likelihood function**. We plug the observed data into this function, then find the parameters values that **maximize** the function using calculus. For a SLR model, this process yields the following **maximum likelihood estimators (MLE)** of our parameters: 
+$$
+\hat{\beta}_1 = \dfrac{\sum_{i=1}^n (x_i - \bar{x})(Y_i - \bar{Y})}{\sum_{i=1}^n (x_i - \bar{x})^2} \ \ \ \ \ \hat{\beta}_0 = \bar{Y} - \bar{\beta}_1 \bar{x} \ \ \ \ \ \hat{\sigma} = \sqrt{\dfrac{\sum_{i=1}^n (Y_i - \hat{y}_i)^2}{n-2}}
+$$
+where $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$ is the **predicted value** of $y$ given the value $x_i$.
 
+### Sampling Distributions for SLR estimates
 
+The sampling distribution of a model estimate ($\hat{\beta}_0$ or $\hat{\beta}_1$) is constructed by:
+
+1.  fix a set of predictor values: $x_1, \dotsc, x_n$
+2.  for each fixed $x_i$, generate a response $Y_i$ from $N(\beta_0 + \beta_1 x_i, \sigma)$
+3. compute the MLE's $\hat{\beta}_0$ and $\hat{\beta}_1$ from the observed sample from (2)
+4. repeat 2-3 lots of times, then the distribution of the estimates from part (3) show the sampling distribution of the slope or intercept estimate.
+
+Using probability theory, we can show that the sampling distributions of both $\hat{\beta}_0$ and $\hat{\beta}_1$ are approximately normal when $n$ is "large enough" (thanks to the CLT):
+$$
+\hat{\beta}_i \sim N(\beta_i, SD(\hat{\beta}_i))
+$$
+
+- **Unbiased:** We see that the expected value (mean) of $\hat{\beta}_i$ is the parameter $\beta_i$, meaning it is an unbiased estimator. (It doesn't systematically over- or under-estimate the parameter of interest.)
+- **Standard error:** We end up estimating the SD in the sampling distribution given above. The SEs for each mean parameter estimate are
+$$
+SE(\hat{\beta}_1) = \hat{\sigma}\sqrt{\dfrac{1}{(n-1)s^2_x}} \ \ \ \ \ SE(\hat{\beta}_0) = \hat{\sigma}\sqrt{\dfrac{1}{n} + \dfrac{\bar{x}^2}{(n-1)s^2_x}}
+$$
 
 -----------
 
@@ -101,6 +162,8 @@ In regression, it is not unusual to be interested in estimating a **linear combi
 $$
 \mu(y \mid x=x_0) = \beta_0 + \beta_1x_0
 $$
+For a specific example, we may want to estimate the mean response (depth) for a temp of $x_0=5$ degrees: $\mu(y \mid x=5) = \beta_0 + \beta_1 5$. If we don't know $\beta_0$ and $\beta_1$, then this mean parameter is a linear combination of two unknown parameters which we need to estimate. 
+
 The natural estimate of this is just the estimated mean response: $\hat{\mu}(y \mid x=x_0)=\hat{\beta}_0 + \hat{\beta}_1x_0$. To assess how variable this estimate is (i.e. to get its SE) we need to understand how (if) the individual estimates $\hat{\beta}_0$ and $\hat{\beta}_1$ are correlated. We can use a simulation to look at this issue by generating 1000 samples from our model and plotting each $(\hat{\beta}_0,\hat{\beta}_1)$ pair for each sample. 
 
 **How are estimated slope and intercept associated? Any ideas why?**
@@ -115,10 +178,190 @@ cov(intercepts, slopes) # covariance between estimates
 ```
 
 
+
+
+--------------------------------
+
 ## Inference {#slr-inf}
 
+In intro stats, you used $t$ inference procedures for inference about population means since: (1) the sampling distribution of the sample mean was normally distributed and (2) we had to estimate its variability with a SE. The same goes for inference about the mean response parameters in a SLR model:
+$$
+t = \dfrac{\hat{\beta}_i - \beta_i}{SE(\hat{\beta}_i)} \sim t_{df=n-2}
+$$
+Use a t-distribution with $n-2$ degrees of freedom for inference about the mean parameters. The degrees of freedom are calculated as the sample size $n$ minus the number of terms in $\mu_{y \mid x}$ that you have to estimate with the data. 
+
+
+### Confidence Intervals
+To estimate either mean parameter with $C$% confidence, we have the general form
+$$
+\hat{\beta}_i \pm t^* SE(\hat{\beta}_i)
+$$
+where $t^*$ is the $(100-C)/2$ percentile from the t-distribution with $df=n-2$ degrees of freedom. 
+
+### Hypothesis tests
+We can test the hypothesis
+$$
+H_0: \beta_i = \beta^*_i
+$$
+with the following t-test statistic:
+$$
+t =\dfrac{\hat{\beta}_i - \beta^*_i}{SE(\hat{\beta}_i)}
+$$
+where $\beta^*$ is our hypothesized value of $\beta$ (intercept or slope). The t-distribution with $n-2$ degrees of freedom is used to compute the p-value that is appropriate for whatever $H_A$ is specified. 
+
+The usual test results given by standard regression output tests whether a parameter value (intercept or slope) is equal to 0 vs. not equal to 0:
+$$
+H_0: \beta_i = 0 \ \ \ \ \ H_A: \beta_i \neq 0
+$$
+with a test stat of 
+$$
+t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
+$$
+
+
+
+--------------------------------
+
 ## Example: SLR model (day 3) {#slr-example1}
+We will revisit the woodpecker nesting data first described in Section \@ref(slr-model-ex). 
+
+### Load data    
+Let's suppose these 16 nests are a random sample of all nests in the collection region. The command `head(dataname)` produces a view of the first 5 rows of data.
+
+```{r}
+wpdata <- read.csv("http://people.carleton.edu/~kstclair/data/woodpeckers.csv")
+head(wpdata)
+dim(wpdata)
+```
+
+### EDA
+Start with univariate exploration:
+
+```{r}
+summary(wpdata)
+par(mfrow=c(1,2))
+hist(wpdata$temp)
+hist(wpdata$depth)
+par(mfrow=c(1,1))  
+```
+
+Graphically explore the ("bivariate") relationship between temp and depth with a scatterplot using the command `plot(y,x)`. Here is the `plot` version (with `pch` point character changed to give filled circles):
+
+```{r, fig.width=6, fig.height=4}
+plot(depth ~ temp, data=wpdata, pch=16, xlab="air temperature (C)", 
+     ylab="nest depth (cm)", main="woodpeckers scatterplot")
+```
+
+Here is the `ggplot2` version with `labs` added to change labels and title:
+```{r, fig.width=6, fig.height=4}
+library(ggplot2)
+ggplot(wpdata, aes(x=temp, y = depth)) + geom_point() +
+  labs(x = "air temperature (C)", y= "nest depth (cm)", title= "woodpeckers scatterplot")
+```
+
+### The least squares line (the estimated SLR model):
+You fit the linear model with mean $\mu_{Y \mid x} = \beta_0 + \beta_1 x$ with the linear model function `lm(y ~ x, data=)`.
+
+```{r}
+wood.lm <- lm(depth~temp, data=wpdata)
+wood.lm
+```
+
+The object `wood.lm` is called a *linear model object* in R. We can add the regression line from this object to an existing *base R* plot of the data using the `abline` command.
+```{r, fig.width=6, fig.height=4}
+plot(depth ~ temp, data=wpdata, pch=16, xlab="air temperature (C)", 
+     ylab="nest depth (cm)", main="regression of depth on temp")
+abline(wood.lm)
+```
+
+The `ggplot2` package contains a `geom_smooth` geometry to add this SLR line:
+```{r, fig.width=6, fig.height=4}
+library(ggplot2)
+ggplot(wpdata, aes(x=temp, y = depth)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "air temperature (C)", y= "nest depth (cm)", title= "woodpeckers scatterplot")
+```
+
+With `geom_smooth`, you need to specify the type of method used to relate $x$ to $y$. Adding `se=FALSE` removes a confidence interval for the mean trend. Notice that the `aes` aesthetic given in the `ggplot` function specifies the x and y variables to plot. The `geom`'s that follow this part of the command use this `aes` to create points and an estimated line.   
+
+
+
+### Inference for coefficients
+The `summary` command is used for statistical inference for the intercept $\beta_0$ and slope $\beta_1$:
+
+```{r}
+summary(wood.lm)
+```
+
+You should know how to verify (or find) the test stats and p-values for $\beta_0$ and $\beta_1$ given by the `summary` command if you are given the estimates and SEs. For the slope test $H_0: \beta_1 = 0$ vs. $H_A: \beta_1 \neq 0$ we get a  $t$ test stat of
+
+```{r}
+(-0.34218 - 0)/0.05961
+```
+
+The p-value for this two sided test is the probability of being above +5.741 and below -5.741, or double the probability below -5.741 (since the t-distribution is symmetric around 0):
+
+```{r}
+pt(-5.741,10)
+2*pt(-5.741,10)
+```
+
+A 95% confidence interval for the slope $\beta_1$ is computed from the t distribution with 10 degrees of freedom:
+
+```{r}
+qt(.975,10)
+-.34218 + c(-1,1)*qt(.975,10)*.05961
+confint(wood.lm)
+```
+
+The `confint` function gives the most accurate interval (no rounding error) but you need to know how to compute these CIs ``by hand."
+
+
+### Additional `lm` information
+The function `lm` creates a *linear model* object in R that has lots of information associated with it. Information includes the coefficient values, fitted values ($\hat{y}_i$), and residuals ($y_i - \hat{y}_i$):
+
+```{r}
+attributes(wood.lm)
+wood.lm$coefficients
+wood.lm$fitted.values   # predicted y values (y-hat)
+wood.lm$residuals       # residuals for each data point
+```
+
+There are also functions that act on `lm` objects like
+```{r}
+fitted(wood.lm)
+resid(wood.lm)
+vcov(wood.lm)  # variance and covariance matrix of beta estimates
+```
+
+
+### `broom` package: Tidy `lm` output
+The `broom` package contains functions that convert model objects (like a `lm` object) into "tidy" data frames. The `tidy` command summarizes model results:
+```{r}
+library(broom)
+tidy(wood.lm)
+```
+Notice that the output object is called a "tibble" which is a type of data frame in R. 
+
+Here we can add confidence intervals for the model parameters to the output:
+```{r}
+tidy(wood.lm, conf.int=TRUE)
+```
+
+The `augment` command augments the data frame used to create a `lm` with predicted values and residuals from the `lm` model:
+```{r}
+wpdata.aug <- augment(wood.lm)
+head(wpdata.aug)
+```
+
+
+--------------------------------
 
 ## Checking model assumptions and fit {#slr-assump}
+
+
+
+--------------------------------
 
 ## Example: SLR assumptions (day 4) {#slr-example2}
