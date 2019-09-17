@@ -236,6 +236,7 @@ pander(lm(carbsgram ~ calgram, data=Cereals), caption="Table 8: Regression of ca
 The `stargazer` package, like `pander`, automatically generates Markdown tables from R objects. The `stargazer` function has more formatting options than `pander` and can generate summary stats from a data frame table. It can also provide nicely formatted comparisons between 2 or more regression models. See the help file `?stargazer` for more options. 
 
 You will need to add the R chunk option `results='asis'` to get the table formatted correctly. I also include the `message=FALSE` option in the chunk below that runs the library command to suppress the automatic message created when running the `library` command with `stargazer`. When you give `stargazer` a data frame, it gives you summary stats for all numeric variables in the data frame (Table 10):
+
 <pre><code>```{r,  results='asis', message=FALSE}
 library(stargazer)
 stargazer(Cereals, type="html", title="Table 9: Default summary stats using stargazer")

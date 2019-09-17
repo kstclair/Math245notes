@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-09-15">
+<meta name="date" content="2019-09-16">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -139,6 +139,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.5" data-path="slr.html"><a href="slr.html#slr-inf"><i class="fa fa-check"></i><b>2.5</b> Inference</a><ul>
 <li class="chapter" data-level="2.5.1" data-path="slr.html"><a href="slr.html#confidence-intervals-1"><i class="fa fa-check"></i><b>2.5.1</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="2.5.2" data-path="slr.html"><a href="slr.html#hypothesis-tests"><i class="fa fa-check"></i><b>2.5.2</b> Hypothesis tests</a></li>
+<li class="chapter" data-level="2.5.3" data-path="slr.html"><a href="slr.html#confidence-intervals-for-mu_y-mid-x"><i class="fa fa-check"></i><b>2.5.3</b> Confidence intervals for <span class="math inline">\(\mu_{y \mid x}\)</span></a></li>
+<li class="chapter" data-level="2.5.4" data-path="slr.html"><a href="slr.html#prediction-intervals-for-new-cases"><i class="fa fa-check"></i><b>2.5.4</b> Prediction intervals for new cases</a></li>
 </ul></li>
 <li class="chapter" data-level="2.6" data-path="slr.html"><a href="slr.html#slr-example1"><i class="fa fa-check"></i><b>2.6</b> Example: SLR model (day 3)</a><ul>
 <li class="chapter" data-level="2.6.1" data-path="slr.html"><a href="slr.html#load-data"><i class="fa fa-check"></i><b>2.6.1</b> Load data</a></li>
@@ -147,6 +149,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.6.4" data-path="slr.html"><a href="slr.html#inference-for-coefficients"><i class="fa fa-check"></i><b>2.6.4</b> Inference for coefficients</a></li>
 <li class="chapter" data-level="2.6.5" data-path="slr.html"><a href="slr.html#additional-lm-information"><i class="fa fa-check"></i><b>2.6.5</b> Additional <code>lm</code> information</a></li>
 <li class="chapter" data-level="2.6.6" data-path="slr.html"><a href="slr.html#broom-package-tidy-lm-output"><i class="fa fa-check"></i><b>2.6.6</b> <code>broom</code> package: Tidy <code>lm</code> output</a></li>
+<li class="chapter" data-level="2.6.7" data-path="slr.html"><a href="slr.html#inference-for-the-mean-and-predicted-response"><i class="fa fa-check"></i><b>2.6.7</b> Inference for the mean and predicted response</a></li>
+<li class="chapter" data-level="2.6.8" data-path="slr.html"><a href="slr.html#adding-confidence-bands-to-a-scatterplot"><i class="fa fa-check"></i><b>2.6.8</b> Adding confidence bands to a scatterplot</a></li>
+<li class="chapter" data-level="2.6.9" data-path="slr.html"><a href="slr.html#tools-for-displaying-your-model"><i class="fa fa-check"></i><b>2.6.9</b> Tools for displaying your model</a></li>
 </ul></li>
 <li class="chapter" data-level="2.7" data-path="slr.html"><a href="slr.html#slr-assump"><i class="fa fa-check"></i><b>2.7</b> Checking model assumptions and fit</a></li>
 <li class="chapter" data-level="2.8" data-path="slr.html"><a href="slr.html#slr-example2"><i class="fa fa-check"></i><b>2.8</b> Example: SLR assumptions (day 4)</a></li>
@@ -257,7 +262,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Suppose we have a quantitative response variable <span class="math inline">\(y\)</span> that we want to relate to an explantory (aka predictor) variable <span class="math inline">\(x\)</span>. For now, we will assume that <span class="math inline">\(x\)</span> is also quantitative.</p>
 <div id="r-visualizing" class="section level3">
 <h3><span class="header-section-number">2.1.1</span> R: visualizing</h3>
-<p>A scatterplot is the basic graphic that plots each <span class="math inline">\(y_i\)</span> vs. <span class="math inline">\(x_i\)</span> on the x-y coordinate plane. Suppose the data set <code>mydata</code> contains variables named <code>y</code> and <code>x. The &quot;base&quot; R command is a simple</code>plot` command that looks like</p>
+<p>A scatterplot is the basic graphic that plots each <span class="math inline">\(y_i\)</span> vs. <span class="math inline">\(x_i\)</span> on the x-y coordinate plane. Suppose the data set <code>mydata</code> contains variables named <code>y</code> and <code>x</code>. The “base” R command is a simple <code>plot</code> command that looks like</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span> mydata)  </code></pre></div>
 <p>Alternatively, we could use <code>ggplot2</code> package to create a scatterplot with the <code>geom_point()</code> geometry:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)
@@ -410,6 +415,16 @@ H_0: \beta_i = 0 \ \ \ \ \ H_A: \beta_i \neq 0
 \]</span> with a test stat of <span class="math display">\[
 t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 \]</span></p>
+</div>
+<div id="confidence-intervals-for-mu_y-mid-x" class="section level3">
+<h3><span class="header-section-number">2.5.3</span> Confidence intervals for <span class="math inline">\(\mu_{y \mid x}\)</span></h3>
+<p>Here we are interested in estimating not just a <span class="math inline">\(\beta\)</span> with confidence, but we want to estimate the <strong>mean</strong> response for a given value of <span class="math inline">\(x_0\)</span>. E.g. We want to estimate the mean nest depth when the temp is 5 degrees.</p>
+<p>Our parameter of interest is <span class="math inline">\(\mu_{y \mid x_0} = \beta_0 + \beta_1 x_0\)</span> where <span class="math inline">\(x_0\)</span> is known and <span class="math inline">\(\beta\)</span>’s need to be estimated. The natural estimator is just the fitted equation: <span class="math display">\[
+\hat{\mu}_{y \mid x_0} = \hat{\beta}_0 + \hat{\beta}_1 x_0
+\]</span></p>
+</div>
+<div id="prediction-intervals-for-new-cases" class="section level3">
+<h3><span class="header-section-number">2.5.4</span> Prediction intervals for new cases</h3>
 <hr />
 </div>
 </div>
@@ -594,6 +609,131 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 ## 4  19.2     1    19.8   0.900 -0.580 0.149    2.45 0.00632     -0.269
 ## 5  16.9     6    18.1   0.737 -1.17  0.0996   2.43 0.0154      -0.528
 ## 6  18.1    10    16.7   0.677  1.40  0.0840   2.41 0.0180       0.626</code></pre></div>
+<p>The <code>.fitted</code> column gives the fitted values <span class="math inline">\(\hat{y}_i\)</span> for each case and the <code>.resid</code> gives the residuals <span class="math inline">\(y_i - \hat{y}_i\)</span>.</p>
+</div>
+<div id="inference-for-the-mean-and-predicted-response" class="section level3">
+<h3><span class="header-section-number">2.6.7</span> Inference for the mean and predicted response</h3>
+<p>We can get a 95% confidence interval for the mean nest depth at 8 degrees Celsius <span class="math inline">\(\mu(depth\mid temp=8)\)</span> with the <code>predict</code> command with interval type <code>confidence</code> specified:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">predict</span>(wood.lm, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">temp=</span><span class="dv">8</span>), <span class="dt">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="dt">se.fit=</span>T)
+## $fit
+##        fit      lwr      upr
+## 1 17.38487 15.83132 18.93841
+## 
+## $se.fit
+## [1] 0.6972406
+## 
+## $df
+## [1] 10
+## 
+## $residual.scale
+## [1] 2.33453</code></pre></div>
+<p>The argument <code>se.fit=T</code> provides the SE of the mean response estimate. The estimated mean depth of all nests built at 8 degrees is 17.38 cm with a SE of 0.697 cm. You can easily verify the computation of the CI:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>est &lt;-<span class="st"> </span><span class="fl">20.12228</span> <span class="op">-</span><span class="fl">0.34218</span><span class="op">*</span><span class="dv">8</span>
+<span class="op">&gt;</span><span class="st"> </span>est
+## [1] 17.38484
+<span class="op">&gt;</span><span class="st"> </span>est <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qt</span>(.<span class="dv">975</span>,<span class="dv">10</span>)<span class="op">*</span><span class="fl">0.6972406</span>
+## [1] 15.83129 18.93839</code></pre></div>
+<p>You can also include more than one predictor value temp in this function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">predict</span>(wood.lm, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">temp=</span><span class="kw">c</span>(<span class="dv">8</span>,<span class="dv">20</span>)), <span class="dt">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="dt">se.fit=</span>T)
+## $fit
+##        fit      lwr      upr
+## 1 17.38487 15.83132 18.93841
+## 2 13.27874 11.35950 15.19798
+## 
+## $se.fit
+##         1         2 
+## 0.6972406 0.8613639 
+## 
+## $df
+## [1] 10
+## 
+## $residual.scale
+## [1] 2.33453</code></pre></div>
+<p>We can get a 95% prediction interval for the depth of one depth constructed at 8 degrees Celsius <span class="math inline">\(\hat{Y} = pred(depth\mid temp=8)\)</span> with the <code>predict</code> command with interval type <code>prediction</code> specified:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">predict</span>(wood.lm, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">temp=</span><span class="dv">8</span>), <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)
+##        fit      lwr      upr
+## 1 17.38487 11.95617 22.81356</code></pre></div>
+<p>R does not give us the SE for prediction <span class="math inline">\(SE(pred(Y \mid x_0)) = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu})^2}\)</span> so we need to compute it by hand if we want its value:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>se.pred &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">2.33453</span><span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.6972406</span><span class="op">^</span><span class="dv">2</span>)
+<span class="op">&gt;</span><span class="st"> </span>se.pred
+## [1] 2.436427</code></pre></div>
+<p>The predicted depth of one nest build at 8 degress is 17.38 cm with a SE of 2.44 cm. The 95% prediction interval produced above can be verified as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>yhat &lt;-<span class="st">  </span><span class="fl">20.12228</span> <span class="op">-</span><span class="fl">0.34218</span><span class="op">*</span><span class="dv">8</span>
+<span class="op">&gt;</span><span class="st"> </span>yhat
+## [1] 17.38484
+<span class="op">&gt;</span><span class="st"> </span>yhat <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qt</span>(.<span class="dv">975</span>,<span class="dv">10</span>)<span class="op">*</span>se.pred
+## [1] 11.95614 22.81354</code></pre></div>
+</div>
+<div id="adding-confidence-bands-to-a-scatterplot" class="section level3">
+<h3><span class="header-section-number">2.6.8</span> Adding confidence bands to a scatterplot</h3>
+<p>The <code>geom_smooth</code> function in <code>ggplot2</code> adds a 95% confidence interval for <span class="math inline">\(\mu_{y \mid x}\)</span> around the estimated mean line:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(wpdata, <span class="kw">aes</span>(<span class="dt">x=</span>temp, <span class="dt">y =</span> depth)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;air temperature (C)&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;nest depth (cm)&quot;</span>, <span class="dt">title=</span> <span class="st">&quot;woodpeckers scatterplot with mean confidence interval&quot;</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>Adding prediction interval bands takes slightly more work. First, create a new version of the data set that includes prediction intervals for each case in the data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>wpdata.pred &lt;-<span class="st"> </span><span class="kw">data.frame</span>(wpdata, <span class="kw">predict</span>(wood.lm, <span class="dt">interval=</span><span class="st">&quot;prediction&quot;</span>))
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(wpdata.pred)
+##   temp depth      fit      lwr      upr
+## 1   -6  21.1 22.17535 16.30939 28.04131
+## 2   -3  26.0 21.14882 15.42438 26.87325
+## 3   -2  18.0 20.80664 15.12396 26.48932
+## 4    1  19.2 19.78011 14.20554 25.35468
+## 5    6  16.9 18.06922 12.61459 23.52385
+## 6   10  18.1 16.70051 11.28483 22.11620</code></pre></div>
+<p>Then add a <code>geom_ribbon</code> layer to the previous plot, with <code>ymin</code> and <code>ymax</code> determined by the prediction interval’s lower (<code>lwr</code>) and upper (<code>upr</code>) bounds. The <code>fill</code> arguments in both layers below are not really needed, but they are used here to provide a legend label for the plot:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(wpdata.pred, <span class="kw">aes</span>(<span class="dt">x=</span>temp, <span class="dt">y =</span> depth)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="op">+</span><span class="st">     </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">x=</span>temp, <span class="dt">ymin =</span> lwr, <span class="dt">ymax =</span> upr, <span class="dt">fill =</span> <span class="st">&quot;prediction&quot;</span>), <span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="kw">aes</span>(<span class="dt">fill =</span> <span class="st">&quot;confidence&quot;</span>), <span class="dt">alpha =</span> .<span class="dv">4</span>) <span class="op">+</span>
+<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;air temperature (C)&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;nest depth (cm)&quot;</span>, 
+<span class="op">+</span><span class="st">        </span><span class="dt">title=</span> <span class="st">&quot;woodpeckers scatterplot&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;Type&quot;</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+</div>
+<div id="tools-for-displaying-your-model" class="section level3">
+<h3><span class="header-section-number">2.6.9</span> Tools for displaying your model</h3>
+<p>As described in the Formatting Tables in Markdown (Section <a href="markdown.html#markdown-tables">D.5</a>), you can use the package <code>stargazer</code> to create a nice table of model results in your pdf. The entire R chunk to do this in a <code>pdf</code> doc format is shown below (but not evaluated in this html book). You will need to add the R chunk option <code>results='asis'</code> to get the table formatted correctly. I also include the <code>message=FALSE</code> option in the chunk below that runs the library command to suppress the automatic message created when running the <code>library</code> command with <code>stargazer</code>.</p>
+<pre><code>```{r, results='asis', message=FALSE}
+library(stargazer)
+stargazer(wood.lm, header=FALSE, single.row = TRUE, title = "SLR of depth on temp")
+```</code></pre>
+<p>The <code>kable</code> function (from the <code>knitr</code> package) works well in all output environments (e.g. pdf, html, word). The input to this function needs to be a data frame, so we can use the <code>tidy</code> version of our model summary:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(knitr)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">kable</span>(<span class="kw">tidy</span>(wood.lm, <span class="dt">conf.int =</span> <span class="ot">TRUE</span>), <span class="dt">digits =</span> <span class="dv">3</span>)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">20.122</td>
+<td align="right">0.94</td>
+<td align="right">21.401</td>
+<td align="right">0</td>
+<td align="right">18.027</td>
+<td align="right">22.217</td>
+</tr>
+<tr class="even">
+<td align="left">temp</td>
+<td align="right">-0.342</td>
+<td align="right">0.06</td>
+<td align="right">-5.741</td>
+<td align="right">0</td>
+<td align="right">-0.475</td>
+<td align="right">-0.209</td>
+</tr>
+</tbody>
+</table>
 <hr />
 </div>
 </div>

@@ -6,7 +6,7 @@ This chapter contains content from Sleuth Chapters 7 and 8.
 Suppose we have a quantitative response variable $y$ that we want to relate to an explantory (aka predictor) variable $x$. For now, we will assume that $x$ is also quantitative. 
 
 ### R: visualizing
-A scatterplot is the basic graphic that plots each $y_i$ vs. $x_i$ on the x-y coordinate plane. Suppose the data set `mydata` contains variables named `y` and `x. The "base" R command is a simple `plot` command that looks like 
+A scatterplot is the basic graphic that plots each $y_i$ vs. $x_i$ on the x-y coordinate plane. Suppose the data set `mydata` contains variables named `y` and `x`. The "base" R command is a simple `plot` command that looks like 
 ```{r, eval=FALSE}
 plot(y ~ x, data= mydata)  
 ```
@@ -219,6 +219,18 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 $$
 
 
+### Confidence intervals for $\mu_{y \mid x}$
+
+Here we are interested in estimating not just a $\beta$ with confidence, but we want to estimate the **mean** response for a given value of $x_0$. E.g. We want to estimate the mean nest depth when the temp is 5 degrees. 
+
+Our parameter of interest is $\mu_{y \mid x_0} = \beta_0 + \beta_1 x_0$ where $x_0$ is known and $\beta$'s need to be estimated. The natural estimator is just the fitted equation:
+$$
+\hat{\mu}_{y \mid x_0} = \hat{\beta}_0 + \hat{\beta}_1 x_0
+$$
+
+
+### Prediction intervals for new cases
+
 
 --------------------------------
 
@@ -354,6 +366,92 @@ The `augment` command augments the data frame used to create a `lm` with predict
 wpdata.aug <- augment(wood.lm)
 head(wpdata.aug)
 ```
+The `.fitted` column gives the fitted values $\hat{y}_i$ for each case and the `.resid` gives the residuals $y_i - \hat{y}_i$.
+
+
+### Inference for the mean and predicted response
+We can get a 95% confidence interval for the mean nest depth at 8 degrees Celsius $\mu(depth\mid temp=8)$  with the `predict` command with interval type `confidence` specified:
+
+```{r}
+predict(wood.lm, newdata = data.frame(temp=8), interval = "confidence", se.fit=T)
+```
+
+The argument `se.fit=T` provides the SE of the mean response estimate. The estimated mean depth of all nests built at 8 degrees is 17.38 cm with a SE of 0.697 cm. You can easily verify the computation of the CI:
+
+```{r}
+est <- 20.12228 -0.34218*8
+est
+est + c(-1,1)*qt(.975,10)*0.6972406
+```
+
+You can also include more than one predictor value temp in this function:
+```{r}
+predict(wood.lm, newdata = data.frame(temp=c(8,20)), interval = "confidence", se.fit=T)
+```
+
+We can get a 95% prediction interval for the depth of one depth constructed at 8 degrees Celsius $\hat{Y} = pred(depth\mid temp=8)$  with the `predict` command with interval type `prediction` specified:
+
+```{r}
+predict(wood.lm, newdata = data.frame(temp=8), interval = "prediction")
+```
+
+R does not give us the SE for prediction $SE(pred(Y \mid x_0)) = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu})^2}$ so we need to compute it by hand if we want its value:
+
+```{r}
+se.pred <- sqrt(2.33453^2 + 0.6972406^2)
+se.pred
+```
+
+The predicted depth of one nest build at 8 degress is 17.38 cm with a SE of 2.44 cm. The 95% prediction interval produced above can be verified as follows:
+
+```{r}
+yhat <-  20.12228 -0.34218*8
+yhat
+yhat + c(-1,1)*qt(.975,10)*se.pred
+```
+
+
+### Adding confidence bands to a scatterplot
+The `geom_smooth` function in `ggplot2` adds a 95% confidence interval for $\mu_{y \mid x}$ around the estimated mean line:
+```{r}
+ggplot(wpdata, aes(x=temp, y = depth)) + 
+  geom_point() +
+  geom_smooth(method = "lm") + 
+  labs(x = "air temperature (C)", y= "nest depth (cm)", title= "woodpeckers scatterplot with mean confidence interval")
+```
+
+Adding prediction interval bands takes slightly more work. First, create a new version of the data set that includes prediction intervals for each case in the data:
+```{r}
+wpdata.pred <- data.frame(wpdata, predict(wood.lm, interval="prediction"))
+head(wpdata.pred)
+```
+
+Then add a `geom_ribbon` layer to the previous plot, with `ymin` and `ymax` determined by the prediction interval's lower (`lwr`) and upper (`upr`) bounds. The `fill` arguments in both layers below are not really needed, but they are used here to provide a legend label for the plot:
+```{r}
+ggplot(wpdata.pred, aes(x=temp, y = depth)) + 
+  geom_point() +
+    geom_ribbon(aes(x=temp, ymin = lwr, ymax = upr, fill = "prediction"), alpha = .1) +
+  geom_smooth(method = "lm", aes(fill = "confidence"), alpha = .4) +
+  labs(x = "air temperature (C)", y= "nest depth (cm)", 
+       title= "woodpeckers scatterplot", fill = "Type")
+```
+
+
+### Tools for displaying your model
+As described in the Formatting Tables in Markdown (Section \@ref(markdown-tables)), you can use the package `stargazer` to create a nice table of model results in your pdf. The entire R chunk to do this in a `pdf` doc format is shown below (but not evaluated in this html book). You will need to add the R chunk option `results='asis'` to get the table formatted correctly. I also include the `message=FALSE` option in the chunk below that runs the library command to suppress the automatic message created when running the `library` command with `stargazer`. 
+
+<pre><code>```{r, results='asis', message=FALSE}
+library(stargazer)
+stargazer(wood.lm, header=FALSE, single.row = TRUE, title = "SLR of depth on temp")
+```</code></pre>
+
+The `kable` function (from the `knitr` package) works well in all output environments (e.g. pdf, html, word). The input to this function needs to be a data frame, so we can use the `tidy` version of our model summary:
+
+```{r}
+library(knitr)
+kable(tidy(wood.lm, conf.int = TRUE), digits = 3)
+```
+
 
 
 --------------------------------
