@@ -337,8 +337,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">D.4</span> Extra: Graph formatting</h2>
 <p>The markdown .Rmd for this graph formatting section is linked here: <a href="https://kstclair.github.io/Rmaterial/Markdown/Markdown_GraphFormatting.Rmd" class="uri">https://kstclair.github.io/Rmaterial/Markdown/Markdown_GraphFormatting.Rmd</a></p>
 <p>The data set Cereals contains information on cereals sold at a local grocery store.</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="co"># load the data set </span></a>
-<a class="sourceLine" id="cb129-2" title="2"><span class="er">&gt;</span><span class="st"> </span>Cereals &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://math.carleton.edu/Stats215/RLabManual/Cereals.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="co"># load the data set </span></a>
+<a class="sourceLine" id="cb130-2" title="2"><span class="er">&gt;</span><span class="st"> </span>Cereals &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://math.carleton.edu/Stats215/RLabManual/Cereals.csv&quot;</span>)</a></code></pre></div>
 <div id="adding-figure-numbers-and-captions" class="section level3">
 <h3><span class="header-section-number">D.4.1</span> Adding figure numbers and captions</h3>
 <p>To add captions to the figures you make you need to add the argument <code>fig.cap="my caption"</code> to your R chunk that creates the figure. If you have two or more figures created in the R chunk then give the <code>fig.cap</code> argument a vector of captions.</p>
@@ -370,14 +370,14 @@ Figure D.2: Calories vs. Carbs per gram
 boxplot(calgram ~ type, data=Cereals, main="Calories by type", ylab="Calories per gram")
 plot(carbsgram ~ calgram, data=Cereals, main="Carbs vs Calories")
 ```</code></pre>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(calgram <span class="op">~</span><span class="st"> </span>type, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Calories by type&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Calories per gram&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(calgram <span class="op">~</span><span class="st"> </span>type, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Calories by type&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Calories per gram&quot;</span>)</a></code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-1281"></span>
 <img src="Math245notes_files/figure-html/unnamed-chunk-128-1.png" alt="Distributions of calories per gram by cereal type" width="480" />
 <p class="caption">
 Figure D.3: Distributions of calories per gram by cereal type
 </p>
 </div>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Carbs vs Calories&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Carbs vs Calories&quot;</span>)</a></code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-1282"></span>
 <img src="Math245notes_files/figure-html/unnamed-chunk-128-2.png" alt="Calories vs. Carbs per gram" width="480" />
 <p class="caption">
@@ -388,9 +388,9 @@ Figure D.4: Calories vs. Carbs per gram
 <div id="changing-graph-formatting-in-r" class="section level3">
 <h3><span class="header-section-number">D.4.3</span> Changing graph formatting in R</h3>
 <p>You can use the <code>par</code> command to change R’s graphical parameter settings for plots that <strong>are not</strong> made from <code>ggplot2</code>. There are many options that can be changed, but one of the most useful is to change the layout of the graphical output display. The argument <code>mfrow</code> (multi-frame row) is given a vector <code>c(nr, nc)</code> that draws figures in an <code>nr</code> (number of rows) by <code>nc</code> (number of columns) array. We can arrange our two graphs in a 1 by 2 display (1 row, 2 columns) with the command:</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb132-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(calgram <span class="op">~</span><span class="st"> </span>type, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Calories by type&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Calories per gram&quot;</span>)</a>
-<a class="sourceLine" id="cb132-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Carbs vs Calories&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb133-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(calgram <span class="op">~</span><span class="st"> </span>type, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Calories by type&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Calories per gram&quot;</span>)</a>
+<a class="sourceLine" id="cb133-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals, <span class="dt">main=</span><span class="st">&quot;Carbs vs Calories&quot;</span>)</a></code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-129"></span>
 <img src="Math245notes_files/figure-html/unnamed-chunk-129-1.png" alt="Distribution of calories per gram  by cereal type and calories vs. carbs per gram." width="672" />
 <p class="caption">
@@ -433,8 +433,8 @@ Figure D.6: Distributions of calories per gram and shelf placement by cereal typ
 </ul>
 <p>In homework or R appendices, I expect to see both the commands and output produced by those commands as your “work” for a problem. But in reports, as in any formal research paper, you should not include R commands or output (except for graphs). This handout is designed, primarily, to help you format numerical results to present into your written <em>reports</em>.</p>
 <p>The data set Cereals contains information on cereals sold at a local grocery store.</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="co"># load the data set</span></a>
-<a class="sourceLine" id="cb133-2" title="2"><span class="er">&gt;</span><span class="st"> </span>Cereals &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://math.carleton.edu/Stats215/RLabManual/Cereals.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="co"># load the data set</span></a>
+<a class="sourceLine" id="cb134-2" title="2"><span class="er">&gt;</span><span class="st"> </span>Cereals &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://math.carleton.edu/Stats215/RLabManual/Cereals.csv&quot;</span>)</a></code></pre></div>
 <div id="hiding-r-commands-and-r-output" class="section level3">
 <h3><span class="header-section-number">D.5.1</span> Hiding R commands and R output</h3>
 <p>As mentioned in the graph formatting handout, adding the chunk option <code>echo=FALSE</code> will display output (like graphs) produced by a chunk but not show the commands used in the chunk. You can stop <strong>both</strong> R commands and output from being displayed in a document by adding the chunk option <code>include=FALSE</code>.</p>
@@ -444,14 +444,14 @@ Figure D.6: Distributions of calories per gram and shelf placement by cereal typ
 <h3><span class="header-section-number">D.5.2</span> Markdown tables</h3>
 <p>The Markdown language allows you to construct simple tables using vertical lines <code>|</code> to separate columns and horizontal lines <code>-</code> to create a header. Make sure to include at least one space before and after your Markdown table or it will not format correctly. I can’t find an easy way to attached an automatic table number and caption to this type of table, so I’ve simply written (and centered) the table number and caption by hand for the table below.</p>
 <p>Suppose we want to present the 5-number summary of calories per gram by cereal type. The <code>tapply</code> command can be used to obtain these numbers.</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tapply</span>(Cereals<span class="op">$</span>calgram, Cereals<span class="op">$</span>type, summary)</a>
-<a class="sourceLine" id="cb134-2" title="2"><span class="co">## $adult</span></a>
-<a class="sourceLine" id="cb134-3" title="3"><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
-<a class="sourceLine" id="cb134-4" title="4"><span class="co">##   2.000   3.208   3.519   3.399   3.667   4.600 </span></a>
-<a class="sourceLine" id="cb134-5" title="5"><span class="co">## </span></a>
-<a class="sourceLine" id="cb134-6" title="6"><span class="co">## $children</span></a>
-<a class="sourceLine" id="cb134-7" title="7"><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
-<a class="sourceLine" id="cb134-8" title="8"><span class="co">##   3.636   3.931   4.000   4.028   4.074   4.483</span></a></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tapply</span>(Cereals<span class="op">$</span>calgram, Cereals<span class="op">$</span>type, summary)</a>
+<a class="sourceLine" id="cb135-2" title="2"><span class="co">## $adult</span></a>
+<a class="sourceLine" id="cb135-3" title="3"><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
+<a class="sourceLine" id="cb135-4" title="4"><span class="co">##   2.000   3.208   3.519   3.399   3.667   4.600 </span></a>
+<a class="sourceLine" id="cb135-5" title="5"><span class="co">## </span></a>
+<a class="sourceLine" id="cb135-6" title="6"><span class="co">## $children</span></a>
+<a class="sourceLine" id="cb135-7" title="7"><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
+<a class="sourceLine" id="cb135-8" title="8"><span class="co">##   3.636   3.931   4.000   4.028   4.074   4.483</span></a></code></pre></div>
 <p>We can construct a table of stats by type “by hand” using simple markdown table syntax in our .Rmd file that is shown below:</p>
 <pre><code>Type | Min | Q1 | Median | Q3 | Max 
 ---- | --- | --- | --- | --- | ---
@@ -492,10 +492,10 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 <div id="markdown-tables-via-kable" class="section level3">
 <h3><span class="header-section-number">D.5.3</span> Markdown tables via <code>kable</code></h3>
 <p>The R package <code>knitr</code> contains a simple table making function called <code>kable</code>. You can use this function to, say, show the first few rows of a data frame:</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(knitr)</a>
-<a class="sourceLine" id="cb136-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">kable</span>(<span class="kw">head</span>(Cereals), <span class="dt">digits=</span><span class="dv">3</span>, <span class="dt">caption=</span><span class="st">&quot;Table 1: Cereals data (first 6 cases)&quot;</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(knitr)</a>
-<a class="sourceLine" id="cb137-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">kable</span>(<span class="kw">head</span>(Cereals), <span class="dt">digits=</span><span class="dv">3</span>, <span class="dt">caption=</span><span class="st">&quot;Cereals data (first 6 cases)&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb137-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">kable</span>(<span class="kw">head</span>(Cereals), <span class="dt">digits=</span><span class="dv">3</span>, <span class="dt">caption=</span><span class="st">&quot;Table 1: Cereals data (first 6 cases)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(knitr)</a>
+<a class="sourceLine" id="cb138-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">kable</span>(<span class="kw">head</span>(Cereals), <span class="dt">digits=</span><span class="dv">3</span>, <span class="dt">caption=</span><span class="st">&quot;Cereals data (first 6 cases)&quot;</span>)</a></code></pre></div>
 <table>
 <caption><span id="tab:unnamed-chunk-134">Table D.1: </span>Cereals data (first 6 cases)</caption>
 <thead>
@@ -595,7 +595,7 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 </tbody>
 </table>
 <p>Or you can use <code>kable</code> on a two-way table of counts or proportions:</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">kable</span>(<span class="kw">table</span>(Cereals<span class="op">$</span>brand, Cereals<span class="op">$</span>type), <span class="dt">caption=</span><span class="st">&quot;Table 2: Cereal brand and type&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">kable</span>(<span class="kw">table</span>(Cereals<span class="op">$</span>brand, Cereals<span class="op">$</span>type), <span class="dt">caption=</span><span class="st">&quot;Table 2: Cereal brand and type&quot;</span>)</a></code></pre></div>
 <table>
 <caption><span id="tab:unnamed-chunk-136">Table D.2: </span>Cereal brand and type</caption>
 <thead>
@@ -637,8 +637,8 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 <div id="the-pander-package" class="section level3">
 <h3><span class="header-section-number">D.5.4</span> The <code>pander</code> package</h3>
 <p>The R package <code>pander</code> creates simple tables in R that do not need any additional formatting in Markdown. The <code>pander()</code> function takes in an R object, like a summary table or t-test output, and outputs a Markdown table. You can add a <code>caption</code> argument to include a table number and title. Here is a table for the summary of calories per gram:</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(pander)</a>
-<a class="sourceLine" id="cb139-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">summary</span>(Cereals<span class="op">$</span>calgram), <span class="dt">caption=</span><span class="st">&quot;Table 3: Summary statistics for calories per gram.&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(pander)</a>
+<a class="sourceLine" id="cb140-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">summary</span>(Cereals<span class="op">$</span>calgram), <span class="dt">caption=</span><span class="st">&quot;Table 3: Summary statistics for calories per gram.&quot;</span>)</a></code></pre></div>
 <table style="width:71%;">
 <caption>Table 3: Summary statistics for calories per gram.</caption>
 <colgroup>
@@ -671,8 +671,8 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 </tbody>
 </table>
 <p>Pander can format tables and proportion tables. Here is the table for cereal type and shelf placement (Table 4), along with the distribution of shelf placement by cereal type (Table 5).</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" title="1"><span class="op">&gt;</span><span class="st"> </span>my.table &lt;-<span class="st"> </span><span class="kw">table</span>(Cereals<span class="op">$</span>type,Cereals<span class="op">$</span>shelf)</a>
-<a class="sourceLine" id="cb140-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(my.table,<span class="dt">round=</span><span class="dv">3</span>, <span class="dt">caption=</span><span class="st">&quot;Table 4: Cereal type and shelf placement&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" title="1"><span class="op">&gt;</span><span class="st"> </span>my.table &lt;-<span class="st"> </span><span class="kw">table</span>(Cereals<span class="op">$</span>type,Cereals<span class="op">$</span>shelf)</a>
+<a class="sourceLine" id="cb141-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(my.table,<span class="dt">round=</span><span class="dv">3</span>, <span class="dt">caption=</span><span class="st">&quot;Table 4: Cereal type and shelf placement&quot;</span>)</a></code></pre></div>
 <table style="width:54%;">
 <caption>Table 4: Cereal type and shelf placement</caption>
 <colgroup>
@@ -704,7 +704,7 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">prop.table</span>(my.table,<span class="dv">1</span>),<span class="dt">round=</span><span class="dv">3</span>, <span class="dt">caption=</span><span class="st">&quot;Table 5: Distribution of shelf placement by cereal type&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">prop.table</span>(my.table,<span class="dv">1</span>),<span class="dt">round=</span><span class="dv">3</span>, <span class="dt">caption=</span><span class="st">&quot;Table 5: Distribution of shelf placement by cereal type&quot;</span>)</a></code></pre></div>
 <table style="width:58%;">
 <caption>Table 5: Distribution of shelf placement by cereal type</caption>
 <colgroup>
@@ -737,7 +737,7 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 </tbody>
 </table>
 <p>Here are t-test results for comparing mean calories for adult and children cereals (Table 6):</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">t.test</span>(calgram <span class="op">~</span><span class="st"> </span>type, <span class="dt">data=</span>Cereals), <span class="dt">caption=</span><span class="st">&quot;Table 6: Comparing calories for adult and children cereals&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">t.test</span>(calgram <span class="op">~</span><span class="st"> </span>type, <span class="dt">data=</span>Cereals), <span class="dt">caption=</span><span class="st">&quot;Table 6: Comparing calories for adult and children cereals&quot;</span>)</a></code></pre></div>
 <table style="width:94%;">
 <caption>Table 6: Comparing calories for adult and children cereals (continued below)</caption>
 <colgroup>
@@ -782,7 +782,7 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 </tbody>
 </table>
 <p>Here are chi-square test results for testing for an association between shelf placement and cereal type (Table 7). Note that the <code>simulate.p.value</code> option was used to give a randomization p-value since the sample size criteria for the chi-square approximation was not met.</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">chisq.test</span>(my.table, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span>),<span class="dt">caption=</span><span class="st">&quot;Table 7: Chi-square test for placement and type&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">chisq.test</span>(my.table, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span>),<span class="dt">caption=</span><span class="st">&quot;Table 7: Chi-square test for placement and type&quot;</span>)</a></code></pre></div>
 <table style="width:56%;">
 <caption>Table 7: Chi-square test for placement and type</caption>
 <colgroup>
@@ -806,7 +806,7 @@ Children | 3.6 | 3.9 | 4.0 | 4.1 | 4.5</code></pre>
 </tbody>
 </table>
 <p>Here are the basic results for the regression of carbs on calories (Table 8).</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">lm</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals), <span class="dt">caption=</span><span class="st">&quot;Table 8: Regression of carbs on calories&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pander</span>(<span class="kw">lm</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals), <span class="dt">caption=</span><span class="st">&quot;Table 8: Regression of carbs on calories&quot;</span>)</a></code></pre></div>
 <table style="width:89%;">
 <caption>Table 8: Regression of carbs on calories</caption>
 <colgroup>
@@ -1079,10 +1079,10 @@ proteingram
 <p>The default table <code>type</code> is <code>"latex"</code> which is the format you want when knitting to a pdf document. When knitting to an html document we need to change <code>type</code> to <code>"html"</code>. Unfortunately, there is no <code>type</code> that works nicely with Word documents so you would be better off using <code>pander</code> if you want a Word document.</p>
 <p>Note: When using the <code>latex</code> type and knitting to a pdf, you will get an annoying stargazer message about the creation of your latex table. Include the argument <code>header=FALSE</code> in the <code>stargazer</code> command to suppress this message when knitting to a pdf.</p>
 <p>You can subset the Cereals data frame to only include the variables (columns) that you want displayed. In Table 11 we only see calories and carbs. You can also edit the summary stats displayed by specifying them in the <code>summary.stat</code> argument. See the <code>stargazer</code> help file for more stat options.</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">stargazer</span>(Cereals[,<span class="kw">c</span>(<span class="st">&quot;calgram&quot;</span>,<span class="st">&quot;carbsgram&quot;</span>)],</a>
-<a class="sourceLine" id="cb145-2" title="2"><span class="op">+</span><span class="st">     </span><span class="dt">type=</span><span class="st">&quot;html&quot;</span>, </a>
-<a class="sourceLine" id="cb145-3" title="3"><span class="op">+</span><span class="st">     </span><span class="dt">title=</span><span class="st">&quot;Table 10: Five number summary stats&quot;</span>, </a>
-<a class="sourceLine" id="cb145-4" title="4"><span class="op">+</span><span class="st">     </span><span class="dt">summary.stat=</span><span class="kw">c</span>(<span class="st">&quot;max&quot;</span>,<span class="st">&quot;p25&quot;</span>,<span class="st">&quot;median&quot;</span>,<span class="st">&quot;p75&quot;</span>,<span class="st">&quot;max&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">stargazer</span>(Cereals[,<span class="kw">c</span>(<span class="st">&quot;calgram&quot;</span>,<span class="st">&quot;carbsgram&quot;</span>)],</a>
+<a class="sourceLine" id="cb146-2" title="2"><span class="op">+</span><span class="st">     </span><span class="dt">type=</span><span class="st">&quot;html&quot;</span>, </a>
+<a class="sourceLine" id="cb146-3" title="3"><span class="op">+</span><span class="st">     </span><span class="dt">title=</span><span class="st">&quot;Table 10: Five number summary stats&quot;</span>, </a>
+<a class="sourceLine" id="cb146-4" title="4"><span class="op">+</span><span class="st">     </span><span class="dt">summary.stat=</span><span class="kw">c</span>(<span class="st">&quot;max&quot;</span>,<span class="st">&quot;p25&quot;</span>,<span class="st">&quot;median&quot;</span>,<span class="st">&quot;p75&quot;</span>,<span class="st">&quot;max&quot;</span>))</a></code></pre></div>
 <table style="text-align:center">
 <caption>
 <strong>Table 10: Five number summary stats</strong>
@@ -1161,10 +1161,10 @@ carbsgram
 </tr>
 </table>
 <p>The <code>stargazer</code> package was created to display results of statistical models. Here is the basic display for the regression of carbs on calories (Table 12). The argument <code>single.row</code> puts estimates and standard errors (in parentheses) in one row. There are many options that can be tweaked, like including p-values or confidence intervals.</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" title="1"><span class="op">&gt;</span><span class="st"> </span>my.lm &lt;-<span class="st"> </span><span class="kw">lm</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals)</a>
-<a class="sourceLine" id="cb146-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">stargazer</span>(my.lm, <span class="dt">type=</span><span class="st">&quot;html&quot;</span>, </a>
-<a class="sourceLine" id="cb146-3" title="3"><span class="op">+</span><span class="st">     </span><span class="dt">title=</span><span class="st">&quot;Table 11: Regression of carbs on calories&quot;</span>, </a>
-<a class="sourceLine" id="cb146-4" title="4"><span class="op">+</span><span class="st">     </span><span class="dt">single.row=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" title="1"><span class="op">&gt;</span><span class="st"> </span>my.lm &lt;-<span class="st"> </span><span class="kw">lm</span>(carbsgram <span class="op">~</span><span class="st"> </span>calgram, <span class="dt">data=</span>Cereals)</a>
+<a class="sourceLine" id="cb147-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">stargazer</span>(my.lm, <span class="dt">type=</span><span class="st">&quot;html&quot;</span>, </a>
+<a class="sourceLine" id="cb147-3" title="3"><span class="op">+</span><span class="st">     </span><span class="dt">title=</span><span class="st">&quot;Table 11: Regression of carbs on calories&quot;</span>, </a>
+<a class="sourceLine" id="cb147-4" title="4"><span class="op">+</span><span class="st">     </span><span class="dt">single.row=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <table style="text-align:center">
 <caption>
 <strong>Table 11: Regression of carbs on calories</strong>
@@ -1271,10 +1271,10 @@ F Statistic
 </tr>
 </table>
 <p>Table 13 adds the argument <code>keep.stat</code> to specify that only sample size and <span class="math inline">\(R^2\)</span> should be included in the table. See the help file for more options to this argument.</p>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">stargazer</span>(my.lm, <span class="dt">type=</span><span class="st">&quot;html&quot;</span>, </a>
-<a class="sourceLine" id="cb147-2" title="2"><span class="op">+</span><span class="st">     </span><span class="dt">title=</span><span class="st">&quot;Table 12: Regression of carbs on calories&quot;</span>, </a>
-<a class="sourceLine" id="cb147-3" title="3"><span class="op">+</span><span class="st">     </span><span class="dt">single.row=</span><span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb147-4" title="4"><span class="op">+</span><span class="st">     </span><span class="dt">keep.stat=</span><span class="kw">c</span>(<span class="st">&quot;n&quot;</span>,<span class="st">&quot;rsq&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb148-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">stargazer</span>(my.lm, <span class="dt">type=</span><span class="st">&quot;html&quot;</span>, </a>
+<a class="sourceLine" id="cb148-2" title="2"><span class="op">+</span><span class="st">     </span><span class="dt">title=</span><span class="st">&quot;Table 12: Regression of carbs on calories&quot;</span>, </a>
+<a class="sourceLine" id="cb148-3" title="3"><span class="op">+</span><span class="st">     </span><span class="dt">single.row=</span><span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb148-4" title="4"><span class="op">+</span><span class="st">     </span><span class="dt">keep.stat=</span><span class="kw">c</span>(<span class="st">&quot;n&quot;</span>,<span class="st">&quot;rsq&quot;</span>))</a></code></pre></div>
 <table style="text-align:center">
 <caption>
 <strong>Table 12: Regression of carbs on calories</strong>
