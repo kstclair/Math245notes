@@ -5,17 +5,6 @@ This chapter contains content from Sleuth Chapters 7 and 8.
 ## The variables
 Suppose we have a quantitative response variable $y$ that we want to relate to an explantory (aka predictor) variable $x$. For now, we will assume that $x$ is also quantitative. 
 
-### R: visualizing
-A scatterplot is the basic graphic that plots each $y_i$ vs. $x_i$ on the x-y coordinate plane. Suppose the data set `mydata` contains variables named `y` and `x`. The "base" R command is a simple `plot` command that looks like 
-```{r, eval=FALSE}
-plot(y ~ x, data= mydata)  
-```
-Alternatively, we could use `ggplot2` package to create a scatterplot with the `geom_point()` geometry:
-```{r, eval=FALSE}
-library(ggplot2)
-ggplot(mydata, aes(x=x, y=y)) + geom_point()
-```
-
 
 ## The model form {#slr-model}
 This section describes the SLR model for a particular **population** of interest. Another way to frame the model is that it describes a hypothetical **data generating process (DGP)** that was used to generate the sample of data that we have on hand. 
@@ -221,15 +210,44 @@ $$
 
 ### Confidence intervals for $\mu_{y \mid x}$
 
-Here we are interested in estimating not just a $\beta$ with confidence, but we want to estimate the **mean** response for a given value of $x_0$. E.g. We want to estimate the mean nest depth when the temp is 5 degrees. 
+Here we are interested in estimating not just a $\beta$ with confidence, but we want to estimate the **mean** response for a given value of $x_0$. For example, suppose we want to estimate the **mean** nest depth when the temp is $x_0=8$ degrees. This mean parameter of interest is then:
+$$
+\mu_{depth \mid temp=8} = \beta_0 + \beta_1 (8)
+$$
+
 
 Our parameter of interest is $\mu_{y \mid x_0} = \beta_0 + \beta_1 x_0$ where $x_0$ is known and $\beta$'s need to be estimated. The natural estimator is just the fitted equation:
 $$
 \hat{\mu}_{y \mid x_0} = \hat{\beta}_0 + \hat{\beta}_1 x_0
 $$
+As will *any* estimator, we can measure the variability of this estimator with a SE:
+$$
+SE(\hat{\mu}_{y \mid x_0}) = \hat{\sigma} \sqrt{\dfrac{1}{n} + \dfrac{(x_0 - \bar{x})^2}{(n-1)s^2_x}}
+$$
+**Note!** This SE **depends on $\pmb{x_0}$**! It is miminized when $x_0$ equals the mean predictor value $\bar{x}$ and it grows as $x_0$ gets further from $\bar{x}$. Estimation is most precise in the "middle" of the predictor range and becomes less precise at the "edges" (where we usually have less data). 
 
+A 95% confidence interval for the mean response $\mu_{y \mid x_0}$ looks like
+$$
+\hat{\mu}_{y \mid x_0} \pm t^*_{df=n-2}SE(\hat{\mu}_{y \mid x_0}) 
+$$
 
 ### Prediction intervals for new cases
+To predict *one individual's future response* $Y$ for the predictor value $x_0$, we just use the  fitted equation:
+$$
+pred_{y \mid x_0} = \hat{\beta}_0 + \hat{\beta}_1 x_0
+$$
+(We use $pred_{y \mid x_0}$ to remind us which predictor value as used for prediction.) 
+
+Recall that the SLR model assumes the $Y$ values when $x=x_0$ are normally distributed with mean $\mu_{y \mid x_0}$ and SD $\sigma$. The SE of this prediction at $x_0$ takes into account (1) uncertainty in estimating the *mean*  $\mu_{y \mid x_0}$  and (2) variation in $Y$'s around the mean response ($\sigma$):
+$$
+SE(pred_{y \mid x_0}) = \hat{\sigma} \sqrt{1 + \dfrac{1}{n} + \dfrac{(x_0 - \bar{x})^2}{(n-1)s^2_x}} = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu}_{y \mid x_0})^2  }
+$$
+A 95% **prediction** interval for a future individual response at $x=x_0$ looks like
+$$
+pred_{y \mid x_0} \pm t^*_{df=n-2}SE(pred_{y \mid x_0})
+$$
+
+Predictions intervals feel and look similar to the mean response intervals above, but there is a very important conceptual difference: *prediction* means we are trying to "guess" at *one individual response* as opposed to the mean response of a large group of individuals. For example, if we want to understand nest depths for all nest build when temp is 8 degrees, then we care about estimating a fixed (but unknown) mean depth $\mu_{depth \mid temp=8}$. If we see a bird starting to build a nest at 8 degrees, then we care about predicting this one, randomly determined depth $Y$ using $pred_{depth \mid temp=8}$ and would use a prediction interval. 
 
 
 --------------------------------
@@ -278,6 +296,10 @@ You fit the linear model with mean $\mu_{Y \mid x} = \beta_0 + \beta_1 x$ with t
 wood.lm <- lm(depth~temp, data=wpdata)
 wood.lm
 ```
+We have mean parameter estimates:
+$$
+\hat{\beta}_0 = `r round(wood.lm$coefficients[1],3)` \ \ \ \ \hat{\beta}_0 = `r round(wood.lm$coefficients[2],3)`
+$$
 
 The object `wood.lm` is called a *linear model object* in R. We can add the regression line from this object to an existing *base R* plot of the data using the `abline` command.
 ```{r, fig.width=6, fig.height=4}
@@ -288,7 +310,6 @@ abline(wood.lm)
 
 The `ggplot2` package contains a `geom_smooth` geometry to add this SLR line:
 ```{r, fig.width=6, fig.height=4}
-library(ggplot2)
 ggplot(wpdata, aes(x=temp, y = depth)) + 
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) + 
@@ -305,6 +326,15 @@ The `summary` command is used for statistical inference for the intercept $\beta
 ```{r}
 summary(wood.lm)
 ```
+This output gives the  mean parameter estimates in the `Estimate` column of the main table:
+$$
+\hat{\beta}_0 = `r round(wood.lm$coefficients[1],3)` \ \ \ \ \hat{\beta}_0 = `r round(wood.lm$coefficients[2],3)`
+$$
+The estimated model SD $\sigma$ is given by `Residual standard error`:
+$$
+\hat{\sigma} = `r round(summary(wood.lm)$sigma,3)`
+$$
+
 
 You should know how to verify (or find) the test stats and p-values for $\beta_0$ and $\beta_1$ given by the `summary` command if you are given the estimates and SEs. For the slope test $H_0: \beta_1 = 0$ vs. $H_A: \beta_1 \neq 0$ we get a  $t$ test stat of
 
@@ -375,13 +405,25 @@ We can get a 95% confidence interval for the mean nest depth at 8 degrees Celsiu
 ```{r}
 predict(wood.lm, newdata = data.frame(temp=8), interval = "confidence", se.fit=T)
 ```
+The argument `se.fit=T` provides the SE of the mean response estimate. The estimated mean depth of all nests built at 8 degrees is 17.38 cm with a SE of 0.697 cm. We are 95% confident that the mean depth at 8 degrees is between 15.83 to 18.9 cm. 
 
-The argument `se.fit=T` provides the SE of the mean response estimate. The estimated mean depth of all nests built at 8 degrees is 17.38 cm with a SE of 0.697 cm. You can easily verify the computation of the CI:
+You can verify the computation of the SE and CI using summary stats for `temp` and the estimated parameter values from the `summary` command:
+$$
+\hat{\mu}_{temp \mid 8} = \hat{\beta}_0 + \hat{\beta}_1 (8) = `r round(wood.lm$coefficients[1],3)` + (`r round(wood.lm$coefficients[2],3)` )(8) = `r round(wood.lm$coefficients[1] + wood.lm$coefficients[2]*8,3)`
+$$
+$$
+SE(\hat{\mu}_{depth \mid 8}) = \hat{\sigma} \sqrt{\dfrac{1}{n} + \dfrac{(x_0 - \bar{x})^2}{(n-1)s^2_x}} = `r round(summary(wood.lm)$sigma, 3)` \sqrt{\dfrac{1}{12} + \dfrac{(8-`r round(mean(wpdata$temp),3)`)^2}{(12-1)`r round(sd(wpdata$temp),3)`^2}} = 0.6972
+$$
 
 ```{r}
-est <- 20.12228 -0.34218*8
-est
-est + c(-1,1)*qt(.975,10)*0.6972406
+nrow(wpdata)
+mean(wpdata$temp)
+sd(wpdata$temp)
+mn.est.se <- 2.33453*sqrt(1/12 + (8-11)^2/((12-1)*11.80909^2))
+mn.est.se
+mn.est <- 20.12228 -0.34218*8
+mn.est
+mn.est + c(-1,1)*qt(.975,10)*mn.est.se
 ```
 
 You can also include more than one predictor value temp in this function:
@@ -389,13 +431,18 @@ You can also include more than one predictor value temp in this function:
 predict(wood.lm, newdata = data.frame(temp=c(8,20)), interval = "confidence", se.fit=T)
 ```
 
-We can get a 95% prediction interval for the depth of one depth constructed at 8 degrees Celsius $\hat{Y} = pred(depth\mid temp=8)$  with the `predict` command with interval type `prediction` specified:
+We can get a 95% prediction interval for the depth of one depth constructed at 8 degrees Celsius $pred_{depth \mid temp=8}$  with the `predict` command with interval type `prediction` specified:
 
 ```{r}
 predict(wood.lm, newdata = data.frame(temp=8), interval = "prediction")
 ```
+We are 95% confident that a new nest built at 8 degrees will have a depth between 11.96 to 22.81 cm. 
+
 
 R does not give us the SE for prediction $SE(pred(Y \mid x_0)) = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu})^2}$ so we need to compute it by hand if we want its value:
+$$
+SE(pred_{depth \mid 8}) = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu})^2} =  \sqrt{`r round(summary(wood.lm)$sigma, 3)`^2 + 0.6972^2} = 2.436
+$$
 
 ```{r}
 se.pred <- sqrt(2.33453^2 + 0.6972406^2)

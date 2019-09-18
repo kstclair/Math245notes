@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-09-16">
+<meta name="date" content="2019-09-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -120,9 +120,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="slr.html"><a href="slr.html"><i class="fa fa-check"></i><b>2</b> Simple Linear Regression</a><ul>
-<li class="chapter" data-level="2.1" data-path="slr.html"><a href="slr.html#the-variables"><i class="fa fa-check"></i><b>2.1</b> The variables</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="slr.html"><a href="slr.html#r-visualizing"><i class="fa fa-check"></i><b>2.1.1</b> R: visualizing</a></li>
-</ul></li>
+<li class="chapter" data-level="2.1" data-path="slr.html"><a href="slr.html#the-variables"><i class="fa fa-check"></i><b>2.1</b> The variables</a></li>
 <li class="chapter" data-level="2.2" data-path="slr.html"><a href="slr.html#slr-model"><i class="fa fa-check"></i><b>2.2</b> The model form</a><ul>
 <li class="chapter" data-level="2.2.1" data-path="slr.html"><a href="slr.html#interpretation"><i class="fa fa-check"></i><b>2.2.1</b> Interpretation</a></li>
 <li class="chapter" data-level="2.2.2" data-path="slr.html"><a href="slr.html#slr-model-ex"><i class="fa fa-check"></i><b>2.2.2</b> Example: Woodpecker nests</a></li>
@@ -260,14 +258,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="the-variables" class="section level2">
 <h2><span class="header-section-number">2.1</span> The variables</h2>
 <p>Suppose we have a quantitative response variable <span class="math inline">\(y\)</span> that we want to relate to an explantory (aka predictor) variable <span class="math inline">\(x\)</span>. For now, we will assume that <span class="math inline">\(x\)</span> is also quantitative.</p>
-<div id="r-visualizing" class="section level3">
-<h3><span class="header-section-number">2.1.1</span> R: visualizing</h3>
-<p>A scatterplot is the basic graphic that plots each <span class="math inline">\(y_i\)</span> vs. <span class="math inline">\(x_i\)</span> on the x-y coordinate plane. Suppose the data set <code>mydata</code> contains variables named <code>y</code> and <code>x</code>. The “base” R command is a simple <code>plot</code> command that looks like</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span> mydata)  </code></pre></div>
-<p>Alternatively, we could use <code>ggplot2</code> package to create a scatterplot with the <code>geom_point()</code> geometry:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(mydata, <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
-</div>
 </div>
 <div id="slr-model" class="section level2">
 <h2><span class="header-section-number">2.2</span> The model form</h2>
@@ -353,7 +343,7 @@ SE(\hat{\beta}_1) = \hat{\sigma}\sqrt{\dfrac{1}{(n-1)s^2_x}} \ \ \ \ \ SE(\hat{\
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>wpdata&lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/woodpeckers.csv&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">77</span>)  
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">reg.sim</span>(<span class="dt">x=</span>wpdata<span class="op">$</span>temp, <span class="dt">beta0=</span><span class="dv">20</span>, <span class="dt">beta1=</span><span class="op">-</span>.<span class="dv">4</span>, <span class="dt">sigma=</span><span class="dv">2</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-21-1.png" width="480" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-19-1.png" width="480" /></p>
 <pre><code>## $b0
 ## [1] 20.8893
 ## 
@@ -368,7 +358,7 @@ SE(\hat{\beta}_1) = \hat{\sigma}\sqrt{\dfrac{1}{(n-1)s^2_x}} \ \ \ \ \ SE(\hat{\
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">7</span>)  <span class="co"># just makes simulation reproducible</span>
 <span class="op">&gt;</span><span class="st"> </span>slopes&lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">1000</span>,<span class="kw">reg.sim</span>(<span class="dt">x=</span>wpdata<span class="op">$</span>temp, <span class="dt">beta0=</span><span class="dv">20</span>, <span class="dt">beta1=</span><span class="op">-</span>.<span class="dv">4</span>, <span class="dt">sigma=</span><span class="dv">2</span>,<span class="dt">grph=</span>F)<span class="op">$</span>b1)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(slopes); <span class="kw">abline</span>(<span class="dt">v=</span><span class="op">-</span><span class="fl">0.4</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-22-1.png" width="480" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-20-1.png" width="480" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(slopes); <span class="kw">sd</span>(slopes)
 ## [1] -0.3974248
 ## [1] 0.05227315</code></pre></div>
@@ -384,7 +374,7 @@ SE(\hat{\beta}_1) = \hat{\sigma}\sqrt{\dfrac{1}{(n-1)s^2_x}} \ \ \ \ \ SE(\hat{\
 <span class="op">&gt;</span><span class="st"> </span>intercepts&lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">1000</span>,<span class="kw">reg.sim</span>(<span class="dt">x=</span>wpdata<span class="op">$</span>temp, <span class="dt">beta0=</span><span class="dv">20</span>, <span class="dt">beta1=</span><span class="op">-</span>.<span class="dv">4</span>, <span class="dt">sigma=</span><span class="dv">2</span>,<span class="dt">grph=</span>F)<span class="op">$</span>b0)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(intercepts,slopes); <span class="kw">abline</span>(<span class="dt">h=</span><span class="op">-</span>.<span class="dv">4</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>); <span class="kw">abline</span>(<span class="dt">v=</span><span class="dv">20</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">title</span>(<span class="st">&quot;Estimated slopes and intercepts&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">cor</span>(intercepts, slopes) <span class="co"># correlation between estimates</span>
 ## [1] -0.6928231
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">cov</span>(intercepts, slopes) <span class="co"># covariance between estimates</span>
@@ -418,13 +408,29 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 </div>
 <div id="confidence-intervals-for-mu_y-mid-x" class="section level3">
 <h3><span class="header-section-number">2.5.3</span> Confidence intervals for <span class="math inline">\(\mu_{y \mid x}\)</span></h3>
-<p>Here we are interested in estimating not just a <span class="math inline">\(\beta\)</span> with confidence, but we want to estimate the <strong>mean</strong> response for a given value of <span class="math inline">\(x_0\)</span>. E.g. We want to estimate the mean nest depth when the temp is 5 degrees.</p>
+<p>Here we are interested in estimating not just a <span class="math inline">\(\beta\)</span> with confidence, but we want to estimate the <strong>mean</strong> response for a given value of <span class="math inline">\(x_0\)</span>. For example, suppose we want to estimate the <strong>mean</strong> nest depth when the temp is <span class="math inline">\(x_0=8\)</span> degrees. This mean parameter of interest is then: <span class="math display">\[
+\mu_{depth \mid temp=8} = \beta_0 + \beta_1 (8)
+\]</span></p>
 <p>Our parameter of interest is <span class="math inline">\(\mu_{y \mid x_0} = \beta_0 + \beta_1 x_0\)</span> where <span class="math inline">\(x_0\)</span> is known and <span class="math inline">\(\beta\)</span>’s need to be estimated. The natural estimator is just the fitted equation: <span class="math display">\[
 \hat{\mu}_{y \mid x_0} = \hat{\beta}_0 + \hat{\beta}_1 x_0
+\]</span> As will <em>any</em> estimator, we can measure the variability of this estimator with a SE: <span class="math display">\[
+SE(\hat{\mu}_{y \mid x_0}) = \hat{\sigma} \sqrt{\dfrac{1}{n} + \dfrac{(x_0 - \bar{x})^2}{(n-1)s^2_x}}
+\]</span> <strong>Note!</strong> This SE <strong>depends on <span class="math inline">\(\pmb{x_0}\)</span></strong>! It is miminized when <span class="math inline">\(x_0\)</span> equals the mean predictor value <span class="math inline">\(\bar{x}\)</span> and it grows as <span class="math inline">\(x_0\)</span> gets further from <span class="math inline">\(\bar{x}\)</span>. Estimation is most precise in the “middle” of the predictor range and becomes less precise at the “edges” (where we usually have less data).</p>
+<p>A 95% confidence interval for the mean response <span class="math inline">\(\mu_{y \mid x_0}\)</span> looks like <span class="math display">\[
+\hat{\mu}_{y \mid x_0} \pm t^*_{df=n-2}SE(\hat{\mu}_{y \mid x_0}) 
 \]</span></p>
 </div>
 <div id="prediction-intervals-for-new-cases" class="section level3">
 <h3><span class="header-section-number">2.5.4</span> Prediction intervals for new cases</h3>
+<p>To predict <em>one individual’s future response</em> <span class="math inline">\(Y\)</span> for the predictor value <span class="math inline">\(x_0\)</span>, we just use the fitted equation: <span class="math display">\[
+pred_{y \mid x_0} = \hat{\beta}_0 + \hat{\beta}_1 x_0
+\]</span> (We use <span class="math inline">\(pred_{y \mid x_0}\)</span> to remind us which predictor value as used for prediction.)</p>
+<p>Recall that the SLR model assumes the <span class="math inline">\(Y\)</span> values when <span class="math inline">\(x=x_0\)</span> are normally distributed with mean <span class="math inline">\(\mu_{y \mid x_0}\)</span> and SD <span class="math inline">\(\sigma\)</span>. The SE of this prediction at <span class="math inline">\(x_0\)</span> takes into account (1) uncertainty in estimating the <em>mean</em> <span class="math inline">\(\mu_{y \mid x_0}\)</span> and (2) variation in <span class="math inline">\(Y\)</span>’s around the mean response (<span class="math inline">\(\sigma\)</span>): <span class="math display">\[
+SE(pred_{y \mid x_0}) = \hat{\sigma} \sqrt{1 + \dfrac{1}{n} + \dfrac{(x_0 - \bar{x})^2}{(n-1)s^2_x}} = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu}_{y \mid x_0})^2  }
+\]</span> A 95% <strong>prediction</strong> interval for a future individual response at <span class="math inline">\(x=x_0\)</span> looks like <span class="math display">\[
+pred_{y \mid x_0} \pm t^*_{df=n-2}SE(pred_{y \mid x_0})
+\]</span></p>
+<p>Predictions intervals feel and look similar to the mean response intervals above, but there is a very important conceptual difference: <em>prediction</em> means we are trying to “guess” at <em>one individual response</em> as opposed to the mean response of a large group of individuals. For example, if we want to understand nest depths for all nest build when temp is 8 degrees, then we care about estimating a fixed (but unknown) mean depth <span class="math inline">\(\mu_{depth \mid temp=8}\)</span>. If we see a bird starting to build a nest at 8 degrees, then we care about predicting this one, randomly determined depth <span class="math inline">\(Y\)</span> using <span class="math inline">\(pred_{depth \mid temp=8}\)</span> and would use a prediction interval.</p>
 <hr />
 </div>
 </div>
@@ -460,17 +466,17 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(wpdata<span class="op">$</span>temp)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(wpdata<span class="op">$</span>depth)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))  </code></pre></div>
 <p>Graphically explore the (“bivariate”) relationship between temp and depth with a scatterplot using the command <code>plot(y,x)</code>. Here is the <code>plot</code> version (with <code>pch</code> point character changed to give filled circles):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(depth <span class="op">~</span><span class="st"> </span>temp, <span class="dt">data=</span>wpdata, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">xlab=</span><span class="st">&quot;air temperature (C)&quot;</span>, 
 <span class="op">+</span><span class="st">      </span><span class="dt">ylab=</span><span class="st">&quot;nest depth (cm)&quot;</span>, <span class="dt">main=</span><span class="st">&quot;woodpeckers scatterplot&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-26-1.png" width="576" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-24-1.png" width="576" /></p>
 <p>Here is the <code>ggplot2</code> version with <code>labs</code> added to change labels and title:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(wpdata, <span class="kw">aes</span>(<span class="dt">x=</span>temp, <span class="dt">y =</span> depth)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;air temperature (C)&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;nest depth (cm)&quot;</span>, <span class="dt">title=</span> <span class="st">&quot;woodpeckers scatterplot&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-27-1.png" width="576" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-25-1.png" width="576" /></p>
 </div>
 <div id="the-least-squares-line-the-estimated-slr-model" class="section level3">
 <h3><span class="header-section-number">2.6.3</span> The least squares line (the estimated SLR model):</h3>
@@ -484,18 +490,20 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 ## Coefficients:
 ## (Intercept)         temp  
 ##     20.1223      -0.3422</code></pre></div>
+<p>We have mean parameter estimates: <span class="math display">\[
+\hat{\beta}_0 = 20.122 \ \ \ \ \hat{\beta}_0 = -0.342
+\]</span></p>
 <p>The object <code>wood.lm</code> is called a <em>linear model object</em> in R. We can add the regression line from this object to an existing <em>base R</em> plot of the data using the <code>abline</code> command.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(depth <span class="op">~</span><span class="st"> </span>temp, <span class="dt">data=</span>wpdata, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">xlab=</span><span class="st">&quot;air temperature (C)&quot;</span>, 
 <span class="op">+</span><span class="st">      </span><span class="dt">ylab=</span><span class="st">&quot;nest depth (cm)&quot;</span>, <span class="dt">main=</span><span class="st">&quot;regression of depth on temp&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">abline</span>(wood.lm)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-29-1.png" width="576" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-27-1.png" width="576" /></p>
 <p>The <code>ggplot2</code> package contains a <code>geom_smooth</code> geometry to add this SLR line:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(wpdata, <span class="kw">aes</span>(<span class="dt">x=</span>temp, <span class="dt">y =</span> depth)) <span class="op">+</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(wpdata, <span class="kw">aes</span>(<span class="dt">x=</span>temp, <span class="dt">y =</span> depth)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;air temperature (C)&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;nest depth (cm)&quot;</span>, <span class="dt">title=</span> <span class="st">&quot;woodpeckers scatterplot&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-30-1.png" width="576" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-28-1.png" width="576" /></p>
 <p>With <code>geom_smooth</code>, you need to specify the type of method used to relate <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span>. Adding <code>se=FALSE</code> removes a confidence interval for the mean trend. Notice that the <code>aes</code> aesthetic given in the <code>ggplot</code> function specifies the x and y variables to plot. The <code>geom</code>’s that follow this part of the command use this <code>aes</code> to create points and an estimated line.</p>
 </div>
 <div id="inference-for-coefficients" class="section level3">
@@ -520,6 +528,11 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 ## Residual standard error: 2.335 on 10 degrees of freedom
 ## Multiple R-squared:  0.7672, Adjusted R-squared:  0.7439 
 ## F-statistic: 32.96 on 1 and 10 DF,  p-value: 0.0001875</code></pre></div>
+<p>This output gives the mean parameter estimates in the <code>Estimate</code> column of the main table: <span class="math display">\[
+\hat{\beta}_0 = 20.122 \ \ \ \ \hat{\beta}_0 = -0.342
+\]</span> The estimated model SD <span class="math inline">\(\sigma\)</span> is given by <code>Residual standard error</code>: <span class="math display">\[
+\hat{\sigma} = 2.335
+\]</span></p>
 <p>You should know how to verify (or find) the test stats and p-values for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> given by the <code>summary</code> command if you are given the estimates and SEs. For the slope test <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. <span class="math inline">\(H_A: \beta_1 \neq 0\)</span> we get a <span class="math inline">\(t\)</span> test stat of</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>(<span class="op">-</span><span class="fl">0.34218</span> <span class="op">-</span><span class="st"> </span><span class="dv">0</span>)<span class="op">/</span><span class="fl">0.05961</span>
 ## [1] -5.740312</code></pre></div>
@@ -627,11 +640,25 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 ## 
 ## $residual.scale
 ## [1] 2.33453</code></pre></div>
-<p>The argument <code>se.fit=T</code> provides the SE of the mean response estimate. The estimated mean depth of all nests built at 8 degrees is 17.38 cm with a SE of 0.697 cm. You can easily verify the computation of the CI:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>est &lt;-<span class="st"> </span><span class="fl">20.12228</span> <span class="op">-</span><span class="fl">0.34218</span><span class="op">*</span><span class="dv">8</span>
-<span class="op">&gt;</span><span class="st"> </span>est
+<p>The argument <code>se.fit=T</code> provides the SE of the mean response estimate. The estimated mean depth of all nests built at 8 degrees is 17.38 cm with a SE of 0.697 cm. We are 95% confident that the mean depth at 8 degrees is between 15.83 to 18.9 cm.</p>
+<p>You can verify the computation of the SE and CI using summary stats for <code>temp</code> and the estimated parameter values from the <code>summary</code> command: <span class="math display">\[
+\hat{\mu}_{temp \mid 8} = \hat{\beta}_0 + \hat{\beta}_1 (8) = 20.122 + (-0.342 )(8) = 17.385
+\]</span> <span class="math display">\[
+SE(\hat{\mu}_{depth \mid 8}) = \hat{\sigma} \sqrt{\dfrac{1}{n} + \dfrac{(x_0 - \bar{x})^2}{(n-1)s^2_x}} = 2.335 \sqrt{\dfrac{1}{12} + \dfrac{(8-11)^2}{(12-1)11.809^2}} = 0.6972
+\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">nrow</span>(wpdata)
+## [1] 12
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(wpdata<span class="op">$</span>temp)
+## [1] 11
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">sd</span>(wpdata<span class="op">$</span>temp)
+## [1] 11.80909
+<span class="op">&gt;</span><span class="st"> </span>mn.est.se &lt;-<span class="st"> </span><span class="fl">2.33453</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">12</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">8</span><span class="op">-</span><span class="dv">11</span>)<span class="op">^</span><span class="dv">2</span><span class="op">/</span>((<span class="dv">12</span><span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="fl">11.80909</span><span class="op">^</span><span class="dv">2</span>))
+<span class="op">&gt;</span><span class="st"> </span>mn.est.se
+## [1] 0.6972407
+<span class="op">&gt;</span><span class="st"> </span>mn.est &lt;-<span class="st"> </span><span class="fl">20.12228</span> <span class="op">-</span><span class="fl">0.34218</span><span class="op">*</span><span class="dv">8</span>
+<span class="op">&gt;</span><span class="st"> </span>mn.est
 ## [1] 17.38484
-<span class="op">&gt;</span><span class="st"> </span>est <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qt</span>(.<span class="dv">975</span>,<span class="dv">10</span>)<span class="op">*</span><span class="fl">0.6972406</span>
+<span class="op">&gt;</span><span class="st"> </span>mn.est <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qt</span>(.<span class="dv">975</span>,<span class="dv">10</span>)<span class="op">*</span>mn.est.se
 ## [1] 15.83129 18.93839</code></pre></div>
 <p>You can also include more than one predictor value temp in this function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">predict</span>(wood.lm, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">temp=</span><span class="kw">c</span>(<span class="dv">8</span>,<span class="dv">20</span>)), <span class="dt">interval =</span> <span class="st">&quot;confidence&quot;</span>, <span class="dt">se.fit=</span>T)
@@ -649,11 +676,14 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 ## 
 ## $residual.scale
 ## [1] 2.33453</code></pre></div>
-<p>We can get a 95% prediction interval for the depth of one depth constructed at 8 degrees Celsius <span class="math inline">\(\hat{Y} = pred(depth\mid temp=8)\)</span> with the <code>predict</code> command with interval type <code>prediction</code> specified:</p>
+<p>We can get a 95% prediction interval for the depth of one depth constructed at 8 degrees Celsius <span class="math inline">\(pred_{depth \mid temp=8}\)</span> with the <code>predict</code> command with interval type <code>prediction</code> specified:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">predict</span>(wood.lm, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">temp=</span><span class="dv">8</span>), <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)
 ##        fit      lwr      upr
 ## 1 17.38487 11.95617 22.81356</code></pre></div>
-<p>R does not give us the SE for prediction <span class="math inline">\(SE(pred(Y \mid x_0)) = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu})^2}\)</span> so we need to compute it by hand if we want its value:</p>
+<p>We are 95% confident that a new nest built at 8 degrees will have a depth between 11.96 to 22.81 cm.</p>
+<p>R does not give us the SE for prediction <span class="math inline">\(SE(pred(Y \mid x_0)) = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu})^2}\)</span> so we need to compute it by hand if we want its value: <span class="math display">\[
+SE(pred_{depth \mid 8}) = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu})^2} =  \sqrt{2.335^2 + 0.6972^2} = 2.436
+\]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>se.pred &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">2.33453</span><span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.6972406</span><span class="op">^</span><span class="dv">2</span>)
 <span class="op">&gt;</span><span class="st"> </span>se.pred
 ## [1] 2.436427</code></pre></div>
@@ -671,7 +701,7 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;air temperature (C)&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;nest depth (cm)&quot;</span>, <span class="dt">title=</span> <span class="st">&quot;woodpeckers scatterplot with mean confidence interval&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 <p>Adding prediction interval bands takes slightly more work. First, create a new version of the data set that includes prediction intervals for each case in the data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>wpdata.pred &lt;-<span class="st"> </span><span class="kw">data.frame</span>(wpdata, <span class="kw">predict</span>(wood.lm, <span class="dt">interval=</span><span class="st">&quot;prediction&quot;</span>))
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(wpdata.pred)
@@ -689,7 +719,7 @@ t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="kw">aes</span>(<span class="dt">fill =</span> <span class="st">&quot;confidence&quot;</span>), <span class="dt">alpha =</span> .<span class="dv">4</span>) <span class="op">+</span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;air temperature (C)&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;nest depth (cm)&quot;</span>, 
 <span class="op">+</span><span class="st">        </span><span class="dt">title=</span> <span class="st">&quot;woodpeckers scatterplot&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;Type&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 </div>
 <div id="tools-for-displaying-your-model" class="section level3">
 <h3><span class="header-section-number">2.6.9</span> Tools for displaying your model</h3>
@@ -788,7 +818,7 @@ gitbook.start({
 },
 "download": null,
 "toc": {
-"collapse": "none"
+"collapse": "section"
 }
 });
 });
