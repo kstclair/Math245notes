@@ -258,16 +258,19 @@ We will revisit the woodpecker nesting data first described in Section \@ref(slr
 ### Load data    
 Let's suppose these 16 nests are a random sample of all nests in the collection region. The command `head(dataname)` produces a view of the first 5 rows of data.
 
-```{r}
+```{r, eval = FALSE}
 wpdata <- read.csv("http://people.carleton.edu/~kstclair/data/woodpeckers.csv")
 head(wpdata)
 dim(wpdata)
+```
+```{r, include = FALSE}
+wpdata <- read.csv("http://people.carleton.edu/~kstclair/data/woodpeckers.csv")
 ```
 
 ### EDA
 Start with univariate exploration:
 
-```{r}
+```{r, eval = FALSE}
 summary(wpdata)
 par(mfrow=c(1,2))
 hist(wpdata$temp)
@@ -277,13 +280,13 @@ par(mfrow=c(1,1))
 
 Graphically explore the ("bivariate") relationship between temp and depth with a scatterplot using the command `plot(y,x)`. Here is the `plot` version (with `pch` point character changed to give filled circles):
 
-```{r, fig.width=6, fig.height=4}
+```{r, fig.width=6, fig.height=4, eval = FALSE}
 plot(depth ~ temp, data=wpdata, pch=16, xlab="air temperature (C)", 
      ylab="nest depth (cm)", main="woodpeckers scatterplot")
 ```
 
 Here is the `ggplot2` version with `labs` added to change labels and title:
-```{r, fig.width=6, fig.height=4}
+```{r, fig.width=6, fig.height=4, eval = FALSE}
 library(ggplot2)
 ggplot(wpdata, aes(x=temp, y = depth)) + geom_point() +
   labs(x = "air temperature (C)", y= "nest depth (cm)", title= "woodpeckers scatterplot")
@@ -292,7 +295,11 @@ ggplot(wpdata, aes(x=temp, y = depth)) + geom_point() +
 ### The least squares line (the estimated SLR model):
 You fit the linear model with mean $\mu_{Y \mid x} = \beta_0 + \beta_1 x$ with the linear model function `lm(y ~ x, data=)`.
 
-```{r}
+```{r, eval = FALSE}
+wood.lm <- lm(depth~temp, data=wpdata)
+wood.lm
+```
+```{r, include = FALSE}
 wood.lm <- lm(depth~temp, data=wpdata)
 wood.lm
 ```
@@ -302,14 +309,14 @@ $$
 $$
 
 The object `wood.lm` is called a *linear model object* in R. We can add the regression line from this object to an existing *base R* plot of the data using the `abline` command.
-```{r, fig.width=6, fig.height=4}
+```{r, fig.width=6, fig.height=4, eval = FALSE}
 plot(depth ~ temp, data=wpdata, pch=16, xlab="air temperature (C)", 
      ylab="nest depth (cm)", main="regression of depth on temp")
 abline(wood.lm)
 ```
 
 The `ggplot2` package contains a `geom_smooth` geometry to add this SLR line:
-```{r, fig.width=6, fig.height=4}
+```{r, fig.width=6, fig.height=4, eval = FALSE}
 ggplot(wpdata, aes(x=temp, y = depth)) + 
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) + 
@@ -323,7 +330,7 @@ With `geom_smooth`, you need to specify the type of method used to relate $x$ to
 ### Inference for coefficients
 The `summary` command is used for statistical inference for the intercept $\beta_0$ and slope $\beta_1$:
 
-```{r}
+```{r, eval = FALSE}
 summary(wood.lm)
 ```
 This output gives the  mean parameter estimates in the `Estimate` column of the main table:
@@ -338,20 +345,20 @@ $$
 
 You should know how to verify (or find) the test stats and p-values for $\beta_0$ and $\beta_1$ given by the `summary` command if you are given the estimates and SEs. For the slope test $H_0: \beta_1 = 0$ vs. $H_A: \beta_1 \neq 0$ we get a  $t$ test stat of
 
-```{r}
+```{r, eval = FALSE}
 (-0.34218 - 0)/0.05961
 ```
 
 The p-value for this two sided test is the probability of being above +5.741 and below -5.741, or double the probability below -5.741 (since the t-distribution is symmetric around 0):
 
-```{r}
+```{r, eval = FALSE}
 pt(-5.741,10)
 2*pt(-5.741,10)
 ```
 
 A 95% confidence interval for the slope $\beta_1$ is computed from the t distribution with 10 degrees of freedom:
 
-```{r}
+```{r, eval = FALSE}
 qt(.975,10)
 -.34218 + c(-1,1)*qt(.975,10)*.05961
 confint(wood.lm)
@@ -363,7 +370,7 @@ The `confint` function gives the most accurate interval (no rounding error) but 
 ### Additional `lm` information
 The function `lm` creates a *linear model* object in R that has lots of information associated with it. Information includes the coefficient values, fitted values ($\hat{y}_i$), and residuals ($y_i - \hat{y}_i$):
 
-```{r}
+```{r, eval = FALSE}
 attributes(wood.lm)
 wood.lm$coefficients
 wood.lm$fitted.values   # predicted y values (y-hat)
@@ -371,7 +378,7 @@ wood.lm$residuals       # residuals for each data point
 ```
 
 There are also functions that act on `lm` objects like
-```{r}
+```{r, eval = FALSE}
 fitted(wood.lm)
 resid(wood.lm)
 vcov(wood.lm)  # variance and covariance matrix of beta estimates
@@ -380,19 +387,19 @@ vcov(wood.lm)  # variance and covariance matrix of beta estimates
 
 ### `broom` package: Tidy `lm` output
 The `broom` package contains functions that convert model objects (like a `lm` object) into "tidy" data frames. The `tidy` command summarizes model results:
-```{r}
+```{r, eval = FALSE}
 library(broom)
 tidy(wood.lm)
 ```
 Notice that the output object is called a "tibble" which is a type of data frame in R. 
 
 Here we can add confidence intervals for the model parameters to the output:
-```{r}
+```{r, eval = FALSE}
 tidy(wood.lm, conf.int=TRUE)
 ```
 
 The `augment` command augments the data frame used to create a `lm` with predicted values and residuals from the `lm` model:
-```{r}
+```{r, eval = FALSE}
 wpdata.aug <- augment(wood.lm)
 head(wpdata.aug)
 ```
@@ -402,7 +409,7 @@ The `.fitted` column gives the fitted values $\hat{y}_i$ for each case and the `
 ### Inference for the mean and predicted response
 We can get a 95% confidence interval for the mean nest depth at 8 degrees Celsius $\mu(depth\mid temp=8)$  with the `predict` command with interval type `confidence` specified:
 
-```{r}
+```{r, eval = FALSE}
 predict(wood.lm, newdata = data.frame(temp=8), interval = "confidence", se.fit=T)
 ```
 The argument `se.fit=T` provides the SE of the mean response estimate. The estimated mean depth of all nests built at 8 degrees is 17.38 cm with a SE of 0.697 cm. We are 95% confident that the mean depth at 8 degrees is between 15.83 to 18.9 cm. 
@@ -415,7 +422,7 @@ $$
 SE(\hat{\mu}_{depth \mid 8}) = \hat{\sigma} \sqrt{\dfrac{1}{n} + \dfrac{(x_0 - \bar{x})^2}{(n-1)s^2_x}} = `r round(summary(wood.lm)$sigma, 3)` \sqrt{\dfrac{1}{12} + \dfrac{(8-`r round(mean(wpdata$temp),3)`)^2}{(12-1)`r round(sd(wpdata$temp),3)`^2}} = 0.6972
 $$
 
-```{r}
+```{r, eval = FALSE}
 nrow(wpdata)
 mean(wpdata$temp)
 sd(wpdata$temp)
@@ -427,13 +434,13 @@ mn.est + c(-1,1)*qt(.975,10)*mn.est.se
 ```
 
 You can also include more than one predictor value temp in this function:
-```{r}
+```{r, eval = FALSE}
 predict(wood.lm, newdata = data.frame(temp=c(8,20)), interval = "confidence", se.fit=T)
 ```
 
 We can get a 95% prediction interval for the depth of one depth constructed at 8 degrees Celsius $pred_{depth \mid temp=8}$  with the `predict` command with interval type `prediction` specified:
 
-```{r}
+```{r, eval = FALSE}
 predict(wood.lm, newdata = data.frame(temp=8), interval = "prediction")
 ```
 We are 95% confident that a new nest built at 8 degrees will have a depth between 11.96 to 22.81 cm. 
@@ -444,14 +451,14 @@ $$
 SE(pred_{depth \mid 8}) = \sqrt{\hat{\sigma}^2 + SE(\hat{\mu})^2} =  \sqrt{`r round(summary(wood.lm)$sigma, 3)`^2 + 0.6972^2} = 2.436
 $$
 
-```{r}
+```{r, eval = FALSE}
 se.pred <- sqrt(2.33453^2 + 0.6972406^2)
 se.pred
 ```
 
 The predicted depth of one nest build at 8 degress is 17.38 cm with a SE of 2.44 cm. The 95% prediction interval produced above can be verified as follows:
 
-```{r}
+```{r, eval = FALSE}
 yhat <-  20.12228 -0.34218*8
 yhat
 yhat + c(-1,1)*qt(.975,10)*se.pred
@@ -460,7 +467,7 @@ yhat + c(-1,1)*qt(.975,10)*se.pred
 
 ### Adding confidence bands to a scatterplot
 The `geom_smooth` function in `ggplot2` adds a 95% confidence interval for $\mu_{y \mid x}$ around the estimated mean line:
-```{r}
+```{r, eval = FALSE}
 ggplot(wpdata, aes(x=temp, y = depth)) + 
   geom_point() +
   geom_smooth(method = "lm") + 
@@ -468,13 +475,13 @@ ggplot(wpdata, aes(x=temp, y = depth)) +
 ```
 
 Adding prediction interval bands takes slightly more work. First, create a new version of the data set that includes prediction intervals for each case in the data:
-```{r}
+```{r, eval = FALSE}
 wpdata.pred <- data.frame(wpdata, predict(wood.lm, interval="prediction"))
 head(wpdata.pred)
 ```
 
 Then add a `geom_ribbon` layer to the previous plot, with `ymin` and `ymax` determined by the prediction interval's lower (`lwr`) and upper (`upr`) bounds. The `fill` arguments in both layers below are not really needed, but they are used here to provide a legend label for the plot:
-```{r}
+```{r, eval = FALSE}
 ggplot(wpdata.pred, aes(x=temp, y = depth)) + 
   geom_point() +
     geom_ribbon(aes(x=temp, ymin = lwr, ymax = upr, fill = "prediction"), alpha = .1) +
@@ -494,7 +501,7 @@ stargazer(wood.lm, header=FALSE, single.row = TRUE, title = "SLR of depth on tem
 
 The `kable` function (from the `knitr` package) works well in all output environments (e.g. pdf, html, word). The input to this function needs to be a data frame, so we can use the `tidy` version of our model summary:
 
-```{r}
+```{r, eval = FALSE}
 library(knitr)
 kable(tidy(wood.lm, conf.int = TRUE), digits = 3)
 ```

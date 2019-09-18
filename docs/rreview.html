@@ -864,18 +864,18 @@ User interrupt requested</code></pre></li>
 <p>R has very sophisticated graphing capabilities. This handout just gives you a summary of some of the most basic graphs. More complicated graphic features will be explained as needed in class. R has <em>high-level</em> plotting commands that create a complete graph, <em>low-level</em> commands which add to an existing graph, and a graphing window layout <code>par</code> command. Use the help command to see these options, e.g. <code>?hist</code> for the histogram options.</p>
 <p>A bar graph of the categorical variable region is given by</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">barplot</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region))  </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-106-1.png" width="672" /></p>
 <p>The southern region contains the most counties in our sample (135) and the north east region the fewest counties (21). We can add a label to the y-axis and a title to the plot by adding the arguments</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">barplot</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region), <span class="dt">ylab=</span><span class="st">&quot;count&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Number of counties per region&quot;</span>)  </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
 <p>A histogram and boxplot of farms92 are given by</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(agstrat<span class="op">$</span>farms92, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>) </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-106-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(agstrat<span class="op">$</span>farms92, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>)  </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-106-2.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-108-2.png" width="672" /></p>
 <p>We can get a side-by-side boxplot of farms92 by region with</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">data =</span> agstrat, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>)  </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
 <p>Suppose we want to look at the distribution of counties across regions grouped by counties with fewer than 500 farms vs. 500 or more farms. First we need to create a factor variable that identifies counties as having less or more than 500 farms:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>agstrat<span class="op">$</span>farms500 &lt;-<span class="st"> </span><span class="kw">ifelse</span>(agstrat<span class="op">$</span>farms92 <span class="op">&lt;</span><span class="st"> </span><span class="dv">500</span>, <span class="st">&quot;fewer than 500 farms&quot;</span>, <span class="st">&quot;500 or more farms&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat<span class="op">$</span>farms500)  
@@ -888,7 +888,7 @@ User interrupt requested</code></pre></li>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;proportion&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;Number of farms&quot;</span>, 
 <span class="op">+</span><span class="st">        </span><span class="dt">title =</span> <span class="st">&quot;Number of farms (categorized) by region&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">prop.table</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region, agstrat<span class="op">$</span>farms500), <span class="dv">1</span>)
 ##     
 ##      500 or more farms fewer than 500 farms
@@ -902,13 +902,13 @@ User interrupt requested</code></pre></li>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_histogram</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Number of farms by region&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
 <p>We can also use the <code>ggplot2</code> package to get side-by-side boxplots grouped by a third variable. Here we can compare the distribution of total farm acreage in 1992 (<code>acres92</code>) by region for counties that have fewer than 500 farms vs. 500 or more farms:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(agstrat, <span class="kw">aes</span>(<span class="dt">x =</span> farms500, <span class="dt">y=</span>acres92)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Farm acres by number of farms and region&quot;</span>) </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
 <p>The relationship between median acreage across the four regions looks similar regardless of how many farms are present in a county (with western counties having the highest acreage). But for all four regions, it looks like the median acreage is highest for counties with fewer than 500 farms. Counties with fewer farms may tend to have larger farms than counties with more (smaller) farms across all four regions.</p>
 </div>
 <div id="reporting-results" class="section level3">
