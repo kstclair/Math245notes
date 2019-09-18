@@ -171,7 +171,7 @@ cov(intercepts, slopes) # covariance between estimates
 
 --------------------------------
 
-## Inference {#slr-inf}
+## Inference for mean parameters {#slr-inf}
 
 In intro stats, you used $t$ inference procedures for inference about population means since: (1) the sampling distribution of the sample mean was normally distributed and (2) we had to estimate its variability with a SE. The same goes for inference about the mean response parameters in a SLR model:
 $$
@@ -207,6 +207,9 @@ $$
 t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 $$
 
+----------------------------
+
+## Inference for average or predicted response {#slr-inf2}
 
 ### Confidence intervals for $\mu_{y \mid x}$
 
