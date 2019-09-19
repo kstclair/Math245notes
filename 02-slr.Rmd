@@ -388,7 +388,7 @@ vcov(wood.lm)  # variance and covariance matrix of beta estimates
 ```
 
 
-### `broom` package: Tidy `lm` output
+### `broom` package: Tidy `lm` output {#slr-broom}
 The `broom` package contains functions that convert model objects (like a `lm` object) into "tidy" data frames. The `tidy` command summarizes model results:
 ```{r, eval = TRUE}
 library(broom)
@@ -497,10 +497,14 @@ ggplot(wpdata.pred, aes(x=temp, y = depth)) +
 ### Tools for displaying your model
 As described in the Formatting Tables in Markdown (Section \@ref(markdown-tables)), you can use the package `stargazer` to create a nice table of model results in your pdf. The entire R chunk to do this in a `pdf` doc format is shown below (but not evaluated in this html book). You will need to add the R chunk option `results='asis'` to get the table formatted correctly. I also include the `message=FALSE` option in the chunk below that runs the library command to suppress the automatic message created when running the `library` command with `stargazer`. 
 
-<pre><code>```{r, results='asis', message=FALSE}
+
+````markdown
+`r ''````{r, results='asis', message=FALSE}
 library(stargazer)
 stargazer(wood.lm, header=FALSE, single.row = TRUE, title = "SLR of depth on temp")
-```</code></pre>
+```
+````
+````
 
 The `kable` function (from the `knitr` package) works well in all output environments (e.g. pdf, html, word). The input to this function needs to be a data frame, so we can use the `tidy` version of our model summary:
 
@@ -515,7 +519,120 @@ kable(tidy(wood.lm, conf.int = TRUE), digits = 3)
 
 ## Checking model assumptions and fit {#slr-assump}
 
+Recall the SLR model assumptions from \@ref(slr-model):
 
+$$
+Y_i = \beta_0 + \beta_1 x_i + \epsilon_i \ \ \ \ \ \epsilon_i \sim N(0, \sigma)
+$$
+
+- **Linearity:** The mean response varies linearly with $x$.
+- **Constant SD:** $SD(Y\mid x)=\sigma$ describes the SD of $Y$'s in the population around a given mean value $\mu_{y\mid x}$. An **equivalent** statement of this assumption is that the model *errors* should not be associated with $x$. 
+- **Normality:** The shape of population response values around $\mu_{y\mid x}$ is described by a normal distribution model.  
+- **Indepedence:** Given a predictor value of $x$, all responses $Y$ occur independently of each other. An **equivalent** statement of this assumption is that the model *errors* are independent. 
+
+### Residuals 
+**If** all four model assumptions are met, then our model errors $\epsilon_i$'s will be independent and distributed like $N(0,\sigma)$. Now we can't actually "see" the model errors unless we know the true parameter values in the population since
+$$
+\epsilon_i = y_i - (\beta_0 + \beta_1 x_i)
+$$
+
+The closest thing we have to the model errors are the fitted model residuals computed using the **estimated** model parameters:
+$$
+r_i = y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i)
+$$
+Residuals for a fitted model are a **diagnostic** tool to help check whether a model fit to data seems to match the true model form that generated the data.
+
+### Residual plot: linearity and constant variance
+
+A **residual** plot is constructed by plotting $r_i$ (y-axis) against $x_i$ (x-axis). A horizontal reference line at $y=0$ is usually added (since the mean residual value is always 0). 
+
+- **Linearity**: This assumption is met if, at each x-value,  you see similar scatter of points (residuals) above and below the 0-reference line.
+- **Constant variance**: This assumption is met if you see a similar magnitude of point scatter around the 0-reference line as you move along the x-axis. 
+
+A residual plot that meets both these conditions is called a **null** plot. 
+
+Watch out for
+
+- **curvature** which suggests the mean function relating $y$ and $x$ may not be linear
+- **nonconstant variation** which is seem in "fan" shaped plots
+- **outliers** which can have a large influence on the fitted model
+
+#### Example: Residual plot
+
+Let's revisit the woodpecker nesting depth model and use the `broom` package to add residuals to the `wpdata` data frame (Section \@ref(slr-broom)):
+
+```{r}
+# model fit above in Section 2.7 example
+wpdata<- read.csv("http://people.carleton.edu/~kstclair/data/woodpeckers.csv")
+wood.lm<- lm(depth~temp, data=wpdata)
+library(broom)
+wpdata.aug <- augment(wood.lm)
+head(wpdata.aug)
+```
+
+The residual plot will put the predictor  `temp` on the x-axis and `.resid` on the y-axis:
+```{r}
+library(ggplot2)
+ggplot(wpdata.aug, aes(x = temp, y = .resid)) +
+  geom_point()  +
+  geom_hline(yintercept = 0, linetype= "dashed")
+```
+
+Don't forget to use the augmented data frame `wpdata.aug` that contains the residuals. The layer `geom_hline` adds the horizontal reference line at 0. 
+
+**Interpretation:** There are no majors trends seen in this residual plot. Generally, it is hard to prove or disprove model assumptions when we only observe 12 data points!
+
+### Residual normal QQ plot
+
+A **normal QQ plot** for a variable plots observed **q**uartiles against the theoretical **q**uartiles from a normal model. If these points follow a line then the data is approximately normal. Here is a general guide for interpreting non-linear trends that indicate a non-normal distribution:
+
+- Concave up: the distribution is right skewed
+- Concave down: the distribution is left skewed
+- S-shaped: the distribution is symmetric but the tails are either too short (not enough variation) or too long (too much variation) to be normally distributed.
+
+We can check the **normality assumption** by plotting residuals with a normal QQ plot. You can also use a histogram of residuals to help interpret the normal QQ plot. 
+
+#### Example: Residual normal QQ plot
+
+Back to the augmented woodpecker data set. A histogram of the residuals shows a slightly right skewed distribution.
+```{r}
+hist(wpdata.aug$.resid)
+```
+
+The aesthetic used for a QQ plot in a `ggplot` is `sample = variable`, then `geom_qq` and `geom_qq_line` are the layers used:
+```{r}
+ggplot(wpdata.aug, aes(sample = .resid)) +
+  geom_qq() + 
+  geom_qq_line()
+```
+
+**Interpretation:** The QQ plot also suggests a slightly longer right tail because it is (sort of) concave up. But, the QQ plot also clearly shows that this feature could just be due to two cases with residual values that are slightly higher than all others. Again, because there are only 12 data points these two cases could just be due to chance and we can conclude that there aren't any strong indications of a non-normal distribution. 
+
+### Independence
+
+
+
+### Robustness against violations
+
+**Robustness** of a statistical method means the conclusions we make using the method aren't all that senstive to assumptions used to construct the method. Can we trust our SLR model inferences if a model assumption is violated? 
+
+Inference about $\beta_0$, $\beta_1$, and $\mu_{y \mid x}$ from a SLR model are only robust against violations of the normality assumption. If $n$ is large enough, then the Central Limit Theorem tells us that t-tests and t-CIs are still accurate. 
+
+SLR modeling is **not** robust against any other violations:
+
+- **Linearity:** If your fitted mean model doesn't match the form of the true mean then you will get incorrect inferences about predictor effects, mean responses, predicted responses, etc. Even your estimated model SD will be wrong!
+- **Constant variance and independence:** If violated, the SE's produced by the SLR model fit will not accuractely reflect the true uncertainty in our estimated parameters or predictions.
+- **Normality for prediction** If the normality assumption is violated, then our prediction intervals will not capture the value of a new response "95% of the time". (There is no CLT and "large n" to help us here when we are trying to predict *one* response!)
+
+
+### "Fixes" to violations
+
+Here are some suggestions if a particular assumption is violated. The first part to consider "fixing" is linearity. If the mean function is not correctly specified then that will likely cause the other assumptions to not hold.
+
+- **Linearity:** transform one or both variables to a different scale (e.g. logarithm, square root, reciprocal), modify the mean function (e.g. add a quadratic term), try non-linear regression
+- **Constant variance:** tranform the response variable, weighted regression
+- **Normality:** transform the response variable
+- **Independence:** add more predictors, use a model with correlated errors (e.g. mixed effects, time series, spatial, etc)
 
 --------------------------------
 
