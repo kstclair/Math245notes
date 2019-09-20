@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-09-18">
+<meta name="date" content="2019-09-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -852,6 +852,7 @@ r_i = y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i)
 <li>Concave up: the distribution is right skewed</li>
 <li>Concave down: the distribution is left skewed</li>
 <li>S-shaped: the distribution is symmetric but the tails are either too short (not enough variation) or too long (too much variation) to be normally distributed.</li>
+<li>More help! Check out <a href="https://seankross.com/2016/02/29/A-Q-Q-Plot-Dissection-Kit.html">this website</a> for a deeper discussion of the interpretation of normal QQ plots</li>
 </ul>
 <p>We can check the <strong>normality assumption</strong> by plotting residuals with a normal QQ plot. You can also use a histogram of residuals to help interpret the normal QQ plot.</p>
 <div id="example-residual-normal-qq-plot" class="section level4">
@@ -859,16 +860,25 @@ r_i = y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i)
 <p>Back to the augmented woodpecker data set. A histogram of the residuals shows a slightly right skewed distribution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(wpdata.aug<span class="op">$</span>.resid)</code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
-<p>The aesthetic used for a QQ plot in a <code>ggplot</code> is <code>sample = variable</code>, then <code>geom_qq</code> and <code>geom_qq_line</code> are the layers used:</p>
+<p>A quick way to get a normal QQ plot of residuals is to plug the <code>lm</code> object into the <code>plot</code> command and request plot number 2:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(wood.lm, <span class="dt">which =</span> <span class="dv">2</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p>Alternatively, you could use a <code>ggplot</code>. The aesthetic used for a QQ plot in a <code>ggplot</code> is <code>sample = variable</code>, then <code>geom_qq</code> and <code>geom_qq_line</code> are the layers used:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(wpdata.aug, <span class="kw">aes</span>(<span class="dt">sample =</span> .resid)) <span class="op">+</span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_qq</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_qq_line</span>()</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 <p><strong>Interpretation:</strong> The QQ plot also suggests a slightly longer right tail because it is (sort of) concave up. But, the QQ plot also clearly shows that this feature could just be due to two cases with residual values that are slightly higher than all others. Again, because there are only 12 data points these two cases could just be due to chance and we can conclude that there aren’t any strong indications of a non-normal distribution.</p>
 </div>
 </div>
 <div id="independence" class="section level3">
 <h3><span class="header-section-number">2.8.4</span> Independence</h3>
+<p>Independence of errors is probably the hardest assumption to check because it often depends on how the data was collected. Two common scenarios that lead to data that violates this assumption are</p>
+<ul>
+<li><strong>temporal correlation:</strong> This means correlation of errors because measurements were collected over time. Responses (and errors) measured close in time are more likely to be similar in value that responses measured further apart in time. For example, daily temperature readings in Northfield are temporally correlated.</li>
+<li><strong>spatial correlation:</strong> This means correlation of errors because measurements were collected over a spatial region Responses (and errors) measured close together in space are more likely to be similar in value that responses measured further apart in space. For example, home values a sample of houses in St. Paul are likely spatially correlated since the value of a house is likely more similar to it’s neighbor than to a house across town.</li>
+</ul>
+<p>One method of checking for these two types of dependence is to plot the model residuals <span class="math inline">\(r_i\)</span> (y-axis) against a variable that measures, or is associated, with time or space. For the time example, plot residuals against day of the year. For the spatial example, plot residuals against a categorical “neighborhood” variable.</p>
 </div>
 <div id="robustness-against-violations" class="section level3">
 <h3><span class="header-section-number">2.8.5</span> Robustness against violations</h3>

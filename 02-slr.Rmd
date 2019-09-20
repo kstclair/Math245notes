@@ -582,6 +582,7 @@ Don't forget to use the augmented data frame `wpdata.aug` that contains the resi
 
 **Interpretation:** There are no majors trends seen in this residual plot. Generally, it is hard to prove or disprove model assumptions when we only observe 12 data points!
 
+
 ### Residual normal QQ plot
 
 A **normal QQ plot** for a variable plots observed **q**uartiles against the theoretical **q**uartiles from a normal model. If these points follow a line then the data is approximately normal. Here is a general guide for interpreting non-linear trends that indicate a non-normal distribution:
@@ -589,6 +590,7 @@ A **normal QQ plot** for a variable plots observed **q**uartiles against the the
 - Concave up: the distribution is right skewed
 - Concave down: the distribution is left skewed
 - S-shaped: the distribution is symmetric but the tails are either too short (not enough variation) or too long (too much variation) to be normally distributed.
+- More help! Check out [this website](https://seankross.com/2016/02/29/A-Q-Q-Plot-Dissection-Kit.html) for a deeper discussion of the interpretation of normal QQ plots
 
 We can check the **normality assumption** by plotting residuals with a normal QQ plot. You can also use a histogram of residuals to help interpret the normal QQ plot. 
 
@@ -599,7 +601,13 @@ Back to the augmented woodpecker data set. A histogram of the residuals shows a 
 hist(wpdata.aug$.resid)
 ```
 
-The aesthetic used for a QQ plot in a `ggplot` is `sample = variable`, then `geom_qq` and `geom_qq_line` are the layers used:
+A quick way to get a normal QQ plot of residuals is to plug the `lm` object into the `plot` command and request plot number 2:
+```{r}
+plot(wood.lm, which = 2)
+```
+
+
+Alternatively, you could use a `ggplot`. The aesthetic used for a QQ plot in a `ggplot` is `sample = variable`, then `geom_qq` and `geom_qq_line` are the layers used:
 ```{r}
 ggplot(wpdata.aug, aes(sample = .resid)) +
   geom_qq() + 
@@ -610,6 +618,12 @@ ggplot(wpdata.aug, aes(sample = .resid)) +
 
 ### Independence
 
+Independence of errors is probably the hardest assumption to check because it often depends on how the data was collected. Two common scenarios that lead to data that violates this assumption are
+
+- **temporal correlation:** This means correlation of errors because measurements were collected over time. Responses (and errors) measured close in time are more likely to be similar in value that responses measured further apart in time. For example, daily temperature readings in Northfield are temporally correlated. 
+- **spatial correlation:** This means correlation of errors because measurements were collected over a spatial region Responses (and errors) measured close together in space are more likely to be similar in value that responses measured further apart in space. For example, home values a sample of houses in St. Paul are likely spatially correlated since the value of a house is likely more similar to it's neighbor than to a house across town. 
+
+One method of checking for these two types of dependence is to plot the model residuals $r_i$ (y-axis) against a variable that measures, or is associated, with time or space. For the time example, plot residuals against day of the year. For the spatial example, plot residuals against a categorical "neighborhood" variable. 
 
 
 ### Robustness against violations
