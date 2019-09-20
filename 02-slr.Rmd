@@ -87,7 +87,7 @@ $$
 
 ## SLR model simulation {#slr-sim}
 
-Download the Markdown of this activity: [.Rmd](https://kstclair.github.io/Math245/Rhandouts/day3RegLineSim.Rmd).
+Download the Markdown of this activity: [.Rmd](https://kstclair.github.io/Math245/Rhandouts/Day3RegLineSim.Rmd).
 
 
 ### Simulation function
