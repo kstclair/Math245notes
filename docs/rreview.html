@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-09-19">
+<meta name="date" content="2019-09-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -161,7 +161,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.8.5" data-path="slr.html"><a href="slr.html#robustness-against-violations"><i class="fa fa-check"></i><b>2.8.5</b> Robustness against violations</a></li>
 <li class="chapter" data-level="2.8.6" data-path="slr.html"><a href="slr.html#fixes-to-violations"><i class="fa fa-check"></i><b>2.8.6</b> “Fixes” to violations</a></li>
 </ul></li>
-<li class="chapter" data-level="2.9" data-path="slr.html"><a href="slr.html#slr-example2"><i class="fa fa-check"></i><b>2.9</b> Example: SLR assumptions (day 4)</a></li>
+<li class="chapter" data-level="2.9" data-path="slr.html"><a href="slr.html#slr-example2"><i class="fa fa-check"></i><b>2.9</b> Example: SLR assumptions (day 4/5)</a><ul>
+<li class="chapter" data-level="2.9.1" data-path="slr.html"><a href="slr.html#drug-offender-sentences"><i class="fa fa-check"></i><b>2.9.1</b> Drug offender sentences</a></li>
+<li class="chapter" data-level="2.9.2" data-path="slr.html"><a href="slr.html#case-study-15.2---global-warming"><i class="fa fa-check"></i><b>2.9.2</b> Case study 15.2 - Global Warming</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="mlr.html"><a href="mlr.html"><i class="fa fa-check"></i><b>3</b> Multiple Regression</a></li>
 <li class="chapter" data-level="4" data-path="logistic.html"><a href="logistic.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a></li>
@@ -672,17 +675,17 @@ User interrupt requested</code></pre></li>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>w &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>)  
 <span class="op">&gt;</span><span class="st"> </span>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">w=</span>w)  
 <span class="op">&gt;</span><span class="st"> </span>my.data 
-##     x y           w
-## 1   1 a -0.04288760
-## 2   2 a  0.97653314
-## 3   3 a  1.53579735
-## 4   4 a  0.45696011
-## 5   5 a  0.78561124
-## 6   6 b  1.17235083
-## 7   7 b  0.40504510
-## 8   8 b  0.05182046
-## 9   9 b -0.81450762
-## 10 10 b  0.79009135</code></pre></div>
+##     x y          w
+## 1   1 a -1.4780188
+## 2   2 a  0.2886472
+## 3   3 a -0.8875075
+## 4   4 a -0.1875686
+## 5   5 a -0.8115107
+## 6   6 b -1.6797495
+## 7   7 b  0.5588038
+## 8   8 b  1.4849354
+## 9   9 b -0.1838872
+## 10 10 b -0.7499942</code></pre></div>
 </div>
 <div id="missing-data" class="section level3">
 <h3><span class="header-section-number">C.2.7</span> Missing Data</h3>
@@ -691,51 +694,51 @@ User interrupt requested</code></pre></li>
 <span class="op">&gt;</span><span class="st"> </span>v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>,<span class="dv">5</span>), <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)
 <span class="op">&gt;</span><span class="st"> </span>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">u=</span>u, <span class="dt">v=</span>v)  
 <span class="op">&gt;</span><span class="st"> </span>my.data   
-##     x y           w  u  v
-## 1   1 a -0.04288760 NA NA
-## 2   2 a  0.97653314  2 NA
-## 3   3 a  1.53579735  3 NA
-## 4   4 a  0.45696011  4 NA
-## 5   5 a  0.78561124  5 NA
-## 6   6 b  1.17235083 NA  1
-## 7   7 b  0.40504510  7  2
-## 8   8 b  0.05182046  8  3
-## 9   9 b -0.81450762  9  4
-## 10 10 b  0.79009135 10  5</code></pre></div>
+##     x y          w  u  v
+## 1   1 a -1.4780188 NA NA
+## 2   2 a  0.2886472  2 NA
+## 3   3 a -0.8875075  3 NA
+## 4   4 a -0.1875686  4 NA
+## 5   5 a -0.8115107  5 NA
+## 6   6 b -1.6797495 NA  1
+## 7   7 b  0.5588038  7  2
+## 8   8 b  1.4849354  8  3
+## 9   9 b -0.1838872  9  4
+## 10 10 b -0.7499942 10  5</code></pre></div>
 <p>We can see which entries in u are missing with the <code>is.na</code> command</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">is.na</span>(my.data<span class="op">$</span>u)  
 ##  [1]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</code></pre></div>
 <p>or with the <code>summary</code> command:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(my.data)
 ##        x         y           w                 u               v    
-##  Min.   : 1.00   a:5   Min.   :-0.8145   Min.   : 2.00   Min.   :1  
-##  1st Qu.: 3.25   b:5   1st Qu.: 0.1401   1st Qu.: 3.75   1st Qu.:2  
-##  Median : 5.50         Median : 0.6213   Median : 6.00   Median :3  
-##  Mean   : 5.50         Mean   : 0.5317   Mean   : 6.00   Mean   :3  
-##  3rd Qu.: 7.75         3rd Qu.: 0.9299   3rd Qu.: 8.25   3rd Qu.:4  
-##  Max.   :10.00         Max.   : 1.5358   Max.   :10.00   Max.   :5  
+##  Min.   : 1.00   a:5   Min.   :-1.6797   Min.   : 2.00   Min.   :1  
+##  1st Qu.: 3.25   b:5   1st Qu.:-0.8685   1st Qu.: 3.75   1st Qu.:2  
+##  Median : 5.50         Median :-0.4688   Median : 6.00   Median :3  
+##  Mean   : 5.50         Mean   :-0.3646   Mean   : 6.00   Mean   :3  
+##  3rd Qu.: 7.75         3rd Qu.: 0.1705   3rd Qu.: 8.25   3rd Qu.:4  
+##  Max.   :10.00         Max.   : 1.4849   Max.   :10.00   Max.   :5  
 ##                                          NA&#39;s   :2       NA&#39;s   :5</code></pre></div>
 <p>We can use the <code>drop_na</code> command from the <code>tidyr</code> package to create an <code>NA</code>-free version of our data frame. Applying it to the entire data frame returns only rows that have observations for all variables:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(tidyr)
 <span class="op">&gt;</span><span class="st"> </span>my.data.noNA &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data)
 <span class="op">&gt;</span><span class="st"> </span>my.data.noNA
-##     x y           w  u v
-## 7   7 b  0.40504510  7 2
-## 8   8 b  0.05182046  8 3
-## 9   9 b -0.81450762  9 4
-## 10 10 b  0.79009135 10 5</code></pre></div>
+##     x y          w  u v
+## 7   7 b  0.5588038  7 2
+## 8   8 b  1.4849354  8 3
+## 9   9 b -0.1838872  9 4
+## 10 10 b -0.7499942 10 5</code></pre></div>
 <p>There are times when you only want to remove NA’s for a limited number of variables. Add these variable names as arguments to the <code>drop_na</code> command to only remove rows with NA’s for those variables. Here we only remove <code>NA</code>s from <code>u</code> (rows 1 and 6):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>my.data.noNAu &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data, u)
 <span class="op">&gt;</span><span class="st"> </span>my.data.noNAu
-##     x y           w  u  v
-## 2   2 a  0.97653314  2 NA
-## 3   3 a  1.53579735  3 NA
-## 4   4 a  0.45696011  4 NA
-## 5   5 a  0.78561124  5 NA
-## 7   7 b  0.40504510  7  2
-## 8   8 b  0.05182046  8  3
-## 9   9 b -0.81450762  9  4
-## 10 10 b  0.79009135 10  5</code></pre></div>
+##     x y          w  u  v
+## 2   2 a  0.2886472  2 NA
+## 3   3 a -0.8875075  3 NA
+## 4   4 a -0.1875686  4 NA
+## 5   5 a -0.8115107  5 NA
+## 7   7 b  0.5588038  7  2
+## 8   8 b  1.4849354  8  3
+## 9   9 b -0.1838872  9  4
+## 10 10 b -0.7499942 10  5</code></pre></div>
 <p>Sometimes data sets (especially “read-world”&quot; data) do not use blank fields to indicate missing data. For example, perhaps an unrealistic value is given as filler for a missing data point, like <code>-99</code> for a positive integer variable or <code>9999</code> for a smaller scale variable. The source where you find your data should tell you if special fields (like <code>-99</code> or <code>9999</code>) are used to indicate missing data. Once you determine what the missing data indicator is, you can import the data set using the <code>read.csv</code> command with the added argument <code>na.strings = c(&quot;-99&quot;,&quot; &quot;)</code>. This argument tells R that missing data is coded either as an <code>NA</code>, a blank entry or as a <code>-99</code> entry.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>mydata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;&lt;file path&gt;&quot;</span>, <span class="dt">na.strings =</span> <span class="kw">c</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot; &quot;</span>, <span class="st">&quot;-99&quot;</span>))</code></pre></div>
 </div>
@@ -873,18 +876,18 @@ User interrupt requested</code></pre></li>
 <p>R has very sophisticated graphing capabilities. This handout just gives you a summary of some of the most basic graphs. More complicated graphic features will be explained as needed in class. R has <em>high-level</em> plotting commands that create a complete graph, <em>low-level</em> commands which add to an existing graph, and a graphing window layout <code>par</code> command. Use the help command to see these options, e.g. <code>?hist</code> for the histogram options.</p>
 <p>A bar graph of the categorical variable region is given by</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">barplot</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region))  </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-120-1.png" width="672" /></p>
 <p>The southern region contains the most counties in our sample (135) and the north east region the fewest counties (21). We can add a label to the y-axis and a title to the plot by adding the arguments</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">barplot</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region), <span class="dt">ylab=</span><span class="st">&quot;count&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Number of counties per region&quot;</span>)  </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-121-1.png" width="672" /></p>
 <p>A histogram and boxplot of farms92 are given by</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(agstrat<span class="op">$</span>farms92, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>) </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-122-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(agstrat<span class="op">$</span>farms92, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>)  </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-113-2.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-122-2.png" width="672" /></p>
 <p>We can get a side-by-side boxplot of farms92 by region with</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">data =</span> agstrat, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>)  </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
 <p>Suppose we want to look at the distribution of counties across regions grouped by counties with fewer than 500 farms vs. 500 or more farms. First we need to create a factor variable that identifies counties as having less or more than 500 farms:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>agstrat<span class="op">$</span>farms500 &lt;-<span class="st"> </span><span class="kw">ifelse</span>(agstrat<span class="op">$</span>farms92 <span class="op">&lt;</span><span class="st"> </span><span class="dv">500</span>, <span class="st">&quot;fewer than 500 farms&quot;</span>, <span class="st">&quot;500 or more farms&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat<span class="op">$</span>farms500)  
@@ -897,7 +900,7 @@ User interrupt requested</code></pre></li>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;proportion&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;Number of farms&quot;</span>, 
 <span class="op">+</span><span class="st">        </span><span class="dt">title =</span> <span class="st">&quot;Number of farms (categorized) by region&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">prop.table</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region, agstrat<span class="op">$</span>farms500), <span class="dv">1</span>)
 ##     
 ##      500 or more farms fewer than 500 farms
@@ -911,13 +914,13 @@ User interrupt requested</code></pre></li>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_histogram</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Number of farms by region&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
 <p>We can also use the <code>ggplot2</code> package to get side-by-side boxplots grouped by a third variable. Here we can compare the distribution of total farm acreage in 1992 (<code>acres92</code>) by region for counties that have fewer than 500 farms vs. 500 or more farms:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(agstrat, <span class="kw">aes</span>(<span class="dt">x =</span> farms500, <span class="dt">y=</span>acres92)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Farm acres by number of farms and region&quot;</span>) </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
 <p>The relationship between median acreage across the four regions looks similar regardless of how many farms are present in a county (with western counties having the highest acreage). But for all four regions, it looks like the median acreage is highest for counties with fewer than 500 farms. Counties with fewer farms may tend to have larger farms than counties with more (smaller) farms across all four regions.</p>
 </div>
 <div id="reporting-results" class="section level3">

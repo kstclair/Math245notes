@@ -650,4 +650,121 @@ Here are some suggestions if a particular assumption is violated. The first part
 
 --------------------------------
 
-## Example: SLR assumptions (day 4) {#slr-example2}
+## Example: SLR assumptions (day 4/5) {#slr-example2}
+
+
+
+### Drug offender sentences
+The data set `DrugOffenses2.csv` contains data on 24,011 individuals convicted on federal drug charges during 2013 and 2014. We will subset these individuals to look only at cases given non-life prison sentences (`sentence2 > 0`), then look at the SLR of an individual's sentence length (`sent.nonlife`) in months against their [crimal history points](https://en.wikipedia.org/wiki/United_States_Federal_Sentencing_Guidelines#Criminal_history) (`CRIMPTS). 
+
+#### Basic EDA shows that both sentencing and points variables are right skewed, and there are non-responses in each variable.
+
+```{r, fig.width=5, fig.height=4}
+drug <- read.csv("http://people.carleton.edu/~kstclair/data/DrugOffenses2.csv")
+dim(drug)
+library(dplyr)
+drugPrison<- filter(drug, sentence2 > 0)
+par(mfrow=c(1,2))
+hist(drugPrison$CRIMPTS, main="criminal points")
+hist(drugPrison$sent.nolife, main="sentence")
+par(mfrow=c(1,1))
+summary(drugPrison$CRIMPTS)
+summary(drugPrison$sent.nolife)
+```
+
+#### Usual scatterplot
+The usual scatterplot suffers from **overplotting** when we have a large data sets or datasets with very discrete variables. It is hard to see where the majority of cases are in this plot and difficult to discern any trend in the response as we change the predictor variable. 
+
+```{r, fig.width=5, fig.height=4}
+library(ggplot2)
+ggplot(drugPrison, aes(x=CRIMPTS, y=sent.nolife)) + 
+  geom_point() + 
+  geom_smooth(method= "lm", se=FALSE)
+```
+
+
+#### Jittering and a *loess* smoother
+Two ways to minimize the effect of overplotting are to 
+
+- "jitter" the plotted points by adding a small amount of random noise. This can be done by using `geom_jitter` instead of `geom_point`
+- use a more transparent plotting symbol. Then when points are overlapping, we will see darker colors which indicate a higher density of observations in that region of the graph. We do this by adding `alpha=` to the `geom_jitter` and make the `alpha` value less than 1 (smaller values mean more transparent points).
+
+We will also use a `loess` smoother line to the scatterplot to help reveal the true trend in sentencing as the point history changes. A smoother is a non-parameteric way to locally "average" the response as we change the predictor value. (Non-parametric means this isn't a parameterized curve like a line or quadratic function, which means we don't end up with a nice formula for $y$ given $x$ from such a model.) We fit the `loess` model to our plot by adding another layer of `geom_smooth(method = "loess", se=FALSE)`. In the commands below, the `aes(color=)` just adds a color legend to the plot.
+
+```{r, fig.width=5, fig.height=4}
+ggplot(drugPrison, aes(x=CRIMPTS, y=sent.nolife)) + 
+  geom_jitter(alpha = .2) + 
+  geom_smooth(method= "lm", se=FALSE, aes(color="lm")) + 
+  geom_smooth(method="loess", se=FALSE, aes(color="smoother"))
+```
+
+
+#### Residual plot and `loess` smoother
+The scatterplot and loess smoother suggest there is slight quadratic relationship between points history and sentence length, with a positive trend up to about 20 points and a negative trend after. We can see this too in the residual plot with loess smoother added. The variation around the regression line seems fairly similar for any points value up to about 20 points, and after 20 points there are fewer cases which seem to be slightly less variable. (Note that "similar variation" means the spread around the line is of similar *magnitude for any value of x*, not that the spread around the line is *symmetric*. As we see next, the spread around the line (residuals) is skewed right.)
+
+```{r, fig.width=5, fig.height=4}
+drug.lm <- lm(sent.nolife ~ CRIMPTS, data=drugPrison)
+library(broom)
+drugPrison.aug <- augment(drug.lm)
+ggplot(drugPrison.aug, aes(x=CRIMPTS, y=.resid)) + 
+  geom_jitter(alpha = .2) + 
+  geom_smooth(method= "lm", se=FALSE, aes(color="lm")) + 
+  geom_smooth(method="loess", se=FALSE, aes(color="smoother"))
+```
+
+#### Checking normality
+The residuals for this model are not normally distributed, there is a strong skew to the right. **If** the linear model fit the trend of the data, this non-normality would **not** be a concern for inference about the mean parameters $\beta$. It would only be a concern if we wanted to **predict** one individual's sentence length with confidence given their criminal history points. 
+
+```{r, fig.width=5, fig.height=4}
+par(mfrow=c(1,2))
+hist(resid(drug.lm), main="Histogram of residuals")
+plot(drug.lm, which = 2)
+```
+
+
+### Case study 15.2 - Global Warming
+Let's look at the regression of global mean temperature deviation (Celsius) on year (1850 through 2010). The scatterplot suggests a curved relationship with time. Temperature deviation is the mean yearly temp minus the mean temp from all 161 years.
+
+```{r}
+library(Sleuth3)
+temps <- case1502
+summary(temps)
+ggplot(temps, aes(x = Year, y = Temperature)) + 
+        geom_point() + 
+        geom_smooth(method = "lm", se = FALSE) + 
+        geom_smooth(method = "loess", se = FALSE, linetype = "dashed")
+```
+
+#### Independent residuals?
+After fitting our regression of `Temperature` on `Year` and `Year^2` (due to curvature), a check of the residual plot (residuals vs. `Year`) shows no obvious signs of curvature in residuals so the quadratic mean function with time seems adequate.
+
+```{r}
+temps.lm <- lm(Temperature ~ Year + I(Year^2), data=temps)
+temps.aug <- augment(temps.lm)
+ggplot(temps.aug, aes(x = Year, y = .resid)) + 
+        geom_point() + 
+        geom_hline(yintercept = 0, linetype = "dashed")
+```
+
+The independence assumption will be violated for this model if residuals closer in time (x) are more similar than residuals further apart in time. This is hard to see in the basic residual plot above. To see this idea better, we can look at line plot of residuals vs. time:
+
+```{r}
+ggplot(temps.aug, aes(x = Year, y = .resid)) + 
+        geom_point() + 
+        geom_line() + 
+        geom_hline(yintercept = 0, linetype = "dashed")
+```
+
+With this plot is it clear that if one year has a negative residual (lower than expected temps), the next year's residual is often also negative. Same is true for positive residuals. This indicates that there is a temporal association in these residuals, which means that they are not indepedent. A SLR model is not appropriate for this data because the SEs will not accurately reflect the uncertainty in our estimates when independence is violated. 
+
+#### Autocorrelation
+The **correlation** statistic is used to assess the strength and direction of a linear relationship between two quantitative variables. The **autocorrelation** is used to assess how correlated values are for the **same** quantitative variable. Autocorrelation is computed by pairing responses by a **lag** amount. Lag of 1 means we are computing correlation for responses that differ by one spot in the vector of responses. For our time and temp data, this means looking at the correlation between responses that differ by a year. Lag 2 means looking at correlation between responses that differ by 2 years, and so on. 
+
+We can use autocorrelation to verify that residuals closer together in time are more similar than those further apart in time:
+
+```{r}
+acf(resid(temps.lm))
+acf(resid(temps.lm), plot=FALSE)
+```
+
+Residuals that differ by one year have a correlation of 0.592, indicating a moderate positive correlation. This is what were able to see in the line plot above. Residuals that differ from 2-9 years have correlations between about 0.45 to 0.25. After  years there is little to no autocorrelation between residuals. 
