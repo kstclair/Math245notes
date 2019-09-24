@@ -999,7 +999,7 @@ Residuals for a fitted model are a <strong>diagnostic</strong> tool to help chec
 <a class="sourceLine" id="cb56-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dim</span>(drug)</a>
 <a class="sourceLine" id="cb56-3" title="3"><span class="co">## [1] 24011    55</span></a>
 <a class="sourceLine" id="cb56-4" title="4"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb56-5" title="5"><span class="op">&gt;</span><span class="st"> </span>drugPrison&lt;-<span class="st"> </span><span class="kw">filter</span>(drug, sentence2 <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb56-5" title="5"><span class="op">&gt;</span><span class="st"> </span>drugPrison &lt;-<span class="st"> </span><span class="kw">filter</span>(drug, sentence2 <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb56-6" title="6"><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</a>
 <a class="sourceLine" id="cb56-7" title="7"><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(drugPrison<span class="op">$</span>CRIMPTS, <span class="dt">main=</span><span class="st">&quot;criminal points&quot;</span>)</a>
 <a class="sourceLine" id="cb56-8" title="8"><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(drugPrison<span class="op">$</span>sent.nolife, <span class="dt">main=</span><span class="st">&quot;sentence&quot;</span>)</a></code></pre></div>
@@ -1017,7 +1017,7 @@ Residuals for a fitted model are a <strong>diagnostic</strong> tool to help chec
 <p>The usual scatterplot suffers from <strong>overplotting</strong> when we have a large data sets or datasets with very discrete variables. It is hard to see where the majority of cases are in this plot and difficult to discern any trend in the response as we change the predictor variable.</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)</a>
 <a class="sourceLine" id="cb58-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(drugPrison, <span class="kw">aes</span>(<span class="dt">x=</span>CRIMPTS, <span class="dt">y=</span>sent.nolife)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb58-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb58-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>()  <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb58-4" title="4"><span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se=</span><span class="ot">FALSE</span>)</a></code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-56-1.png" width="480" /></p>
 </div>

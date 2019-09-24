@@ -663,7 +663,7 @@ The data set `DrugOffenses2.csv` contains data on 24,011 individuals convicted o
 drug <- read.csv("http://people.carleton.edu/~kstclair/data/DrugOffenses2.csv")
 dim(drug)
 library(dplyr)
-drugPrison<- filter(drug, sentence2 > 0)
+drugPrison <- filter(drug, sentence2 > 0)
 par(mfrow=c(1,2))
 hist(drugPrison$CRIMPTS, main="criminal points")
 hist(drugPrison$sent.nolife, main="sentence")
@@ -678,7 +678,7 @@ The usual scatterplot suffers from **overplotting** when we have a large data se
 ```{r, fig.width=5, fig.height=4, cache = TRUE}
 library(ggplot2)
 ggplot(drugPrison, aes(x=CRIMPTS, y=sent.nolife)) + 
-  geom_point() + 
+  geom_point()  + 
   geom_smooth(method= "lm", se=FALSE)
 ```
 
