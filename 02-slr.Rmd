@@ -770,6 +770,9 @@ acf(resid(temps.lm), plot=FALSE)
 Residuals that differ by one year have a correlation of 0.592, indicating a moderate positive correlation. This is what were able to see in the line plot above. Residuals that differ from 2-9 years have correlations between about 0.45 to 0.25. After  years there is little to no autocorrelation between residuals. 
 
 
+----------------------------------------
+
+
 ## Transformations {#slr-trans}
 
 Transformations of one or both variables in SLR is done to fix one, or both, of these assumption violations: linearity and constant variance. Tranformations are often explored via trial-and-error, use plots of transformed variables and residual plots from potential transformed SLR models to find the "best" SLR model. "Best" is determined by a model that **most satisfies the SLR assumptions**, not a model that yields the "strongest" relationship between variables. A transformation choice can also be determined from a theoretical model that we have from a specific application.
@@ -912,7 +915,7 @@ $$
 
 
 
-#### Questions
+#### Logarithm Practice Questions (day 6)
 Solutions are posted on the class Moodle site.
 
 1. Write the following as the sum of two logarithms. Simplify as much as possible:
@@ -966,4 +969,65 @@ $$
     e. What is the percent change in estimated median response if we reduce the value of $x$ by 20%?
 
 
-## Example: Transformations
+
+----------------------------------------
+
+
+## Examples: Transformations (day 6)
+A solution to these examples is found on the class Moodle page. 
+
+### Cars 2004
+This is a dataset with stats taken from 230 car makes and models from 2004. 
+
+**(1a) Is city MPG a linear function of car weight (lbs)?**
+```{r,fig.width=4,fig.height=4}
+cars <- read.csv("http://people.carleton.edu/~kstclair/data/cars2004.csv")
+summary(cars[, c("city.mpg","weight")])
+library(ggplot2)
+ggplot(cars, aes(x= weight, y = city.mpg)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  geom_smooth(method = "loess", se = FALSE, linetype = "dashed", color="red") + 
+  labs(title="City MPG vs. car weight")
+```
+
+
+**(1b) Explore some transformations: which gives the most linear relationship?**
+Use layers of the type `scale_x_log10()` or `scale_y_sqrt()` to change a particular axes
+
+
+
+**(1c) Fit the regression of 1/mpg on weight and check residuals**
+
+
+
+
+
+### 2005 Residential Energy Survey (RECS)
+RECS surveys households across the US. We are treating this sample of 4,382 households as an equally-weighted sample of US households. Our goal now is to model total energy costs (`CostTotal`) as a function of the size of the housing unit (`SqftMeasure`).
+
+**(2a) Total energy cost vs. size**
+With over 4,000 cases, we reduce point transparency with `alpha` to avoid overplotting.  Assess the scatterplot in terms of  (1) linearity, (2)constant variance, and (3) normal errors.
+
+```{r, fig.width=4,fig.height=4}
+energy <- read.csv("http://people.carleton.edu/~kstclair/data/EnergySurvey.csv")
+dim(energy)
+summary(energy[,c("CostTotal","SqftMeasure")])
+library(ggplot2)
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) + 
+  geom_point(alpha = .1) + 
+  geom_smooth(method = "loess", se = FALSE)
+```
+
+**(2b) Find a transformation that yields a linear model**
+As done in example 1, use trial-and-error to find a transformation that yields a a linear relationship. Once this is found, we can fit a SLR model to the transformed variables. The basic transformations to consider (for $y$, or $x$, or both) are `log10` (log base-10), `sqrt`, and inverse. 
+
+
+**(2c) Fit the "best" model from (2b)**
+
+
+**(2d) Once you find a model that "fits", interpret your model parameters.**
+
+- What is the fitted model?
+- How does cost change if house size is doubled? Get a CI for this effect.
+- How does cost change if house size decreases by 10%? Get a CI for the effect.

@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-09-22">
+<meta name="date" content="2019-09-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -171,7 +171,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.10.3" data-path="slr.html"><a href="slr.html#interpretation-1"><i class="fa fa-check"></i><b>2.10.3</b> Interpretation</a></li>
 <li class="chapter" data-level="2.10.4" data-path="slr.html"><a href="slr.html#slr-logs"><i class="fa fa-check"></i><b>2.10.4</b> Review: Logarithms</a></li>
 </ul></li>
-<li class="chapter" data-level="2.11" data-path="slr.html"><a href="slr.html#example-transformations"><i class="fa fa-check"></i><b>2.11</b> Example: Transformations</a></li>
+<li class="chapter" data-level="2.11" data-path="slr.html"><a href="slr.html#examples-transformations-day-6"><i class="fa fa-check"></i><b>2.11</b> Examples: Transformations (day 6)</a><ul>
+<li class="chapter" data-level="2.11.1" data-path="slr.html"><a href="slr.html#cars-2004"><i class="fa fa-check"></i><b>2.11.1</b> Cars 2004</a></li>
+<li class="chapter" data-level="2.11.2" data-path="slr.html"><a href="slr.html#residential-energy-survey-recs"><i class="fa fa-check"></i><b>2.11.2</b> 2005 Residential Energy Survey (RECS)</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="mlr.html"><a href="mlr.html"><i class="fa fa-check"></i><b>3</b> Multiple Regression</a></li>
 <li class="chapter" data-level="4" data-path="logistic.html"><a href="logistic.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a></li>
@@ -1051,6 +1054,7 @@ temps.aug &lt;-<span class="st"> </span><span class="kw">augment</span>(temps.lm
 ##     20     21     22 
 ## -0.065 -0.140 -0.162</code></pre>
 <p>Residuals that differ by one year have a correlation of 0.592, indicating a moderate positive correlation. This is what were able to see in the line plot above. Residuals that differ from 2-9 years have correlations between about 0.45 to 0.25. After years there is little to no autocorrelation between residuals.</p>
+<hr />
 </div>
 </div>
 </div>
@@ -1148,8 +1152,8 @@ b^{\log_b(x)} = x
 y = 2^3 \times 2^{5x}
 \]</span></p>
 </div>
-<div id="questions" class="section level4">
-<h4><span class="header-section-number">2.10.4.3</span> Questions</h4>
+<div id="logarithm-practice-questions-day-6" class="section level4">
+<h4><span class="header-section-number">2.10.4.3</span> Logarithm Practice Questions (day 6)</h4>
 <p>Solutions are posted on the class Moodle site.</p>
 <ol style="list-style-type: decimal">
 <li><p>Write the following as the sum of two logarithms. Simplify as much as possible:</p>
@@ -1199,12 +1203,69 @@ y = 2^3 \times 2^{5x}
 <li>What is the percent change in estimated median response if we reduce the value of <span class="math inline">\(x\)</span> by 20%?</li>
 </ol></li>
 </ol>
+<hr />
 </div>
 </div>
 </div>
-<div id="example-transformations" class="section level2">
-<h2><span class="header-section-number">2.11</span> Example: Transformations</h2>
+<div id="examples-transformations-day-6" class="section level2">
+<h2><span class="header-section-number">2.11</span> Examples: Transformations (day 6)</h2>
+<p>A solution to these examples is found on the class Moodle page.</p>
+<div id="cars-2004" class="section level3">
+<h3><span class="header-section-number">2.11.1</span> Cars 2004</h3>
+<p>This is a dataset with stats taken from 230 car makes and models from 2004.</p>
+<p><strong>(1a) Is city MPG a linear function of car weight (lbs)?</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cars &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/cars2004.csv&quot;</span>)
+<span class="kw">summary</span>(cars[, <span class="kw">c</span>(<span class="st">&quot;city.mpg&quot;</span>,<span class="st">&quot;weight&quot;</span>)])</code></pre></div>
+<pre><code>##     city.mpg         weight    
+##  Min.   :10.00   Min.   :1850  
+##  1st Qu.:16.00   1st Qu.:3185  
+##  Median :18.00   Median :3606  
+##  Mean   :19.22   Mean   :3738  
+##  3rd Qu.:21.00   3rd Qu.:4237  
+##  Max.   :60.00   Max.   :7608</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">ggplot</span>(cars, <span class="kw">aes</span>(<span class="dt">x=</span> weight, <span class="dt">y =</span> city.mpg)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;City MPG vs. car weight&quot;</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-50-1.png" width="384" /></p>
+<p><strong>(1b) Explore some transformations: which gives the most linear relationship?</strong> Use layers of the type <code>scale_x_log10()</code> or <code>scale_y_sqrt()</code> to change a particular axes</p>
+<p><strong>(1c) Fit the regression of 1/mpg on weight and check residuals</strong></p>
+</div>
+<div id="residential-energy-survey-recs" class="section level3">
+<h3><span class="header-section-number">2.11.2</span> 2005 Residential Energy Survey (RECS)</h3>
+<p>RECS surveys households across the US. We are treating this sample of 4,382 households as an equally-weighted sample of US households. Our goal now is to model total energy costs (<code>CostTotal</code>) as a function of the size of the housing unit (<code>SqftMeasure</code>).</p>
+<p><strong>(2a) Total energy cost vs. size</strong> With over 4,000 cases, we reduce point transparency with <code>alpha</code> to avoid overplotting. Assess the scatterplot in terms of (1) linearity, (2)constant variance, and (3) normal errors.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">energy &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/EnergySurvey.csv&quot;</span>)
+<span class="kw">dim</span>(energy)</code></pre></div>
+<pre><code>## [1] 4382   16</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(energy[,<span class="kw">c</span>(<span class="st">&quot;CostTotal&quot;</span>,<span class="st">&quot;SqftMeasure&quot;</span>)])</code></pre></div>
+<pre><code>##    CostTotal      SqftMeasure   
+##  Min.   :   57   Min.   :  167  
+##  1st Qu.: 1138   1st Qu.: 1056  
+##  Median : 1673   Median : 1848  
+##  Mean   : 1841   Mean   : 2284  
+##  3rd Qu.: 2331   3rd Qu.: 3042  
+##  Max.   :10346   Max.   :11383  
+##  NA&#39;s   :1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">ggplot</span>(energy, <span class="kw">aes</span>(<span class="dt">x =</span> SqftMeasure, <span class="dt">y =</span> CostTotal)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> .<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-51-1.png" width="384" /></p>
+<p><strong>(2b) Find a transformation that yields a linear model</strong> As done in example 1, use trial-and-error to find a transformation that yields a a linear relationship. Once this is found, we can fit a SLR model to the transformed variables. The basic transformations to consider (for <span class="math inline">\(y\)</span>, or <span class="math inline">\(x\)</span>, or both) are <code>log10</code> (log base-10), <code>sqrt</code>, and inverse.</p>
+<p><strong>(2c) Fit the “best” model from (2b)</strong></p>
+<p><strong>(2d) Once you find a model that “fits”, interpret your model parameters.</strong></p>
+<ul>
+<li>What is the fitted model?</li>
+<li>How does cost change if house size is doubled? Get a CI for this effect.</li>
+<li>How does cost change if house size decreases by 10%? Get a CI for the effect.</li>
+</ul>
 
+</div>
 </div>
 </div>
             </section>
