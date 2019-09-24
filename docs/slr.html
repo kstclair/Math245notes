@@ -175,6 +175,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.11.1" data-path="slr.html"><a href="slr.html#cars-2004"><i class="fa fa-check"></i><b>2.11.1</b> Cars 2004</a></li>
 <li class="chapter" data-level="2.11.2" data-path="slr.html"><a href="slr.html#residential-energy-survey-recs"><i class="fa fa-check"></i><b>2.11.2</b> 2005 Residential Energy Survey (RECS)</a></li>
 </ul></li>
+<li class="chapter" data-level="2.12" data-path="slr.html"><a href="slr.html#r2-and-anova-for-slr"><i class="fa fa-check"></i><b>2.12</b> <span class="math inline">\(R^2\)</span> and ANOVA for SLR</a><ul>
+<li class="chapter" data-level="2.12.1" data-path="slr.html"><a href="slr.html#example-r2"><i class="fa fa-check"></i><b>2.12.1</b> Example: <span class="math inline">\(R^2\)</span></a></li>
+<li class="chapter" data-level="2.12.2" data-path="slr.html"><a href="slr.html#anova-for-slr"><i class="fa fa-check"></i><b>2.12.2</b> ANOVA for SLR</a></li>
+<li class="chapter" data-level="2.12.3" data-path="slr.html"><a href="slr.html#example-anova"><i class="fa fa-check"></i><b>2.12.3</b> Example: ANOVA</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="mlr.html"><a href="mlr.html"><i class="fa fa-check"></i><b>3</b> Multiple Regression</a></li>
 <li class="chapter" data-level="4" data-path="logistic.html"><a href="logistic.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a></li>
@@ -1264,6 +1269,86 @@ y = 2^3 \times 2^{5x}
 <li>How does cost change if house size is doubled? Get a CI for this effect.</li>
 <li>How does cost change if house size decreases by 10%? Get a CI for the effect.</li>
 </ul>
+<hr />
+</div>
+</div>
+<div id="r2-and-anova-for-slr" class="section level2">
+<h2><span class="header-section-number">2.12</span> <span class="math inline">\(R^2\)</span> and ANOVA for SLR</h2>
+<p>After we check the fit of a model and determine that there are no concerns with the SLR assumptions, we can summarize it with inference, interpretations and measures of “strength” of the association. One common measure of strength is called “R-squared”: <span class="math display">\[
+R^2 = 1- \dfrac{(n-2)\hat{\sigma}^2}{(n-1)s^2_y} 
+\]</span> <span class="math inline">\(R^2\)</span> measures the proportion of total variation in the response that is <strong>explained</strong> by the model. Total variation in <span class="math inline">\(y\)</span> is measured, in part, by the sample SD of the response, which is a piece of the denominator above. The numerator measures the varation in <span class="math inline">\(y\)</span> around the regression line (<span class="math inline">\(\hat{\sigma}\)</span>), which is a measure of <strong>unexplained</strong>, or residual, variation. One <em>minus</em> the unexplained variation proportion gives us the value of <span class="math inline">\(R^2\)</span>.</p>
+<div id="example-r2" class="section level3">
+<h3><span class="header-section-number">2.12.1</span> Example: <span class="math inline">\(R^2\)</span></h3>
+<p>Let’s revisit the woodpecker nest depth model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wpdata&lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/woodpeckers.csv&quot;</span>)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">ggplot</span>(wpdata, <span class="kw">aes</span>(<span class="dt">x=</span>temp, <span class="dt">y=</span>depth)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">se=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;air temperature (C)&quot;</span>, <span class="dt">y=</span><span class="st">&quot;nest depth (cm)&quot;</span>, <span class="dt">title=</span><span class="st">&quot;woodpeckers scatterplot&quot;</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wood.lm&lt;-<span class="st"> </span><span class="kw">lm</span>(depth<span class="op">~</span>temp, <span class="dt">data=</span>wpdata)</code></pre></div>
+<p>We get <span class="math inline">\(R^2\)</span> in the <code>Multiple R-squared</code> entry in the <code>lm</code> <code>summary</code> output:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(wood.lm)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = depth ~ temp, data = wpdata)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.8066 -1.3321 -0.6529  0.6811  4.8512 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 20.12228    0.94024  21.401 1.11e-09 ***
+## temp        -0.34218    0.05961  -5.741 0.000188 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.335 on 10 degrees of freedom
+## Multiple R-squared:  0.7672, Adjusted R-squared:  0.7439 
+## F-statistic: 32.96 on 1 and 10 DF,  p-value: 0.0001875</code></pre>
+<p>Here we have <span class="math inline">\(R^2 = 0.7672\)</span>, meaning the regression of depth on temp helps explain about 76.7% of the observed variation in depth. We can see how R computes this value by looking at the sample SD of <span class="math inline">\(y\)</span>, <span class="math inline">\(s^2_y = 4.6133124\)</span> and the estimated model SD <span class="math inline">\(\hat{\sigma} =2.3345298\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(wpdata<span class="op">$</span>depth)        <span class="co"># sample SD of y</span></code></pre></div>
+<pre><code>## [1] 4.613312</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(wood.lm)<span class="op">$</span>sigma  <span class="co"># mode SD estimate</span></code></pre></div>
+<pre><code>## [1] 2.33453</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">12</span>
+(n<span class="op">-</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">summary</span>(wood.lm)<span class="op">$</span>sigma<span class="op">^</span><span class="dv">2</span><span class="op">/</span>((n<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="kw">sd</span>(wpdata<span class="op">$</span>depth)<span class="op">^</span><span class="dv">2</span>)   <span class="co"># unexplained</span></code></pre></div>
+<pre><code>## [1] 0.2327986</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>(n<span class="op">-</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">summary</span>(wood.lm)<span class="op">$</span>sigma<span class="op">^</span><span class="dv">2</span><span class="op">/</span>((n<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="kw">sd</span>(wpdata<span class="op">$</span>depth)<span class="op">^</span><span class="dv">2</span>)  <span class="co"># explained</span></code></pre></div>
+<pre><code>## [1] 0.7672014</code></pre>
+</div>
+<div id="anova-for-slr" class="section level3">
+<h3><span class="header-section-number">2.12.2</span> ANOVA for SLR</h3>
+<p>Analysis of Variance (ANOVA) decomposes the <strong>total variation in <span class="math inline">\(y_i\)</span></strong>, <span class="math inline">\(y_i - \bar{y}\)</span>, into a portion that is <strong>explained</strong> by a model, <span class="math inline">\(\hat{y}_i - \bar{y}\)</span>, and a portion that is <strong>unexplained</strong>, <span class="math inline">\(y_i - \hat{y}_i\)</span>: <span class="math display">\[
+y_i - \bar{y} = (y_i - \hat{y}_i) + (\hat{y}_i - \bar{y})
+\]</span> For row 2 in the <code>wpdata</code>, the total variation is show in red in the plot below while the explained variation is in blue and unexplained in green. Notice that the “explained” portion is what gets us closer to the actual response <span class="math inline">\(y=26\)</span> (compared to just the mean response), which is what you would expect to see if temp is useful in explaining why we see variation in nest depths.</p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p>The next step in ANOVA, is to total the <strong>squared</strong> variation distances across all <span class="math inline">\(n\)</span> data points (squared because we don’t care if the differences are positive or negative). Some very useful mathematics is used to prove that the total squared variation of all <span class="math inline">\(n\)</span> cases is equal to <span class="math display">\[
+\sum_{i=1}^n (y_i - \bar{y})^2 = \sum_{i=1}^n  (y_i - \hat{y}_i)^2 + \sum_{i=1}^n  (\hat{y}_i - \bar{y})^2
+\]</span></p>
+<p>The three components are called: - <strong>total variation:</strong> <span class="math inline">\(SST = \sum_{i=1}^n (y_i - \bar{y})^2 = (n-1)s^2_y\)</span> - <strong>regression (explained) variation:</strong> <span class="math inline">\(SSreg = \sum_{i=1}^n (\hat{y}_i - \bar{y})^2\)</span> - <strong>residual (unexplained) variation:</strong> <span class="math inline">\(SSR = \sum_{i=1}^n (y_i - \hat{y}_i)^2 = (n-2)\hat{\sigma}^2\)</span></p>
+<p>These sum of squares (SS) can also be used to compute <span class="math inline">\(R^2\)</span> since <span class="math display">\[
+R^2 = 1- \dfrac{(n-2)\hat{\sigma}^2}{(n-1)s^2_y} = 1- \dfrac{SSR}{SST} = \dfrac{SSreg}{SST}
+\]</span></p>
+</div>
+<div id="example-anova" class="section level3">
+<h3><span class="header-section-number">2.12.3</span> Example: ANOVA</h3>
+<p>Back to the nest depth model. The <code>anova</code> function extracts the sum of square values from our <code>lm</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(wood.lm)   <span class="co"># ANOVA Table</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: depth
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## temp       1 179.61  179.61  32.956 0.0001875 ***
+## Residuals 10  54.50    5.45                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>For this model we have - <strong>regression (explained) variation:</strong> from the <code>temp</code> row, <span class="math inline">\(SSreg = 179.61\)</span> - <strong>residual (unexplained) variation:</strong> from the <code>Residuals</code> row, <span class="math inline">\(SSR = 54.60\)</span> - <strong>total variation:</strong> adding the two SS values gives total variation <span class="math inline">\(SST = SSreg + SSR = 179.61 + 54.60 = 234.21\)</span></p>
+<p>The ANOVA SS can also give us the value of <span class="math inline">\(R^2\)</span> for the model: <span class="math display">\[
+R^2 =  \dfrac{179.61}{179.61 + 54.60} = 0.7668759
+\]</span></p>
 
 </div>
 </div>

@@ -1031,3 +1031,102 @@ As done in example 1, use trial-and-error to find a transformation that yields a
 - What is the fitted model?
 - How does cost change if house size is doubled? Get a CI for this effect.
 - How does cost change if house size decreases by 10%? Get a CI for the effect.
+
+
+
+---------------------------------------
+
+## $R^2$ and ANOVA for SLR
+
+After we check the fit of a model and determine that there are no concerns with the SLR assumptions, we can summarize it with inference, interpretations and measures of "strength" of the association. One common measure of strength is called "R-squared":
+$$
+R^2 = 1- \dfrac{(n-2)\hat{\sigma}^2}{(n-1)s^2_y} 
+$$
+$R^2$ measures the proportion of total variation in the response that is **explained** by the model. Total variation in $y$ is measured, in part, by the sample SD of the response, which is a piece of the denominator above. The numerator measures the varation in $y$ around the regression line ($\hat{\sigma}$), which is a measure of **unexplained**, or residual, variation. One *minus* the unexplained variation proportion gives us the value of $R^2$.
+
+### Example: $R^2$
+Let's revisit the woodpecker nest depth model:
+
+```{r}
+wpdata<- read.csv("http://people.carleton.edu/~kstclair/data/woodpeckers.csv")
+library(ggplot2)
+ggplot(wpdata, aes(x=temp, y=depth)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) + 
+  labs(x="air temperature (C)", y="nest depth (cm)", title="woodpeckers scatterplot")
+wood.lm<- lm(depth~temp, data=wpdata)
+```
+
+We get $R^2$ in the `Multiple R-squared` entry in the `lm` `summary` output:
+```{r}
+summary(wood.lm)
+```
+Here we have $R^2 = 0.7672$, meaning the regression of depth on temp helps explain about 76.7% of the observed variation in depth. We can see how R computes this value by looking at the sample SD of $y$, $s^2_y = `r sd(wpdata$depth)`$ and the estimated model SD $\hat{\sigma} =`r summary(wood.lm)$sigma`$
+```{r}
+sd(wpdata$depth)        # sample SD of y
+summary(wood.lm)$sigma  # mode SD estimate
+n <- 12
+(n-2)*summary(wood.lm)$sigma^2/((n-1)*sd(wpdata$depth)^2)   # unexplained
+1 - (n-2)*summary(wood.lm)$sigma^2/((n-1)*sd(wpdata$depth)^2)  # explained
+```
+
+### ANOVA for SLR
+Analysis of Variance (ANOVA) decomposes the **total variation in $y_i$**, $y_i - \bar{y}$, into a portion that is **explained** by a model, $\hat{y}_i - \bar{y}$,   and a portion that is **unexplained**, $y_i - \hat{y}_i$:
+$$
+y_i - \bar{y} = (y_i - \hat{y}_i) + (\hat{y}_i - \bar{y})
+$$ 
+For row 2 in the `wpdata`, the total variation is show in red in the plot below while the explained variation is in blue and unexplained in green. Notice that the "explained" portion is what gets us closer to the actual response $y=26$ (compared to just the mean response), which is what you would expect to see if temp is useful in explaining why we see variation in nest depths. 
+
+```{r, echo = FALSE}
+plot(depth ~ temp, data=wpdata, pch=16, xlab="air temperature (C)", ylab="nest depth (cm)")
+title(expression(paste("woodpeckers scatterplot: ",hat(y) == 20.12228 - 0.34218*x)))
+abline(wood.lm)
+abline(h=mean(wpdata$depth),col="red",lty=2)
+text(24,17,expression(bar(y) == 16.3583), col="red")
+# focus on case 2
+text(-3,26,pos=4,expression(y == 26))
+# total: y-mean(y)
+# Regression: explain by regression yhat - mean(y)
+yhat<- wood.lm$fitted[2]
+# residual: unexplained by regression
+
+# total = explained + unexplained
+lines(c(-3,-3)-.2, c(26,mean(wpdata$depth)),lty=5,col="red",lwd=3)
+lines(c(-3,-3), c(yhat,mean(wpdata$depth)),lty=5,col="blue", lwd=3)
+lines(c(-3,-3), c(26,yhat),lty=5,col="green3", lwd=3)
+points(-3, yhat, pch=15,col="orange")
+text(-3,yhat,pos=4,expression(hat(y) == 21.14882))
+legend("topright", legend=c(expression(total: y-bar(y)==9.6417 ), expression(explained: hat(y)-bar(y)==4.7905), expression(unexplained: y-hat(y)==4.8512)), lty=5, col=c("red", "blue", "green3"), lwd=3, title="Case 2 (x=-3, y=26)")
+```
+
+The next step in ANOVA, is to total the **squared** variation distances across all $n$ data points (squared because we don't care if the differences are positive or negative). Some very useful mathematics is used to prove that the total squared  variation of all $n$ cases is equal to 
+$$
+\sum_{i=1}^n (y_i - \bar{y})^2 = \sum_{i=1}^n  (y_i - \hat{y}_i)^2 + \sum_{i=1}^n  (\hat{y}_i - \bar{y})^2
+$$ 
+
+The three components are called:
+- **total variation:** $SST = \sum_{i=1}^n (y_i - \bar{y})^2 = (n-1)s^2_y$
+- **regression (explained) variation:** $SSreg =  \sum_{i=1}^n  (\hat{y}_i - \bar{y})^2$
+- **residual (unexplained) variation:** $SSR = \sum_{i=1}^n  (y_i - \hat{y}_i)^2 = (n-2)\hat{\sigma}^2$
+
+These sum of squares (SS) can also be used to compute $R^2$ since
+$$
+R^2 = 1- \dfrac{(n-2)\hat{\sigma}^2}{(n-1)s^2_y} = 1- \dfrac{SSR}{SST} = \dfrac{SSreg}{SST}
+$$
+
+
+### Example: ANOVA
+Back to the nest depth model. The `anova` function extracts the sum of square values from our `lm`:
+```{r}
+anova(wood.lm)   # ANOVA Table
+```
+
+For this model we have
+- **regression (explained) variation:** from the `temp` row, $SSreg =  179.61$
+- **residual (unexplained) variation:** from the `Residuals` row, $SSR = 54.60$
+- **total variation:** adding the two SS values gives total variation $SST = SSreg + SSR = 179.61 + 54.60 = `r 179.61 + 54.60`$
+
+The ANOVA SS can also give us the value of $R^2$ for the model:
+$$
+R^2 =  \dfrac{179.61}{179.61 + 54.60} = `r 179.61/(179.61 + 54.6)`
+$$
