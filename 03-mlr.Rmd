@@ -1,2 +1,98 @@
 # Multiple Regression {#mlr}
 
+This chapter covers material from chapters 9-12 of Sleuth. 
+
+## The variables
+Suppose we have a quantitative response variable $y$ that we want to relate to $p$ explantory variable (aka predictors, covariates) $x_1, \dotsc, x_p$. There is no restriction on the type of covariates, they can be both quantitative and categorical variables.
+
+
+## The model form {#mlr-model}
+This section describes the **multiple linear regression** (MLR) model for a particular **population** of interest. Another way to frame the model is that it describes a hypothetical **data generating process (DGP)** that was used to generate the sample of data that we have on hand. 
+
+The major change in the MLR model compared to the SLR model is that now the **mean** function $\mu_{y\mid x_1, \dotsc, x_p}$ is a function of all covariates. The expression for $\mu$ must be linear with respect to the $\beta$ parameters even if  we used a function of a predictor like $\log(x)$. The expression for $\mu$ is  can even involve polynomial functions of $x$ like $x^2$ or interactions of predictors like $x_1 \times x_p$. In this section, we will describe the basic MLR with the simplest form it can take:
+$$
+\mu_{y\mid  x_1, \dotsc, x_p} = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \dotsm \beta_p x_{p,i}
+$$
+More complicated forms will be described later in this chapter. 
+
+Let $Y_i$ be the response from unit $i$ that has explanatory (aka predictor) values $x_{1,i}, x_{2,i}, \dotsc, x_{p,i}$. There are two **equivalent** ways to express the SLR model for $Y$:
+
+- Conditional normal model:
+$$
+Y_i \mid x_{1,i}, x_{2,i}, \dotsc, x_{p,i}\sim N(\mu_{y\mid x} = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \dotsm \beta_p x_{p,i}, \sigma)
+$$
+
+- Mean + error: 
+\begin{equation}
+Y_i = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \dotsm \beta_p x_{p,i} + \epsilon_i \ \ \ \ \ \epsilon_i \sim N(0, \sigma)
+\end{equation}
+
+**Both** expressions of the MLR model above say the same thing: 
+
+- **Linear Mean:** $\mu_{y\mid x}$ describes the population mean value of $Y$ given all predictor values and it is linear with respect to the $\beta$ parametrs. (We still have a "linear" model even if we used $\log(x)$ or $x^2$!)
+- **Constant SD:** $SD(Y\mid x)=\sigma$ describes the SD of $Y$'s in the population around a given mean value $\mu_{y\mid x}$. The fact that this SD **does not** depend on the value of $x$ is called the contant variance, or homoscedastic, assumption. 
+- **Normality:** The shape of population response values around $\mu_{y\mid x}$ is described by a normal distribution model.  
+- **Indepedence:** Given a predictor value of $x$, all responses $Y$ occur independently of each other. 
+
+There are a total of **$\pmb{p+1}$ parameters** in this MLR model: 
+
+- the $p$ mean parameters $\beta_0, \beta_1, \dotsc, \beta_p$ 
+- the SD parameter $\sigma$
+
+### Interpretation {#mlr-interpretation}
+
+How a predictor influences the mean response is determined by the form of the $\mu$ function. Some common forms are discussed here.
+
+#### Planar model
+The mean model described above models the relationship between $y$ and all corvariates as a $(p+1)-$dimensional plane:
+$$
+\mu_{y\mid  x_1, \dotsc, x_p} = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \dotsm \beta_p x_{p,i}
+$$
+When $p=1$, we have a SLR and this "plane" simplifies to a 2-d line. When $p=2$, the mean "surface" is a 3-D plane. The plot below displays an example of a sample of point triples $(x_{1,i}, x_{2,i}, y_i)$ that form a point "cloud" that is floating in the x-y-z coordinate system. The mean function is a plane that floats through the "middle" of the point cloud, hitting the mean value of $y$ for each combination of $x_1$ and $x_2$. Notice that when we "fix" one of the predictor values, the trend between $y$ and the other predictor is linear. E.g. Pick any place on the mean surface, then any place you "trace" along the surface will result in a line. 
+
+
+```{r, echo=FALSE}
+library(plotly)
+set.seed(9282019)
+x1 <- rnorm(100,0,1)
+x2 <- rnorm(100,0,1)
+y <- 1 + x1 + x2 + rnorm(100,0,.7)
+my_df <- data.frame(x1,x2,y)
+my_lm <- lm(y~x1+x2,my_df)
+library(tidyr)
+grid <- expand(data.frame(x1=seq(-2,2,by=1),x2=seq(-2,2,by=1)), x1,x2)
+grid$yhat <- predict(my_lm, grid)
+m <- matrix(grid$yhat, nrow = 5, ncol = 5)
+
+my_plot <- plot_ly(my_df, 
+                x = ~x1, 
+                y = ~x2, 
+                z = ~y, 
+                type = "scatter3d", 
+                mode = "markers", color=I("black"),opacity = .8 )
+
+my_plot %>% add_surface(x = seq(-2,2,by=1), y = seq(-2,2,by=1), z = m, showscale = TRUE, type = "surface")
+```
+
+```{r, eval=FALSE, include=FALSE}
+library(scatterplot3d)
+s3d <- scatterplot3d(my_df$x1,my_df$x2, my_df$y, type = "p", color = "blue",
+    angle=55, pch = 16)
+# Add regression plane
+s3d$plane3d(my_lm)
+# Add supplementary points
+s3d$points3d(seq(10, 20, 2), seq(85, 60, -5), seq(60, 10, -10),
+    col = "red", type = "h", pch = 8)
+```
+
+
+How should we interpret the $\beta$'s in our planar mean function?
+
+- $\beta_0$ is the mean response when all  predictor values are 0 since $\mu_{y \mid 0} = \beta_0 + \beta_1(0)  + \dotsm + \beta_p (0)= \beta_0$.
+- $\beta_j$ tells us how the mean response changes for a one unit increase in $x_j$ **holding all other predictors fixed**. We can illustrate this for the 3-D plane when $p=2$. The mean function at $x_1 + 1$, holding $x_2$ fixed, is
+$$\begin{split}
+\mu(y \mid  x_1+1, x_2) &= \beta_0 + \beta_1 (x_{1}+1) + \beta_2 x_{2} \\
+& = \beta_0 + \beta_1 x_{1} + \beta_1 + \beta_2 x_{2}  \\
+& = \mu(y \mid  x_1, x_2) + \beta_1 
+\end{split}$$
+This shows that a 1 unit increase in $x_1$ is associated with a $\beta_1$ change in the mean response **holding all other predictors fixed**. This holds in general too: a 1 unit increase in $x_j$ is associated with a $\beta_j$ change in the mean response **holding all other predictors fixed**.
