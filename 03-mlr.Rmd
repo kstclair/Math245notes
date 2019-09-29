@@ -46,7 +46,7 @@ How a predictor influences the mean response is determined by the form of the $\
 #### Planar model
 The mean model described above models the relationship between $y$ and all corvariates as a $(p+1)-$dimensional plane:
 $$
-\mu_{y\mid  x_1, \dotsc, x_p} = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \dotsm \beta_p x_{p,i}
+\mu_{y\mid  x_1, \dotsc, x_p} = \beta_0 + \beta_1 x_{1} + \beta_2 x_{2} + \dotsm \beta_p x_{p}
 $$
 When $p=1$, we have a SLR and this "plane" simplifies to a 2-d line. When $p=2$, the mean "surface" is a 3-D plane. The plot below displays an example of a sample of point triples $(x_{1,i}, x_{2,i}, y_i)$ that form a point "cloud" that is floating in the x-y-z coordinate system. The mean function is a plane that floats through the "middle" of the point cloud, hitting the mean value of $y$ for each combination of $x_1$ and $x_2$. Notice that when we "fix" one of the predictor values, the trend between $y$ and the other predictor is linear. E.g. Pick any place on the mean surface, then any place you "trace" along the surface will result in a line. 
 
@@ -89,10 +89,104 @@ s3d$points3d(seq(10, 20, 2), seq(85, 60, -5), seq(60, 10, -10),
 How should we interpret the $\beta$'s in our planar mean function?
 
 - $\beta_0$ is the mean response when all  predictor values are 0 since $\mu_{y \mid 0} = \beta_0 + \beta_1(0)  + \dotsm + \beta_p (0)= \beta_0$.
-- $\beta_j$ tells us how the mean response changes for a one unit increase in $x_j$ **holding all other predictors fixed**. We can illustrate this for the 3-D plane when $p=2$. The mean function at $x_1 + 1$, holding $x_2$ fixed, is
-$$\begin{split}
-\mu(y \mid  x_1+1, x_2) &= \beta_0 + \beta_1 (x_{1}+1) + \beta_2 x_{2} \\
-& = \beta_0 + \beta_1 x_{1} + \beta_1 + \beta_2 x_{2}  \\
-& = \mu(y \mid  x_1, x_2) + \beta_1 
-\end{split}$$
+- $\beta_j$ tells us how the mean response changes for a one unit increase in $x_j$ **holding all other predictors fixed**. We can illustrate this for the the predictor $x_1$. The mean function at $x_1 + 1$, holding $x_2, \dotsc, x_p$ fixed, is
+$$
+\begin{split}
+\mu(y \mid  x_1+1, x_2, \dotsc, x_p) &= \beta_0 + \beta_1 (x_{1}+1) + \beta_2 x_{2} + \dotsm + \beta_p x_p \\
+& = \beta_0 + \beta_1 x_{1} + \beta_1 + \beta_2 x_{2}  + \dotsm + \beta_p x_p \\
+& = \mu(y \mid  x_1, x_2, \dotsc, x_p) + \beta_1 
+\end{split}
+$$
 This shows that a 1 unit increase in $x_1$ is associated with a $\beta_1$ change in the mean response **holding all other predictors fixed**. This holds in general too: a 1 unit increase in $x_j$ is associated with a $\beta_j$ change in the mean response **holding all other predictors fixed**.
+
+#### Quadratic model
+A model that incorporates *polynomial* functions of predictors, like $x^2, x^3$, etc,  is also a MLR model. Here is an example that says the mean of $y$ is a quadratic function of $x_1$ but a linear function of $x_2$:
+$$
+\mu_{y\mid  x_1, x_2} = \beta_0 + \beta_1 x_{1} + \beta_2 x_{1}^2 + \beta_3 x_{2}
+$$
+Notice that this model has **two** covariates $x_1$ and $x_2$ but **four** mean function parameters $\beta_0 - \beta_4$ due to the extra quadratic term. An example of this model is visualized below (with all $\beta$'s equal to 1). You see the quadratic relationship with $x_1$ when you orient the $x_1$ axis to be the left-to-right axes with the $x_2$ axis coming out of the page. When these axes are flipped, you see a linear relationship. 
+
+
+```{r, echo=FALSE}
+library(plotly)
+set.seed(92812209)
+x1 <- rnorm(100,0,1)
+x2 <- rnorm(100,0,1)
+y <- 1 + x1 + x1^2 + x2 + rnorm(100,0,.7)
+my_df <- data.frame(x1,x2,y)
+my_lm <- lm(y~x1+x2 + I(x1^2),my_df)
+library(tidyr)
+grid <- expand(data.frame(x1=seq(-2,2,by=1),x2=seq(-2,2,by=1)), x1,x2)
+grid$yhat <- predict(my_lm, grid)
+m <- matrix(grid$yhat, nrow = 5, ncol = 5)
+
+my_plot <- plot_ly(my_df, 
+                x = ~x1, 
+                y = ~x2, 
+                z = ~y, 
+                type = "scatter3d", 
+                mode = "markers", color=I("black"),opacity = .8 )
+
+my_plot %>% add_surface(x = seq(-2,2,by=1), y = seq(-2,2,by=1), z = m, showscale = TRUE, type = "surface")
+```
+
+How should we interpret the $\beta$'s in this quadratic mean function?
+
+- $\beta_0$ is the mean response when all  predictor values are 0.
+- $\beta_3$ tells us how the mean response changes for a one unit increase in $x_2$ **holding $\pmb{x_1}$ fixed**. 
+- $\beta_1$ and $\beta_2$ tell us how the mean response changes as a function of $x_1$, but since it is quadratic the exact change in the mean response depends on the value of $x_1$. E.g. the closer the $x_1$ value is to the "top" or "bottom" of the quadratic curve, the smaller the changes in the mean response. We can illustrate this for the the predictor $x_1$. The mean function at $x_1 + 1$, holding $x_2$ fixed, is
+$$
+\begin{split}
+\mu(y \mid  x_1+1, x_2) &= \beta_0 + \beta_1 (x_{1}+1)+ \beta_2 (x_{1}+1)^2 + \beta_3 x_{2}  \\
+& = \beta_0 + \beta_1 x_{1} + \beta_1 + \beta_2 x_{1}^2 + \beta_2 2x_1 + \beta_2  + \beta_3 x_2 \\
+& = \mu(y \mid  x_1, x_2) + \beta_1 + \beta_2(2x_1+1) 
+\end{split}
+$$
+This shows that a 1 unit increase in $x_1$ is associated with a $\beta_1 + \beta_2(2x_1+1)$ change in the mean response **holding all other predictors fixed**.  For example, if $x_1 = 1$ the mean change is $\beta_1 + 3\beta_2$.
+
+#### Interactions 
+A model that incorporates predictor *interactions* says that the effect of one predictor is dependent on the value of the other predictor, and vica versa.  Here is an example that has the interaction of $x_1$ and $x_2$:
+$$
+\mu_{y\mid  x_1, x_2} = \beta_0 + \beta_1 x_{1} + \beta_2 x_{2} + \beta_3 x_1x_{2}
+$$
+An example of this model is visualized below (with all $\beta$'s equal to 1). We obviously don't see a planar surface. It's a bit hard to see, but any "slice" you take from the surface along the $x_1$ axis will create a linear function along the $x_2$ axis. The trend, or steepness, of this line depends on the value you chose for $x_1$. Switching the $x_1$ and $x_2$ variables results in the same observation. The effect of each predictor is linear, but its slope, or *effect size*, is a function of the other predictor. 
+
+
+```{r, echo=FALSE}
+library(plotly)
+set.seed(92812209)
+x1 <- rnorm(100,0,1)
+x2 <- rnorm(100,0,1)
+y <- 1 + x1 + x1*x2 + x2 + rnorm(100,0,.7)
+my_df <- data.frame(x1,x2,y)
+my_lm <- lm(y~x1*x2 ,my_df)
+library(tidyr)
+grid <- expand(data.frame(x1=seq(-2,2,by=1),x2=seq(-2,2,by=1)), x1,x2)
+grid$yhat <- predict(my_lm, grid)
+m <- matrix(grid$yhat, nrow = 5, ncol = 5)
+
+my_plot <- plot_ly(my_df, 
+                x = ~x1, 
+                y = ~x2, 
+                z = ~y, 
+                type = "scatter3d", 
+                mode = "markers", color=I("black"),opacity = .8 )
+
+my_plot %>% add_surface(x = seq(-2,2,by=1), y = seq(-2,2,by=1), z = m, showscale = TRUE, type = "surface")
+```
+
+
+How should we interpret the $\beta$'s in this interaction mean function?
+
+- $\beta_0$ is the mean response when all  predictor values are 0.
+- $\beta_1$ tells us how the mean response changes for a one unit increase in $x_1$ **when $\pmb{x_2=0}$**. 
+- $\beta_2$ tells us how the mean response changes for a one unit increase in $x_2$ **when $\pmb{x_1=0}$**. 
+- $\beta_3$  is the interaction effect that tells us how the effect of $x_1$ varies as a function of $x_2$, and vice versa.  We can illustrate this for the the predictor $x_1$. The mean function at $x_1 + 1$, holding $x_2$ fixed, is
+$$
+\begin{split}
+\mu(y \mid  x_1+1, x_2) &= \beta_0 + \beta_1 (x_{1}+1)+ \beta_2 x_2+ \beta_3 (x_1+1)x_{2}  \\
+& = \beta_0 + \beta_1 x_{1} + \beta_1 + \beta_2 x_{2} + \beta_3x_1x_2 + \beta_3x_2 \\
+& = \mu(y \mid  x_1, x_2) + \beta_1 + \beta_3x_2 
+\end{split}
+$$
+This shows that a 1 unit increase in $x_1$ is associated with a $\beta_1 + \beta_3x_2$ change in the mean response **holding all other predictors fixed**.  For example, if $x_2 = 5$ the mean change is $\beta_1 + 5\beta_3$. Similary, a 1 unit increase in $x_2$ is associated with a $\beta_2 + \beta_3x_1$ change in the mean response **holding all other predictors fixed**. 
