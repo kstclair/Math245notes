@@ -190,3 +190,224 @@ $$
 \end{split}
 $$
 This shows that a 1 unit increase in $x_1$ is associated with a $\beta_1 + \beta_3x_2$ change in the mean response **holding all other predictors fixed**.  For example, if $x_2 = 5$ the mean change is $\beta_1 + 5\beta_3$. Similary, a 1 unit increase in $x_2$ is associated with a $\beta_2 + \beta_3x_1$ change in the mean response **holding all other predictors fixed**. 
+
+
+
+
+
+
+## Example: MLR fit and visuals {#mlr-example1}
+
+
+### `lm` fit
+We fit a MLR model in R using the same command as a SLR model, but we add model predictors on the right-hand side of the formula. Examples include:
+
+- planar model: `lm(y ~ x1 + x2 + x3, data=, subset=)`
+- interaction model: `lm(y ~ x1 + x2 + x1:x2 + x3, data=, subset=)` or `lm(y ~ x1*x2 + x3, data=, subset=)` 
+- quadratic model: `lm(y ~ x1 + I(x1^2) + x2, data=, subset=)`. This uses the "as is" operator `I()` that tells R that `^` is interpreted as a power rather than as its symbolic use in a formula (see `?formula` for more details) 
+
+Here is the multiple linear regression of brain weight (g) on gestation (days), body size (kg) and litter size from **Case Study 9.2**:
+```{r}
+library(Sleuth3)
+brain <- case0902
+brain.lm <- lm(Brain ~ Gestation + Body + Litter, data=brain )
+brain.lm
+```
+
+The estimated mean function is 
+$$
+\hat{\mu}(brain \mid gest,body,litter) =  -225.2921    +   1.8087 Gestation     + 0.9859  Body   + 27.6486  Litter
+$$
+Holding gestation length and body weight fixed, increasing litter size by one baby increases estimated mean brain weight by 27.6g. But is this an appropriate model to use? **This interpretation is meaningless if the model doesn't fit the data!** We need to check this with scatterplots and residual plots.
+
+### Graphics for MLR 
+If we have $p$ predictors in our model, then the MLR model can be viewed in a (at least) $p$-dimensional picture! Viewing this is difficult, if not impossible. The best we can do is look at 2-d scatterplots of $y$ vs. all the predictor variables. (But, unfortunately, what we see in these 2-d graphs doesn't always explain to us what we will "see" in the MLR model.)
+
+#### Scatterplot matrix
+A scatterplot matrix plots all pairs of variables used in a model. The primary plots of interest will have the response $y$ on the y-axis and the predictors on the x-axis. But the predictor plots (e.g. $x_1$ vs. $x_2$) are useful to see if any predictors are related, which is a topic dicussed in more detail later in these notes. 
+
+The basic scatterplot matrix command `pairs` takes in a data frame, minus any columns you don't want plotted:
+```{r}
+names(brain)
+# we want to omit column 1 (Species) from our graph:
+pairs(brain[,-1])
+```
+
+The top row shows scatterplots of the response `Brain` vs. the three predictors. All three indicate that transformations of all variables should be explored. 
+
+A slightly nicer version that includes univariate density curves and correlation coefficients is made using `ggpairs` in the `GGally` package. This option fits a smoother curve to the scatterplots: 
+```{r}
+library(GGally)
+ggpairs(brain, columns = c("Body","Gestation", "Litter","Brain"), lower = list(continuous = "smooth"))
+```
+
+In this plot command, we select variables from `brain` in the `columns` argument with the response `Brain` listed **last** to make the lower row of the plot show the response `Brain` on the y-axis vs. all three predictors on the x-axes. 
+
+Conclusion: transformations are likely needed. Since all variables have positive values, we can try logs first. 
+
+We can't use a `scale` argument in a scatterplot matrix to explore transformations. Instead, we can use the `dplyr` package to transform all variables (except `Species`) using the `mutate_all` function, then we plot using `ggpairs` again. Here we also added the `ggpairs` argument `columnLabels` to remind us what transformations were made:
+```{r}
+library(dplyr)
+brain %>% select(-Species) %>%  # omit species
+  mutate_all(.funs = log) %>%   # apply the log function to all variables
+  ggpairs(columns = c("Body","Gestation", "Litter","Brain"),   
+          lower = list(continuous = "smooth"), 
+          columnLabels = c("log(Body)","log(Gestation)", "log(Litter)","log(Brain)"))
+```
+
+Does `Litter` need to be logged? If we don't want to log all variables, we can use `mutate_at`  instead of `mutate_all`:
+```{r}
+brain %>% select(-Species) %>%  # omit species
+  mutate_at(.vars = c("Brain","Body","Gestation"), .funs = log) %>%  # pick variables to log
+  ggpairs(columns = c("Body","Gestation", "Litter","Brain"), 
+          lower = list(continuous = "smooth"), 
+          columnLabels = c("log(Body)","log(Gestation)", "Litter","log(Brain)"))
+```
+
+
+#### Jittered scatterplot: 
+Jittered plots are useful when data points overlap (discrete variables like litter) and your sample size isn't huge. Change the `alpha` transparency value with large data sets. Here we compare `geom_point()` against `geom_jitter`, using `grid.arrange` from the `gridExtra` package to put these plots side-by-side:
+
+```{r}
+base <- ggplot(brain, aes(x=Litter, y=Brain)) + scale_y_log10()
+plotA <- base + geom_point() + labs(title="unjittered")
+plotB <- base + geom_jitter(width=.2) + labs(title="jittered")
+library(gridExtra)
+grid.arrange(plotA,plotB, nrow=1)
+```
+
+The `width=.2` amount specifies how much to jitter the points (we changed it here because the default amount didn't display enough of a change). We can see the jittering most in the points clustered around `Litter=0`. 
+
+
+
+
+### Residual plots for MLR
+If we have $p$ predictors, then there are $p+1$ residual plots to check:
+
+- plot $r_i$ against all predictors $x_1, \dotsc, _p$. The motivation for these plots is the same as SLR (residuals should not be related to the $x$'s)
+- plot $r_i$ against the *fitted* values $\hat{y}_i$. The motivation for this may be less clear, but the fitted values are simply a linear function of the predictor values:
+$$
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i}  + \hat{\beta}_2 x_{2,i} + \dotsm  + \hat{\beta}_p x_{p,i}
+$$
+so the residuals should not be related to the fitted values if the model fits.
+
+All $p+1$ plots should be checked. A quick starting point is the fitted value plot which is the first plot when `plot`-ing the `lm`. Here is the residuals vs. fitted plot for the untransformed variable model:
+```{r, fig.width=4,fig.height=4}
+# check residuals vs. fitted (y-hat) values:
+plot(brain.lm, which=1)
+```
+
+This plot indicates non-linearity and non-constant variance. Here is the same residual plot for the model will all variables logged except `Litter`:
+```{r, fig.width=4,fig.height=4}
+brain.lm2 <- lm(log(Brain) ~ log(Gestation) + log(Body) + Litter, data=brain)
+plot(brain.lm2, which=1)
+```
+
+We can use the `ggnostic` function in `GGally` to get plots of residuals vs. all predictors:
+```{r}
+ggnostic(brain.lm2, columnsY = ".resid")  # from GGally
+```
+
+The residual plots reveal some outliers that should be explored but the overall fit, while not perfect, is much better than the untransformed version.
+
+```{r}
+library(broom)
+library(knitr)
+kable(tidy(brain.lm2), digits=4)
+```
+The estimated median function for this model is
+$$
+\widehat{median}(y \mid x) = e^{0.8234}(Gest)^{0.4396}(Body)^{0.5745}e^{-0.1104(Litter)} 
+$$
+
+The effect of `Gestation` is interpreted as you would in a **power** model (both variables logged). For example, doubling gestational days is associated with an estimated $(2^{0.4396}-1)100%=$35.6% increase in median brain weight, holding body weight and litter size constant. 
+
+The effect of `Litter` is interpreted as you would in an **exponential** model (with just the response logged). For example, after controlling for body size and gestation time, each additional offspring decreases estimated median brain weight by 10.5% (work is $(e^{-0.1104}-1)100%=$).
+
+### EDA for interactions 
+We visualize interactions by using a graphic that looks at the relationship between $y$ and $x_1$ while holding the value of $x_2$ fixed (or almost fixed), and vice versa for flipping the role of $x$ variables. An interaction may be needed if the relationship between $y$ and $x_1$ depends on the value of $x_2$.
+
+#### Predictors: one quantitative and one categorical
+For example, if $x_1$ is quantitative and $x_2$ is categorical, then we use `facet_wrap` (or `facet_grid`) to split the scatterplot of $y$ vs. $x_1$ by group of $x_2$:
+```{r, eval=FALSE}
+ggplot(mydata, aes(x=x1, y=y)) + 
+  geom_point() + 
+  facet_wrap(~x2)
+```
+
+#### Predictors: both quantitative
+We use the same `facet_wrap` function, but we need to group the data into similar cases with respect to their $x_2$ value, which is now assumed to be quantitative. One way to do this is to use the `ntile(n=)` function from `dplyr` package where `n` determines how many groups the data will be divided into. 
+
+Is there an interaction between body weight and gestation?? **Does the relationship between brain weight and gestation length change as we vary body weight?** If yes, then we should include an interaction term between gestation and body weight.
+
+Here we hold body weight "fixed" by using the `ntile` command from the `dplyr` package to divide the data into chunks of animals with similar body weights. Here we pick `n=4` for this function which divides the cases into 4 equal sized chunks based on the quartiles (4) of `Body`. In the plot below the cases in "1" are the lower 25% of body weights, "2" are the 25-50th percentile values of Body weights, etc. 
+
+```{r}
+ggplot(brain, aes(x=Gestation, y=Brain)) + 
+  geom_point() + geom_smooth(method="lm", se=FALSE) +
+  scale_x_log10() + scale_y_log10() + 
+  facet_wrap(~ ntile(Body, n=4))
+```
+
+Conclusion: the trend within each level of body weight is about the same. No obvious interactive effect of body weight and gestation length on brain weight. Of course we can always check significance by adding interaction term to model:
+
+```{r}
+brain.lm3 <- lm(log(Brain) ~ log(Gestation) + log(Body) + Litter + log(Gestation):log(Body), data=brain)
+summary(brain.lm3)
+```
+
+
+### Quadratic models: Corn yields (exercise 9.15)
+This final example illustrates a quadratic model fit and scatterplot. Consider the corn yield data in textbook exercise 9.15. How is corn yield (measured bushels/acre) in a year related to the amount of rainfall (inches) in that summer?
+
+A linear model for yield against rainfall is not appropriate:
+```{r}
+corn <- ex0915
+summary(corn)
+ggplot(corn, aes(x=Rainfall, y=Yield)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) + 
+  labs(title="SLR model")
+corn.lm1<-lm(Yield ~ Rainfall, data =corn)
+plot(corn.lm1, which=1)
+```
+
+We can add a quadratic term (using the `I()` operator):
+```{r}
+corn.lm2 <- lm(Yield ~ Rainfall + I(Rainfall^2), data =corn)
+```
+
+Alternatively, we can update model 1 (SLR) using the `update` command:  on right side of formula the  `~ . + newstuff` says to add the `newstuff` to the old model formula which is denoted with the period `.` .
+```{r}
+corn.lm2 <- update(corn.lm1, ~ . + I(Rainfall^2))
+summary(corn.lm2) 
+plot(corn.lm2, which=1)
+```
+
+This residual plot looks much better for this quadratic model compared to the linear model. 
+
+We can visualize this quadratic model using the `geom_smooth(method="lm")` function but we have to specify this model form since the default is a SLR. This is done in the `formula` argument, using `y` and `x` to denote the `x` and `y` that you specify in the `aes` argument. 
+```{r}
+ggplot(corn, aes(x=Rainfall, y=Yield)) + 
+  geom_point() + 
+  geom_smooth(method="lm", formula= y ~ x + I(x^2),  se=FALSE) + 
+  labs(title="quadratic fit!")
+```
+
+The model fit is 
+```{r}
+kable(tidy(corn.lm2), digits = 4)
+```
+so 
+$$
+\hat{mu}(yield \mid rain) = -5.0147 + 6.0043(rain)- 0.2294(rain)^2
+$$
+An increase from 9 to 10 inches of rainfall is associated with a mean yield increase of 1.646 bushels per acre. 
+$$
+6.0043- 0.2294(2\times 9 + 1) = `r round(6.0043- 0.2294*(2*9 + 1),3)`
+$$
+An increase from 14 to 15 inches of rainfall is associated with a mean yield decrease of 0.648 bushels per acre. 
+$$
+6.0043- 0.2294(2\times 14 + 1) = `r round(6.0043- 0.2294*(2*14 + 1),3)`
+$$
+
