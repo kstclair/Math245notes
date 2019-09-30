@@ -238,7 +238,8 @@ The top row shows scatterplots of the response `Brain` vs. the three predictors.
 A slightly nicer version that includes univariate density curves and correlation coefficients is made using `ggpairs` in the `GGally` package. This option fits a smoother curve to the scatterplots: 
 ```{r}
 library(GGally)
-ggpairs(brain, columns = c("Body","Gestation", "Litter","Brain"), lower = list(continuous = "smooth"))
+ggpairs(brain, columns = c("Body","Gestation", "Litter","Brain"), 
+        lower = list(continuous = "smooth"))
 ```
 
 In this plot command, we select variables from `brain` in the `columns` argument with the response `Brain` listed **last** to make the lower row of the plot show the response `Brain` on the y-axis vs. all three predictors on the x-axes. 
@@ -271,12 +272,12 @@ Jittered plots are useful when data points overlap (discrete variables like litt
 ```{r}
 base <- ggplot(brain, aes(x=Litter, y=Brain)) + scale_y_log10()
 plotA <- base + geom_point() + labs(title="unjittered")
-plotB <- base + geom_jitter(width=.2) + labs(title="jittered")
+plotB <- base + geom_jitter(width=.1) + labs(title="jittered")
 library(gridExtra)
 grid.arrange(plotA,plotB, nrow=1)
 ```
 
-The `width=.2` amount specifies how much to jitter the points (we changed it here because the default amount didn't display enough of a change). We can see the jittering most in the points clustered around `Litter=0`. 
+The `width=.1` amount specifies how much to jitter the points (we changed it here because the default amount didn't display enough of a change). We can see the jittering most in the points clustered around `Litter=0`. 
 
 
 
