@@ -316,6 +316,7 @@ library(broom)
 library(knitr)
 kable(tidy(brain.lm2), digits=4)
 ```
+
 The estimated median function for this model is
 $$
 \widehat{median}(y \mid x) = e^{0.8234}(Gest)^{0.4396}(Body)^{0.5745}e^{-0.1104(Litter)} 
@@ -399,9 +400,10 @@ The model fit is
 ```{r}
 kable(tidy(corn.lm2), digits = 4)
 ```
+
 so 
 $$
-\hat{mu}(yield \mid rain) = -5.0147 + 6.0043(rain)- 0.2294(rain)^2
+\hat{\mu}(yield \mid rain) = -5.0147 + 6.0043(rain)- 0.2294(rain)^2
 $$
 An increase from 9 to 10 inches of rainfall is associated with a mean yield increase of 1.646 bushels per acre. 
 $$
@@ -411,4 +413,150 @@ An increase from 14 to 15 inches of rainfall is associated with a mean yield dec
 $$
 6.0043- 0.2294(2\times 14 + 1) = `r round(6.0043- 0.2294*(2*14 + 1),3)`
 $$
+
+
+
+
+
+## Categorical Predictors {#mlr-cat}
+
+Categorical predictors can be included in a regression model the same way that a quantitative predictor can. But since a categorical variable doesn't have a numerical scaling, we don't have a "linearity" assumption that needs to be met (though the three other assumptions still hold). A categorical variable is included by using one or more *indicator* variables (aka dummy variables) which indicate different levels of the variable. 
+
+- An **indicator variable** equals 1 to indicate the level of interest, and is 0 otherwise.
+- The **baseline level** of an indicator variable is the level of the factor variable that doesn't have an indicator variable made for it. 
+- R will create indicator variables for us in an `lm`, so there is no need to do this "by hand".
+
+If a variable, which is stored as a `factor` in R, has $k$ levels then we need $k-1$ indicator variables. Consider the following examples to illustrate this idea.
+
+Suppose we are looking at how gender and education level are associated with income. If there are two genders in our data, here recorded as `Female` and `Male`, then we need one indicator to indicate one of the two levels. R will create an indicator for the **second** level, ordered alphabetically. If a case has `Indicator_Male=1` then the case is `Male` but if the case has `Indicator_Male=0` then the case is `Female`. So this one indicator variable can classify two levels and the baseline level is `Female`.
+
+```{r, echo=FALSE}
+tmp <- data.frame(Gender = c("Female","Male"), Indicator_Male=c(0,1))
+library(knitr)
+kable(tmp, align="cc")
+```
+
+Suppose we are looking at how number of farms per county in 1992 is related to number of farms in 1987 and region of the country. If there are four regions in our data, here recorded as `NC`, `NE`, `S` and `W`, then we need three indicators. R will create an indicator for all but the first level of `NC`. If a case has `Indicator_NE=1` then the case is `NE`,   if the case has `Indicator_S=1` then the case is `S`,  if the case has `Indicator_W=1` then the case is `W`. If a case has *all* indicator values equal to 0, then the case is the **baseline** level of `NC`. So we need three indicators to classify the four region levels. 
+
+```{r, echo=FALSE}
+tmp <- data.frame(Region = c("NC","NE","S","W"), Indicator_NE=c(0,1,0,0), Indicator_S=c(0,0,1,0), Indicator_W=c(0,0,0,1))
+library(knitr)
+kable(tmp, align="cc")
+```
+
+
+
+### Interpretation: adding a categorical
+
+You add a categorical predictor `x2` to the `lm` function just as you would any quantitative predictor: `lm(y ~ x1 + x2, data)`. R automatically creates indicator variables for `x2`. When *adding* a categorical `x2` which has, say levels `A`, `B` and `C`, the basic mean function form looks like:
+$$
+\mu(Y \mid x_1, x_2) = \beta_0 + \beta_1 x_1 + \beta_3 LevelB + \beta_4 LevelC
+$$
+The mean function for cases where $x_2=A$ sets the indicators for levels `B` and `C` **equal to 0**:
+$$
+\mu(Y \mid x_1, x_2=A) = \beta_0 + \beta_1 x_1 + \beta_3 (0) + \beta_4 (0) = \beta_0 + \beta_1 x_1 
+$$
+The mean function for cases where $x_2=B$ sets the indicator for level `B` equalt to 1 and the indicator for level `C` equal to 0:
+$$
+\mu(Y \mid x_1, x_2=B) = \beta_0 + \beta_1 x_1 + \beta_3 (1) + \beta_4 (0) = \beta_0 + \beta_1 x_1 + \beta_3
+$$
+The mean function for cases where $x_2=C$ sets the indicator for level `C` equalt to 1 and the indicator for level `B` equal to 0:
+$$
+\mu(Y \mid x_1, x_2=C) = \beta_0 + \beta_1 x_1 + \beta_3 (0) + \beta_4 (1) = \beta_0 + \beta_1 x_1 + \beta_4
+$$
+
+Interpretation of indicator effects:
+
+- $\beta_3$ is the difference between $\mu(Y \mid x_1, x_2=B)$ and $\mu(Y \mid x_1, x_2=A)$, so it measures the mean change between levels `B` and `A`, holding $x_1$ fixed.
+- $\beta_4$ is the difference between $\mu(Y \mid x_1, x_2=C)$ and $\mu(Y \mid x_1, x_2=A)$, so it measures the mean change between levels `C` and `A`, holding $x_1$ fixed.
+- $\beta_3-\beta_4$ is the difference between $\mu(Y \mid x_1, x_2=B)$ and $\mu(Y \mid x_1, x_2=C)$, so it measures the mean change between levels `B` and `C`, holding $x_1$ fixed.
+
+
+#### Example: Agstrat
+Consider the `agstrat` data again, fitting the regression of square root of `farms92` (number of farms/county in 1992) against square root of `farms87` and `region`. 
+
+```{r}
+agstrat<- read.csv("http://people.carleton.edu/~kstclair/data/agstrat.csv")
+farms.lm <- lm(sqrt(farms92) ~ sqrt(farms87) + region, data=agstrat)
+farms.lm
+```
+
+The fitted model mean function is estimated as 
+$$
+\begin{split}
+\hat{\mu}(\sqrt{farms92} \mid \sqrt{farms92}, region) &  = -0.9369 + 0.9798 \sqrt{farms92}  -0.0826(regionNE) + \\
+ & 0.7214(regionS) + 1.0100(regionW)
+\end{split}
+$$
+
+For the baseline `NC` region, the estimated mean function is
+$$\begin{split}
+\hat{\mu}(\sqrt{farms92} \mid \sqrt{farms92}, region=NC) & = -0.9369 + 0.9798 \sqrt{farms92}  -0.0826(0) + \\
+& 0.7214(0)+  1.0100(0) \\
+& = -0.9369 + 0.9798 \sqrt{farms92}
+\end{split}
+$$
+For the  `S` region, the estimated mean function is
+$$\begin{split}
+\hat{\mu}(\sqrt{farms92} \mid \sqrt{farms92}, region=S) & = -0.9369 + 0.9798 \sqrt{farms92}  -0.0826(0) + \\
+& 0.7214(1)+  1.0100(0)\\
+& = -0.9369 + 0.9798 \sqrt{farms92}+ 0.7214 \\
+& = -0.2155+ 0.9798 \sqrt{farms92}
+\end{split}
+$$
+
+**Interpretation** $\hat{\beta}_3 = 0.7214$ tells us that the mean square root `farms92` is estimated to be 0.7214 units higher in the `S` compared to the `NC` region, holding `farms87` constant. But the effect of `farms87` is the same, regardless of region: holding region constant, a one unit increase in the square root of `farms87` is associated with a 0.9798 unit increase in the mean square root of `farms92`.
+
+With one quatitative preditor and one categorical predictor, we can visual this data by coloring plot symbols by `region`. We can also add  **parallel** lines that show how `farms87` is related to `farms92` in each region. We do this by adding the model's fitted values ($\hat{y}$'s) to the augmented data frame and plotting lines, by region, with these fitted values as the y-axis measurement.
+
+```{r}
+library(ggplot2)
+library(broom)
+agstrat.aug <- augment(farms.lm)
+head(agstrat.aug)
+ggplot(agstrat.aug,  aes(x=sqrt.farms87., y=sqrt.farms92., color=region)) +
+  geom_point() +
+  geom_line(data=agstrat.aug, aes(y=.fitted), size=1) + 
+  labs(title="Parallel line model",
+       x="square root of number of farms in 1987",
+       y="square root of number of farms in 1992")
+```
+
+The difference of $\hat{\beta}_3 = 0.7214$ is shown by the fact that the blue South line is always 0.7214 units above the red North Central line for any value of `farms87`. The small value of $\hat{\beta}_2 = -0.0826$ for the `NE` indicator show that there is basically no difference between the `NE` and `NC` lines, which can be seen by the almost overlapping red and green lines. 
+
+
+
+### Interpretation: adding a categorical interaction
+
+What if we thought that the effect of $x_1$ depends on the level of the categorical variable $x_2$. E.g. What if the slopes for each region in the above scatterplot were allowed different? To create a **separate lines model** we would add the interaction of $x_1$ and $x_2$: `lm(y ~ x1 * x2, data)`.  When *adding* a categorical `x2` which has, say levels `A`, `B` and `C`, the basic mean function form looks like:
+$$
+\mu(Y \mid x_1, x_2) = \beta_0 + \beta_1 x_1 + \beta_3 LevelB + \beta_4 LevelC + \beta_5 x_1LevelB + \beta_6 x_1LevelC
+$$
+The mean function for cases where $x_2=A$ sets the indicators for levels `B` and `C` **equal to 0**:
+$$
+\mu(Y \mid x_1, x_2=A) = \beta_0 + \beta_1 x_1 + \beta_3 (0) + \beta_4 (0) = \beta_0 + \beta_1 x_1 + \beta_5 x_1(0) + \beta_6 x_1(0) =  \beta_0 + \beta_1 x_1
+$$
+The mean function for cases where $x_2=B$ sets the indicator for level `B` equalt to 1 and the indicator for level `C` equal to 0:
+$$
+\mu(Y \mid x_1, x_2=B) = \beta_0 + \beta_1 x_1 + \beta_3 (1) + \beta_4 (0)  + \beta_5 x_1(1) + \beta_6 x_1(0) = (\beta_0+ \beta_3) + (\beta_1+\beta_5) x_1 
+$$
+The mean function for cases where $x_2=C$ sets the indicator for level `C` equalt to 1 and the indicator for level `B` equal to 0:
+$$
+\mu(Y \mid x_1, x_2=C) = \beta_0 + \beta_1 x_1 + \beta_3 (0) + \beta_4 (1)  + \beta_5 x_1(0) + \beta_6 x_1(1)= (\beta_0+ \beta_4) + (\beta_1+\beta_6) x_1 
+$$
+
+Interpretation of indicator effects:
+
+- $\beta_3$ is the difference between $\mu(Y \mid x_1=0, x_2=B)$ and $\mu(Y \mid x_1=0, x_2=A)$ at the intercept where $x_1=0$.
+- $\beta_4$ is the difference between $\mu(Y \mid x_1=0, x_2=C)$ and $\mu(Y \mid x_1=0, x_2=A)$ at the intercept where $x_1=0$.
+- $\beta_1$ is the effect of $x_1$ when $x_2 = A$ (level A)
+- $\beta_1+\beta_5$ is the effect of $x_1$ when $x_2 = B$ (level B)
+- $\beta_5$ measures how much more or less the effect of $x_1$ is in level B compared to level A (difference in slopes of the two lines)
+- $\beta_1+\beta_6$ is the effect of $x_1$ when $x_2 = C$ (level C)
+- $\beta_6$ measures how much more or less the effect of $x_1$ is in level C compared to level A (difference in slopes of the two lines)
+
+
+#### Example: Sleep
+
+## Inference for MLR {#mlr-inf}
 
