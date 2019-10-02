@@ -558,5 +558,110 @@ Interpretation of indicator effects:
 
 #### Example: Sleep
 
+This data `sleep` contains information on the sleep and physical characteristics of 62 species of mammals. Our goal is to see how the total amount of sleep (hours) that an animal gets in 24 hours is related to its body weight (kg) and the amount of danger (low danger to high danger) to which it is exposed. 
+```{r}
+sleep <- read.csv("http://math.carleton.edu/kstclair/data/sleep.csv")
+sleep %>% select(TS, BodyWt, D) %>% summary()
+```
+
+Our EDA above shows that danger level`D` is numerically coded, with a "1" indicating  very low danger level up to "5" indicating very high danger. If we used this version in our model that forces a linear relationship, which means a constant change in TS for each bump up in danger level, which is a strong assumption to make given the categorical nature of this variable. Plus, this constant rate of change does not look to be the case based on EDA:
+```{r}
+boxplot(TS ~ D, data=sleep)
+```
+
+We must make a factor version of this variable to correctly use it in our model. We will use the `fct_recode` command from the `forcats` package:
+```{r}
+table(sleep$D)   # EDA counts for each level
+library(forcats)
+sleep$danger <- fct_recode(factor(sleep$D), 
+                              "very low" = "1",
+                              "low" = "2",
+                              "moderate" = "3",
+                              "high" = "4",
+                              "very high" = "5")
+table(sleep$danger)   # check that we recoded correctly
+levels(sleep$danger)   # very low is the first=baseline level
+```
+
+Always do an EDA check (here, checking counts) when manipulating or recoding a variable. Our `factor` variable `danger`'s first level is `very low` which will be the baseline level for any model fit in R. 
+
+When we add `lm` lines to a scatterplot with color coded points, then `ggplot` will fit **separate lines** for each color. Here we plot `TS` (total sleep) against the logged version of `BodyWt` since we don't have a linear relationship on the untransformed scale. 
+```{r}
+library(ggplot2)
+ggplot(sleep, aes(x=BodyWt, y=TS, color=danger)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) + 
+  scale_x_log10() + 
+  labs(title="daily sleep vs. body weight by danger level")
+```
+
+This plot suggests that there may be an interaction between `danger` and `BodyWt` since the `lm` lines have some variation in slope across danger levels. The model we will fit has ten parameters ($\beta_0-\beta_9) due to the four indicator variables that are also interacted with body weight:
+
+$$\begin{split}
+\mu(TS \mid body, danger) &= \beta_0 + \beta_1 \log(body) + \beta_2 low + \beta_3 moderate + \beta_4 high + \\ 
+& \beta_5 veryhigh  + \beta_6 \log(body)low + \beta_7 \log(body)moderate + \\ 
+& \beta_8 \log(body)high + \beta_9 \log(body)veryhigh
+\end{split}
+$$
+
+
+```{r}
+sleep.lm <- lm(TS ~ log(BodyWt)*danger, data=sleep)
+sleep.lm
+```
+
+The estimated mean function is
+$$\begin{split}
+\mu(TS \mid body, danger) &= 13.868 -0.581 \log(body)-2.359 low -3.501 moderate -4.227 high - \\ 
+& 7.031 veryhigh  -0.034 \log(body)low -0.344\log(body)moderate + \\ 
+& 0.170 \log(body)high -0.096 \log(body)veryhigh
+\end{split}
+$$
+
+There are many parameters to interpret, so here are a few examples:
+
+
+- $\beta_1$ is the effect of body weight for species in the “very low” danger level.  To see this, write out the mean functions for the two levels. For very low level: 
+$$\begin{split}
+\mu(TS \mid body, danger=verylow) &= \beta_0 + \beta_1 \log(body) + \beta_2 (0) + \beta_3 (0) + \beta_4 (0) + \beta_5 (0) \\
+& + \beta_6 \log(body)(0) + \beta_7 \log(body)(0) + \beta_8 \log(body)(0) + \beta_9 \log(body)(0) \\
+& = \beta_0 + \beta_1 \log(body) 
+\end{split}$$
+
+- $\beta_9$ tells us how the effect of body weight differs for the very low and very high danger levels. Compare the mean response for very low to the mean response for the very high level:
+$$\begin{split}
+\mu(TS \mid body, danger=veryhigh) &= \beta_0 + \beta_1 \log(body) + \beta_2 (0) + \beta_3 (0) + \beta_4 (0) + \beta_5 (1) \\
+& + \beta_6 \log(body)(0) + \beta_7 \log(body)(0) + \beta_8 \log(body)(0) + \beta_9 \log(body)(1) \\
+& = (\beta_0 + \beta_5) + (\beta_1 + \beta_9) \log(body) 
+\end{split}$$
+In the “very low” model, $\beta_1$ measures the effect of body weight on mean sleep while in the “very high” model, $\beta_1 + \beta_9$ measures this effect. So the parameter $\beta_9$ tells us how this effect differs for the two danger levels. The small estimated value $\hat{\beta}_9 = -0.096$, along with the separate lines scatterplot, suggest little difference in the effect of body weight in these two danger groups. 
+
+- The parameter function $\beta_5 + \beta_9 \log(body)$ tells us the difference in total sleep between the very high and very low danger levels at a given value of body weight. Recall that in this interaction model, the effect of danger should depend on the value of body weight. For example, for animals that are 1kg in weight, the parameter $\beta_5 + \beta_9\log(1) = \beta_5$ measures the difference in mean total sleep for the very high and very low levels. The estimated parameter value of $\hat{\beta}_5 = -7.031$ and the large difference shown in the scatterplot suggest that for 1 kg animals, that the average total sleep for animals with very high danger is about 7 hours less than for animals in very low danger.
+
+- To determine if the effect of body weight on mean total sleep differs for “high” and “moderate” levels of danger, we would test the hypotheses
+$$
+H_0: \beta_8 = \beta_7 \ \ \ \ vs. \ \ \ \ H_A: \beta_8 \neq \beta_7
+$$
+Again, write down the mean equations for these two levels. For “high” all dummy variables equal 0 expect `high` equals 1:
+$$\begin{split}
+\mu(TS \mid body, danger=high) &= \beta_0 + \beta_1 \log(body) + \beta_2 (0) + \beta_3 (0) + \beta_4 (1) + \beta_5 (0) \\
+& + \beta_6 \log(body)(0) + \beta_7 \log(body)(0) + \beta_8 \log(body)(1) + \beta_9 \log(body)(0) \\
+& = (\beta_0 + \beta_4) + (\beta_1 + \beta_8) \log(body) 
+\end{split}
+$$
+for “moderate” all dummy variables equal 0 expect `moderate` equals 1.
+$$\begin{split}
+\mu(TS \mid body, danger=moderate) &= \beta_0 + \beta_1 \log(body) + \beta_2 (0) + \beta_3 (1) + \beta_4 (0) + \beta_5 (0) \\
+& + \beta_6 \log(body)(0) + \beta_7 \log(body)(1) + \beta_8 \log(body)(0) + \beta_9 \log(body)(0) \\
+& = (\beta_0 + \beta_3) + (\beta_1 + \beta_7) \log(body) 
+\end{split}$$
+In the “high” model, $\beta_1 + \beta_8$  measures the effect of body weight on mean sleep while in the “moderate” model, $\beta_1 + \beta_7$ measures this effect. Our null hypothesis would state that these two effects are equal:
+$$
+H_0: \beta_1 + \beta_8 = \beta_1 + \beta_7
+$$
+which simplifies to the hypothesis given above. 
+
+
+ 
 ## Inference for MLR {#mlr-inf}
 
