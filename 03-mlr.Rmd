@@ -814,10 +814,70 @@ t
 
 ### Example: Sleep {#mlr-sleep2}
 
-Let's continue with inference for the separate lines model for modeling the amount of daily sleep for variety of animals as a function of their body size and danger level (Section \@ref(mlr-sleep1)). 
+Let's continue with inference for the separate lines model for modeling the amount of daily sleep for variety of animals as a function of their body size and danger level (Section \@ref(mlr-sleep1)). The interaction model looks liked
+$$\begin{split}
+\mu(TS \mid body, danger) &= \beta_0 + \beta_1 \log(body) + \beta_2 low + \beta_3 moderate + \beta_4 high + \\ 
+& \beta_5 veryhigh  + \beta_6 \log(body)low + \beta_7 \log(body)moderate + \\ 
+& \beta_8 \log(body)high + \beta_9 \log(body)veryhigh
+\end{split}
+$$
+
+The estimated model parameters from the model fit in Section \@ref(mlr-sleep1) is
+```{r}
+summary(sleep.lm)
+kable(tidy(sleep.lm, conf.int = TRUE), digits = 3)
+```
+
+Here are some inferences we can make:
+
+- **Body weight effect for very low danger:** Recall from above that $\beta_1$ is the effect of body weight for species in the “very low” danger level. The coefficients table above provide results for testing $H_0: \beta_1 = 0$ vs. $H_A: \beta_1 \neq 0$. The results of this test show that the effect of body weight is moderately significant for the very low danger subpopulation (t=-2.101, df=48, p=0.0409). A doubling of body weight for the low danger population is associated with a decrease in mean total sleep of anywhere from 0.02 to 0.80 hours. 
+```{r}
+# logarithmic model : additive change in mean(y) = beta*log(m)
+log(2)*-0.581
+log(2)*-1.137
+log(2)*-0.025
+```
 
 
 
+- **Difference between body weight effect in very low and very high danger levels:** $\beta_9$ tells us how the effect of body weight differs for the very low and very high danger levels. The small estimated value $\hat{\beta}_9 = -0.096$, along with the separate lines scatterplot, suggest little difference in the effect of body weight in these two danger groups. The summary output gives test results for $H_0: \beta_9 = 0$ vs. $H_A: \beta_9 \neq 0$. The test results suggest that the difference effects of body weight on mean total sleep in the two groups is not statistically significant (t=-0.125, df=48, p=0.9).
+
+- **Difference between body weight effect in high and moderate danger levels:** As explained in Section \@ref(mlr-sleep1), to determine if the effect of body weight on mean total sleep differs for “high” and “moderate” levels of danger, we would test the hypotheses
+$$
+H_0: \beta_8 = \beta_7 \ \ \ \ vs. \ \ \ \ H_A: \beta_8 \neq \beta_7
+$$
+
+We can rearrange to look at the difference:
+$$
+H_0: \beta_8 - \beta_7 = 0 \ \ vs. \ \  H_A: \beta_8 - \beta_7 \neq 0
+$$
+
+This difference is a  linear combination of parameters:
+$$
+\gamma = \beta_8 - \beta_7
+$$
+where we know constants $c_8 = 1$ and $c_7 = -1$. The estimated mean difference is
+$$
+\hat{\gamma} = \hat{\beta}_8 - \hat{\beta}_7  = 0.16966 - (-0.34437) \approx 0.51403
+$$
+The SE of this estimate uses the SE's of $Var(\hat{\beta}_8) = 0.17466548$ and $Var(\hat{\beta}_7) = 0.18359650 $, along with their covariance term $Cov(\hat{\beta}_8,\hat{\beta}_7) = 0.07650199$.
+$$
+SE(\hat{\gamma}) = \sqrt{ 0.17466548 + 0.18359650(-1)^2 + 2(1)(-1)(0.07650199)} \approx 0.45305
+$$
+The test stat is
+$$
+t = \dfrac{0.51403 - 0}{0.45305} = 1.1346
+$$
+The p-value is the area above 1.1346 and below -1.1346 (or double the lower tail area). The p-value is about 26%, which means we cannot conclude that the effect of body weight on mean total sleep differs between animals in moderate danger and high danger. 
+
+```{r}
+vcov(sleep.lm)  # really big!
+vcov(sleep.lm)[c(7,8)+1, c(7,8)+1]  # get the 8/9th rows/columns for beta7,beta8
+(est <- 0.16966 - (-0.34437))
+(se.est <- sqrt(0.17466548 + 0.18359650*(-1)^2 + 2*(-1)*0.07650199))
+(tstat <- est/se.est )
+2*pt(-tstat, df=48)
+```
 
 
 
