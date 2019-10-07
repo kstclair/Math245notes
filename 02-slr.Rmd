@@ -146,7 +146,7 @@ mean(slopes); sd(slopes)
 ```
 
 
-### Are slope and intercept estimates correlated?
+### Are slope and intercept estimates correlated? {#slr-simcor}
 In regression, it is not unusual to be interested in estimating a **linear combination** of our model parameters. An easy example of such a combination of parameters is the mean response for a given value $x_0$ of the predictor: 
 $$
 \mu(y \mid x=x_0) = \beta_0 + \beta_1x_0

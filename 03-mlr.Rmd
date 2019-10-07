@@ -99,7 +99,7 @@ $$
 $$
 This shows that a 1 unit increase in $x_1$ is associated with a $\beta_1$ change in the mean response **holding all other predictors fixed**. This holds in general too: a 1 unit increase in $x_j$ is associated with a $\beta_j$ change in the mean response **holding all other predictors fixed**.
 
-#### Quadratic model
+#### Quadratic model {#mlr-quad}
 A model that incorporates *polynomial* functions of predictors, like $x^2, x^3$, etc,  is also a MLR model. Here is an example that says the mean of $y$ is a quadratic function of $x_1$ but a linear function of $x_2$:
 $$
 \mu_{y\mid  x_1, x_2} = \beta_0 + \beta_1 x_{1} + \beta_2 x_{1}^2 + \beta_3 x_{2}
@@ -144,7 +144,7 @@ $$
 $$
 This shows that a 1 unit increase in $x_1$ is associated with a $\beta_1 + \beta_2(2x_1+1)$ change in the mean response **holding all other predictors fixed**.  For example, if $x_1 = 1$ the mean change is $\beta_1 + 3\beta_2$.
 
-#### Interactions 
+#### Interactions {#mlr-int}
 A model that incorporates predictor *interactions* says that the effect of one predictor is dependent on the value of the other predictor, and vica versa.  Here is an example that has the interaction of $x_1$ and $x_2$:
 $$
 \mu_{y\mid  x_1, x_2} = \beta_0 + \beta_1 x_{1} + \beta_2 x_{2} + \beta_3 x_1x_{2}
@@ -472,7 +472,7 @@ Interpretation of indicator effects:
 - $\beta_3-\beta_4$ is the difference between $\mu(Y \mid x_1, x_2=B)$ and $\mu(Y \mid x_1, x_2=C)$, so it measures the mean change between levels `B` and `C`, holding $x_1$ fixed.
 
 
-#### Example: Agstrat
+#### Example: Agstrat {#mlr-agstrat1}
 Consider the `agstrat` data again, fitting the regression of square root of `farms92` (number of farms/county in 1992) against square root of `farms87` and `region`. 
 
 ```{r}
@@ -556,7 +556,7 @@ Interpretation of indicator effects:
 - $\beta_6$ measures how much more or less the effect of $x_1$ is in level C compared to level A (difference in slopes of the two lines)
 
 
-#### Example: Sleep
+#### Example: Sleep {#mlr-sleep1}
 
 This data `sleep` contains information on the sleep and physical characteristics of 62 species of mammals. Our goal is to see how the total amount of sleep (hours) that an animal gets in 24 hours is related to its body weight (kg) and the amount of danger (low danger to high danger) to which it is exposed. 
 ```{r}
@@ -665,3 +665,160 @@ which simplifies to the hypothesis given above.
  
 ## Inference for MLR {#mlr-inf}
 
+Inference methods for *individual* $\beta$-parameters, the mean function $\mu$ and predictions are all very similar to the inference methods outlined for SLR models in Sections \@ref(slr-inf) and \@ref(slr-inf2). The biggest difference is that we now use a t-distribution with **degrees of freedom equal to $\pmb{n-(p+1)}$** where $p+1$ is equal to the number of $\beta$'s in the mean function. 
+
+To review:
+
+- **Confidence Intervals for $\pmb{\beta}_i$:** A $C$% confidence for $\beta_i$ has the form:
+$$
+\hat{\beta}_i \pm t^* SE(\hat{\beta}_i)
+$$
+where $t^*$ is the $(100-C)/2$ percentile from the t-distribution with $df=n-(p+1)$ degrees of freedom. 
+
+- **Hypothesis tests** We can test the hypothesis
+$$
+H_0: \beta_i =  0  \ \ \ \ vs. \ \ \ \ H_A: \beta_i \neq  0 
+$$
+with the following t-test statistic:
+$$
+t =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
+$$
+The t-distribution with $n-(p+1)$ degrees of freedom is used to compute the p-value that is appropriate for whatever $H_A$ is specified. **Interpretation of results:** Recall the general interpretation for the planar model:  $\beta_i$ is the effect of a one unit increase in $x_i$, holding all other predictors constant. **Testing $\pmb{\beta}_i =0$** is the same as asking: **Is the observed effect of $x_i$ on $\mu$ statistically significant after accounting for all other terms in the model?** For this reason, an individual t-test is only good for determing if $x_i$ is needed in a model that contains **all other terms**. If you want to test the significance of **multiple** predictors at once, you need to conduct an F-test using ANOVA (Section \@ref(mlr-anova). 
+
+- **Inference for $\pmb{\mu(Y \mid X_0)}$ and  $\pmb{pred(Y \mid X_0)}$:** Confidence and prediction intervals calculations are very similar to SLR in Section \@ref(mlr-inf2), except for the change in the degrees of freedom and a slightly more complex form for the SE of the estimated mean response $SE(\hat{\mu}(Y \mid X_0))$ which now involves more than one predictor. 
+
+
+### Inference for a linear combination of $\beta$'s {#mlr-inf2}
+
+One new inference method which is sometimes needed in MLR models, is to make inferences about a **linear combination** of $\beta_i$'s. A linear combination is of the form:
+$$
+\gamma = c_i \beta_i + c_j \beta_j
+$$
+where $c_i$ and $c_j$ are known numbers. 
+
+Some examples of a linear combination include:
+
+- Suppose we fit the quadratic model in Section \@ref(mlr-quad) and want to estimate the change in the mean response for a change in $x_1$ from 9 to 10. This change is measured by the parameter
+$$
+\gamma = \beta_1 + \beta_2(2\times 9+1) =  \beta_1 + 19\beta_2
+$$
+so $c_1 = 1$ and $c_2 = 19$.
+
+- Suppose we fit the interaction model in Section \@ref(mlr-int) and want to estimate the change in the mean response for a 1 unit increase in $x_1$, holding $x_2$ constant at the value of -5. This change is measured by the parameter
+$$
+\gamma = \beta_1 + \beta_3 (-5) = \beta_1 -5 \beta_3
+$$ 
+so $c_1 = 1$ and $c_3 = -5$.
+
+Any inference for this new $\gamma$ parameter will rely on an estimate, $\hat{\gamma}$ and standard error $SE(\hat{\gamma})$. 
+
+- **Estimation:** Just plug in our $\beta$ estimates!
+$$
+\hat{\gamma} = c_i \hat{\beta}_i + c_j \hat{\beta}_j
+$$
+- **SE:** This is more complex of a calculation because the estimates $\hat{\beta}_i$ and $\hat{\beta}_i$ are **correlated**. We can see this for $\hat{\beta}_0$ and $\hat{\beta}_1$ in the SLR simulation in Section \@ref(slr-simcor). We use probabilities rules for the linear combination of two correlated random variables to derive our SE as
+$$
+SE(\hat{\gamma}) = \sqrt{c^2_i Var(\hat{\beta}_i) + c^2_j Var(\hat{\beta}_j) + 2c_i c_j Cov(\hat{\beta}_i, \hat{\beta}_j) }
+$$
+The variances ($Var$) values are the squared SE's for each estimate, e.g. $Var(\hat{\beta}_i) = SE(\hat{\beta}_i)^2$. The covariance ($Cov$) value measures how the two estiamtes co-vary together over many, many samples from the populations (just like SE tells us how each estimate varies by itself). Positive values of covariance means the two estimates are positively correlated, negative means negatively correlated. The magnitude of the covariance is a function of each estimate's SE. In R, we will get these variance and covariance values from a MLR model's estimated **covariance matrix**, which for a MLR planar model with two predictors will look like a 3x3 matrix with variance values on the diagonal and covariance values on the off-diagonals:
+$$
+\begin{pmatrix}
+Var(\hat{\beta}_0) & Cov(\hat{\beta}_0, \hat{\beta}_1) & Cov(\hat{\beta}_0, \hat{\beta}_2) \\
+Cov(\hat{\beta}_1, \hat{\beta}_0) & Var(\hat{\beta}_1)& Cov(\hat{\beta}_1, \hat{\beta}_2) \\
+Cov(\hat{\beta}_2, \hat{\beta}_0)& Cov(\hat{\beta}_2, \hat{\beta}_1)& Var(\hat{\beta}_2)
+\end{pmatrix}  
+$$
+Note that covariance is symmetric so that $Cov(\hat{\beta}_i, \hat{\beta}_j) = Cov(\hat{\beta}_j, \hat{\beta}_i)$.
+
+Inference for $\gamma$ then looks like:
+
+- **Confidence interval for $\pmb{\gamma}$:** $\hat{\gamma} \pm t^*_{df} SE(\hat{\gamma})$
+- **Hypothesis test for $\pmb{H_0: \gamma = \gamma^*}$:** uses the test statistic 
+$$
+t = \dfrac{\hat{\gamma} - \gamma^*}{SE(\hat{\gamma})}
+$$
+and a p-value from a t-distribution with model degrees of freedom. 
+
+### Example: Agstrat {#mlr-agstrat2}
+
+Let's continue with inference for the parallel lines model for modeling the number of farms in 1992 as a function of region and number of farms in 1987 (Section \@ref(mlr-agstrat1)). The mean model form is 
+
+$$
+\begin{split}
+\mu(\sqrt{farms92} \mid \sqrt{farms92}, region) &  = \beta_0 + \beta_1 \sqrt{farms92}  + \beta_2(regionNE) + \\
+&  \beta_3(regionS) + \beta_4(regionW)
+\end{split}
+$$
+
+
+```{r}
+agstrat<- read.csv("http://people.carleton.edu/~kstclair/data/agstrat.csv")
+farms.lm <- lm(sqrt(farms92) ~ sqrt(farms87) + region, data=agstrat)
+kable(tidy(farms.lm, conf.int=TRUE), digits = 3)
+```
+
+- **Compare S to NC**: $\hat{\beta}_3 = 0.721$ tells us that the mean square root `farms92` is estimated to be 0.721 units higher in the `S` compared to the `NC` region, holding `farms87` constant. The t-test results in the summary output test $H_0: \beta_3 = 0$, which has a t-test statistic of $t = 0.721/0.123 = 5.884$ which gives a p-value that is less than 0.001. **Interpretation:** Holding all other model terms constant (including other indicators for W and NE), there is a statistically significant difference between the mean number of farms in 1992 between South and North Central regions for any given value of farms in 1987. I am 95% confident that the average square root of farms in 1992 is anywhere from 0.48 to 0.963 units higher in the south than in the north central regions, holding the number of farms in 1987 fixed. 
+
+- **Compare NE to NC**: $\hat{\beta}_2 = -0.083$ tells us that the mean square root `farms92` is estimated to be 0.083 units lower in the `NE` compared to the `NC` region, holding `farms87` constant. The t-test results in the summary output test $H_0: \beta_2 = 0$, which has a t-test statistic of $t = -0.377$ which gives a p-value that is 0.706. **Interpretation:** Holding all other model terms constant (including other indicators for S and W), there is no statistically significant difference between the mean number of farms in 1992 between Northeast and North Central regions for any given value of farms in 1987.
+
+- **Compare S to W**: In the parallel line model, we would like to know if there is a difference in the mean number of farms in 1992 in the S and W regions, after controlling for the number of farms in 1987. The question can be answered by comparing
+$$
+\mu(farms92 \mid farms87, region=S) - \mu(farms92 \mid farms87, region=W) = \beta_3 - \beta_4
+$$
+The hypotheses are then 
+$$
+H_0: \beta_3 - \beta_4 = 0 \ \ vs. \ \ H_A: \beta_3 - \beta_4 \neq 0
+$$
+Note that this is **not** the same as asking if each parameter **equals 0**. We just want to know if they are the same value, so we cannot use a t-test given in the summary output. This is a question about a **linear combination** of parameters:
+$$
+\gamma = \beta_3 - \beta_4
+$$
+where $c_3 = 1$ and $c_4 = -1$. Our estimated parameter difference is 
+$$
+\hat{\gamma} = \hat{\beta}_3 - \hat{\beta}_4 = 0.7214 - 1.0100 = -0.2886
+$$
+
+```{r}
+farms.lm
+# estimate of beta3 - beta4 (do S and W lines have same intercepts?)
+est <- 0.7214 - 1.0100
+est
+```
+
+We use the `vcov(my.lm)` command to get the estimated model's covariance matrix:
+```{r}
+vcov(farms.lm)
+```
+The parts we need are $Var(\hat{\beta}_3) = 0.015030978$, $Var(\hat{\beta}_4) = 0.028986383$, and $Cov(\hat{\beta}_3, \hat{\beta}_4) = 0.008964555$. The SE of our estimated difference is then
+$$
+SE(\hat{\gamma}) = \sqrt{(1)^20.015030978 + (-1)^20.028986383 + 2(1)(-1)0.008964555} = 0.1615186
+$$
+
+
+```{r}
+# SE of this estimate
+se.est <- sqrt(0.015030978 + (-1)^2*0.028986383 + 2*(-1)*0.008964555)
+se.est
+```
+
+
+The test statistic is then $t = (-0.2886 - 0)/0.1615186 = -1.786791$ which yields a 2-sided p-value of 0.075. This suggests that there is moderately weak evidence that there is a  difference in means between the south and west, holding farms in 1987 fixed, but it is not statistically significant at the 5% level. 
+
+```{r}
+# test stat
+t <- (est - 0)/se.est
+t
+2*pt(t,df=295)
+```
+
+
+### Example: Sleep {#mlr-sleep2}
+
+Let's continue with inference for the separate lines model for modeling the amount of daily sleep for variety of animals as a function of their body size and danger level (Section \@ref(mlr-sleep1)). 
+
+
+
+
+
+
+## ANOVA F-tests {#mlr-anova}

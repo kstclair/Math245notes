@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-10-01">
+<meta name="date" content="2019-10-06">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -139,7 +139,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.4.1" data-path="slr.html"><a href="slr.html#simulation-function"><i class="fa fa-check"></i><b>2.4.1</b> Simulation function</a></li>
 <li class="chapter" data-level="2.4.2" data-path="slr.html"><a href="slr.html#run-the-function-once"><i class="fa fa-check"></i><b>2.4.2</b> Run the function once</a></li>
 <li class="chapter" data-level="2.4.3" data-path="slr.html"><a href="slr.html#simulated-sampling-distribution-for-hatbeta_1"><i class="fa fa-check"></i><b>2.4.3</b> Simulated sampling distribution for <span class="math inline">\(\hat{\beta}_1\)</span></a></li>
-<li class="chapter" data-level="2.4.4" data-path="slr.html"><a href="slr.html#are-slope-and-intercept-estimates-correlated"><i class="fa fa-check"></i><b>2.4.4</b> Are slope and intercept estimates correlated?</a></li>
+<li class="chapter" data-level="2.4.4" data-path="slr.html"><a href="slr.html#slr-simcor"><i class="fa fa-check"></i><b>2.4.4</b> Are slope and intercept estimates correlated?</a></li>
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="slr.html"><a href="slr.html#slr-inf"><i class="fa fa-check"></i><b>2.5</b> Inference for mean parameters</a><ul>
 <li class="chapter" data-level="2.5.1" data-path="slr.html"><a href="slr.html#confidence-intervals-1"><i class="fa fa-check"></i><b>2.5.1</b> Confidence Intervals</a></li>
@@ -204,7 +204,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.4.1" data-path="mlr.html"><a href="mlr.html#interpretation-adding-a-categorical"><i class="fa fa-check"></i><b>3.4.1</b> Interpretation: adding a categorical</a></li>
 <li class="chapter" data-level="3.4.2" data-path="mlr.html"><a href="mlr.html#interpretation-adding-a-categorical-interaction"><i class="fa fa-check"></i><b>3.4.2</b> Interpretation: adding a categorical interaction</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="mlr.html"><a href="mlr.html#mlr-inf"><i class="fa fa-check"></i><b>3.5</b> Inference for MLR</a></li>
+<li class="chapter" data-level="3.5" data-path="mlr.html"><a href="mlr.html#mlr-inf"><i class="fa fa-check"></i><b>3.5</b> Inference for MLR</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="mlr.html"><a href="mlr.html#mlr-inf2"><i class="fa fa-check"></i><b>3.5.1</b> Inference for a linear combination of <span class="math inline">\(\beta\)</span>’s</a></li>
+<li class="chapter" data-level="3.5.2" data-path="mlr.html"><a href="mlr.html#mlr-agstrat2"><i class="fa fa-check"></i><b>3.5.2</b> Example: Agstrat</a></li>
+<li class="chapter" data-level="3.5.3" data-path="mlr.html"><a href="mlr.html#mlr-sleep2"><i class="fa fa-check"></i><b>3.5.3</b> Example: Sleep</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="mlr.html"><a href="mlr.html#mlr-anova"><i class="fa fa-check"></i><b>3.6</b> ANOVA F-tests</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="logistic.html"><a href="logistic.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a></li>
 <li class="chapter" data-level="5" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>5</b> Poisson Regression</a></li>
@@ -414,7 +419,7 @@ SE(\hat{\beta}_1) = \hat{\sigma}\sqrt{\dfrac{1}{(n-1)s^2_x}} \ \ \ \ \ SE(\hat{\
 ## [1] -0.3974248
 ## [1] 0.05227315</code></pre></div>
 </div>
-<div id="are-slope-and-intercept-estimates-correlated" class="section level3">
+<div id="slr-simcor" class="section level3">
 <h3><span class="header-section-number">2.4.4</span> Are slope and intercept estimates correlated?</h3>
 <p>In regression, it is not unusual to be interested in estimating a <strong>linear combination</strong> of our model parameters. An easy example of such a combination of parameters is the mean response for a given value <span class="math inline">\(x_0\)</span> of the predictor: <span class="math display">\[
 \mu(y \mid x=x_0) = \beta_0 + \beta_1x_0
