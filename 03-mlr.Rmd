@@ -881,4 +881,165 @@ vcov(sleep.lm)[c(7,8)+1, c(7,8)+1]  # get the 8/9th rows/columns for beta7,beta8
 
 
 
-## ANOVA F-tests {#mlr-anova}
+## ANOVA for MLR {#mlr-anova}
+Recall the discussion of Analysis of Variance (ANOVA) for SLR models in Section \@ref(slr-anova). The same idea holds in MLR models, we decompose the total squared variation in a response ($SST$) into parts explained by a certain model ($SSreg$) and unexplained by the model ($SSR$):
+
+$$
+\sum_{i=1}^n (y_i - \bar{y})^2 = \sum_{i=1}^n  (y_i - \hat{y}_i)^2 + \sum_{i=1}^n  (\hat{y}_i - \bar{y})^2
+$$ 
+
+The three components are called:
+
+- **total variation:** $SST = \sum_{i=1}^n (y_i - \bar{y})^2 = (n-1)s^2_y$
+- **regression (explained) variation:** $SSreg =  \sum_{i=1}^n  (\hat{y}_i - \bar{y})^2$
+- **residual (unexplained) variation:** $SSR = \sum_{i=1}^n  (y_i - \hat{y}_i)^2 = (n-(p+1))\hat{\sigma}^2$ where $n-(p+1)$ is the model degrees of freedom (sample size minus number of $\beta$'s)
+
+Both the regression and residual SS depends on which MLR model you fit to make predictions $\hat{y}_i$, with different models (for the same response) producing different $SSR$ and $SSref$ values. The total variation in the response, $SST$, *always* remains the same, regardless of model fit. We often compare regression and residual SS for different models. When doing this we make reference to the model terms. For example, $SSreg(x_1, x_2, x_2^2)$ would be the regression SS for fitting the regression of $y$ on $x_1$, $x_2$ and $x_2^2$. Similar notation is used for $SSR$.
+
+We often are interested in comparing a large ("full") model to a smaller nested ("reduced") model. A **nested model** contains a smaller subset of terms compared to a larger model. We can form a nested model by setting some $\beta$'s in a larger model equal to zero. For example, if our larger model is
+$$
+\mu(y \mid X) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_3^2
+$$
+then the following is a nested model found by setting $\beta_1 = \bets_2 = 0$:
+$$
+\mu(y \mid X) = \beta_0  + \beta_3 x_3 + \beta_4 x_3^2
+$$
+
+We often are interested in comparing models, is a full model "better" than a smaller, nested model? Or can the smaller model "fit" the data as well as a larger model? We can assess the significance of terms in a model on a one-by-one basis using t-test (i.e. is $x_i$ needed assuming *all* other terms are in the model). To test *more* than one term at a time, we look at the **extra sum of squares* that the terms constribute to the regression SS. 
+
+- **Extra sum of squares**: the amount by which $SSreg$ is increased by adding one or more terms to a model, or, equivalently, the amount by which $SSR$ is decreased by adding these terms. 
+- For the models above, the extra SS for adding $x_1$ and $x_2$ to the reduce (nested) model would be equal to 
+$$
+extraSS = SSreg(x_1,x_2,x_3,x_3^2) - SSreg(x_3,x_3^2) = SSR(x_3,x_3^2)  -  SSR(x_1,x_2,x_3,x_3^2)
+$$
+- Extra sum of squares is always a **positive** value, due to the fact that you never "lose" regression SS by adding terms. So $SSreg$ increases as you add model terms while $SSR$ will decrease.
+
+### Mean Squares
+
+Mean square measures of variation are equal to a SS measure divided by the *degrees of freedom* associated with that measure. The degrees of freedom capture, roughly, now many terms are being added up in the SS measure. Here are the mean square values for a MLR model:
+
+
+- **Mean square of total:** $MST = \dfrac{SST}{n-1} = s^2_y$ which equals the sample variance of the response
+- **Mean square for regression:** $MSreg = \dfrac{SSreg}{p}$ where $p$ is the number of terms in the model
+- **Mean square for residuals (error):** $MSR = \dfrac{SSR}{n-(p+1)} = \hat{\sigma}^2$, which is the estimated model SD
+
+### $R^2$ and adjusted $R^2$
+$R^2$ has the same interpretation and calculation as it did in SLR, it measures the proportion of variation in the response that is explained by a MLR model:
+$$
+R^2 = 1- \dfrac{SSR}{SST} = \dfrac{SSreg}{SST}
+$$
+As we add terms to a model, $R^2$ always increases, even if the terms don't add much information about the response. 
+
+Adjusted $R^2$ is similar to $R^2$, but it uses mean SS which can help us assess whether the increased gain in $SSreg$ is worth the addition (or complexity) of another term. 
+$$
+R^2_{adjust} = 1- \dfrac{MSR}{MST} 
+$$
+Unlike $R^2$, it is possible for $R^2_a$ to decrease when adding a new term if it adds little extra SS to the model. 
+
+### ANOVA F-tests
+
+We can use ANOVA to compare nested models. 
+
+1. The **hypotheses** compare a reduced (nested) to full (larger) model:
+$$
+H_0: \textrm{nested model} \ \ \ \ \ H_A: \textrm{full model}
+$$
+
+Consider the nested model example above, the nested model is the null claim 
+$$
+H_0: \mu(y \mid X) = \beta_0 + \beta_3 x_3 + \beta_4 x_3^2 \ \ \ \ \ \ \  (\beta_1 = \beta_2 = 0)
+$$
+and the larger model is the alternative claim:
+$$
+H_A:  \mu(y \mid X) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_3^2
+$$
+Notice that the null model is equivalent to saying that neither $x_1$ nor $x_2$ have an effect on the mean response after accounting for $x_3$ and its quadratic term. 
+
+2. The **F-test statistic** compares the average extra SS add by the terms being tested to the best estimate of model SD (given by the full model):
+$$
+F = \dfrac{extraSS/(\textrm{# terms tested})}{MSR_{full}}
+$$
+For the example, the F test stat would look like
+$$
+F = \dfrac{(SSR(x_3,x_3^2)-SSR(x_1,x_2,x_3,x_3^2))/2}{MSR_{full}}
+$$
+
+3. The **p-value** is found in the **right-tail** of the $F-$distribution with degrees of freedom equal to the # of terms tested (numerator) and $n-(p+1)$ from the full model (denominator). For the example, the first df is 2 (two terms being tested) and the second would be $n-(4+1)$ (4+1=5 $\beta$'s in the full model).
+
+4. If you have a small p-value, this gives evidence that **at least one** of the tested terms is useful in the model (e.g. reject the smaller model). If you have a larger p-value, then we don't have much evidence that the terms being tested are useful in the model (e.g. do not reject the smaller model).
+
+Special cases of ANOVA F-tests:
+
+- **Testing one term:** If our reduced and full models only differ by one term, then the F-test will be exactly the same as the t-test for that term from the full model. 
+- **Testing all terms:** This is the "overall F-test" that is part of the summary output for most regression software. It tests a full model against a "null" model of no predictors: $H_0: \mu(y \mid x) = \beta_0$.
+
+
+
+### Example: Sleep {#mlr-sleep3}
+
+We will revisit the animal sleep data from Sections \@ref(mlr-sleep1) and \@ref(mlr-sleep2). 
+```{r}
+summary(sleep.lm)
+kable(tidy(sleep.lm, conf.int = TRUE), digits = 3)
+```
+
+The `anova` command for this model gives the $SSR$ and $MSR$ for a model, along with the extra SS for adding a term to the model above it in the table:
+```{r}
+anova(sleep.lm)
+```
+Here we have:
+
+- $SSreg(log(BodyWt)) = 343.44$ gives the regression SS for the regression of total sleep on log-body weight. 
+- $SSreg(log(BodyWt), danger) - SSreg(log(BodyWt)) = 285.01$ gives the extra SS for adding the factor variable `danger` (with 5 levels) to the model that already includes log-body weight.
+- $SSreg(log(BodyWt), danger, log(BodyWt):danger) - SSreg(log(BodyWt), danger) = 15.76$ gives the extra SS for adding the interaction term to the model that already includes  danger level and log-body weight. 
+- $SSR(log(BodyWt), danger, log(BodyWt):danger) = 565.46$ is the residual SS for the interaction model and $MSR=11.78 = \hat{\sigma}$ is the estimated model SD for this model. 
+- $SSref(log(BodyWt), danger, log(BodyWt):danger) = 343.44 + 285.01 + 15.76 = `r  343.44 + 285.01 + 15.76`$ is the regression SS for the interaction model. 
+
+
+**Do we need the interaction of sleep and body weight in the model for total sleep?** I.e. are any of  the slopes for the different danger levels different?
+```{r}
+ggplot(sleep, aes(x=BodyWt, y=TS, color=danger)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) + 
+  scale_x_log10() + 
+  labs(title="daily sleep vs. body weight by danger level")
+
+```
+
+We can't answer this with individual t-tests which only compare the slopes (effects of body weight) of danger levels two at a time. An F-test can address this question. We will test a model with no interaction to the full model with an interaction:
+$$\begin{split}
+H_0: \mu(TS \mid body, danger) &= \beta_0 + \beta_1 \log(body) + \beta_2 low + \beta_3 moderate + \beta_4 high +  \beta_5 veryhigh 
+\end{split}
+$$
+vs. 
+$$\begin{split}
+H_A: \mu(TS \mid body, danger) &= \beta_0 + \beta_1 \log(body) + \beta_2 low + \beta_3 moderate + \beta_4 high + \\ 
+& \beta_5 veryhigh  + \beta_6 \log(body)low + \beta_7 \log(body)moderate + \\ 
+& \beta_8 \log(body)high + \beta_9 \log(body)veryhigh
+\end{split}
+$$
+
+The ANOVA command above gives the results for this hypothesis test because the interaction, with 4 terms in it, was added *last* in the `lm` command. The results are in the row for the interaction term `log(BodyWt):danger`. It compares the extra SS for adding the interaction (which has 4 terms in it!) to the full model:
+$$
+F = \dfrac{15.76/4}{11.78} = 0.3345
+$$
+and the p-value is 
+$$
+P(F_{4,48} \geq 0.3345) = 1-pf(0.3345, 4, 48)  = 0.863 
+$$
+```{r}
+1-pf(.3345, 4, 48)
+```
+
+The command `anova(my.lm)` will only give **valid F-test results for the last term added** in the `lm`. The other F-tests shows aren't valid because they aren't using the correct full model SD estimate (e.g. the denomiator is wrong). 
+
+Another use of the `anova` command is to compare a reduced and full `lm` fit: `anova(reduced.lm, full.lm)`.  Here we fit the reduced model without an interaction term then compare it to the full interaction model:
+```{r}
+sleep.lm2 <- lm(TS ~ log(BodyWt) + danger, data=sleep)
+anova(sleep.lm2, sleep.lm)
+```
+Here we get the $SSR$ values for both models, the extra SS for the added terms (15.76), the F-test statistic (0.3345) and the p-value (0.8534). 
+
+**Conclusion:** Even though we see some different between the effect of body weight in the high danger level, compared to other levels, these overall differences is slopes aren't statistically significant after accounting for danger level and body weight. 
+
+

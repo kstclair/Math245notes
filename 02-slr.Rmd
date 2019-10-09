@@ -1070,7 +1070,7 @@ n <- 12
 1 - (n-2)*summary(wood.lm)$sigma^2/((n-1)*sd(wpdata$depth)^2)  # explained
 ```
 
-### ANOVA for SLR
+### ANOVA for SLR {#slr-anova}
 Analysis of Variance (ANOVA) decomposes the **total variation in $y_i$**, $y_i - \bar{y}$, into a portion that is **explained** by a model, $\hat{y}_i - \bar{y}$,   and a portion that is **unexplained**, $y_i - \hat{y}_i$:
 $$
 y_i - \bar{y} = (y_i - \hat{y}_i) + (\hat{y}_i - \bar{y})
@@ -1105,6 +1105,7 @@ $$
 $$ 
 
 The three components are called:
+
 - **total variation:** $SST = \sum_{i=1}^n (y_i - \bar{y})^2 = (n-1)s^2_y$
 - **regression (explained) variation:** $SSreg =  \sum_{i=1}^n  (\hat{y}_i - \bar{y})^2$
 - **residual (unexplained) variation:** $SSR = \sum_{i=1}^n  (y_i - \hat{y}_i)^2 = (n-2)\hat{\sigma}^2$
