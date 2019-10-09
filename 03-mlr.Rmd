@@ -996,7 +996,8 @@ Here we have:
 - $SSref(log(BodyWt), danger, log(BodyWt):danger) = 343.44 + 285.01 + 15.76 = `r  343.44 + 285.01 + 15.76`$ is the regression SS for the interaction model. 
 
 
-**Do we need the interaction of sleep and body weight in the model for total sleep?** I.e. are any of  the slopes for the different danger levels different?
+#### Do we need the interaction of sleep and body weight in the model for total sleep?** 
+I.e. are any of  the slopes for the different danger levels different?
 ```{r}
 ggplot(sleep, aes(x=BodyWt, y=TS, color=danger)) + 
   geom_point() + 
@@ -1042,4 +1043,87 @@ Here we get the $SSR$ values for both models, the extra SS for the added terms (
 
 **Conclusion:** Even though we see some different between the effect of body weight in the high danger level, compared to other levels, these overall differences is slopes aren't statistically significant after accounting for danger level and body weight. 
 
+
+#### Comparing models when values are missing
+
+The `summary` output let's us know when there are cases with at least one value missing for the predictors and/or response:
+```{r}
+summary(sleep.lm2)
+```
+
+There are 4 cases that have at least one value missing for `TS`, `danger` and `BodyWt`. Here we select these three variables (only), then use the `filter` command to find the cases that are "not" (`!`) complete cases. The period in the `complete.cases` function tells R to map the data frame into the function.
+```{r}
+sleep %>% 
+  select(TS, BodyWt, danger) %>%
+  filter(!complete.cases(.))
+```
+The offending variable here is `TS`, with missing values for all 4 cases. 
+
+Suppose we wanted to include `Life` in the model, which measures an animal's typical life span (in years). EDA suggests that we should log the life span variable:
+```{r}
+sleep %>%
+  mutate_at(.vars=c("BodyWt",  "Life"), .funs = log) %>%
+  ggpairs( aes(color=danger), 
+        columns=c("BodyWt","Life","TS"), 
+        lower=list(continuous = wrap("smooth", se=FALSE)), 
+        columnLabels = c("log(BodyWt)", "log(Life)", "TS"))
+```
+
+We fit the model, then use ANOVA (cause why not) instead of a t-test to compare the model with `Life` to the model without:
+```{r, error=TRUE}
+sleep.lm3 <- lm(TS ~ log(BodyWt)+danger + log(Life), data=sleep)
+anova(sleep.lm2, sleep.lm3)  # reduced, full
+```
+
+The error occurs because there are 4 additional cases that are missing values for `Life`. We can see this in the `summary` output and in the `filter`ing command:
+```{r}
+summary(sleep.lm3)
+sleep %>% 
+  select(TS, BodyWt, danger, Life) %>%
+  filter(!complete.cases(.))
+```
+
+We need to make sure that any ANOVA model comparisons are done using the *same* cases in the data set. To do this, create a version of the data that only contains complete cases for all four variables using the `tidyr` function `drop_na`:
+```{r}
+library(tidyr)
+sleep.noNA <- drop_na(sleep, TS, BodyWt, Life, danger)
+nrow(sleep)
+nrow(sleep.noNA)
+```
+Using `drop_na` ensures us that *only* cases with `NA`s in the listed variables are removed from the data set. Now you can compare the two models:
+```{r}
+sleep.lm2.noNA <- lm(TS ~ log(BodyWt)+danger, data=sleep.noNA)
+sleep.lm3.noNA <- lm(TS ~ log(BodyWt)+danger + log(Life), data=sleep.noNA)
+anova(sleep.lm2.noNA, sleep.lm3.noNA)
+```
+
+**More on missing data:** R's default `na.action` for the `lm` command is to omit `NA` cases from the data before fitting the model. Any action done on the `lm`, like getting residuals, returns values only for the complete cases. For example, the regression of total sleep on body weight and danger using the **complete** data set will give 58 residual and fitted values because there are only 58 complete cases. 
+```{r}
+nrow(sleep)  # 62 cases in the data
+length(resid(sleep.lm2))
+library(broom)
+sleep.lm2.aug <- augment(sleep.lm2)  # danger + bodywt
+nrow(sleep.lm2.aug)  # only 58 residuals and fitted values (62-4)
+```
+
+If we change the `na.action` argument in the `lm`  to exclude the `NA` cases during the model fit, then they won't be use in the model estimation but they will be preserved in the model attributes like the residuals. Here those cases are given `NA` values in the residual vector:
+```{r}
+sleep.lm2.exclude <- lm(TS ~ log(BodyWt) + danger, data=sleep, na.action=na.exclude)
+length(resid(sleep.lm2.exclude))
+resid(sleep.lm2.exclude)
+```
+
+The `augment` function gives you a warning that it doesn't include these missing value cases when it creates the augmented data set with residuals and fitted values. Here we still get a 58 cases augmented data frame:
+```{r}
+sleep.lm2.exclude.aug <- augment(sleep.lm2.exclude)  # danger + bodywt
+nrow(sleep.lm2.exclude.aug)  # only 58 residuals and fitted values (62-4)
+```
+
+Add the `data=sleep` argument to preserve the length of the original `sleep` data frame (62 cases) but to put `NA` values in for `.fitted` and `.resid` values since these cases were not used to fit the model. 
+```{r}
+sleep.lm2.exclude.aug <- augment(sleep.lm2.exclude, data=sleep)  # danger + bodywt
+nrow(sleep.lm2.exclude.aug)  # all 62 cases
+sleep.lm2.exclude.aug %>%    # but no resid/fitted provided for missing cases
+  filter(is.na(.resid))
+```
 
