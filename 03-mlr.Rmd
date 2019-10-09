@@ -900,12 +900,12 @@ We often are interested in comparing a large ("full") model to a smaller nested 
 $$
 \mu(y \mid X) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_3^2
 $$
-then the following is a nested model found by setting $\beta_1 = \bets_2 = 0$:
+then the following is a nested model found by setting $\beta_1 = \beta_2 = 0$:
 $$
 \mu(y \mid X) = \beta_0  + \beta_3 x_3 + \beta_4 x_3^2
 $$
 
-We often are interested in comparing models, is a full model "better" than a smaller, nested model? Or can the smaller model "fit" the data as well as a larger model? We can assess the significance of terms in a model on a one-by-one basis using t-test (i.e. is $x_i$ needed assuming *all* other terms are in the model). To test *more* than one term at a time, we look at the **extra sum of squares* that the terms constribute to the regression SS. 
+We often are interested in comparing models, is a full model "better" than a smaller, nested model? Or can the smaller model "fit" the data as well as a larger model? We can assess the significance of terms in a model on a one-by-one basis using t-test (i.e. is $x_i$ needed assuming *all* other terms are in the model). To test *more* than one term at a time, we look at the **extra sum of squares** that the terms constribute to the regression SS. 
 
 - **Extra sum of squares**: the amount by which $SSreg$ is increased by adding one or more terms to a model, or, equivalently, the amount by which $SSR$ is decreased by adding these terms. 
 - For the models above, the extra SS for adding $x_1$ and $x_2$ to the reduce (nested) model would be equal to 
