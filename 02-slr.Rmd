@@ -583,7 +583,7 @@ Don't forget to use the augmented data frame `wpdata.aug` that contains the resi
 **Interpretation:** There are no majors trends seen in this residual plot. Generally, it is hard to prove or disprove model assumptions when we only observe 12 data points!
 
 
-### Residual normal QQ plot
+### Residual normal QQ plot {#slr-normality}
 
 A **normal QQ plot** for a variable plots observed **q**uartiles against the theoretical **q**uartiles from a normal model. If these points follow a line then the data is approximately normal. Here is a general guide for interpreting non-linear trends that indicate a non-normal distribution:
 
@@ -616,7 +616,7 @@ ggplot(wpdata.aug, aes(sample = .resid)) +
 
 **Interpretation:** The QQ plot also suggests a slightly longer right tail because it is (sort of) concave up. But, the QQ plot also clearly shows that this feature could just be due to two cases with residual values that are slightly higher than all others. Again, because there are only 12 data points these two cases could just be due to chance and we can conclude that there aren't any strong indications of a non-normal distribution. 
 
-### Independence
+### Independence {#slr-indep}
 
 Independence of errors is probably the hardest assumption to check because it often depends on how the data was collected. Two common scenarios that lead to data that violates this assumption are
 
@@ -626,7 +626,7 @@ Independence of errors is probably the hardest assumption to check because it of
 One method of checking for these two types of dependence is to plot the model residuals $r_i$ (y-axis) against a variable that measures, or is associated, with time or space. For the time example, plot residuals against day of the year. For the spatial example, plot residuals against a categorical "neighborhood" variable. 
 
 
-### Robustness against violations
+### Robustness against violations {#slr-robust}
 
 **Robustness** of a statistical method means the conclusions we make using the method aren't all that senstive to assumptions used to construct the method. Can we trust our SLR model inferences if a model assumption is violated? 
 

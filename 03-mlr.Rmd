@@ -282,7 +282,7 @@ The `width=.1` amount specifies how much to jitter the points (we changed it her
 
 
 
-### Residual plots for MLR
+### Residual plots for MLR {#mlr-resid1}
 If we have $p$ predictors, then there are $p+1$ residual plots to check:
 
 - plot $r_i$ against all predictors $x_1, \dotsc, _p$. The motivation for these plots is the same as SLR (residuals should not be related to the $x$'s)
@@ -1164,3 +1164,76 @@ sleep.lm2.exclude.aug %>%    # but no resid/fitted provided for missing cases
   filter(is.na(.resid))
 ```
 
+## Model Checking
+
+After fitting a potential MLR model to a data set, we use residuals to help diagnosis any issues in the "fit" of our model. I.e. are any of our MLR model assumptions violated. We can also use residuals, along with a other measures, to determine if there are any cases that could be influencing our model fit. 
+
+**Timing:** You should always check model fit and outliers affects **before** any model testing or interpretation! Even though this section is after all our inference sections, you need to make sure your choice of model doesn't violate our model assumptions. Using an ill-fitting model to determine which predictors are "statistically significant" or how they change the mean function is irrelevant if the model is not correctly specificied, or if an outlier or two is seriously influencing the model fit. 
+
+We will use the same methods as SLR to check the model assumptions of independence (Section \@ref(slr-indep)) and normality of errors (Section \@ref(slr-normality)) and when the model is robust (or not) against violations (Section \@ref(slr-robust)
+
+
+### Residual plots
+Residual plots for MLR were first discussed in Section \@(mlr-resid1) and they are used to check the **linearity** and **constant variance** MLR model assumptions. 
+
+We typically look at $p+1$ plots: residuals vs. $\hat{y}_i$ and residuals vs. all $p$ predictors.   (Here, $p$ tells us how many predictors are in the model, terms like interactions are not used to produce residual plots.) 
+
+```{r, include=FALSE}
+sleep <- read.csv("http://math.carleton.edu/kstclair/data/sleep.csv")
+library(forcats)
+sleep$danger <- fct_recode(factor(sleep$D), 
+                              "very low" = "1",
+                              "low" = "2",
+                              "moderate" = "3",
+                              "high" = "4",
+                              "very high" = "5")
+sleep.lm2 <- lm(TS ~ log(BodyWt) + danger, data=sleep)
+
+```
+
+Recall that `plot(my.lm, which=1)` gives the residuals vs. fitted values. For the regression of total sleep on (log) body weight, life span and danger level (Section \@ref(mlr-sleep3)), the residual vs. fitted plot is:
+```{r}
+plot(sleep.lm3, which=1)
+```
+
+If you don't have a ton of data points, it is sometime nice to turn the smoother off since it is sensitive to areas in the plot with only a few data points:
+```{r}
+plot(sleep.lm3, which=1, add.smooth = FALSE)
+```
+
+One option for plotting residuals vs. all predictors is the function `ggnostics` from the `GGally` package:
+```{r}
+library(GGally)
+ggnostic(sleep.lm3, columnsY = ".resid")
+```
+
+Again, if we want to turn both the smoother and error ribbon off, you need to add the `continuous` argument shown below (just setting `se=FALSE` will remove the ribbon but keep the smoother):
+```{r}
+ggnostic(sleep.lm3, columnsY = ".resid", 
+         continuous = list(.resid=wrap("nostic_resid", se=FALSE, method=NULL)))
+```
+
+**Conclusion:** The mean function linearity assumptions seems to be adequately met, since the "middle" of each slice of points is roughly centered at 0. For the boxplot of residuals with danger level, we are looking for each boxplot to be roughly centered around 0 (holding a danger level constant for each boxplot). But there are some concerns about  the constant variance assumption:
+
+- for low fitted values (low predicted total sleep), we see less variation in residuals than for high fitted values. 
+- we see less variation in residuals for high levels of danger and high values of body weight and life span. Note that from EDA (above), we see that the association between these predictors and total sleep is negative, meaning these high values of predictors correspond to the **low** fitted values for predicted sleep. 
+
+At this stage, you should consider an alternative model version. To help "spread out" the lower sleep values we could try a log-transformation of `TS`:
+```{r}
+sleep.lm3a <- lm(log(TS) ~ log(BodyWt)+danger + log(Life), data=sleep)
+plot(sleep.lm3, which=1, add.smooth = FALSE)
+ggnostic(sleep.lm3a, columnsY = ".resid", 
+         continuous = list(.resid=wrap("nostic_resid", se=FALSE, method=NULL)))
+```
+
+Overall, these residual plots look "better" than before. It looks like the model that best meets our MLR linearity and constant variance assumptions. The normality assumption is violated (see the QQ plot below), but with a little over 50 cases we should be able to trust inferences that involve the mean function (but not prediction intervals). Independence would only be violated if there were predator-prey relationships that would cause a correlation in total sleep among certain groups of species. 
+
+```{r}
+plot(sleep.lm3a, which=2)
+```
+
+
+
+
+
+### Outliers
