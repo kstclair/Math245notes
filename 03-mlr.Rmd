@@ -1201,7 +1201,7 @@ If you don't have a ton of data points, it is sometime nice to turn the smoother
 plot(sleep.lm3, which=1, add.smooth = FALSE)
 ```
 
-One option for plotting residuals vs. all predictors is the function `ggnostics` from the `GGally` package:
+One option for plotting residuals vs. all predictors is the function `ggnostic` from the `GGally` package:
 ```{r}
 library(GGally)
 ggnostic(sleep.lm3, columnsY = ".resid")
@@ -1228,12 +1228,365 @@ ggnostic(sleep.lm3a, columnsY = ".resid",
 
 Overall, these residual plots look "better" than before. It looks like the model that best meets our MLR linearity and constant variance assumptions. The normality assumption is violated (see the QQ plot below), but with a little over 50 cases we should be able to trust inferences that involve the mean function (but not prediction intervals). Independence would only be violated if there were predator-prey relationships that would cause a correlation in total sleep among certain groups of species. 
 
+
 ```{r}
-plot(sleep.lm3a, which=2)
+plot(sleep.lm3a, which = 2)
 ```
 
 
 
 
-
 ### Outliers
+
+When analyzing one variable,  a case that is "far enough" from the mean or median of that variable's distribution could be deemed "unusual" and called an *outlier*. In regression modeling, we need to broaden this notion of "unusual" or outlying cases because we have more than one variable involved. There are three common statistics used to measure the "unusualness" of a case: leverage, standardized residual, and Cook's distance. These are all examples of **case influence statistics**.
+
+#### Leverage {#mlr-leverage}
+
+Leverage is a statistic that assesses how **unusual a case's predictor values** are compared to average predictor values for all cases. This statistic doesn't consider a case's response at all. 
+
+For **SLR**, the leverage of case $i$ equals
+$$
+h_i = \dfrac{1}{n-1}\left(\dfrac{x_i - \bar{x}}{s_x}\right)^2 + \dfrac{1}{n}
+$$
+This basically measures how far $x_i$ is from the mean predictor value, a larger deviation means higher leverage. In the plots below for a SLR model, we see an "outlier" in red in all three scatterplots of $y$ vs. $x$. But only when the red case has an extreme predictor value (along the $x$-axis) will it have high leverage (shown in the bottom plots). The first case will have a large residual but not a large leverage value. 
+
+
+```{r, include=FALSE}
+supervisor <- read.csv("http://math.carleton.edu/kstclair/data/supervisor.csv")
+fake <- data.frame(y=supervisor$overall, x1 =supervisor$raises, x2 = supervisor$critical) %>% slice(-26,-21)
+```
+
+
+```{r, include=FALSE}
+plotA <- ggplot(fake, aes(x=x1, y=y)) + 
+  geom_point() + 
+  geom_point(aes(x=60, y=120), color="red", size=2) + 
+  labs(title="outlier in Y", y="y", x="x")
+plotA
+
+plotB <- ggplot(fake, aes(x=x1, y=y)) + 
+  geom_point() + 
+  geom_point(aes(y=60, x=120), color="red", size=2) + 
+  labs(title="outlier in X", y="y", x="x")
+plotB
+
+plotC <- ggplot(fake, aes(x=x1, y=y)) + 
+  geom_point() + 
+  geom_point(aes(y=120, x=120), color="red", size=2) + 
+  labs(title="outlier in X and Y", y="y", x="x")
+plotC
+
+plotD <- ggplot(fake, aes(x=x1, y=y)) + 
+  geom_point() + 
+  geom_point(aes(y=120, x=120), color="red", size=2) + 
+  labs(title="outlier in X and Y", y="y", x="x")
+plotD
+```
+
+
+```{r, include=FALSE}
+p <- 1; n <- nrow(fake) + 1
+fake.lmA.aug <- augment(lm(y ~ x, data=data.frame(y=c(fake$y,120), x=c(fake$x1, 60))))  %>% mutate(row=row_number())
+plotAlev <- ggplot(fake.lmA.aug, aes(x=row, y=.hat)) + 
+  geom_point() + 
+  geom_hline(yintercept = 2*(p+1)/n, linetype="dotted") + 
+  geom_hline(yintercept = 3*(p+1)/n, linetype="dashed") + 
+  labs(title="outlier in Y", y="leverage", x="row number") + 
+  geom_point(data=slice(fake.lmA.aug, 29),  color="red", size=2)
+plotAlev
+
+fake.lmB.aug <- augment(lm(y ~ x, data=data.frame(y=c(fake$y,60), x=c(fake$x1, 120)))) %>% mutate(row=row_number())
+plotBlev <- ggplot(fake.lmB.aug, aes(x=row, y=.hat)) + 
+  geom_point() + 
+  geom_hline(yintercept = 2*(p+1)/n, linetype="dotted") + 
+  geom_hline(yintercept = 3*(p+1)/n, linetype="dashed")+ 
+  labs(title="outlier in X", y="leverage", x="row number")+ 
+  geom_point(data=slice(fake.lmB.aug, 29),   color="red", size=2)
+plotBlev
+
+fake.lmC.aug <- augment(lm(y ~ x, data=data.frame(y=c(fake$y,120), x=c(fake$x1, 120)))) %>% mutate(row=row_number())
+plotClev <- ggplot(fake.lmC.aug, aes(x=row, y=.hat)) + 
+  geom_point() + 
+  geom_hline(yintercept = 2*(p+1)/n, linetype="dotted") + 
+  geom_hline(yintercept = 3*(p+1)/n, linetype="dashed")+ 
+  labs(title="outlier in X and Y", y="leverage", x="row number")+ 
+  geom_point(data=slice(fake.lmC.aug, 29),   color="red", size=2)
+plotClev
+library(gridExtra)
+```
+
+
+
+```{r, fig.width=9, echo=FALSE}
+grid.arrange(plotA, plotB, plotC, plotAlev, plotBlev, plotClev, nrow=2)
+```
+
+
+In a MLR model, with more than one predictor, leverage $h_i$ is computed in the same spirit as the SLR formula but using matrix algebra to measure how far a case's predictor values are from the main "point cloud" of predictor values. Visualizing points with large leverage is harder because we are usually only using 2-dimensional graphs. The plots below show scatterplots for a regression with two predictors, $x_1$ and $x_2$. In all three cases the outlier point in red is a similar distance to the "middle" of the point cloud (shown by the green triangle). Because of this, all three cases have roughly the same leverage value (bottom graphs).
+
+```{r, include=FALSE}
+plotA2 <- ggplot(fake, aes(x=x1, y=x2)) + 
+  geom_point() + lims(x=c(40,125),y=c(40,125)) +  coord_fixed() + 
+  geom_point(aes(x=120, y=80), color="red", size=2) + 
+  geom_point(aes(x=mean(c(fake$x1,120)), y=mean(c(fake$x2,80))), color="green", size=3, shape=17) + 
+  labs(title="outlier in X1", y="x2", x="x1")
+plotA2
+
+plotB2 <- ggplot(fake, aes(x=x1, y=x2)) +  coord_fixed() + 
+  geom_point() + lims(x=c(40,125),y=c(40,125)) + 
+  geom_point(aes(y=120, x=60), color="red", size=2) + 
+    geom_point(aes(x=mean(c(fake$x1,60)), y=mean(c(fake$x2,120))), color="green", size=3, shape=17) + 
+  labs(title="outlier in X2", y="x2", x="x1")
+plotB2
+
+plotC2 <- ggplot(fake, aes(x=x1, y=x2)) + 
+  geom_point() + lims(x=c(40,125),y=c(40,125)) + coord_fixed() + 
+  geom_point(aes(y=120, x=120), color="red", size=2) + 
+    geom_point(aes(x=mean(c(fake$x1,120)), y=mean(c(fake$x2,120))), color="green", size=3, shape=17) + 
+  labs(title="outlier in X1 and X2", y="x2", x="x1")
+plotC2
+```
+
+```{r, include=FALSE}
+p2 <- 2; n <- nrow(fake) + 1
+fake.lmA.aug2 <- augment(lm(y ~ x1+x2, data=data.frame(y=c(fake$y,120), x1=c(fake$x1, 120),x2=c(fake$x2, 80))))  %>% mutate(row=row_number())
+plotAlev2 <- ggplot(fake.lmA.aug2, aes(x=row, y=.hat)) + 
+  geom_point() + 
+  geom_hline(yintercept = 2*(p2+1)/n, linetype="dotted") + 
+  geom_hline(yintercept = 3*(p2+1)/n, linetype="dashed") + 
+  labs(title="outlier in X1", y="leverage", x="row number") + 
+  geom_point(data=slice(fake.lmA.aug2, 29),  color="red", size=2)
+plotAlev2
+
+fake.lmB.aug2 <- augment(lm(y ~ x1+x2, data=data.frame(y=c(fake$y,60), x1=c(fake$x1, 60),x2=c(fake$x2, 120)))) %>% mutate(row=row_number())
+plotBlev2 <- ggplot(fake.lmB.aug2, aes(x=row, y=.hat)) + 
+  geom_point() + 
+  geom_hline(yintercept = 2*(p2+1)/n, linetype="dotted") + 
+  geom_hline(yintercept = 3*(p2+1)/n, linetype="dashed")+ 
+  labs(title="outlier in X2", y="leverage", x="row number")+ 
+  geom_point(data=slice(fake.lmB.aug2, 29),   color="red", size=2)
+plotBlev2
+
+fake.lmC.aug2 <- augment(lm(y ~ x1+x2, data=data.frame(y=c(fake$y,120), x1=c(fake$x1, 120),x2=c(fake$x2, 120)))) %>% mutate(row=row_number())
+plotClev2 <- ggplot(fake.lmC.aug2, aes(x=row, y=.hat)) + 
+  geom_point() + 
+  geom_hline(yintercept = 2*(p2+1)/n, linetype="dotted") + 
+  geom_hline(yintercept = 3*(p2+1)/n, linetype="dashed")+ 
+  labs(title="outlier in X1 and X2", y="leverage", x="row number")+ 
+  geom_point(data=slice(fake.lmC.aug2, 29),   color="red", size=2)
+plotClev2
+```
+
+
+
+```{r, fig.width=9, echo=FALSE}
+grid.arrange(plotA2, plotB2, plotC2, plotAlev2, plotBlev2, plotClev2, nrow=2)
+```
+
+Mathematically:
+
+- $\dfrac{1}{n} \leq h_i < 1$ 
+- average leverage across all cases is $\bar{h} = (p+1)/n$. 
+
+Guidelines for "large" leverage are based on the average leverage value:
+
+- $h_i > 2(p+1)/n$: potential for some influence
+- $h_i > 3(p+1)/n$: potential for large influence
+
+
+**Why care about leverage?** A case with high leverage has the **potential** to be influential in the regression the fit of the regression line or surface. A regression line/surface *could be* pulled towards cases with high leverage. This is due to the fact that the SE of each observed residual $r_i = y_i - \hat{y}_i$ is inversely related to leverage:
+$$
+SE(r_i) = \hat{\sigma}\sqrt{1-h_i}
+$$
+This SE tells us how much variability we will see in case $i$'s residual when computing the  residual for case $i$ for many, many regression fits from  many, many sample responses taken from a population with predictor values fixed. (Think back to the SLR simulation in Chapter 2.) 
+
+- A case with $h_i \approx 1$, means that it's residual has little variability and all possible regression lines/surfaces will result in $\hat{y_i}$ being very close to $Y_i$ (since the expected value of each residual is 0).
+    - If $Y_i$ for case $i$ is not following the "trend" of the other $n-1$ cases, then this case will be very influential on where the estimated regression line/surface goes. 
+- A case with $h_i \approx 1/n$, means that if $n$ is large,  it's residual has  variability of about $\sigma$ and all possible regression lines/surfaces will result in $\hat{y_i}$ that can vary widely from $Y_i$.
+
+
+#### Standardized (internally studentized) residuals
+
+Standardized residuals, also known as internally *studentized* residuals, are the ratio of a residual to its SE:
+$$
+studr_i = \dfrac{r_i}{SE(r_i)} = \dfrac{y_i - \hat{y}_i}{\hat{\sigma}\sqrt{1-h_i}}
+$$
+
+The reasons for a case with a large standardized residual are
+
+- a large $r_i$ value (just poorly predicted) but "regular" leverage value. These cases will have typical predictor values but an unusual response.
+- a "regular" $r_i$ value but a small SE due to a large leverage value. 
+
+If our normality model assumption holds, then these standardized residuals should behave, roughly, like standard normal values (N(0,1)). Guidelines to flag unusual cases are
+
+- $| studr_i| > 2$ for smaller data sets
+- $| studr_i| > 4$ for large data sets
+
+```{r, include=FALSE}
+plotA <- ggplot(fake, aes(x=x1, y=y)) + 
+  geom_point() + 
+  geom_point(aes(x=60, y=120), color="red", size=2) + 
+  geom_smooth(method="lm", se=FALSE, color="black") + 
+  geom_smooth(data=data.frame(y=c(fake$y,120), x=c(fake$x1, 60)),aes(x=x, y=y), method="lm",  se=FALSE, color="red") +
+  labs(title="outlier in Y", y="y", x="x") 
+plotA
+
+plotB <- ggplot(fake, aes(x=x1, y=y)) + 
+  geom_point() + 
+  geom_point(aes(y=60, x=120), color="red", size=2) + 
+  geom_smooth(method="lm", se=FALSE, color="black") + 
+  geom_smooth(data=data.frame(y=c(fake$y,60), x=c(fake$x1, 120)),aes(x=x, y=y), method="lm",  se=FALSE, color="red") +
+  labs(title="outlier in X", y="y", x="x")
+plotB
+
+plotC <- ggplot(fake, aes(x=x1, y=y)) + 
+  geom_point() + 
+  geom_point(aes(y=120, x=120), color="red", size=2) + 
+  geom_smooth(method="lm", se=FALSE, color="black") + 
+  geom_smooth(data=data.frame(y=c(fake$y,120), x=c(fake$x1, 120)),aes(x=x, y=y), method="lm",  se=FALSE, color="red") +
+  labs(title="outlier in X & Y", y="y", x="x")
+plotC
+
+plotD <- ggplot(fake, aes(x=x1, y=y)) + 
+  geom_point() + 
+  geom_point(aes(y=150, x=120), color="red", size=2) + 
+  geom_smooth(method="lm", se=FALSE, color="black") + 
+  geom_smooth(data=data.frame(y=c(fake$y,150), x=c(fake$x1, 120)),aes(x=x, y=y), method="lm",  se=FALSE, color="red") +
+  labs(title="outlier in X & Y", y="y", x="x")
+plotD
+```
+
+```{r, include=FALSE}
+plotAstd <- ggplot(fake.lmA.aug, aes(x=row, y=.std.resid)) + 
+  geom_point() + 
+  geom_hline(yintercept = c(-2,2), linetype="dotted") + 
+  geom_hline(yintercept = c(-2,2)*2, linetype="dashed")+ 
+  labs(title="outlier in Y", y="standardized resid", x="row number")+ 
+  geom_point(data=slice(fake.lmA.aug, 29),   color="red", size=2)
+plotAstd
+
+plotBstd <- ggplot(fake.lmB.aug, aes(x=row, y=.std.resid)) + 
+  geom_point() + 
+  geom_hline(yintercept = c(-2,2), linetype="dotted") + 
+  geom_hline(yintercept = c(-2,2)*2, linetype="dashed")+ 
+  labs(title="outlier in X", y="standardized resid", x="row number")+ 
+  geom_point(data=slice(fake.lmB.aug, 29),   color="red", size=2)
+plotBstd
+
+plotCstd <- ggplot(fake.lmC.aug, aes(x=row, y=.std.resid)) + 
+  geom_point() + 
+  geom_hline(yintercept = c(-2,2), linetype="dotted") + 
+  geom_hline(yintercept = c(-2,2)*2, linetype="dashed")+ 
+  labs(title="outlier in X & Y", y="standardized resid", x="row number")+ 
+  geom_point(data=slice(fake.lmC.aug, 29),   color="red", size=2)
+plotCstd
+
+fake.lmD.aug <- augment(lm(y ~ x, data=data.frame(y=c(fake$y,150), x=c(fake$x1, 120)))) %>% mutate(row=row_number())
+plotDstd <- ggplot(fake.lmD.aug, aes(x=row, y=.std.resid)) + 
+  geom_point() + 
+  geom_hline(yintercept = c(-2,2), linetype="dotted") + 
+  geom_hline(yintercept = c(-2,2)*2, linetype="dashed")+ 
+  labs(title="outlier in X & Y", y="standardized resid", x="row number")+ 
+  geom_point(data=slice(fake.lmD.aug, 29),   color="red", size=2)
+plotDstd
+```
+
+In the plots below we see 
+
+- **Y outlier**: This red case has a very large residual value $r_i$ but it doesn't have high leverage. The extremely high residual value leads to a large standardized residual value.
+- **X outlier**: This red case has a large negative standardized residual due to its large residual value and small SE (due to large leverage, shown above).
+- **X and Y outlier**: The left case doesn't have an unusual standardized residual value because though it has large leverage (shown above), its residual is still small (because it follows the trend of the other cases). The right case has the same leverage as the left case, but this time it has a larger residual because it deviates a bit from the overall trend. For this reason, the right case has a larger standardized residual than the left case. 
+
+
+```{r, fig.width=9, echo=FALSE}
+grid.arrange(plotA, plotB, plotC, plotD, plotAstd, plotBstd, plotCstd, plotDstd, nrow=2)
+```
+
+#### Cook's distance
+
+Cook's distance, $D_i$, is a measure of a case's influence on the fitted regression line/surface. It is computed for case $i$ by removing case $i$ from the data, then fitting a regression model and predicting responses for all cases $\hat{Y}_{j(-i)}$. These "remove $i$" predictions are compared to the predictions we get when including case $i$, $\hat{Y}_i$. If these two predictions deviate a lot, overall all cases, then we would say that case $i$ is influential in the regression fit. 
+$$
+D_i = \sum_{j=1}^n \dfrac{(\hat{Y}_{j(-i)} - \hat{Y}_{j})^2}{(p+1)\hat{\sigma}^2} = \dfrac{studr_i}{p+1} \dfrac{h_i}{1-h_i}
+$$
+Note in the equation above shows that the measure of the "remove $i$" predictions from overall predictions can be expressed in terms of a cases's leverage and standardized residual. A case can have high Cook's distance if it has high standardized residual, high leverage, or a combination of both.  A case should be flagged as likely influential if is has a Cook's distance for 1 or larger. 
+
+In the plots below, the red regression line was fit including the red point and the black line was fit without the red point. A case where the red and black lines deviate a lot means that the red point in influential. 
+
+- **Y outlier**: This red case has a very large residual value $r_i$ but it doesn't have high leverage. It is not very influential. 
+- **X outlier**: This red case has a large negative standardized residual  and large leverage, so it is very influential ($D_i  \approx 6$). 
+- **X and Y outlier**: The left case doesn't have an unusual standardized residual value though it has large leverage, so it isn't very influential because it follows the trend of the other cases. The right case has the same leverage as the left case, but this time it has a larger standardized residual than the left case and it is deemed to be influential ($D_i > 3$).
+
+```{r, inlude=FALSE}
+plotAcd <- ggplot(fake.lmA.aug, aes(x=row, y=.cooksd)) + 
+  geom_point() + 
+  geom_hline(yintercept = 1, linetype="dotted") + 
+  labs(title="outlier in X and Y", y="Cook's D", x="row number")+ 
+  geom_point(data=slice(fake.lmA.aug, 29),   color="red", size=2)
+plotAcd
+
+plotBcd <- ggplot(fake.lmB.aug, aes(x=row, y=.cooksd)) + 
+  geom_point() + 
+  geom_hline(yintercept = 1, linetype="dotted") + 
+  labs(title="outlier in X and Y", y="Cook's D", x="row number")+ 
+  geom_point(data=slice(fake.lmB.aug, 29),   color="red", size=2)
+plotBcd
+
+plotCcd <- ggplot(fake.lmC.aug, aes(x=row, y=.cooksd)) + 
+  geom_point() + 
+  geom_hline(yintercept = 1, linetype="dotted") + 
+  labs(title="outlier in X and Y", y="Cook's D", x="row number")+ 
+  geom_point(data=slice(fake.lmC.aug, 29),   color="red", size=2)
+plotCcd
+
+plotDcd <- ggplot(fake.lmD.aug, aes(x=row, y=.cooksd)) + 
+  geom_point() + 
+  geom_hline(yintercept = 1, linetype="dotted") + 
+  labs(title="outlier in X and Y", y="Cook's D", x="row number")+ 
+  geom_point(data=slice(fake.lmD.aug, 29),   color="red", size=2)
+plotDcd
+```
+
+
+```{r, fig.width=9, echo=FALSE}
+grid.arrange(plotA, plotB, plotC, plotD, plotAcd, plotBcd, plotCcd, plotDcd, nrow=2)
+```
+
+#### Example: Sleep
+Consider the regression of log of total sleep on log-body weight, log-life span and danger level. 
+```{r}
+library(tidyr)
+sleep.noNA <- drop_na(sleep, TS, BodyWt, Life, danger)
+sleep.lm3a <- lm(log(TS) ~ log(BodyWt)+danger + log(Life), data=sleep.noNA)
+sleep.lm3a
+```
+
+We can use the `plot(my.lm, which = 4)` command to plot Cook's distance against row number. Adding `id.n=5` will tell R to identify the row number of the 5 largest Cook's distance cases. Note that this is just a tool for identifying cases, it doesn't mean that they are influential cases if their values are all well below 1. 
+```{r}
+plot(sleep.lm3a, which=4, id.n = 5)
+```
+
+We can use the `plot(my.lm, which = 5)` command to plot standardized residuals (y-axis) against leverage (x-axis) with contours given by Cook's distance. For this model fit, we have two cases (15, 19) with standardized residuals below -2 but these are mid-range leverage cases and all Cook's distances are below 0.5. THe largest Cook's distance case, 32, has the third largest leverage value. 
+```{r}
+plot(sleep.lm3a, which=5, id.n=5)
+```
+
+
+Here was can see the four cases with largest Cook's distance, along with their data values and case influence stats:
+```{r}
+library(broom)
+sleep.noNA.aug <- augment(data=sleep.noNA, sleep.lm3a)
+sleep.noNA.aug %>% 
+  slice(15, 19, 32, 46) %>% kable()
+```
+
+The R package `GGally` also has plotting options for case influence stats, plotted against predictor variables. Reference lines for leverage (`.hat`) are average leverage and twice average leverage. 
+```{r}
+ggnostic(sleep.lm3a, columnsY = c(".std.resid", ".hat", ".cooksd"))
+```
+
+
+Here we romove the SE ribbon and smoother from the standardized residual plot.
+```{r}
+ggnostic(sleep.lm3a, columnsY = c(".std.resid", ".hat", ".cooksd"), 
+         continuous = list(.std.resid=wrap("nostic_resid", se=FALSE, method=NULL)))
+```
