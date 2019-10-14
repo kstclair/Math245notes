@@ -1516,7 +1516,7 @@ In the plots below, the red regression line was fit including the red point and 
 - **X outlier**: This red case has a large negative standardized residual  and large leverage, so it is very influential ($D_i  \approx 6$). 
 - **X and Y outlier**: The left case doesn't have an unusual standardized residual value though it has large leverage, so it isn't very influential because it follows the trend of the other cases. The right case has the same leverage as the left case, but this time it has a larger standardized residual than the left case and it is deemed to be influential ($D_i > 3$).
 
-```{r, inlude=FALSE}
+```{r, include=FALSE}
 plotAcd <- ggplot(fake.lmA.aug, aes(x=row, y=.cooksd)) + 
   geom_point() + 
   geom_hline(yintercept = 1, linetype="dotted") + 
