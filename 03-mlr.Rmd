@@ -1174,7 +1174,7 @@ We will use the same methods as SLR to check the model assumptions of independen
 
 
 ### Residual plots
-Residual plots for MLR were first discussed in Section \@(mlr-resid1) and they are used to check the **linearity** and **constant variance** MLR model assumptions. 
+Residual plots for MLR were first discussed in Section \@ref(mlr-resid1) and they are used to check the **linearity** and **constant variance** MLR model assumptions. 
 
 We typically look at $p+1$ plots: residuals vs. $\hat{y}_i$ and residuals vs. all $p$ predictors.   (Here, $p$ tells us how many predictors are in the model, terms like interactions are not used to produce residual plots.) 
 
@@ -1188,6 +1188,7 @@ sleep$danger <- fct_recode(factor(sleep$D),
                               "high" = "4",
                               "very high" = "5")
 sleep.lm2 <- lm(TS ~ log(BodyWt) + danger, data=sleep)
+sleep.lm3<- lm(TS ~ log(BodyWt) * danger, data=sleep)
 
 ```
 
@@ -1551,6 +1552,7 @@ plotDcd
 grid.arrange(plotA, plotB, plotC, plotD, plotAcd, plotBcd, plotCcd, plotDcd, nrow=2)
 ```
 
+
 #### Example: Sleep
 Consider the regression of log of total sleep on log-body weight, log-life span and danger level. 
 ```{r}
@@ -1570,14 +1572,24 @@ We can use the `plot(my.lm, which = 5)` command to plot standardized residuals (
 plot(sleep.lm3a, which=5, id.n=5)
 ```
 
+The four cases that have the highest Cook's distance are rows 15, 19, 32 and 46 **in the original `sleep` data set**! These are the (hidden) row names that are being used by the `plot` command to ID cases. So using the **original** data frame, `sleep`, we can ID these cases:
+```{r}
+sleep %>%  select(Species, TS, BodyWt, Life) %>%
+  slice(15, 19, 32, 46) %>% kable()
+```
 
-Here was can see the four cases with largest Cook's distance, along with their data values and case influence stats:
+We can make the augmented data frame to see the  case influence stat values for cases. When creating the augmented data frame, I enter the data set `sleep.noNA` that was used to fit the model `sleep.lm3a`. This command creates a column, `.rownames`, that contains the **row numbers of the original** `sleep` data frame. We can't `slice` the augmented data frame because its row numbers done match those of the original data (54 cases vs. 62). So, instead, we can use `filter` to find the augmented data rows that have the `.rownames` of 15, 19, 32, and 46. We can see that these Cook's distance values align with those shown in the Cook's plot above. 
 ```{r}
 library(broom)
 sleep.noNA.aug <- augment(data=sleep.noNA, sleep.lm3a)
+nrow(sleep)
+nrow(sleep.noNA.aug)
 sleep.noNA.aug %>% 
-  slice(15, 19, 32, 46) %>% kable()
+  select(.rownames, Species, TS, BodyWt, Life, danger, .cooksd, .std.resid, .hat) %>%
+  filter(.rownames %in% c(15, 19, 32, 46)) %>% 
+  arrange(desc(.cooksd)) # report in descending order according to cook's D
 ```
+
 
 The R package `GGally` also has plotting options for case influence stats, plotted against predictor variables. Reference lines for leverage (`.hat`) are average leverage and twice average leverage. 
 ```{r}
@@ -1585,8 +1597,52 @@ ggnostic(sleep.lm3a, columnsY = c(".std.resid", ".hat", ".cooksd"))
 ```
 
 
-Here we romove the SE ribbon and smoother from the standardized residual plot.
+Here we remove the SE ribbon and smoother from the standardized residual plot.
 ```{r}
 ggnostic(sleep.lm3a, columnsY = c(".std.resid", ".hat", ".cooksd"), 
          continuous = list(.std.resid=wrap("nostic_resid", se=FALSE, method=NULL)))
 ```
+
+We can use the `GGally` plots of case influence stats against predictors to help us understand the characteristics of cases that have concerning case influence stats. For example, the **smallest body weight** case, 0.005kg,  corresponds to the high Cook's distance value (Lesser short-tailed shrew). 
+```{r}
+summary(sleep.noNA.aug %>% select(BodyWt, Life))
+```
+
+This shrew has a higher leverage value, in part because it also has one of the smallest life spans of 2.6 (min life span is 2). The **second smallest body weight** species also has high leverage, but it doesn't not have a high Cook's distance. Why? The standardized residual plot shows that this second smallest body weight case has a standardized residual below 1. Meaning that while it has higher leverage, it's response is not as far from the regression surface as the smallest body weight shrew. For the shrew, the combo of higher leverage and larger residual combine to give it the highest Cook's distance value. 
+
+We can remove a case(s) from a `lm` fit by either creating a data frame without the case(s) or by using the `subset` command in the `lm` fit: `lm(y ~ x, data = , subset = -c(row numbers))`. This second option is quick and easy for comparing model fits with and without a case. Here we remove row 32 (Lesser short-tailed shrew) from the model fit:
+```{r}
+summary(sleep.lm3a)
+# we must use original sleep data to remove the correct
+summary(lm(log(TS) ~ log(BodyWt) + danger + log(Life), data=sleep, subset = -32))
+```
+
+Note that the second model fit needed to be done with the `sleep` data and `subset=-32` because the shrew is row 32 of the original data set:
+```{r}
+sleep %>% slice(32)
+sleep.noNA %>% slice(32)  # wrong case!
+```
+
+But this second option of using `subset` in the `lm` command runs the risk of row number confusion when identifying cases in the usual residuals and case influence plots. For example, you can't `augment` the `sleep` or `sleep.noNA` data frames when a case is removed from the `lm` using `subset`. If you plan to omit a case "for good", the create a subsetted version of your data frame and use this to fit your `lm`.
+
+If you want to create a "no NA" version of the data set that also excludes the lesser short-tailed shrew, go back and delete row 32 from the original data frame and then omit NA cases:
+```{r}
+sleep.noNA.noLSTShrew <- sleep %>% slice(-32) %>%
+  drop_na(TS, BodyWt, Life, danger)
+# refit with subsetted data
+sleep.lm3a.noLSTshrew <- lm(log(TS) ~ log(BodyWt) + danger + log(Life), data = sleep.noNA.noLSTShrew)
+```
+
+Comparing the model inferences and fit with and without the lesser short-tailed shrew shows **no major changes in our conclusions**. For example, the `danger` variable is still statistically significant when body weight and life span are included. `Life` is marginally significant when body weight and danger level are included. We have a slight reduction in SSR when short-tailed shrew is excluded, which reduces SE's a bit and increases $R^2$, but this fact along should not justify the removal of this case. We can't just cherry-pick cases to improve $R^2$!
+
+So when can we consider excluding a case? Cases can be considered for removal if they **change our inference conclusions**. If this occurs, then consider:
+
+- Is the case part of a different population compared to all other cases? If yes, then removal of the case is justified.
+    - If no, does the case have high leverage? If yes, describe how it is different in predictor value(s), remove the case and explain the new restricted predictor range for your model
+        - If no, then there is no clear path! Report results with and without the case and dig into the data and sampling process to try to understand what makes this case different.  
+
+
+
+
+
+
