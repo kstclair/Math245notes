@@ -1644,5 +1644,58 @@ So when can we consider excluding a case? Cases can be considered for removal if
 
 
 
+## MLR: Visualizing effects
+
+In SLR, we use a scatterplot to display the relationship between $y$ and one predictor $x$ and can see easily see the "effect" of $x$ on $y$ via the slope of the fitted regression line.
+
+As shown in Section \@ref(mlr-interpretation), the relationship between $y$ and two predictors $x_1$ and $x_2$ can be viewed in a 3-D graphic with the "effect" of each predictor shown with a fitted regression surface. But what if $p>2$? And why not just use the scatterplot matrix to see how predictors affect the response in an MLR model? In our regression model, the "effect" of $x_1$ tells us how changing $x_1$ changes the mean response, **holding all other terms fixed**. The scatterplot of $y$ vs. $x_1$ does **not** hold all other terms fixed. In fact, when model terms are related, this scatterplot can give misleading information about how $x_1$ is related to $y$ in the MLR model. 
+
+### Partial residual plots
+One tool use can use to see the how $x_i$ is related to $y$, holding other model terms fixed, is a **partial residual plot**. Suppose we have two predictors $x_1$ and $x_2$ and we want to understand the form of
+$$
+\mu_{y \mid x_1, x_2} =  ??
+$$
+Suppose we assume that the effect of $x_2$ in this mean function is linear while the form of the relationship with $x_1$ is described by $f(x_1)$, then 
+$$
+\mu_{y \mid X} = \beta_0 + f(x_1) + \beta_2x_2
+$$
+We can express our unknown function $f$ in terms of
+$$
+f(x_1) = \mu_{y \mid X} - (\beta_0  + \beta_2x_2)
+$$
+To visualize this function with data, we could plot
+$$
+f(x_{1,i}) = Y_i - (\beta_0  + \beta_2x_{2,i})
+$$
+against the predictors $x_{1,i}$. If $f(x_1)$ is a linear function, then this plot will be linear. If $f(x_1)$ is not a linear function, then this plot will not be linear. 
+
+In practice, we need to estimate the mean function to compute these "partial" residuals:
+
+1. approximate $f(x_1)$ with a linear function and fit the regression of $Y$ on $x_1$ and $x_2$ to get 
+$$
+\hat{\mu}_{y \mid X} = \hat{\beta}_0 + \hat{\beta}_1x_1 + \hat{\beta}_2x_2
+$$
+2. compute the partial residuals for $x_1$:
+$$
+pres_{1,i} = y_i - (\hat{\beta}_0 + \hat{\beta}_2x_{2,i})
+$$
+3. plot $pres_{1,i}$ against $x_1$ to see what the relationship between $y$ and $x_1$ looks like after "accounting for $x_2$". The **slope** of the least squares line in the partial residuals in this plot for $x_1$ will equal its estimated (linear) effect $\hat{\beta}_1$.
+
+We get partial residuals for $x_2$ by adjusting for effects of $x_1$:
+$$
+pres_{2,i} = y_i - (\hat{\beta}_0 + \hat{\beta}_1x_{1,i})
+$$
+
+If we have a larger MLR model, with more terms, then we end up computing partial residuals for term $x_i$ by adjusting for (substracting off) the effects of all other terms except $x_i$. 
+
+
+
+**Using partial residual plots:**
+
+- We can see the "effect" of $x_i$ after adjusting for other model terms. 
+- We can also see the variation in $y$ that remains after adjusting for other model terms. 
+- We can look for outliers that could be affecting the estimated effect of $x_i$
+- We can see if the effect of $x_i$ is correctly modeled, signs on non-linearity and/or non-constant variance suggest we need to correct our model form.
+
 
 
