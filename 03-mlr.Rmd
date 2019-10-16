@@ -1651,11 +1651,11 @@ In SLR, we use a scatterplot to display the relationship between $y$ and one pre
 As shown in Section \@ref(mlr-interpretation), the relationship between $y$ and two predictors $x_1$ and $x_2$ can be viewed in a 3-D graphic with the "effect" of each predictor shown with a fitted regression surface. But what if $p>2$? And why not just use the scatterplot matrix to see how predictors affect the response in an MLR model? In our regression model, the "effect" of $x_1$ tells us how changing $x_1$ changes the mean response, **holding all other terms fixed**. The scatterplot of $y$ vs. $x_1$ does **not** hold all other terms fixed. In fact, when model terms are related, this scatterplot can give misleading information about how $x_1$ is related to $y$ in the MLR model. 
 
 ### Partial residual plots
-One tool use can use to see the how $x_i$ is related to $y$, holding other model terms fixed, is a **partial residual plot**. Suppose we have two predictors $x_1$ and $x_2$ and we want to understand the form of
+One tool use can use to see the how $x_i$ is related to $y$, holding other model terms fixed, is a **partial residual plot**. Suppose we have two predictors $x_1$ and $x_2$ and we want to understand the form of the mean function:
 $$
-\mu_{y \mid x_1, x_2} =  ??
+\mu_{y \mid X=x_1, x_2} =  ??
 $$
-Suppose we assume that the effect of $x_2$ in this mean function is linear while the form of the relationship with $x_1$ is described by $f(x_1)$, then 
+Let's assume that the effect of $x_2$ in this mean function is linear while the form of the relationship with $x_1$ is described by $f(x_1)$, then 
 $$
 \mu_{y \mid X} = \beta_0 + f(x_1) + \beta_2x_2
 $$
@@ -1679,7 +1679,7 @@ $$
 $$
 pres_{1,i} = y_i - (\hat{\beta}_0 + \hat{\beta}_2x_{2,i})
 $$
-3. plot $pres_{1,i}$ against $x_1$ to see what the relationship between $y$ and $x_1$ looks like after "accounting for $x_2$". The **slope** of the least squares line in the partial residuals in this plot for $x_1$ will equal its estimated (linear) effect $\hat{\beta}_1$.
+3. plot $pres_{1,i}$ against $x_1$ to see what the relationship between $y$ and $x_1$ looks like after "accounting for $x_2$". The **slope** of the least squares line in the partial residuals in this plot for $x_1$ will equal its estimated (linear) effect $\hat{\beta}_1$ in the MLR of $y$ on $x_1$ and $x_2$.
 
 We get partial residuals for $x_2$ by adjusting for effects of $x_1$:
 $$
@@ -1697,5 +1697,76 @@ If we have a larger MLR model, with more terms, then we end up computing partial
 - We can look for outliers that could be affecting the estimated effect of $x_i$
 - We can see if the effect of $x_i$ is correctly modeled, signs on non-linearity and/or non-constant variance suggest we need to correct our model form.
 
+
+### Example: Sleep
+Back to the total sleep example and the regression of total sleep on body weight, brain weight, life span, gestation period (in days) and danger level with all quantitative predictors logged:
+```{r}
+sleep.lm4 <- lm(log(TS) ~ log(BodyWt) + log(BrainWt) + log(Life) + log(GP) + danger, data=sleep)
+tidy(sleep.lm4, conf.int = TRUE)
+```
+
+The R package `car` has a function called `crp` that will plot partial residual plots for any model that doesn't have an interaction term:
+```{r}
+library(car)
+crp(sleep.lm4)
+```
+In this package, the values plotted on the y-axis are "Component + Residual" which is computed as the partial residual for the predictor variable of interest, minus the average partial residual value. In this way, they are centered around 0 which makes them "feel" like a usual residual, but the trend in points we observe is the effect of the variable on the response after accounting for all other model variables. 
+
+We can change the layout:
+```{r}
+crp(sleep.lm4, layout = c(2,3))
+```
+
+
+Only plot a subset of terms:
+```{r}
+crp(sleep.lm4, terms = ~ log(Life) + log(BrainWt))
+```
+
+The blue trend like is the least squares fit for each partial residual plot, and the slope of this line is the predictor's estimated effect. For example, the slope for the `log(Life)` partial residual plot is 0.0486 and the slope for the `log(BodyWt)` partial residual plot is -0.0277 (both shown in the output table above). 
+
+And identify unusual cases by their row number (in `rownames` of original data set):
+```{r}
+crp(sleep.lm4, term = ~ log(BodyWt), id = list(n=4))
+sleep %>% slice(1,5,15,32) %>% select(Species, BodyWt, TS)
+```
+
+
+#### Comparing `TS` against `Life` vs. partial plot for `Life`
+
+
+**TS vs Life**: In our initial EDA for `Life`, we can observe that the scatterplot of `TS` against `Life` (both logged) shows a **negative** relationship between total sleep and life span. As life span gets bigger, total sleep gets smaller, not accounting for any other predictors. 
+
+```{r}
+sleep %>%
+  mutate_at(.vars=c("BodyWt", "BrainWt", "Life", "GP", "TS"), .funs = log) %>%
+  ggpairs(columns=c("BodyWt", "BrainWt", "Life", "GP","TS"), 
+        lower=list(continuous = wrap("smooth", se=FALSE)), 
+        columnLabels = c("log(BodyWt)","log(BrainWt)", "log(Life)", "log(GP)", "TS"))
+
+```
+
+**Partial residual plot of Life**:But notice that the effect of `log(Life)` in the MLR model that adjusts for brain size, body size, gestational period and danger level shows a **positive** association with total sleep (holding other terms fixed)! 
+```{r}
+crp(sleep.lm4, terms = ~ log(Life))
+```
+
+We can attempt to visualize why we have a negative trend in the scatterplot but  a positive trend in the partial residual plot (and MLR estimated effect) with a coded scatterplot that "controls for" one of the model terms. Here we grouped cases together into 5 groups based on their value of `BrainWt`. So `BrainWtQuintile` number 1 contains all cases with brain weights in the lower 20% of all brain weights. When we group our cases into similar brain weight cases, we (roughly) are controlling for brain weight. Our least square trends between total sleep and life space are mostly positive within each group of similar brain weights. This is the *positive* effect of life span on total sleep in our model that controls for brain weight (and other predictors). 
+
+```{r}
+sleep %>%
+  mutate(BrainWtQuintiles = factor(ntile(BrainWt, n=5))) %>%
+  ggplot(aes(x=Life, y=TS, color= BrainWtQuintiles) )+ 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) +
+  scale_x_log10() + scale_y_log10() +
+  labs(title = "TS against Life, holding brain weight 'fixed'")
+```
+
+So why is the scatterplot of total sleep vs. life span negative? This is due to the **correlation** between the predictors and it really an example of Simpson's paradox!
+
+- The association between `Life` and `BrainWt` is **positive**
+- The **negative** effect of `BrainWt` on `TS` is **stronger** than the effect of `Life`.
+- As `Life` **increases**, so does `BrainWt` and this increase in `BrainWt` causes a **decrease** in `TS`. Since this effect is stronger than the positive effect of `Life`, we see a decrease in `TS` as `Life` increases. (Notice that the `BrainWtQuintile` groups trend down as `Life` gets bigger.)
 
 

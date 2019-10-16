@@ -535,7 +535,7 @@ new.ages
 Rather than 90, we may want the entry to be the midpoint between 90 and 100:
 ```{r, message=FALSE}
 library(dplyr)
-ages2 <- recode(ages, '90-100' = "95")
+ages2 <- recode_factor(ages, '90-100' = "95")
 ages2
 new.ages <- parse_number(as.character(ages2))
 new.ages
