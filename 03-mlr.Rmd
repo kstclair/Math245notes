@@ -1781,3 +1781,62 @@ So why is the scatterplot of total sleep vs. life span negative? This is due to 
 
 
 ## Collinearity
+
+As shown above with the total sleep example, predictors effects in a MLR model depend on which other predictors are contolled for in a model, especially when predictors are associated  with one another. Associations between predictors can
+
+- make it hard to "see" a predictors effect using EDA,
+- make it difficult to interpret predictor effects since it is hard to "hold fixed" all other predictors if they are correlated, 
+- inflate our measures of SE which can make it difficult to identify statistically significant predictors.
+
+Two predictor terms $x_1$ and $x_2$ are exactly **collinear** if for all cases
+$$
+c_1 x_{1,i} + c_2 x_{2,i} = c \ \ \ \  \Rightarrow  \ \ \ \   x_{1,i} = (c -  c_2 x_{2,i})/c_1
+$$
+where the $c$'s are fixed constants. For example, if $x_1$ measures height in inches and $x_2$ measures height in feet then these terms are exactly collinear and we can write $x_1 = 12x_2$. We can this idea to more than two predictors:
+$$
+c_1 x_{1,i} + c_2 x_{2,i} + \dotsm + c_p x_{p,i} = c
+$$
+We often don't have exactly collinear term, but we can have approximately collinear terms if the linear combinations are approximately constant. 
+
+We can measure how linearly related predictors are in a model by measuring the $R^2_i$ for the regression of $x_i$ on all other **predictors** (ignoring the response right now). It turns out that the SE of our model parameters depends on this measure of predictor association. The estimated effect of predictor $x_i$ has a SE of 
+$$
+SE(\hat{\beta}_i) = \dfrac{\hat{\sigma}}{\sqrt{(n-1)s^2_i}} \sqrt{\dfrac{1}{1-R^2_i}}
+$$
+**Conclusion:** This SE is smallest if $x_i$ is not associated with other predictors ($R^2_i \approx 0$) and it grows larger the more correlated $x_i$ is with other predictors. 
+
+A common measure of the collinearity of term $x_i$ with all other terms is the variance inflation factor (VIF):
+$$
+VIF_i = \dfrac{1}{1-R^2_i}
+$$
+If $R^2_i = 0.5$, then $VIF_i = 2$ meaning the SE is about $\sqrt{2}=1.4$ times larger than it would be if $x_i$ was not correlated with other terms. 
+If $R^2_i = 0.75$, then $VIF_i = 4$ meaning the SE is about $2$ times larger than it would be if $x_i$ was not correlated with other terms. 
+If $R^2_i = 0.9$, then $VIF_i = 10$ meaning the SE is about $3.2$ times larger than it would be if $x_i$ was not correlated with other terms. 
+
+### Example: Sleep
+Back to the total sleep example and the regression of total sleep on body weight, brain weight, life span, gestation period (in days) and danger level with all quantitative predictors logged:
+```{r}
+sleep.lm4 <- lm(log(TS) ~ log(BodyWt) + log(BrainWt) + log(Life) + log(GP) + danger, data=sleep)
+```
+
+The `car` package contains the function `vif` that gives us the VIF values for this model:
+```{r}
+library(car)
+vif(sleep.lm4)
+```
+Note that when we have a factor term (`danger`), the VIF's are calculated as usual for quantitative terms but a generalized version (GVIF) is computed for factor terms by basically adding up the cumulative VIF across indicator variables for that factor. 
+
+Here we see that brain and body weight are highly correlated, mostly with one another when we revisit the scatterplot matrix shown in the previous example. This is a main reason that neither term is statistically significant when the other term is in the model, as shown by the t-test results:
+```{r}
+tidy(sleep.lm4, conf.int = TRUE)
+```
+A good strategy with two highly collinear terms is to remove one of the two terms. Here we remove brain weight since it has the highest VIF and a higher p-value that body weight.  
+```{r}
+sleep.lm5 <- lm(log(TS) ~  log(BodyWt) +log(Life) + log(GP) + danger, data=sleep)
+tidy(sleep.lm5, conf.int = TRUE)
+anova(sleep.lm5)
+vif(sleep.lm5)
+```
+
+Now all but life span is statistically significant and VIF is greatly reduce. 
+
+
