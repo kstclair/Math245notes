@@ -1,5 +1,15 @@
 # Multiple Regression {#mlr}
 
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+knitr::opts_chunk$set(echo = TRUE, eval=TRUE, prompt=TRUE, collapse = TRUE, message = FALSE, warning = FALSE)
+```
+
+
 This chapter covers material from chapters 9-12 of Sleuth. 
 
 ## The variables
@@ -1770,3 +1780,4 @@ So why is the scatterplot of total sleep vs. life span negative? This is due to 
 - As `Life` **increases**, so does `BrainWt` and this increase in `BrainWt` causes a **decrease** in `TS`. Since this effect is stronger than the positive effect of `Life`, we see a decrease in `TS` as `Life` increases. (Notice that the `BrainWtQuintile` groups trend down as `Life` gets bigger.)
 
 
+## Collinearity
