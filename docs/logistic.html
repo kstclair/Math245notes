@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html >
+
 <head>
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Chapter 4 Logistic Regression | Math 245 Notes</title>
-  <meta name="description" content="Course notes and examples for Applied Regression Analysis" />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="description" content="Course notes and examples for Applied Regression Analysis">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="Chapter 4 Logistic Regression | Math 245 Notes" />
   <meta property="og:type" content="book" />
@@ -21,18 +22,18 @@
   <meta name="twitter:description" content="Course notes and examples for Applied Regression Analysis" />
   
 
-<meta name="author" content="Katie St. Clair, Carleton College" />
+<meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-10-16" />
+<meta name="date" content="2019-10-22">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="mlr.html"/>
-<link rel="next" href="poisson.html"/>
+<link rel="prev" href="mlr.html">
+<link rel="next" href="poisson.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -47,77 +48,8 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
 
 
-<style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -247,8 +179,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.8.1" data-path="mlr.html"><a href="mlr.html#partial-residual-plots"><i class="fa fa-check"></i><b>3.8.1</b> Partial residual plots</a></li>
 <li class="chapter" data-level="3.8.2" data-path="mlr.html"><a href="mlr.html#example-sleep-1"><i class="fa fa-check"></i><b>3.8.2</b> Example: Sleep</a></li>
 </ul></li>
+<li class="chapter" data-level="3.9" data-path="mlr.html"><a href="mlr.html#collinearity"><i class="fa fa-check"></i><b>3.9</b> Collinearity</a><ul>
+<li class="chapter" data-level="3.9.1" data-path="mlr.html"><a href="mlr.html#example-sleep-2"><i class="fa fa-check"></i><b>3.9.1</b> Example: Sleep</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="logistic.html"><a href="logistic.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="logistic.html"><a href="logistic.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a><ul>
+<li class="chapter" data-level="4.1" data-path="logistic.html"><a href="logistic.html#the-variables-2"><i class="fa fa-check"></i><b>4.1</b> The variables</a></li>
+<li class="chapter" data-level="4.2" data-path="logistic.html"><a href="logistic.html#logistic-bernoulli"><i class="fa fa-check"></i><b>4.2</b> The Bernoulli distribution</a></li>
+<li class="chapter" data-level="4.3" data-path="logistic.html"><a href="logistic.html#logistic-model"><i class="fa fa-check"></i><b>4.3</b> The logistic model form</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>5</b> Poisson Regression</a></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="rrstudio.html"><a href="rrstudio.html"><i class="fa fa-check"></i><b>A</b> R and Rstudio</a><ul>
@@ -309,7 +248,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="D.5" data-path="markdown.html"><a href="markdown.html#markdown-tables"><i class="fa fa-check"></i><b>D.5</b> Extra: Table formatting</a><ul>
 <li class="chapter" data-level="D.5.1" data-path="markdown.html"><a href="markdown.html#hiding-r-commands-and-r-output"><i class="fa fa-check"></i><b>D.5.1</b> Hiding R commands and R output</a></li>
-<li class="chapter" data-level="D.5.2" data-path="markdown.html"><a href="markdown.html#markdown-tables-1"><i class="fa fa-check"></i><b>D.5.2</b> Markdown tables</a></li>
+<li class="chapter" data-level="D.5.2" data-path="markdown.html"><a href="markdown.html#markdown-tables"><i class="fa fa-check"></i><b>D.5.2</b> Markdown tables</a></li>
 <li class="chapter" data-level="D.5.3" data-path="markdown.html"><a href="markdown.html#markdown-tables-via-kable"><i class="fa fa-check"></i><b>D.5.3</b> Markdown tables via <code>kable</code></a></li>
 <li class="chapter" data-level="D.5.4" data-path="markdown.html"><a href="markdown.html#the-pander-package"><i class="fa fa-check"></i><b>D.5.4</b> The <code>pander</code> package</a></li>
 <li class="chapter" data-level="D.5.5" data-path="markdown.html"><a href="markdown.html#the-stargazer-package"><i class="fa fa-check"></i><b>D.5.5</b> The <code>stargazer</code> package</a></li>
@@ -319,7 +258,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="E.1" data-path="mathreview.html"><a href="mathreview.html#math-linear"><i class="fa fa-check"></i><b>E.1</b> Linear equations</a></li>
 <li class="chapter" data-level="E.2" data-path="mathreview.html"><a href="mathreview.html#math-log"><i class="fa fa-check"></i><b>E.2</b> Logarithms</a><ul>
 <li class="chapter" data-level="E.2.1" data-path="mathreview.html"><a href="mathreview.html#interpreting-logged-variables-1"><i class="fa fa-check"></i><b>E.2.1</b> Interpreting logged variables</a></li>
-<li class="chapter" data-level="E.2.2" data-path="mathreview.html"><a href="mathreview.html#inverse-i.e.-reversing-the-log-getting-rid-of-the-log-1"><i class="fa fa-check"></i><b>E.2.2</b> Inverse (i.e. reversing the log, getting rid of the log, …)</a></li>
+<li class="chapter" data-level="E.2.2" data-path="mathreview.html"><a href="mathreview.html#inverse-i.e.reversing-the-log-getting-rid-of-the-log-1"><i class="fa fa-check"></i><b>E.2.2</b> Inverse (i.e. reversing the log, getting rid of the log, …)</a></li>
 <li class="chapter" data-level="E.2.3" data-path="mathreview.html"><a href="mathreview.html#logarithms-in-r"><i class="fa fa-check"></i><b>E.2.3</b> Logarithms in R</a></li>
 </ul></li>
 <li class="chapter" data-level="E.3" data-path="mathreview.html"><a href="mathreview.html#math-exercises"><i class="fa fa-check"></i><b>E.3</b> Exercises</a></li>
@@ -347,7 +286,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="logistic" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> Logistic Regression</h1>
+<p>This chapter covers material from chapters ?? of Sleuth.</p>
+<div id="the-variables-2" class="section level2">
+<h2><span class="header-section-number">4.1</span> The variables</h2>
+<p>Suppose we have a <strong>categorical</strong> response variable <span class="math inline">\(Y\)</span> that can take one of two values, which we will generically call a <strong>success</strong> or <strong>failure</strong>. We want to relate the <strong>probability of success</strong> to <span class="math inline">\(p\)</span> explantory variables (aka predictors, covariates) <span class="math inline">\(x_1, \dotsc, x_p\)</span>. There is no restriction on the type of covariates, they can be both quantitative and categorical variables.</p>
+</div>
+<div id="logistic-bernoulli" class="section level2">
+<h2><span class="header-section-number">4.2</span> The Bernoulli distribution</h2>
+<p>The Bernoulli distribution is a probability model for a random trial that has two possible outcomes: success or failure. A Bernoulli <strong>random variable</strong> <span class="math inline">\(Y\)</span> “counts” the number of successes in a Bernoulli random trial. If a “success” occurred then <span class="math inline">\(Y=1\)</span> and if a “failure” occurred then <span class="math inline">\(Y=0\)</span>.</p>
+<p>We will let <span class="math inline">\(\pi\)</span> be the probability of success: <span class="math display">\[
+\pi = P(Y=1) = P(success), \ \ \ \ \ 1-\pi = P(Y=0) = P(failure) 
+\]</span> If <span class="math inline">\(Y\)</span> is a Bernoulli random variable, then we can use the shorthand notation <span class="math inline">\(Y \sim Bern(\pi)\)</span> to denote this.</p>
+<p>The <strong>expected value</strong>, or mean, of <span class="math inline">\(Y\)</span> is equal to <span class="math display">\[
+E(Y) = \mu = \pi
+\]</span> and the standard deviation of <span class="math inline">\(Y\)</span> is equal to <span class="math display">\[
+SD(Y) = \sigma = \sqrt{\pi(1-\pi)}
+\]</span> The expected value (or mean) of a random variable measures the “long run” average value that we would see from <span class="math inline">\(Y\)</span> if we were to repeat the random trial many, many times. The standard deviation tells us how these values of <span class="math inline">\(Y\)</span> will vary over these repeated trials.</p>
+</div>
+<div id="logistic-model" class="section level2">
+<h2><span class="header-section-number">4.3</span> The logistic model form</h2>
+<p>The population, or data generating, model for a <strong>logistic</strong> regression model for <span class="math inline">\(Y\)</span> assumes that each <span class="math inline">\(Y_i\)</span> is a Bernoulli random variable whose probability of success <strong>depends on covariates</strong> <span class="math inline">\(\pmb{x_{1,i}, \dotsc, x_{p,i}}\)</span>. Specifically,</p>
+<ul>
+<li><span class="math inline">\(Y_i \mid X_i \overset{indep.}{\sim} Bern(\pi(X_i))\)</span>
+<ul>
+<li>binary response: <span class="math inline">\(Y_i\)</span>’s are categorical with only two options</li>
+<li>independence: Given <span class="math inline">\(X_i\)</span> values, <span class="math inline">\(Y_i\)</span>’s are independent</li>
+</ul></li>
+</ul>
+<p>We <strong>link</strong> the predictors to the probability of success using the logistic function form: <span class="math display">\[
+\pi(X_i) = \dfrac{e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}{1 + e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}
+\]</span> This <strong>link function</strong> form is used because it relates the effect of each predictor to the <strong>log-odds of success</strong>. The <strong>odds</strong> of success is the ratio of the probability of success to the probability of failure: <span class="math display">\[
+odds = \dfrac{\pi(X_i)}{1-\pi(X_i)}
+\]</span> Some algebraic manipulation can show that the <strong>log-odds</strong> of success is equal to the linear combination of predictors for the logistic probability of success: <span class="math display">\[
+\log \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right) = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
+\]</span></p>
 
+</div>
 </div>
             </section>
 
@@ -402,11 +376,10 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "true";
+    var src = "";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

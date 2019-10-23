@@ -1,2 +1,58 @@
 # Logistic Regression {#logistic}
 
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+knitr::opts_chunk$set(echo = TRUE, eval=TRUE, prompt=TRUE, collapse = TRUE, message = FALSE, warning = FALSE)
+```
+
+
+This chapter covers material from chapters ?? of Sleuth. 
+
+## The variables
+Suppose we have a **categorical** response variable $Y$ that can take one of two values, which we will generically call a **success** or **failure**. We want to relate the **probability of success** to $p$ explantory variables (aka predictors, covariates) $x_1, \dotsc, x_p$. There is no restriction on the type of covariates, they can be both quantitative and categorical variables.
+
+## The Bernoulli distribution {#logistic-bernoulli}
+
+The Bernoulli distribution is a probability model for a random trial that has two possible outcomes: success or failure. A Bernoulli **random variable** $Y$ "counts" the number of successes in a Bernoulli random trial. If a "success" occurred then $Y=1$ and if a "failure" occurred then $Y=0$. 
+
+We will let $\pi$ be the probability of success:
+$$
+\pi = P(Y=1) = P(success), \ \ \ \ \ 1-\pi = P(Y=0) = P(failure) 
+$$
+If $Y$ is a Bernoulli random variable, then we can use the shorthand notation $Y \sim Bern(\pi)$ to denote this. 
+
+The **expected value**, or mean, of $Y$ is equal to 
+$$
+E(Y) = \mu = \pi
+$$
+and the standard deviation of $Y$ is equal to 
+$$
+SD(Y) = \sigma = \sqrt{\pi(1-\pi)}
+$$
+The expected value (or mean) of a random variable measures the "long run" average value that we would see from $Y$ if we were to repeat the random trial many, many times. The standard deviation tells us how these values of $Y$ will vary over these repeated trials. 
+
+
+
+## The logistic model form {#logistic-model}
+
+The population, or data generating, model for a **logistic** regression model for $Y$ assumes that each $Y_i$ is a Bernoulli random variable whose probability of success **depends on covariates** $\pmb{x_{1,i}, \dotsc, x_{p,i}}$. Specifically,
+
+- $Y_i \mid X_i \overset{indep.}{\sim} Bern(\pi(X_i))$
+    - binary response: $Y_i$'s are categorical with only two options
+    - independence: Given $X_i$ values, $Y_i$'s are independent
+
+We **link** the predictors to the probability of success using the logistic function form:
+$$
+\pi(X_i) = \dfrac{e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}{1 + e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}
+$$
+This **link function** form is used because it relates the effect of each predictor to the **log-odds of success**. The **odds** of success is the ratio of the probability of success to the probability of failure:
+$$
+odds = \dfrac{\pi(X_i)}{1-\pi(X_i)}
+$$
+Some algebraic manipulation can show that the **log-odds** of success is equal to the linear combination of predictors for the logistic probability of success:
+$$
+\log \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right) = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
+$$
