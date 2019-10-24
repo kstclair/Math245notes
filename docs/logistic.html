@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-10-22">
+<meta name="date" content="2019-10-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -186,7 +186,9 @@
 <li class="chapter" data-level="4" data-path="logistic.html"><a href="logistic.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a><ul>
 <li class="chapter" data-level="4.1" data-path="logistic.html"><a href="logistic.html#the-variables-2"><i class="fa fa-check"></i><b>4.1</b> The variables</a></li>
 <li class="chapter" data-level="4.2" data-path="logistic.html"><a href="logistic.html#logistic-bernoulli"><i class="fa fa-check"></i><b>4.2</b> The Bernoulli distribution</a></li>
-<li class="chapter" data-level="4.3" data-path="logistic.html"><a href="logistic.html#logistic-model"><i class="fa fa-check"></i><b>4.3</b> The logistic model form</a></li>
+<li class="chapter" data-level="4.3" data-path="logistic.html"><a href="logistic.html#logistic-model"><i class="fa fa-check"></i><b>4.3</b> The logistic model form</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="logistic.html"><a href="logistic.html#interpretation-2"><i class="fa fa-check"></i><b>4.3.1</b> Interpretation</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>5</b> Poisson Regression</a></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
@@ -313,14 +315,48 @@ SD(Y) = \sigma = \sqrt{\pi(1-\pi)}
 <li>independence: Given <span class="math inline">\(X_i\)</span> values, <span class="math inline">\(Y_i\)</span>’s are independent</li>
 </ul></li>
 </ul>
-<p>We <strong>link</strong> the predictors to the probability of success using the logistic function form: <span class="math display">\[
-\pi(X_i) = \dfrac{e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}{1 + e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}
-\]</span> This <strong>link function</strong> form is used because it relates the effect of each predictor to the <strong>log-odds of success</strong>. The <strong>odds</strong> of success is the ratio of the probability of success to the probability of failure: <span class="math display">\[
-odds = \dfrac{\pi(X_i)}{1-\pi(X_i)}
-\]</span> Some algebraic manipulation can show that the <strong>log-odds</strong> of success is equal to the linear combination of predictors for the logistic probability of success: <span class="math display">\[
-\log \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right) = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
+<p>We connect the linear combination of predictors <span class="math display">\[
+\eta_i = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
+\]</span> to the probability of success using the logistic function form: <span class="math display">\[
+\pi(X_i) = \dfrac{e^{\eta_i}}{1 + e^{\eta_i}} = \dfrac{e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}{1 + e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}
 \]</span></p>
+<p>This function form is used because its inverse is equal to <span class="math display">\[
+\eta_i =  \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}=  \ln \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right)
+\]</span> This function is called the <strong>logit function</strong>: <span class="math inline">\(logit(\pi) = \ln \left( \dfrac{\pi}{1-\pi}\right)\)</span>. This means that a one unit increase in <span class="math inline">\(x_1\)</span> can be interpreted as an additive <span class="math inline">\(\beta_1\)</span> change in in the logit function, holding other terms fixed. But what does this mean?</p>
+<p>The <strong>odds of success</strong> is defined as the ratio of the probability of success to the probability of failure: <span class="math display">\[
+odds = \dfrac{\pi(X)}{1-\pi(X)}
+\]</span> For example, if the probability of success is 0.6 then the odds of success is <span class="math inline">\(0.6/0.4 = 1.5\)</span>. Meaning for every 6 successes, we see 4 failures. If the probability of success is 0.1, then the odds of success is <span class="math inline">\(0.1/0.9 \approx 0.111\)</span>, meaning for every 1 success we see 9 failures. Odds greater than 1 indicate the probability of success is above 50% while odds less than 1 indicate the probability of success is less than 50%.</p>
+<p>So, we now can see that the logit function equals the <strong>log-odds of success</strong>: <span class="math display">\[
+\ln \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right) = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
+\]</span> This model form is an example of a <strong>generalized linear model</strong> which relates the response <span class="math inline">\(Y\)</span> to predictors through a linear combination <span class="math inline">\(\eta\)</span> of predictors. Is does this by defining the following functions:</p>
+<ul>
+<li>The <strong>kernel mean function</strong> defines the expected value (mean) of <span class="math inline">\(Y\)</span> as a function of <span class="math inline">\(\eta\)</span>.
+<ul>
+<li>in a logistic model, the kernel mean function is the logistic function <span class="math inline">\(E(Y \mid X) = \pi(X) = \dfrac{e^{\eta}}{1+e^{\eta}}\)</span></li>
+</ul></li>
+<li>The <strong>link function</strong> defines the linear combination <span class="math inline">\(\eta\)</span> as a function of the mean of <span class="math inline">\(Y\)</span>.
+<ul>
+<li>in a logistic model, the link function is the logit function <span class="math inline">\(\eta = \ln(\pi/(1-\pi))\)</span></li>
+</ul></li>
+<li>These two functions are inverses of one another.</li>
+</ul>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-2-1.png" width="864" /></p>
+<div id="interpretation-2" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Interpretation</h3>
+<p>Changes in predictors can be interpreted as changes in the <strong>odds</strong> of success (we can’t make general statement about changes in the <strong>probability</strong> of success). Specifically, we “unlog” the logit equation to get an expression for the odds of success for predictors <span class="math inline">\(x_1, \dotsc, x_p\)</span>: <span class="math display">\[
+odds(x_1, \dotsc, x_p) = \dfrac{\pi(X)}{1-\pi(X)} = e^{\beta_0 + \beta_1 x_{1} + \dotsm +  \beta_p x_{p}}
+\]</span></p>
+<p>What happens if we increase <span class="math inline">\(x_1\)</span> by one unit, holding other predictors fixed? <span class="math display">\[
+odds(x_1+1, \dotsc, x_p)  = e^{\beta_0 + \beta_1 (x_{1}+1) + \dotsm +  \beta_p x_{p}} = e^{\beta_0 + \beta_1 x_{1} + \dotsm +  \beta_p x_{p}} \times e^{\beta_1}
+\]</span> Increasing <span class="math inline">\(x_1\)</span> by one unit has a <strong>multiplicative</strong> change of <span class="math inline">\(e^{\beta_1}\)</span> in the <strong>odds of success</strong>. Note that this is a similar interpretation to the exponential model in SLR or MLR.</p>
+<p>What is we have a predictor that is logged? <span class="math display">\[
+odds(x_1, \dotsc, x_p) = e^{\beta_0 + \beta_1 \ln(x_{1}) + \dotsm +  \beta_p x_{p}} =   e^{\beta_0}x_1^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}}
+\]</span></p>
+<p>Then our interpretation is similar to a power model. Changing <span class="math inline">\(x_1\)</span> by a factor of <span class="math inline">\(m\)</span>: <span class="math display">\[
+odds(mx_1, \dotsc, x_p) =    e^{\beta_0}(mx_1)^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}} =    e^{\beta_0}x_1^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}} \times m^{\beta_1}
+\]</span> results in a multiplicative change of <span class="math inline">\(m^{\beta_1}\)</span> in the odds of success.</p>
 
+</div>
 </div>
 </div>
             </section>

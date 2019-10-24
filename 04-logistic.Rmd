@@ -44,15 +44,67 @@ The population, or data generating, model for a **logistic** regression model fo
     - binary response: $Y_i$'s are categorical with only two options
     - independence: Given $X_i$ values, $Y_i$'s are independent
 
-We **link** the predictors to the probability of success using the logistic function form:
+We connect the linear combination of predictors 
 $$
-\pi(X_i) = \dfrac{e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}{1 + e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}
+\eta_i = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
 $$
-This **link function** form is used because it relates the effect of each predictor to the **log-odds of success**. The **odds** of success is the ratio of the probability of success to the probability of failure:
+to the probability of success using the logistic function form:
 $$
-odds = \dfrac{\pi(X_i)}{1-\pi(X_i)}
+\pi(X_i) = \dfrac{e^{\eta_i}}{1 + e^{\eta_i}} = \dfrac{e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}{1 + e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}
 $$
-Some algebraic manipulation can show that the **log-odds** of success is equal to the linear combination of predictors for the logistic probability of success:
+
+This function form is used because its inverse is equal to 
 $$
-\log \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right) = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
+\eta_i =  \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}=  \ln \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right)
 $$
+This function is called the **logit function**: $logit(\pi) = \ln \left(  \dfrac{\pi}{1-\pi}\right)$. This  means that a one unit increase in $x_1$ can be interpreted as an additive  $\beta_1$ change in in the logit function, holding other terms fixed.  But what does this mean?
+
+The **odds of success** is defined as the ratio of the probability of success to the probability of failure:
+$$
+odds = \dfrac{\pi(X)}{1-\pi(X)}
+$$
+For example, if the probability of success is 0.6 then the odds of success is $0.6/0.4 = 1.5$. Meaning for every 6 successes, we see 4 failures. If the probability of success is 0.1, then the odds of success is $0.1/0.9 \approx 0.111$, meaning for every 1 success we see 9 failures. Odds greater than 1 indicate the probability of success is above 50% while odds less than 1 indicate the probability of success is less than 50%.
+
+So, we now can see that the logit function equals the **log-odds of success**:
+$$
+\ln \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right) = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
+$$
+This model form is an example of a **generalized linear model** which relates the response $Y$ to predictors through a linear combination $\eta$ of predictors. Is does this by defining the following functions:
+
+- The **kernel mean function** defines the expected value (mean) of $Y$ as a function of $\eta$.
+    - in a logistic model, the kernel mean function is the logistic function $E(Y \mid X) = \pi(X) = \dfrac{e^{\eta}}{1+e^{\eta}}$
+- The **link function** defines the linear combination $\eta$ as a function of the mean of $Y$.
+    - in a logistic model, the link function is the logit function $\eta = \ln(\pi/(1-\pi))$
+- These two functions are inverses of one another. 
+
+
+```{r, fig.height=4, fig.width=9, echo=FALSE}
+par(mfrow=c(1,2))
+curve(exp(x)/(1+exp(x)), from=-10, to=10, ylab="logistic(eta)", xlab="eta")
+title("logistic")
+curve(log(x/(1-x)), from=0, to=1,  xlab="p", ylab="logit(p)")
+title("logit")
+```
+
+### Interpretation
+Changes in predictors can be interpreted as changes in the **odds** of success (we can't make general statement about changes in the **probability** of success). Specifically, we  "unlog" the logit equation to get an expression for the odds of success for predictors $x_1, \dotsc, x_p$:
+$$
+odds(x_1, \dotsc, x_p) = \dfrac{\pi(X)}{1-\pi(X)} = e^{\beta_0 + \beta_1 x_{1} + \dotsm +  \beta_p x_{p}}
+$$
+
+What happens if we increase $x_1$ by one unit, holding other predictors fixed? 
+$$
+odds(x_1+1, \dotsc, x_p)  = e^{\beta_0 + \beta_1 (x_{1}+1) + \dotsm +  \beta_p x_{p}} = e^{\beta_0 + \beta_1 x_{1} + \dotsm +  \beta_p x_{p}} \times e^{\beta_1}
+$$
+Increasing $x_1$ by one unit has a **multiplicative** change of  $e^{\beta_1}$ in the **odds of success**. Note that this is a similar interpretation to the exponential model in SLR or MLR. 
+
+What is we have a predictor that is logged? 
+$$
+odds(x_1, \dotsc, x_p) = e^{\beta_0 + \beta_1 \ln(x_{1}) + \dotsm +  \beta_p x_{p}} =   e^{\beta_0}x_1^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}}
+$$
+
+Then our interpretation is similar to a power model. Changing $x_1$ by a factor of $m$:
+$$
+odds(mx_1, \dotsc, x_p) =    e^{\beta_0}(mx_1)^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}} =    e^{\beta_0}x_1^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}} \times m^{\beta_1}
+$$
+results in a multiplicative change of $m^{\beta_1}$ in the odds of success.
