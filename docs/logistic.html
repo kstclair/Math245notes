@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-10-23">
+<meta name="date" content="2019-10-24">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,6 +50,43 @@
 
 
 
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -184,10 +221,18 @@
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="logistic.html"><a href="logistic.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a><ul>
-<li class="chapter" data-level="4.1" data-path="logistic.html"><a href="logistic.html#the-variables-2"><i class="fa fa-check"></i><b>4.1</b> The variables</a></li>
+<li class="chapter" data-level="4.1" data-path="logistic.html"><a href="logistic.html#the-variables-2"><i class="fa fa-check"></i><b>4.1</b> The variables</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="logistic.html"><a href="logistic.html#logistic-donner1"><i class="fa fa-check"></i><b>4.1.1</b> Example: Donner party EDA</a></li>
+</ul></li>
 <li class="chapter" data-level="4.2" data-path="logistic.html"><a href="logistic.html#logistic-bernoulli"><i class="fa fa-check"></i><b>4.2</b> The Bernoulli distribution</a></li>
 <li class="chapter" data-level="4.3" data-path="logistic.html"><a href="logistic.html#logistic-model"><i class="fa fa-check"></i><b>4.3</b> The logistic model form</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="logistic.html"><a href="logistic.html#interpretation-2"><i class="fa fa-check"></i><b>4.3.1</b> Interpretation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="logistic.html"><a href="logistic.html#inference-and-estimation"><i class="fa fa-check"></i><b>4.4</b> Inference and estimation</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="logistic.html"><a href="logistic.html#confidence-intervals-for-pmbbeta_i"><i class="fa fa-check"></i><b>4.4.1</b> Confidence intervals for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
+<li class="chapter" data-level="4.4.2" data-path="logistic.html"><a href="logistic.html#hypothesis-tests-for-pmbbeta_i"><i class="fa fa-check"></i><b>4.4.2</b> Hypothesis tests for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
+<li class="chapter" data-level="4.4.3" data-path="logistic.html"><a href="logistic.html#r-glm"><i class="fa fa-check"></i><b>4.4.3</b> R <code>glm</code></a></li>
+<li class="chapter" data-level="4.4.4" data-path="logistic.html"><a href="logistic.html#logistic-donner2"><i class="fa fa-check"></i><b>4.4.4</b> Example: Donner party model</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>5</b> Poisson Regression</a></li>
@@ -292,6 +337,58 @@
 <div id="the-variables-2" class="section level2">
 <h2><span class="header-section-number">4.1</span> The variables</h2>
 <p>Suppose we have a <strong>categorical</strong> response variable <span class="math inline">\(Y\)</span> that can take one of two values, which we will generically call a <strong>success</strong> or <strong>failure</strong>. We want to relate the <strong>probability of success</strong> to <span class="math inline">\(p\)</span> explantory variables (aka predictors, covariates) <span class="math inline">\(x_1, \dotsc, x_p\)</span>. There is no restriction on the type of covariates, they can be both quantitative and categorical variables.</p>
+<div id="logistic-donner1" class="section level3">
+<h3><span class="header-section-number">4.1.1</span> Example: Donner party EDA</h3>
+<p>Sleuth case study 20.1 looks at data from the infamous <a href="https://en.wikipedia.org/wiki/Donner_Party">Donner party</a>. This wagon train was migrating to the west coast of the US in the mid-1800s and became snow-bound in the Sierra Nevada mountains during the winter of 1846-7. We are interested in modeling the categorical variable “survival” (or not) as a function of individual covariates like age or gender.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(Sleuth3)
+<span class="op">&gt;</span><span class="st"> </span>donner &lt;-<span class="st"> </span>case2001 
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(donner)
+##       Age           Sex          Status  
+##  Min.   :15.0   Female:15   Died    :25  
+##  1st Qu.:24.0   Male  :30   Survived:20  
+##  Median :28.0                            
+##  Mean   :31.8                            
+##  3rd Qu.:40.0                            
+##  Max.   :65.0</code></pre></div>
+<p>A stacked bar graph shows that females had a higher surival rate than males:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">fill =</span> Status, <span class="dt">x =</span> Sex)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position=</span><span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;proportion&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Surival rates by Sex&quot;</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>We can use the <code>dplyr</code> package’s <code>group_by</code> function to divide the data into the two <code>Sex</code> groups and compute the proportion who <code>Survived</code> within each group. Here we see that 2/3 of females survived while only 1/3 of males survived.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)
+<span class="op">&gt;</span><span class="st"> </span>donner <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(Sex) <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># for each Sex group</span>
+<span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="kw">mean</span>(Status <span class="op">==</span><span class="st"> &quot;Survived&quot;</span>))  <span class="co"># proportion who survived</span>
+## # A tibble: 2 x 2
+##   Sex    `mean(Status == &quot;Survived&quot;)`
+##   &lt;fct&gt;                         &lt;dbl&gt;
+## 1 Female                        0.667
+## 2 Male                          0.333</code></pre></div>
+<p>A side-by-side boxplot shows that people who survived tended to be younger:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Status, <span class="dt">y =</span> Age)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">coord_flip</span>()</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>We can get stats by status group:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner <span class="op">%&gt;%</span>
+<span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(Status) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># for each status group</span>
+<span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="kw">mean</span>(Age), <span class="kw">sd</span>(Age), <span class="kw">median</span>(Age))  <span class="co"># get summary stats</span>
+## # A tibble: 2 x 4
+##   Status   `mean(Age)` `sd(Age)` `median(Age)`
+##   &lt;fct&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
+## 1 Died            35.5     14.3             30
+## 2 Survived        27.2      8.00            25</code></pre></div>
+<p>But these stats are not quite what we want when trying to model survival as a function of age. E.g. of people who survived, we know that the mean age was 27.2 while of people who died, the mean age was 35.5. But this is the wrong direction of conditioning, we would like to say how survival rates change as we increase age by a year, for example. We could employ a scatterplot for this purpose, but we need to recode (in <code>dplyr</code>) <code>Status</code> into a binary variable that recodes survival as a 1 and death as a 0:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_surv &lt;-<span class="st"> </span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">1</span>, <span class="dt">Died =</span> <span class="dv">0</span>)</code></pre></div>
+<p>Then use a <code>jitter</code> plot to avoid overplotting:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Age, <span class="dt">y =</span> Ind_surv)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> .<span class="dv">01</span>) </code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>As we increase age, try vertically “slicing” these points. The proportion of survivals in these similar age groups will just be the mean of the binary 0’s and 1’s in each slice. We have more blue points than red in the low age slices than in high age, so we see that the probability of survival tends to decrease as age increases. We will next consider how to construct a model that gives us a “best fit” curve for this probability of surival.</p>
+</div>
 </div>
 <div id="logistic-bernoulli" class="section level2">
 <h2><span class="header-section-number">4.2</span> The Bernoulli distribution</h2>
@@ -340,7 +437,7 @@ odds = \dfrac{\pi(X)}{1-\pi(X)}
 </ul></li>
 <li>These two functions are inverses of one another.</li>
 </ul>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-2-1.png" width="864" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-9-1.png" width="864" /></p>
 <div id="interpretation-2" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> Interpretation</h3>
 <p>Changes in predictors can be interpreted as changes in the <strong>odds</strong> of success (we can’t make general statement about changes in the <strong>probability</strong> of success). Specifically, we “unlog” the logit equation to get an expression for the odds of success for predictors <span class="math inline">\(x_1, \dotsc, x_p\)</span>: <span class="math display">\[
@@ -349,12 +446,164 @@ odds(x_1, \dotsc, x_p) = \dfrac{\pi(X)}{1-\pi(X)} = e^{\beta_0 + \beta_1 x_{1} +
 <p>What happens if we increase <span class="math inline">\(x_1\)</span> by one unit, holding other predictors fixed? <span class="math display">\[
 odds(x_1+1, \dotsc, x_p)  = e^{\beta_0 + \beta_1 (x_{1}+1) + \dotsm +  \beta_p x_{p}} = e^{\beta_0 + \beta_1 x_{1} + \dotsm +  \beta_p x_{p}} \times e^{\beta_1}
 \]</span> Increasing <span class="math inline">\(x_1\)</span> by one unit has a <strong>multiplicative</strong> change of <span class="math inline">\(e^{\beta_1}\)</span> in the <strong>odds of success</strong>. Note that this is a similar interpretation to the exponential model in SLR or MLR.</p>
+<p>The multiplicative change of <span class="math inline">\(e^{\beta_1}\)</span> is also called the <strong>odds ratio</strong> for a one unit increase in <span class="math inline">\(x_1\)</span>. An odds <em>ratio</em> is just the ratio of the odds for two different groups, here groups with <span class="math inline">\(x_1+1\)</span> vs. <span class="math inline">\(x_1\)</span>: <span class="math display">\[
+\dfrac{\textrm{odds of succes at } x_1+1}{\textrm{odds of succes at } x_1} = \dfrac{odds(x_1+1, \dotsc, x_p) }{odds(x_1, \dotsc, x_p) } = e^{\beta_1}
+\]</span></p>
 <p>What is we have a predictor that is logged? <span class="math display">\[
 odds(x_1, \dotsc, x_p) = e^{\beta_0 + \beta_1 \ln(x_{1}) + \dotsm +  \beta_p x_{p}} =   e^{\beta_0}x_1^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}}
 \]</span></p>
 <p>Then our interpretation is similar to a power model. Changing <span class="math inline">\(x_1\)</span> by a factor of <span class="math inline">\(m\)</span>: <span class="math display">\[
 odds(mx_1, \dotsc, x_p) =    e^{\beta_0}(mx_1)^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}} =    e^{\beta_0}x_1^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}} \times m^{\beta_1}
 \]</span> results in a multiplicative change of <span class="math inline">\(m^{\beta_1}\)</span> in the odds of success.</p>
+</div>
+</div>
+<div id="inference-and-estimation" class="section level2">
+<h2><span class="header-section-number">4.4</span> Inference and estimation</h2>
+<p>Estimation of logistic model parameters <span class="math inline">\(\beta_0, \dotsc, \beta_p\)</span> is done using <strong>maximum likelihood</strong> estimation (MLE). The likelihood function is the probability of the observed data, writen as a function of our unknown <span class="math inline">\(\beta\)</span>’s *(which are used to compute <span class="math inline">\(\pi(X_i)\)</span>’s) <span class="math display">\[
+L(\beta) = \prod_{i=1}^n \pi(X_i)^{y_i} (1-\pi(X_i))^{1-y_i}
+\]</span> Notice that for each case <span class="math inline">\(i\)</span>, the term in this product is equal to just <span class="math inline">\(\pi(X_i)\)</span> when case <span class="math inline">\(i\)</span> is a success (<span class="math inline">\(y_i=1\)</span>) and equal to <span class="math inline">\(1-\pi(X_i)\)</span> when case <span class="math inline">\(i\)</span> is a failure (<span class="math inline">\(y_i=0\)</span>).</p>
+<p>Our MLE method says to find the <span class="math inline">\(\beta\)</span>’s that maximize the likelihood <span class="math inline">\(L(\beta)\)</span> of the observed data. Unlike SLR or MLR, there is no “closed form” for these MLE <span class="math inline">\(\hat{\beta}_i\)</span> estimates (meaning we can’t write down a formula for the estimates). Rather, software uses a numerical optimization method to compute the MLEs <span class="math inline">\(\hat{\beta}_i\)</span> <strong>and</strong> the standard errors <span class="math inline">\(SE(\hat{\beta}_i)\)</span>. (The R function <code>glm</code> uses Iterative reweighted least squares.)</p>
+<p>These MLE estimates of <span class="math inline">\(\beta\)</span> parameters are approximately normally distributed and unbiased when n is “large enough.” Much like with “intro stats” inference, when your response variable is categorical (or, equivalently, binary 0/1), we usually use the normal distribution for inference (CI and tests). When your response variable is quantitative (like in SLR/MLR models), we usually use the t-distribution for inference.</p>
+<div id="confidence-intervals-for-pmbbeta_i" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> Confidence intervals for <span class="math inline">\(\pmb{\beta_i}\)</span></h3>
+<p>A <span class="math inline">\(C\)</span>% confidence interval for <span class="math inline">\(\beta_i\)</span> equals <span class="math display">\[
+\hat{\beta}_i \pm z^*SE(\hat{\beta}_i)
+\]</span> where <span class="math inline">\(z^*\)</span> is the <span class="math inline">\((100-C)/2\)</span> percentile from the <span class="math inline">\(N(0,1)\)</span> distribution.</p>
+</div>
+<div id="hypothesis-tests-for-pmbbeta_i" class="section level3">
+<h3><span class="header-section-number">4.4.2</span> Hypothesis tests for <span class="math inline">\(\pmb{\beta_i}\)</span></h3>
+<p>We can test the hypothesis <span class="math display">\[
+H_0: \beta_i = \beta^*_i
+\]</span> with the following z-test statistic: <span class="math display">\[
+z =\dfrac{\hat{\beta}_i - \beta^*_i}{SE(\hat{\beta}_i)}
+\]</span> where <span class="math inline">\(\beta^*_i\)</span> is our hypothesized value of <span class="math inline">\(\beta_i\)</span> . The <span class="math inline">\(N(0,1)\)</span> is used to compute the p-value that is appropriate for whatever <span class="math inline">\(H_A\)</span> is specified.</p>
+<p>The usual test results given by standard regression output tests whether a parameter value (intercept or slope) is equal to 0 vs. not equal to 0: <span class="math display">\[
+H_0: \beta_i = 0 \ \ \ \ \ H_A: \beta_i \neq 0
+\]</span> with a test stat of <span class="math display">\[
+z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
+\]</span></p>
+</div>
+<div id="r-glm" class="section level3">
+<h3><span class="header-section-number">4.4.3</span> R <code>glm</code></h3>
+<p>We fit a logistic regression model in R with the <code>glm</code> function. The basic syntax is</p>
+<pre><code>glm(y ~ x1 + x2, family = binomial, data= )</code></pre>
+<p>Careful not to forget the <code>family=binomial</code> argument! If you omit this, you will just be trying to fit a regular MLR model which is not appropriate for a categorical response.</p>
+<p>The variable <code>y</code> can be either form:</p>
+<ul>
+<li><code>y</code> can be binary 0/1 coded response where <code>1</code> is a “success”</li>
+<li><code>y</code> can be a <code>factor</code> variable with two levels. The <strong>second</strong> level is what R will call a “success”</li>
+</ul>
+<p>Once you fit a <code>glm</code> model, you can extract attributes of the model</p>
+<ul>
+<li><code>fitted(my.glm)</code> gives the estimated probabilities of success for each case in your data</li>
+<li><code>predict(my.glm)</code> gives estimated log-odds of success for each case in your data. Add <code>newdata=</code> to get predicted log-odds for new data.</li>
+<li><code>predict(my.glm, type = &quot;response&quot;)</code> gives estimated probabilities of success for each case in your data. Add <code>newdata=</code> to get predicted log-odds for new data.</li>
+</ul>
+</div>
+<div id="logistic-donner2" class="section level3">
+<h3><span class="header-section-number">4.4.4</span> Example: Donner party model</h3>
+<p>Let’s revist the Donner party data and start with considering the logistic regression of survival status on age (only). We can add the fitted logistic model probability curve the scatterplot we created in Section <a href="logistic.html#logistic-donner1">4.1.1</a>. We use the <code>glm</code> smoothing method with an <code>args</code> that specifies the <code>binomial</code> family:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Age, <span class="dt">y =</span> Ind_surv)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> .<span class="dv">01</span>) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span>binomial), <span class="dt">se=</span><span class="ot">FALSE</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>We can see that an age of about 30 yields an estimated survival probability of 50% while an age of about 45 yields an estimated survival probability of 25%. We can better quantify these values by fitting the model using the <code>glm</code> function.</p>
+<p>Here is our simple model, the logistic regression of survival on age: <span class="math display">\[
+logit(\pi) = \log(\dfrac{\pi}{1-\pi}) = \beta_0 + \beta_1 Age 
+\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">levels</span>(donner<span class="op">$</span>Status)  <span class="co"># second level = Surived</span>
+## [1] &quot;Died&quot;     &quot;Survived&quot;
+<span class="op">&gt;</span><span class="st"> </span>donner.glm1 &lt;-<span class="st"> </span><span class="kw">glm</span>( Status <span class="op">~</span><span class="st"> </span>Age , <span class="dt">family=</span>binomial, <span class="dt">data=</span>donner)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(donner.glm1)
+## 
+## Call:
+## glm(formula = Status ~ Age, family = binomial, data = donner)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.5401  -1.1594  -0.4651   1.0842   1.7283  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)  
+## (Intercept)  1.81852    0.99937   1.820   0.0688 .
+## Age         -0.06647    0.03222  -2.063   0.0391 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 61.827  on 44  degrees of freedom
+## Residual deviance: 56.291  on 43  degrees of freedom
+## AIC: 60.291
+## 
+## Number of Fisher Scoring iterations: 4
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">confint</span>(donner.glm1)
+##                    2.5 %      97.5 %
+## (Intercept) -0.005987258  3.99016010
+## Age         -0.139737905 -0.01016096</code></pre></div>
+<p>The estimated log odds of survival is <span class="math display">\[
+logit(\hat{\pi}) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = 1.81852  -0.06647  Age
+\]</span> and the estimated odds of survival is <span class="math display">\[
+\hat{odds}(age) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = e^{1.81852}e^{-0.06647 Age}
+\]</span> and the estimated probability of survival is <span class="math display">\[
+\hat{\pi}(age) =  \dfrac{e^{1.81852  -0.06647  Age}}{1+e^{1.81852  -0.06647  Age}}
+\]</span></p>
+<p>A one year increase in age will have a <span class="math inline">\(e^{-0.06647} = 0.936\)</span> multiplicative change on the odds of survival. A one year increase in age decreases the odds of survival by 6.4% (95% CI 0.3% to 12.2%).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span>)   <span class="co"># factor change</span>
+## [1] 0.935691
+<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># percent change</span>
+## [1] -6.430901
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>)   <span class="co"># factor change CI</span>
+## [1] 0.8784291 0.9966855
+<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># % change CI</span>
+## [1] -12.1570864  -0.3314455</code></pre></div>
+<p>The <code>broom</code> package’s <code>tidy</code> function can also be used to get estimates, SEs and confidence intervals. If we add <code>exponentiate=TRUE</code>, then we we get exponentiated estiamtes and confidence intervals (but SE, test stat and p-values are untouched).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(broom)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm1, <span class="dt">conf.int=</span><span class="ot">TRUE</span>)
+## # A tibble: 2 x 7
+##   term        estimate std.error statistic p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)   1.82      0.999       1.82  0.0688 -0.00599    3.99  
+## 2 Age          -0.0665    0.0322     -2.06  0.0391 -0.140     -0.0102
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm1, <span class="dt">conf.int=</span><span class="ot">TRUE</span>, <span class="dt">exponentiate =</span> <span class="ot">TRUE</span>)
+## # A tibble: 2 x 7
+##   term        estimate std.error statistic p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    6.16     0.999       1.82  0.0688    0.994    54.1  
+## 2 Age            0.936    0.0322     -2.06  0.0391    0.870     0.990</code></pre></div>
+<p>We can use the <code>predict</code> command with <code>response</code> type values to get predicted survival rates for 30 and 45 year olds:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>new.ages &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Age =</span> <span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">45</span>))
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">predict</span>(donner.glm1, <span class="dt">newdata =</span> new.ages, <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)
+##         1         2 
+## 0.4562149 0.2363774
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">30</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">30</span>))  <span class="co"># prob age=30</span>
+## [1] 0.4562174
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">45</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">45</span>))  <span class="co"># prob age=45</span>
+## [1] 0.2363799</code></pre></div>
+<p>So we have <span class="math display">\[
+\hat{\pi}(age = 30)  =  \dfrac{e^{1.81852  -0.06647(30)}}{1+e^{1.81852  -0.06647(30)}} \approx 0.456
+\]</span> and <span class="math display">\[
+\hat{\pi}(age = 45)  =  \dfrac{e^{1.81852  -0.06647(45)}}{1+e^{1.81852  -0.06647(45)}} \approx 0.236
+\]</span></p>
+<p>Finally, what if we want to understand how the odds of <em>death</em> change as a function of age? Well, odds of death is equal to the ratio death to survival probabilities: <span class="math display">\[
+\hat{odds.death}(age) = \dfrac{1-\hat{\pi}}{\hat{\pi}} = \dfrac{1}{e^{1.81852}e^{-0.06647 Age}} = e^{-1.81852}e^{0.06647 Age}
+\]</span> A one year increase in age will have a <span class="math inline">\(e^{0.06647} = 1.069\)</span> multiplicative change on the odds of survival. A one year increase in age increases the odds of death by 6.9% (95% CI 0.3% to 13.8%).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">0.06647</span>)   <span class="co"># factor change in odds of death</span>
+## [1] 1.068729
+<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="fl">0.06647</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># percent change</span>
+## [1] 6.87289
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>)   <span class="co"># factor change CI</span>
+## [1] 1.003325 1.138396
+<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># % change CI</span>
+## [1]  0.3325478 13.8395756</code></pre></div>
+<p>We can verify our mathematical work by refitting a <code>glm</code> with an indicator of <em>death</em>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_death &lt;-<span class="st"> </span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">0</span>, <span class="dt">Died =</span> <span class="dv">1</span>)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(<span class="kw">glm</span>(Ind_death <span class="op">~</span><span class="st"> </span>Age, <span class="dt">family =</span> binomial, <span class="dt">data=</span>donner))
+## # A tibble: 2 x 5
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)  -1.82      0.999      -1.82  0.0688
+## 2 Age           0.0665    0.0322      2.06  0.0391</code></pre></div>
 
 </div>
 </div>
