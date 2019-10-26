@@ -15,7 +15,7 @@ This chapter covers material from chapters 20-21 of Sleuth.
 Suppose we have a **categorical** response variable $Y$ that can take one of two values, which we will generically call a **success** or **failure**. We want to relate the **probability of success** to $p$ explantory variables (aka predictors, covariates) $x_1, \dotsc, x_p$. There is no restriction on the type of covariates, they can be both quantitative and categorical variables.
 
 ### Example: Donner party EDA {#logistic-donner1}
-Sleuth case study 20.1 looks at data from the infamous [Donner party](https://en.wikipedia.org/wiki/Donner_Party). This wagon train was migrating to the west coast of the US in the mid-1800s and became snow-bound in the Sierra Nevada mountains during the winter of 1846-7. We are interested in  modeling the categorical variable "survival" (or not) as a function of individual covariates like age or gender. 
+Sleuth case study 20.1 looks at data from the infamous [Donner party](https://en.wikipedia.org/wiki/Donner_Party). This wagon train was migrating to the west coast of the US in the mid-1800s and became snow-bound in the Sierra Nevada mountains during the winter of 1846-7. We are interested in  modeling the categorical variable "survival" (or not) as a function of individual covariates like age or sex. 
 
 ```{r}
 library(Sleuth3)
@@ -228,13 +228,23 @@ Once you fit a `glm` model, you can extract attributes of the model
 - `predict(my.glm)` gives estimated log-odds of success for each case in your data. Add `newdata=` to get predicted log-odds for new data.
 - `predict(my.glm, type = "response")` gives estimated probabilities of success for each case in your data. Add `newdata=` to get predicted log-odds for new data.
 
+The `broom` package also allows us to get fitted probabilities or log odds for all cases in the data, or for new data:
+
+- `augment(my.glm)` gets estimated log-odds of success added to the variables used in the `glm` fit. 
+    - add `data=my.data` to get estimated log-odds added to the full data set `my.data` used in the `glm` fit
+    - add `newdata= new.data` to get predicted log-odds added to the new data set `new.data`
+- `augment(my.glm, type.predict= "response")` gets estimated probabilities of success added to the variables used in the `glm` fit. 
+    - add `data=my.data` to get estimated probabilities added to the full data set `my.data` used in the `glm` fit
+    - add `newdata= new.data` to get predicted probabilities added to the new data set `new.data`
+
 ### Example: Donner party model {#logistic-donner2}
 Let's revist the Donner party data and start with considering the logistic regression of survival status on age (only).  We can add the fitted logistic model probability curve the scatterplot we created in Section \@ref(logistic-donner1). We use the `glm` smoothing method with an `args` that specifies the `binomial` family:
 
 ```{r}
 ggplot(donner, aes(x = Age, y = Ind_surv)) + 
   geom_jitter(aes(color=Status), height = .01) + 
-  geom_smooth(method="glm", method.args = list(family=binomial), se=FALSE)
+  geom_smooth(method="glm", method.args = list(family=binomial), se=FALSE) + 
+  labs(y = "probability of survival")
 ```
 
 We can see that an age of about 30 yields an estimated survival probability of 50% while an age of about 45 yields an estimated survival probability of 25%. We can better quantify these values by fitting the model using the `glm` function.
@@ -313,3 +323,80 @@ donner$Ind_death <- recode(donner$Status, Survived = 0, Died = 1)
 tidy(glm(Ind_death ~ Age, family = binomial, data=donner))
 ```
 
+### Example: Donner party, adding sex {#logistic-donner3}
+We will fit the  logistic regression of survival on age and sex:
+$$
+logit(\pi) = \log(\dfrac{\pi}{1-\pi}) = \beta_0 + \beta_1 Age + \beta_2 Male
+$$
+
+The estimated mode fit is:
+```{r}
+donner.glm2 <- glm( Status ~ Age + Sex, family=binomial, data=donner)
+donner.glm2
+tidy(donner.glm2, conf.int=TRUE)
+tidy(donner.glm2, conf.int=TRUE, exponentiate = TRUE)
+```
+
+The estimated log odds of survival is 
+$$
+logit(\hat{\pi}) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = 3.23041 -0.07820  Age -1.59729 Male
+$$
+and the estimated odds of survival is 
+$$
+odds(Sex, Age) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = e^{3.23041}e^{-0.07820 Age}e^{-1.59729 Male} = (25.3)(0.925)^{Age}(0.202)^{Male}
+$$
+and the estimated probability of survival is 
+$$
+\hat{\pi}(Sex, Age) =  \dfrac{e^{3.23041 -0.07820  Age -1.59729 Male}}{1+e^{3.23041 -0.07820  Age -1.59729 Male}} 
+$$
+
+The exponentiated coefficient estimates give the odds ratios for a one unit increase in age or for males (compated to females). 
+
+Holding gender constant, a one year increase in age decreases the odds of survival by 7.5% (95% CI 0.5% to 14.0%).  
+```{r}
+exp(-0.07820)  # age effect on odds
+100*(exp(-0.07820) - 1)  # % change
+exp(-0.07820 + c(-1,1)*qnorm(0.975)*0.03728)  # CI for factor 
+100*(exp(-0.07820 + c(-1,1)*qnorm(0.975)*0.03728) - 1)  # CI for % change
+```
+
+Holding age constant, males had a 79.8% lower odds of survival compared to females (95% CI 11.0% to 95.4%). 
+$$
+\textrm{estimated odds ratio of survival for males vs females} = \dfrac{\hat{odds}(Sex=male,Age)}{\hat{odds}(Sex=female,Age)} = e^{-1.5973}
+$$
+
+
+```{r}
+exp(-1.59729)
+100*(exp(-1.59729) -1 )
+exp(-1.59729 + c(-1,1)*qnorm(0.975)*0.75547)
+100*(exp(-1.59729 + c(-1,1)*qnorm(0.975)*0.75547) - 1)
+```
+
+What if we wanted the odds ratio for comparing females to males? 
+$$
+\textrm{estimated odds ratio of survival for females vs males} = \dfrac{\hat{odds}(Sex=female,Age)}{\hat{odds}(Sex=male,Age)} = \dfrac{1}{e^{-1.5973}} = e^{1.5973}
+$$
+Holding age constant, females had a 4.9-fold increased odds of survival (95% CI 1.1 to 21.7).
+```{r}
+# odds ratio Female/Male
+1/exp(-1.59729)  
+1/exp(-1.59729 + c(-1,1)*qnorm(0.975)*0.75547)
+```
+
+There are two separate log-odds, odds and probability functions for the two levels of `Sex` in the model. Since we do not have an interaction between `Sex` and `Age`, we have a parallel line log-odds model. To plot the probabilities for each `Sex` as `Age` varies, we need to get the fitted probabities for each case in the data set:
+```{r}
+library(broom)
+donner.aug2 <- augment(data=donner, donner.glm2, type.predict = "response")
+head(donner.aug2)
+```
+
+Then add `geom_line` with the `.fitted` probabilities for each `Sex` (by `linetype`) added to the y-axis of the jittered scatterplot:
+```{r}
+ggplot(donner.aug2, aes(x = Age, y = Ind_surv)) + 
+  geom_jitter(aes(color=Status), height = .01) + 
+  geom_line(aes(y=.fitted, linetype=Sex)) + 
+  labs(y = "probability of survival")
+```
+
+Note that these lines are *not* parallel on the probability scale while they are on the log-odds scale. This is because we apply the logistic function to the log-odds to produce our probabilities. The logistic function is not a linear function, so it does not produce parallel lines (or even lines at all). 
