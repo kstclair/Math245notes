@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-10-25">
+<meta name="date" content="2019-10-28">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -228,12 +228,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.3" data-path="logistic.html"><a href="logistic.html#logistic-model"><i class="fa fa-check"></i><b>4.3</b> The logistic model form</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="logistic.html"><a href="logistic.html#interpretation-2"><i class="fa fa-check"></i><b>4.3.1</b> Interpretation</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="logistic.html"><a href="logistic.html#inference-and-estimation"><i class="fa fa-check"></i><b>4.4</b> Inference and estimation</a><ul>
+<li class="chapter" data-level="4.4" data-path="logistic.html"><a href="logistic.html#logistic-est"><i class="fa fa-check"></i><b>4.4</b> Inference and estimation</a><ul>
 <li class="chapter" data-level="4.4.1" data-path="logistic.html"><a href="logistic.html#confidence-intervals-for-pmbbeta_i"><i class="fa fa-check"></i><b>4.4.1</b> Confidence intervals for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
 <li class="chapter" data-level="4.4.2" data-path="logistic.html"><a href="logistic.html#hypothesis-tests-for-pmbbeta_i"><i class="fa fa-check"></i><b>4.4.2</b> Hypothesis tests for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
 <li class="chapter" data-level="4.4.3" data-path="logistic.html"><a href="logistic.html#r-glm"><i class="fa fa-check"></i><b>4.4.3</b> R <code>glm</code></a></li>
 <li class="chapter" data-level="4.4.4" data-path="logistic.html"><a href="logistic.html#logistic-donner2"><i class="fa fa-check"></i><b>4.4.4</b> Example: Donner party model</a></li>
 <li class="chapter" data-level="4.4.5" data-path="logistic.html"><a href="logistic.html#logistic-donner3"><i class="fa fa-check"></i><b>4.4.5</b> Example: Donner party, adding sex</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="logistic.html"><a href="logistic.html#logistic-dev"><i class="fa fa-check"></i><b>4.5</b> Deviance</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="logistic.html"><a href="logistic.html#drop-in-deviance-test"><i class="fa fa-check"></i><b>4.5.1</b> Drop in Deviance test</a></li>
+<li class="chapter" data-level="4.5.2" data-path="logistic.html"><a href="logistic.html#example-nes"><i class="fa fa-check"></i><b>4.5.2</b> Example: NES</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="logistic.html"><a href="logistic.html#logistic-assump"><i class="fa fa-check"></i><b>4.6</b> Checking Assumptions</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="logistic.html"><a href="logistic.html#example-boundary-waters-canoe-area-bwca-blowdown"><i class="fa fa-check"></i><b>4.6.1</b> Example: Boundary Waters Canoe Area (BWCA) blowdown</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>5</b> Poisson Regression</a></li>
@@ -458,7 +465,7 @@ odds(mx_1, \dotsc, x_p) =    e^{\beta_0}(mx_1)^{\beta_1} e^{\beta_2 x_2 + \dotsm
 \]</span> results in a multiplicative change of <span class="math inline">\(m^{\beta_1}\)</span> in the odds of success.</p>
 </div>
 </div>
-<div id="inference-and-estimation" class="section level2">
+<div id="logistic-est" class="section level2">
 <h2><span class="header-section-number">4.4</span> Inference and estimation</h2>
 <p>Estimation of logistic model parameters <span class="math inline">\(\beta_0, \dotsc, \beta_p\)</span> is done using <strong>maximum likelihood</strong> estimation (MLE). The likelihood function is the probability of the observed data, writen as a function of our unknown <span class="math inline">\(\beta\)</span>’s *(which are used to compute <span class="math inline">\(\pi(X_i)\)</span>’s) <span class="math display">\[
 L(\beta) = \prod_{i=1}^n \pi(X_i)^{y_i} (1-\pi(X_i))^{1-y_i}
@@ -709,6 +716,210 @@ odds(Sex, Age) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = e^{3.23041}e^{-0.07820 Age}e^{
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;probability of survival&quot;</span>)</code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Note that these lines are <em>not</em> parallel on the probability scale while they are on the log-odds scale. This is because we apply the logistic function to the log-odds to produce our probabilities. The logistic function is not a linear function, so it does not produce parallel lines (or even lines at all).</p>
+</div>
+</div>
+<div id="logistic-dev" class="section level2">
+<h2><span class="header-section-number">4.5</span> Deviance</h2>
+<p>In a MLR, ANOVA is used to determine how much of the overall variability in a quantatitive response is explained by the model. With large <span class="math inline">\(n\)</span> and/or normally distributed errors, F tests can be used to compare models based on how much the residual sum of squares is reduced by adding terms.</p>
+<p>In a GLM, <strong>deviance</strong> is the term used to measure “unexplained” variation in the response. When the GLM <em>is</em> a MLR model, deviance equals the residual sum of squares. In a logistic GLM deviance, denoted as <span class="math inline">\(G^2\)</span>, is the difference of two likelihoods (defined in @(logistic-est)): <span class="math display">\[
+G^2 = 2[\ln L(\bar{\pi}) - \ln L(\hat{\pi}(X))] = 2\sum_{i=1}^n \left[ y_i \ln \left( \dfrac{y_i}{\hat{\pi}(X_i)} \right) + (1- y_i) \ln \left( \dfrac{1-y_i}{1-\hat{\pi}(X_i)} \right) \right]
+\]</span></p>
+<ul>
+<li><span class="math inline">\(L(\hat{\pi}(X)):\)</span> likelihood of the data that plugs in estimates <span class="math inline">\(\hat{\pi}(X_i)\)</span> from the logistic model.</li>
+<li><span class="math inline">\(L(\bar{\pi}):\)</span> likelihood of the data that plugs in estimates <span class="math inline">\(\bar{\pi} = y_i\)</span>, basing a case’s “predicted” value soley on the response observed for that case. This is called a <strong>saturated</strong> model and it will always have a higher likelihood than the logistic model: <span class="math inline">\(L(\bar{\pi}) \geq L(\hat{\pi}(X))\)</span></li>
+</ul>
+<p>Deviance, sometimes called <em>residual</em> deviance, is close to 0 when the logistic model is a good predictor of the responses. Meaning <span class="math inline">\(\hat{\pi}(X_i)\)</span> are close to 1 when <span class="math inline">\(y_i = 1\)</span> and close to 0 when <span class="math inline">\(y_i = 0\)</span>. Residual deviance will decrease as model terms are added to the logistic model. We can compare nested logistic models by comparing deviance.</p>
+<div id="drop-in-deviance-test" class="section level3">
+<h3><span class="header-section-number">4.5.1</span> Drop in Deviance test</h3>
+<ol style="list-style-type: decimal">
+<li><p>Hypotheses: <span class="math inline">\(H_0:\)</span> reduced model vs. <span class="math inline">\(H_A:\)</span> full model</p></li>
+<li>Test Statistic: The likelihood ratio test (LRT) stat compares the <strong>drop in deviance</strong> from the reduced to the full models <span class="math display">\[
+LRT = G^2_{reduced} - $G^2$_{full}
+\]</span></li>
+<li><p>When <span class="math inline">\(n\)</span> is “large enough”, the LRT will have a chi-square (<span class="math inline">\(\chi^2\)</span>) distribution with <span class="math inline">\(df = df_{reduced} - df_{full}\)</span>.The p-value is a <strong>right tailed</strong> area <span class="math display">\[
+p-value = P(\chi^2 &gt; LRT) =  1- pchisq(LRT, df)
+\]</span></p></li>
+</ol>
+<p>Special cases of drop in deviance tests:</p>
+<ul>
+<li><p>The <strong>overall</strong> drop in deviance test compares a null “intercept only” model to a logistic model: <span class="math display">\[
+H_0: \ln(odds) = \beta_0 \ \ \ \ H_A: \ln(odds) = \beta_0 + \beta_1 x_1 + \dotsm + \beta_p x_p
+\]</span> The deviance for the null model is computed by using the overall rate of success as the estimated <span class="math inline">\(\hat{\pi}\)</span> for all cases. This null deviance is similar in spirit to the total sum of squares in ANOVA.</p></li>
+<li><p>If our reduced and full models differ by <strong>one term</strong>, then the drop in deviance test will test the same hypotheses as the z-test (a.k.a. Wald test) for the term, but the two methods of testing are not identical. The two types of tests will usually give results that agree, but if they do not agree you should use the drop in deviance LRT test results.</p></li>
+</ul>
+<p>We can compare two logistic models in R via a drop in deviance test using the command</p>
+<pre><code>anova(reduced.glm, full.glm, test = &quot;Chisq&quot;)</code></pre>
+<p>The <code>anova</code> command with just one model gives the residual deviance drops for adding each term listed to the model that already contains the terms above it. (Much like <code>anova</code> for a MLR.)</p>
+</div>
+<div id="example-nes" class="section level3">
+<h3><span class="header-section-number">4.5.2</span> Example: NES</h3>
+<p>The National Election Studies project recorded party identification for two random samples of people during 1980 and 2000.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>nes &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/NES.csv&quot;</span>)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(nes)
+##       year age gender  race region     income union dem       educ
+## 1 year1980  70   male black      S  lower 1/3    no   1 HS or less
+## 2 year1980  67   male white     NC middle 1/3   yes   1 HS or less
+## 3 year1980  47 female black      S  lower 1/3    no   1 HS or less
+## 4 year1980  52 female white      W  upper 1/3   yes   0    College
+## 5 year1980  30 female white     NC  upper 1/3    no   1 HS or less
+## 6 year1980  37   male black     NC  upper 1/3    no   1    College</code></pre></div>
+<p>Here we recode the binary Democrat voter party affiliation <code>dem</code> variable to record two levels: <code>Democrat</code> and <code>Other</code>. Here we see the proportion of Democrats (in red) by region for the survey years of 1980 and 2000. In the south, we see a decrease in the proportion of Democrats between 1980 and 2000. In the north east, we see an increase in the proportion of Democrats between 1980 and 2000. This gives us evidence that the effect of year (1980 vs 2000) on the odds of being a Democrat depend on the region of the country.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="co"># recode to make a factor version:</span>
+<span class="er">&gt;</span><span class="st"> </span>nes<span class="op">$</span>party &lt;-<span class="st"> </span><span class="kw">recode_factor</span>(nes<span class="op">$</span>dem, <span class="st">`</span><span class="dt">1</span><span class="st">`</span>=<span class="st">&quot;Democrat&quot;</span>, <span class="st">`</span><span class="dt">0</span><span class="st">`</span>=<span class="st">&quot;Other&quot;</span>)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(nes, <span class="kw">aes</span>(<span class="dt">x=</span>year, <span class="dt">fill =</span> party)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position=</span><span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>This EDA suggests that an interaction between year and region is needed, so our first model for the log odds of being a <strong>Democrat</strong> (<code>dem = 1</code>) looks like <span class="math display">\[
+\ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 +  \beta_5NE:2000 + \beta_6S:2000 + \beta_7 W:2000 
+\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>nes.glm1 &lt;-<span class="st"> </span><span class="kw">glm</span>(dem <span class="op">~</span><span class="st"> </span>region<span class="op">*</span>year , <span class="dt">data=</span>nes, <span class="dt">family =</span> binomial)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(nes.glm1)
+## 
+## Call:
+## glm(formula = dem ~ region * year, family = binomial, data = nes)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.3666  -1.2049   0.9993   1.1131   1.1969  
+## 
+## Coefficients:
+##                       Estimate Std. Error z value Pr(&gt;|z|)   
+## (Intercept)           -0.04581    0.12359  -0.371  0.71090   
+## regionNE               0.02811    0.18159   0.155  0.87698   
+## regionS                0.45127    0.16199   2.786  0.00534 **
+## regionW                0.11035    0.19184   0.575  0.56515   
+## yearyear2000           0.19893    0.16924   1.175  0.23982   
+## regionNE:yearyear2000  0.25334    0.25923   0.977  0.32842   
+## regionS:yearyear2000  -0.63257    0.22136  -2.858  0.00427 **
+## regionW:yearyear2000  -0.08701    0.25748  -0.338  0.73540   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 3083.3  on 2231  degrees of freedom
+## Residual deviance: 3065.5  on 2224  degrees of freedom
+## AIC: 3081.5
+## 
+## Number of Fisher Scoring iterations: 4</code></pre></div>
+<p>The residual deviance for this model is <span class="math inline">\(G^2 = 3065.5\)</span> and the model has 2224 degrees of freedom. The null deviance of 3083.3 is for the “intercept only” model. The Wald z-tests suggest that terms involving the south are statistically significant.</p>
+<p>The model without the interaction terms also has a null deviance of 3083.3 (since the response and models are the same). But the reduced, no interaction, model’s residual deviance is higher than the interaction model at 3081.9.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>nes.glm2 &lt;-<span class="st"> </span><span class="kw">glm</span>(dem <span class="op">~</span><span class="st"> </span>region<span class="op">+</span>year , <span class="dt">data=</span>nes, <span class="dt">family =</span> binomial)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(nes.glm2)
+## 
+## Call:
+## glm(formula = dem ~ region + year, family = binomial, data = nes)
+## 
+## Deviance Residuals: 
+##    Min      1Q  Median      3Q     Max  
+## -1.261  -1.252   1.096   1.105   1.152  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept)  0.059324   0.095847   0.619    0.536
+## regionNE     0.132352   0.128824   1.027    0.304
+## regionS      0.113739   0.110055   1.033    0.301
+## regionW      0.068130   0.127806   0.533    0.594
+## yearyear2000 0.002029   0.085211   0.024    0.981
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 3083.3  on 2231  degrees of freedom
+## Residual deviance: 3081.9  on 2227  degrees of freedom
+## AIC: 3091.9
+## 
+## Number of Fisher Scoring iterations: 3</code></pre></div>
+<p>This reduced model form suggests that neither year nor region are statistically significant.</p>
+<p>After fitting an interaction model for <code>region</code> and <code>year</code>, we can use a drop in deviance test to determine if the effect of year depends on region by comparing the interaction and no interaction models: <span class="math display">\[
+H_): \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 
+\]</span> <span class="math display">\[
+H_A: \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 +  \beta_5NE:2000 + \beta_6S:2000 + \beta_7 W:2000 
+\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">anova</span>(nes.glm2, nes.glm1, <span class="dt">test  =</span> <span class="st">&quot;Chisq&quot;</span>)
+## Analysis of Deviance Table
+## 
+## Model 1: dem ~ region + year
+## Model 2: dem ~ region * year
+##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    
+## 1      2227     3081.9                          
+## 2      2224     3065.5  3   16.361 0.0009562 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre></div>
+<p>The LRT stat equals <span class="math display">\[
+LRT = 3081.9 - 3065.5 = 16.361 
+\]</span> The degrees of freedom for the test is 3, so the p-value is <span class="math display">\[
+P(\chi^2 &gt; 16.361) = 1-pchisq(16.361, 3) = 0.00096
+\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="fl">16.361</span>, <span class="dv">3</span>)
+## [1] 0.0009562069</code></pre></div>
+<p>We can conclude that the full model is better than the smaller model. There is at least one region’s change in party affiliation between 1980 and 2000 that is different from the other regions. The statistical significance of the southern region show that this region’s change in affiliation between years is different than the change in the NC (baseline) region.</p>
+</div>
+</div>
+<div id="logistic-assump" class="section level2">
+<h2><span class="header-section-number">4.6</span> Checking Assumptions</h2>
+<p>The two main assumptions that we can check with a binary logistic: independence of responses and linearity of the log odds of success.</p>
+<ul>
+<li><p>Independence: The probability of success for case <span class="math inline">\(i\)</span> only depends on the predictors for case <span class="math inline">\(i\)</span>, and not on any unmodeled characteristics.</p></li>
+<li>Log-odds linearity: For quantitative predictors, we need a linear relationship between the log odds of success and the predictor (or a transformed version). To do this, plot the <strong>empirical</strong> (sample) log-odds against the predictor and look for linearity. Since the predictor is quantatitive, you often need to do this as follows:
+<ul>
+<li>group cases into groups with similar predictor values</li>
+<li>within each group, compute the proportion of successes <span class="math inline">\(\tilde{\pi}_{emp}\)</span></li>
+<li>then compute the log odds of success <span class="math inline">\(logit_{emp} = \ln(\dfrac{\tilde{\pi}_{emp}}{1-\tilde{\pi}_{emp}})\)</span></li>
+</ul></li>
+</ul>
+<div id="example-boundary-waters-canoe-area-bwca-blowdown" class="section level3">
+<h3><span class="header-section-number">4.6.1</span> Example: Boundary Waters Canoe Area (BWCA) blowdown</h3>
+<p>A severe windstorm blew through northern MN the evening of July 4, 1999, impacting the a large portion of the BWCA. After the storm, foresters surveyed the area to assess damamge and understand how some trees survived the storm while others did not. The data set <code>blowBF.csv</code> contains data on 659 balsam fir trees: 426 survived the storm and while 233 did not.</p>
+<p>For this first simple logistic model we are interested in modeling the probability that a tree died (or survived) during the storm as a function of its diameter (inches). We are phrasing this in terms of “died” because of the way the response <code>y</code> is coded: a 1 means died and 0 means survived. The coding matters only so we interpret model coefficients correctly. The same conclusions about the relationship between diameter and died/survived would be the same regardless of the coding.</p>
+<p>To determine whether diameter needs to be transformed, we need to construct an empirical log odds plot. THere are 659 cases in the data set, so if we divide cases into 20 groups we will get just over 30 cases within each quantile bin. Here we use the <code>dplyr</code> function <code>ntile</code> to divide cases by diameter <code>D</code> into 20 groups based on the 5th, 10th, 15, …, 95th percentiles of <code>D</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>blowBF &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/blowBF.csv&quot;</span>)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">dim</span>(blowBF)
+## [1] 659   5
+<span class="op">&gt;</span><span class="st"> </span>blowBF &lt;-<span class="st"> </span><span class="kw">mutate</span>(blowBF, <span class="dt">D.grps =</span> <span class="kw">ntile</span>(D, <span class="dt">n =</span> <span class="dv">20</span>))
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(blowBF<span class="op">$</span>D.grps)
+## 
+##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
+## 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 32</code></pre></div>
+<p>Then we <code>group_by</code> our binning <code>D.grps</code> variable and compute the summaries: (1) the median diameter in each group, the proportion of success (<code>died</code>) in each group and the log-odds of success (<code>died</code>) in each group.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>blowBF.empLO &lt;-blowBF <span class="op">%&gt;%</span>
+<span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(D.grps) <span class="op">%&gt;%</span>
+<span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="dt">D.grps.med =</span> <span class="kw">median</span>(D),    <span class="co"># median D of groups</span>
+<span class="op">+</span><span class="st">             </span><span class="dt">pi.emp =</span> <span class="kw">mean</span>(y),         <span class="co"># proportion died</span>
+<span class="op">+</span><span class="st">             </span><span class="dt">log.odds.emp =</span> <span class="kw">log</span>(pi.emp<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>pi.emp)))    <span class="co"># log odds</span></code></pre></div>
+<p>A plot of the empirical log-odds against median diameter in each group shows some curvature:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>blowBF.empLO
+## # A tibble: 20 x 4
+##    D.grps D.grps.med pi.emp log.odds.emp
+##     &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;
+##  1      1        5   0.0606      -2.74  
+##  2      2        5   0.0606      -2.74  
+##  3      3        5   0.0909      -2.30  
+##  4      4        6   0.0909      -2.30  
+##  5      5        6   0.0303      -3.47  
+##  6      6        6.5 0.182       -1.50  
+##  7      7        7   0.212       -1.31  
+##  8      8        7   0.152       -1.72  
+##  9      9        8   0.182       -1.50  
+## 10     10        8   0.152       -1.72  
+## 11     11        9   0.212       -1.31  
+## 12     12        9   0.424       -0.305 
+## 13     13       10   0.364       -0.560 
+## 14     14       10.5 0.485       -0.0606
+## 15     15       11   0.636        0.560 
+## 16     16       13   0.727        0.981 
+## 17     17       14   0.606        0.431 
+## 18     18       15   0.788        1.31  
+## 19     19       17   0.818        1.50  
+## 20     20       21.5 0.812        1.47
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.empLO, <span class="kw">aes</span>(<span class="dt">x=</span>D.grps.med, <span class="dt">y=</span>log.odds.emp)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() </code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p>Looking at diameter on the log-scale shows a more linear plot. This is our reason for using <code>log(D)</code> in our logistic model for tree survival status.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.empLO, <span class="kw">aes</span>(<span class="dt">x=</span>D.grps.med, <span class="dt">y=</span>log.odds.emp)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>()</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 
 </div>
 </div>

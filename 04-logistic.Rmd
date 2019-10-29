@@ -2,9 +2,6 @@
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
 knitr::opts_chunk$set(echo = TRUE, eval=TRUE, prompt=TRUE, collapse = TRUE, message = FALSE, warning = FALSE)
 ```
 
@@ -170,7 +167,7 @@ odds(mx_1, \dotsc, x_p) =    e^{\beta_0}(mx_1)^{\beta_1} e^{\beta_2 x_2 + \dotsm
 $$
 results in a multiplicative change of $m^{\beta_1}$ in the odds of success.
 
-## Inference and estimation
+## Inference and estimation {#logistic-est}
 
 Estimation of logistic model parameters $\beta_0, \dotsc, \beta_p$ is done using **maximum likelihood** estimation (MLE). The likelihood function is the probability of the observed data, writen as a function of our unknown $\beta$'s *(which are used to compute $\pi(X_i)$'s)
 $$
@@ -400,3 +397,154 @@ ggplot(donner.aug2, aes(x = Age, y = Ind_surv)) +
 ```
 
 Note that these lines are *not* parallel on the probability scale while they are on the log-odds scale. This is because we apply the logistic function to the log-odds to produce our probabilities. The logistic function is not a linear function, so it does not produce parallel lines (or even lines at all). 
+
+## Deviance {#logistic-dev}
+
+In a MLR, ANOVA is used to determine how much of the overall variability in a quantatitive response is explained by the model. With large $n$ and/or normally distributed errors, F tests can be used to compare models based on how much the residual sum of squares is reduced by adding terms. 
+
+In a GLM, **deviance** is the term used to measure "unexplained" variation in the response. When the GLM *is* a MLR model, deviance equals the residual sum of squares. In a logistic GLM deviance, denoted as $G^2$, is the difference of two likelihoods (defined in \@(logistic-est)):
+$$
+G^2 = 2[\ln L(\bar{\pi}) - \ln L(\hat{\pi}(X))] = 2\sum_{i=1}^n \left[ y_i \ln \left( \dfrac{y_i}{\hat{\pi}(X_i)} \right) + (1- y_i) \ln \left( \dfrac{1-y_i}{1-\hat{\pi}(X_i)} \right) \right]
+$$
+
+- $L(\hat{\pi}(X)):$ likelihood of the data that plugs in estimates $\hat{\pi}(X_i)$ from the logistic model.
+- $L(\bar{\pi}):$ likelihood of the data that plugs in estimates $\bar{\pi} = y_i$, basing a case's "predicted" value soley on the response observed for that case. This is called a **saturated** model and it will always have a higher likelihood than the logistic model: $L(\bar{\pi}) \geq L(\hat{\pi}(X))$
+
+Deviance, sometimes called *residual* deviance, is close to 0 when the logistic model is a good predictor of the responses. Meaning $\hat{\pi}(X_i)$ are close to 1 when $y_i = 1$ and close to 0 when $y_i = 0$. Residual deviance will decrease as model terms are added to the logistic model. We can compare nested logistic models by comparing deviance.
+
+### Drop in Deviance test
+
+1. Hypotheses: $H_0:$ reduced model vs. $H_A:$ full model
+
+2. Test Statistic: The likelihood ratio test (LRT) stat compares the **drop in deviance** from the reduced to the full models
+$$
+LRT = G^2_{reduced} - $G^2$_{full}
+$$
+3. When $n$ is "large enough", the LRT will have a chi-square ($\chi^2$) distribution with $df = df_{reduced} - df_{full}$.The p-value is a **right tailed** area
+$$
+p-value = P(\chi^2 > LRT) =  1- pchisq(LRT, df)
+$$
+
+Special cases of drop in deviance tests:
+
+- The **overall** drop in deviance test compares a null "intercept only" model to a logistic model:
+$$
+H_0: \ln(odds) = \beta_0 \ \ \ \ H_A: \ln(odds) = \beta_0 + \beta_1 x_1 + \dotsm + \beta_p x_p
+$$
+The deviance for the null model is computed by using the overall rate of success as the estimated $\hat{\pi}$ for all cases. This null deviance is similar in spirit to the total sum of squares in ANOVA. 
+
+- If our reduced and full models differ by **one term**, then the drop in deviance test will test the same hypotheses as the z-test (a.k.a. Wald test) for the term, but the two methods of testing are not identical. The two types of tests will usually give results that agree, but if they do not agree you should use the drop in deviance LRT test results. 
+
+We can compare two logistic models in R via a drop in deviance test using the command
+```
+anova(reduced.glm, full.glm, test = "Chisq")
+```
+The `anova` command with just one model gives the residual deviance drops for adding each term listed to the model that already contains the terms above it. (Much like `anova` for a MLR.)
+
+### Example: NES
+The National Election Studies project recorded party identification for two random samples of people during 1980 and 2000. 
+```{r, fig.height=3}
+nes <- read.csv("http://people.carleton.edu/~kstclair/data/NES.csv")
+head(nes)
+```
+
+Here we recode the binary Democrat voter party affiliation `dem` variable to record two levels: `Democrat` and `Other`. Here we see the proportion of Democrats (in red) by region for the survey years of 1980 and 2000. In the south,  we see a decrease in the proportion of Democrats between 1980 and 2000. In the north east, we see an increase in the proportion of Democrats between 1980 and 2000. This gives us evidence that the effect of year (1980 vs 2000) on the odds of being a Democrat depend on the region of the country. 
+```{r}
+# recode to make a factor version:
+nes$party <- recode_factor(nes$dem, `1`="Democrat", `0`="Other")
+ggplot(nes, aes(x=year, fill = party)) + 
+  geom_bar(position="fill") + 
+  facet_wrap(~region)
+```
+
+This EDA suggests that an interaction between year and region is needed, so our first model for the log odds of being a **Democrat** (`dem = 1`) looks like
+$$
+\ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 +  \beta_5NE:2000 + \beta_6S:2000 + \beta_7 W:2000 
+$$
+```{r}
+nes.glm1 <- glm(dem ~ region*year , data=nes, family = binomial)
+summary(nes.glm1)
+```
+The residual deviance for this model is $G^2 = 3065.5$ and the model has 2224 degrees of freedom. The null deviance of 3083.3 is for the "intercept only" model. The Wald z-tests suggest that terms involving the south are statistically significant. 
+
+The model without the interaction terms also has a null deviance of 3083.3 (since the response and models are the same). But the reduced, no interaction, model's residual deviance is higher than the interaction model at 3081.9. 
+```{r}
+nes.glm2 <- glm(dem ~ region+year , data=nes, family = binomial)
+summary(nes.glm2)
+```
+This reduced model form suggests that neither year nor region are statistically significant. 
+
+
+After fitting an interaction model for `region` and `year`, we can use a drop in deviance test to determine if the effect of year depends on region by comparing the interaction and no interaction models:
+$$
+H_): \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 
+$$
+$$
+H_A: \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 +  \beta_5NE:2000 + \beta_6S:2000 + \beta_7 W:2000 
+$$
+```{r}
+anova(nes.glm2, nes.glm1, test  = "Chisq")
+```
+
+The LRT stat equals
+$$
+LRT = 3081.9 - 3065.5 = 16.361 
+$$
+The degrees of freedom for the test is 3, so the p-value is 
+$$
+P(\chi^2 > 16.361) = 1-pchisq(16.361, 3) = 0.00096
+$$
+```{r}
+1-pchisq(16.361, 3)
+```
+
+We can conclude that the full model is better than the smaller model. There is at least one region's change in party affiliation between 1980 and 2000 that is different from the other regions. The statistical significance of the southern region show that this region's change in affiliation between years is different than the change in the NC (baseline) region. 
+
+## Checking Assumptions {#logistic-assump}
+
+The two main assumptions that we can check with a binary logistic: independence of responses and linearity of the log odds of success. 
+
+- Independence: The probability of success for case $i$ only depends on the predictors for case $i$, and not on any unmodeled characteristics.
+
+- Log-odds linearity: For quantitative predictors, we need a linear relationship between the log odds of success and the predictor (or a transformed version). To do this, plot the **empirical** (sample) log-odds against the predictor and look for linearity. Since the predictor is quantatitive, you often need to do this as follows:
+    - group cases into groups with similar predictor values
+    - within each group, compute the proportion of successes $\tilde{\pi}_{emp}$
+    - then compute the log odds of success $logit_{emp} = \ln(\dfrac{\tilde{\pi}_{emp}}{1-\tilde{\pi}_{emp}})$
+    
+### Example: Boundary Waters Canoe Area (BWCA) blowdown
+A severe windstorm blew through northern MN the evening of July 4, 1999, impacting the a large portion of the BWCA. After the storm, foresters surveyed the area to assess damamge and understand how some trees survived the storm while others did not. The data set `blowBF.csv` contains data on 659 balsam fir trees: 426  survived the storm and while 233 did not. 
+
+For this first simple logistic model we are interested in modeling the probability that a tree died (or survived) during the storm as a function of its diameter (inches). We are phrasing this in terms of "died" because of the way the response `y` is coded: a 1 means died and 0 means survived. The coding matters only so we interpret model coefficients correctly. The same conclusions about the relationship between diameter and died/survived would be the same regardless of the coding. 
+
+To determine whether diameter needs to be transformed, we need to construct an empirical log odds plot. THere are 659 cases in the data set, so if we divide cases into 20 groups we will get just over 30 cases within each quantile bin. Here we use the `dplyr` function `ntile` to divide cases by diameter `D` into 20 groups based on the 5th, 10th, 15, ..., 95th percentiles of `D`:
+```{r}
+blowBF <- read.csv("http://people.carleton.edu/~kstclair/data/blowBF.csv")
+dim(blowBF)
+blowBF <- mutate(blowBF, D.grps = ntile(D, n = 20))
+table(blowBF$D.grps)
+```
+
+Then we `group_by` our binning `D.grps` variable and compute the summaries: (1) the median diameter in each group, the proportion of success (`died`) in each group and the log-odds of success (`died`) in each group. 
+```{r}
+blowBF.empLO <-blowBF %>%
+  group_by(D.grps) %>%
+  summarize(D.grps.med = median(D),    # median D of groups
+            pi.emp = mean(y),         # proportion died
+            log.odds.emp = log(pi.emp/(1-pi.emp)))    # log odds
+```
+
+A plot of the empirical log-odds against median diameter in each group shows some curvature:
+```{r}
+blowBF.empLO
+ggplot(blowBF.empLO, aes(x=D.grps.med, y=log.odds.emp)) + 
+  geom_point() 
+```
+
+Looking at diameter on the log-scale shows a more linear plot. This is our reason for using `log(D)` in our logistic model for tree survival status. 
+```{r}
+ggplot(blowBF.empLO, aes(x=D.grps.med, y=log.odds.emp)) + 
+  geom_point() + 
+  scale_x_log10()
+
+```
+
