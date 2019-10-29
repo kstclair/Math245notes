@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 4 Logistic Regression | Math 245 Notes</title>
-  <meta name="description" content="Course notes and examples for Applied Regression Analysis">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="Course notes and examples for Applied Regression Analysis" />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 Logistic Regression | Math 245 Notes" />
   <meta property="og:type" content="book" />
@@ -22,18 +21,18 @@
   <meta name="twitter:description" content="Course notes and examples for Applied Regression Analysis" />
   
 
-<meta name="author" content="Katie St. Clair, Carleton College">
+<meta name="author" content="Katie St. Clair, Carleton College" />
 
 
-<meta name="date" content="2019-10-28">
+<meta name="date" content="2019-10-29" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="mlr.html">
-<link rel="next" href="poisson.html">
+<link rel="prev" href="mlr.html"/>
+<link rel="next" href="poisson.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,41 +50,66 @@
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -242,6 +266,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.6" data-path="logistic.html"><a href="logistic.html#logistic-assump"><i class="fa fa-check"></i><b>4.6</b> Checking Assumptions</a><ul>
 <li class="chapter" data-level="4.6.1" data-path="logistic.html"><a href="logistic.html#example-boundary-waters-canoe-area-bwca-blowdown"><i class="fa fa-check"></i><b>4.6.1</b> Example: Boundary Waters Canoe Area (BWCA) blowdown</a></li>
 </ul></li>
+<li class="chapter" data-level="4.7" data-path="logistic.html"><a href="logistic.html#logistic-resid"><i class="fa fa-check"></i><b>4.7</b> Residuals and Case influence</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>5</b> Poisson Regression</a></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
@@ -303,7 +328,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="D.5" data-path="markdown.html"><a href="markdown.html#markdown-tables"><i class="fa fa-check"></i><b>D.5</b> Extra: Table formatting</a><ul>
 <li class="chapter" data-level="D.5.1" data-path="markdown.html"><a href="markdown.html#hiding-r-commands-and-r-output"><i class="fa fa-check"></i><b>D.5.1</b> Hiding R commands and R output</a></li>
-<li class="chapter" data-level="D.5.2" data-path="markdown.html"><a href="markdown.html#markdown-tables"><i class="fa fa-check"></i><b>D.5.2</b> Markdown tables</a></li>
+<li class="chapter" data-level="D.5.2" data-path="markdown.html"><a href="markdown.html#markdown-tables-1"><i class="fa fa-check"></i><b>D.5.2</b> Markdown tables</a></li>
 <li class="chapter" data-level="D.5.3" data-path="markdown.html"><a href="markdown.html#markdown-tables-via-kable"><i class="fa fa-check"></i><b>D.5.3</b> Markdown tables via <code>kable</code></a></li>
 <li class="chapter" data-level="D.5.4" data-path="markdown.html"><a href="markdown.html#the-pander-package"><i class="fa fa-check"></i><b>D.5.4</b> The <code>pander</code> package</a></li>
 <li class="chapter" data-level="D.5.5" data-path="markdown.html"><a href="markdown.html#the-stargazer-package"><i class="fa fa-check"></i><b>D.5.5</b> The <code>stargazer</code> package</a></li>
@@ -313,7 +338,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="E.1" data-path="mathreview.html"><a href="mathreview.html#math-linear"><i class="fa fa-check"></i><b>E.1</b> Linear equations</a></li>
 <li class="chapter" data-level="E.2" data-path="mathreview.html"><a href="mathreview.html#math-log"><i class="fa fa-check"></i><b>E.2</b> Logarithms</a><ul>
 <li class="chapter" data-level="E.2.1" data-path="mathreview.html"><a href="mathreview.html#interpreting-logged-variables-1"><i class="fa fa-check"></i><b>E.2.1</b> Interpreting logged variables</a></li>
-<li class="chapter" data-level="E.2.2" data-path="mathreview.html"><a href="mathreview.html#inverse-i.e.reversing-the-log-getting-rid-of-the-log-1"><i class="fa fa-check"></i><b>E.2.2</b> Inverse (i.e. reversing the log, getting rid of the log, …)</a></li>
+<li class="chapter" data-level="E.2.2" data-path="mathreview.html"><a href="mathreview.html#inverse-i.e.-reversing-the-log-getting-rid-of-the-log-1"><i class="fa fa-check"></i><b>E.2.2</b> Inverse (i.e. reversing the log, getting rid of the log, …)</a></li>
 <li class="chapter" data-level="E.2.3" data-path="mathreview.html"><a href="mathreview.html#logarithms-in-r"><i class="fa fa-check"></i><b>E.2.3</b> Logarithms in R</a></li>
 </ul></li>
 <li class="chapter" data-level="E.3" data-path="mathreview.html"><a href="mathreview.html#math-exercises"><i class="fa fa-check"></i><b>E.3</b> Exercises</a></li>
@@ -348,52 +373,52 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="logistic-donner1" class="section level3">
 <h3><span class="header-section-number">4.1.1</span> Example: Donner party EDA</h3>
 <p>Sleuth case study 20.1 looks at data from the infamous <a href="https://en.wikipedia.org/wiki/Donner_Party">Donner party</a>. This wagon train was migrating to the west coast of the US in the mid-1800s and became snow-bound in the Sierra Nevada mountains during the winter of 1846-7. We are interested in modeling the categorical variable “survival” (or not) as a function of individual covariates like age or sex.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(Sleuth3)
-<span class="op">&gt;</span><span class="st"> </span>donner &lt;-<span class="st"> </span>case2001 
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(donner)
-##       Age           Sex          Status  
-##  Min.   :15.0   Female:15   Died    :25  
-##  1st Qu.:24.0   Male  :30   Survived:20  
-##  Median :28.0                            
-##  Mean   :31.8                            
-##  3rd Qu.:40.0                            
-##  Max.   :65.0</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(Sleuth3)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="op">&gt;</span><span class="st"> </span>donner &lt;-<span class="st"> </span>case2001 </a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(donner)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">##       Age           Sex          Status  </span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">##  Min.   :15.0   Female:15   Died    :25  </span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">##  1st Qu.:24.0   Male  :30   Survived:20  </span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co">##  Median :28.0                            </span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co">##  Mean   :31.8                            </span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">##  3rd Qu.:40.0                            </span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="co">##  Max.   :65.0</span></a></code></pre></div>
 <p>A stacked bar graph shows that females had a higher surival rate than males:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">fill =</span> Status, <span class="dt">x =</span> Sex)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position=</span><span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;proportion&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Surival rates by Sex&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">fill =</span> Status, <span class="dt">x =</span> Sex)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position=</span><span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;proportion&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Surival rates by Sex&quot;</span>)</a></code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>We can use the <code>dplyr</code> package’s <code>group_by</code> function to divide the data into the two <code>Sex</code> groups and compute the proportion who <code>Survived</code> within each group. Here we see that 2/3 of females survived while only 1/3 of males survived.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)
-<span class="op">&gt;</span><span class="st"> </span>donner <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(Sex) <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># for each Sex group</span>
-<span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="kw">mean</span>(Status <span class="op">==</span><span class="st"> &quot;Survived&quot;</span>))  <span class="co"># proportion who survived</span>
-## # A tibble: 2 x 2
-##   Sex    `mean(Status == &quot;Survived&quot;)`
-##   &lt;fct&gt;                         &lt;dbl&gt;
-## 1 Female                        0.667
-## 2 Male                          0.333</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="op">&gt;</span><span class="st"> </span>donner <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(Sex) <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># for each Sex group</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="kw">mean</span>(Status <span class="op">==</span><span class="st"> &quot;Survived&quot;</span>))  <span class="co"># proportion who survived</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">## # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">##   Sex    `mean(Status == &quot;Survived&quot;)`</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">##   &lt;fct&gt;                         &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">## 1 Female                        0.667</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">## 2 Male                          0.333</span></a></code></pre></div>
 <p>A side-by-side boxplot shows that people who survived tended to be younger:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Status, <span class="dt">y =</span> Age)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">coord_flip</span>()</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Status, <span class="dt">y =</span> Age)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="op">+</span><span class="st">   </span><span class="kw">coord_flip</span>()</a></code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>We can get stats by status group:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner <span class="op">%&gt;%</span>
-<span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(Status) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># for each status group</span>
-<span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="kw">mean</span>(Age), <span class="kw">sd</span>(Age), <span class="kw">median</span>(Age))  <span class="co"># get summary stats</span>
-## # A tibble: 2 x 4
-##   Status   `mean(Age)` `sd(Age)` `median(Age)`
-##   &lt;fct&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
-## 1 Died            35.5     14.3             30
-## 2 Survived        27.2      8.00            25</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="op">&gt;</span><span class="st"> </span>donner <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(Status) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># for each status group</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="kw">mean</span>(Age), <span class="kw">sd</span>(Age), <span class="kw">median</span>(Age))  <span class="co"># get summary stats</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">## # A tibble: 2 x 4</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">##   Status   `mean(Age)` `sd(Age)` `median(Age)`</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">##   &lt;fct&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">## 1 Died            35.5     14.3             30</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">## 2 Survived        27.2      8.00            25</span></a></code></pre></div>
 <p>But these stats are not quite what we want when trying to model survival as a function of age. E.g. of people who survived, we know that the mean age was 27.2 while of people who died, the mean age was 35.5. But this is the wrong direction of conditioning, we would like to say how survival rates change as we increase age by a year, for example. We could employ a scatterplot for this purpose, but we need to recode (in <code>dplyr</code>) <code>Status</code> into a binary variable that recodes survival as a 1 and death as a 0:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_surv &lt;-<span class="st"> </span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">1</span>, <span class="dt">Died =</span> <span class="dv">0</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_surv &lt;-<span class="st"> </span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">1</span>, <span class="dt">Died =</span> <span class="dv">0</span>)</a></code></pre></div>
 <p>Then use a <code>jitter</code> plot to avoid overplotting:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Age, <span class="dt">y =</span> Ind_surv)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> .<span class="dv">01</span>) </code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Age, <span class="dt">y =</span> Ind_surv)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> <span class="fl">.01</span>) </a></code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>As we increase age, try vertically “slicing” these points. The proportion of survivals in these similar age groups will just be the mean of the binary 0’s and 1’s in each slice. We have more blue points than red in the low age slices than in high age, so we see that the probability of survival tends to decrease as age increases. We will next consider how to construct a model that gives us a “best fit” curve for this probability of surival.</p>
 </div>
@@ -401,14 +426,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="logistic-bernoulli" class="section level2">
 <h2><span class="header-section-number">4.2</span> The Bernoulli distribution</h2>
 <p>The Bernoulli distribution is a probability model for a random trial that has two possible outcomes: success or failure. A Bernoulli <strong>random variable</strong> <span class="math inline">\(Y\)</span> “counts” the number of successes in a Bernoulli random trial. If a “success” occurred then <span class="math inline">\(Y=1\)</span> and if a “failure” occurred then <span class="math inline">\(Y=0\)</span>.</p>
-<p>We will let <span class="math inline">\(\pi\)</span> be the probability of success: <span class="math display">\[
+<p>We will let <span class="math inline">\(\pi\)</span> be the probability of success:
+<span class="math display">\[
 \pi = P(Y=1) = P(success), \ \ \ \ \ 1-\pi = P(Y=0) = P(failure) 
-\]</span> If <span class="math inline">\(Y\)</span> is a Bernoulli random variable, then we can use the shorthand notation <span class="math inline">\(Y \sim Bern(\pi)\)</span> to denote this.</p>
-<p>The <strong>expected value</strong>, or mean, of <span class="math inline">\(Y\)</span> is equal to <span class="math display">\[
+\]</span>
+If <span class="math inline">\(Y\)</span> is a Bernoulli random variable, then we can use the shorthand notation <span class="math inline">\(Y \sim Bern(\pi)\)</span> to denote this.</p>
+<p>The <strong>expected value</strong>, or mean, of <span class="math inline">\(Y\)</span> is equal to
+<span class="math display">\[
 E(Y) = \mu = \pi
-\]</span> and the standard deviation of <span class="math inline">\(Y\)</span> is equal to <span class="math display">\[
+\]</span>
+and the standard deviation of <span class="math inline">\(Y\)</span> is equal to
+<span class="math display">\[
 SD(Y) = \sigma = \sqrt{\pi(1-\pi)}
-\]</span> The expected value (or mean) of a random variable measures the “long run” average value that we would see from <span class="math inline">\(Y\)</span> if we were to repeat the random trial many, many times. The standard deviation tells us how these values of <span class="math inline">\(Y\)</span> will vary over these repeated trials.</p>
+\]</span>
+The expected value (or mean) of a random variable measures the “long run” average value that we would see from <span class="math inline">\(Y\)</span> if we were to repeat the random trial many, many times. The standard deviation tells us how these values of <span class="math inline">\(Y\)</span> will vary over these repeated trials.</p>
 </div>
 <div id="logistic-model" class="section level2">
 <h2><span class="header-section-number">4.3</span> The logistic model form</h2>
@@ -420,20 +451,29 @@ SD(Y) = \sigma = \sqrt{\pi(1-\pi)}
 <li>independence: Given <span class="math inline">\(X_i\)</span> values, <span class="math inline">\(Y_i\)</span>’s are independent</li>
 </ul></li>
 </ul>
-<p>We connect the linear combination of predictors <span class="math display">\[
+<p>We connect the linear combination of predictors
+<span class="math display">\[
 \eta_i = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
-\]</span> to the probability of success using the logistic function form: <span class="math display">\[
+\]</span>
+to the probability of success using the logistic function form:
+<span class="math display">\[
 \pi(X_i) = \dfrac{e^{\eta_i}}{1 + e^{\eta_i}} = \dfrac{e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}{1 + e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}
 \]</span></p>
-<p>This function form is used because its inverse is equal to <span class="math display">\[
+<p>This function form is used because its inverse is equal to
+<span class="math display">\[
 \eta_i =  \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}=  \ln \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right)
-\]</span> This function is called the <strong>logit function</strong>: <span class="math inline">\(logit(\pi) = \ln \left( \dfrac{\pi}{1-\pi}\right)\)</span>. This means that a one unit increase in <span class="math inline">\(x_1\)</span> can be interpreted as an additive <span class="math inline">\(\beta_1\)</span> change in in the logit function, holding other terms fixed. But what does this mean?</p>
-<p>The <strong>odds of success</strong> is defined as the ratio of the probability of success to the probability of failure: <span class="math display">\[
+\]</span>
+This function is called the <strong>logit function</strong>: <span class="math inline">\(logit(\pi) = \ln \left( \dfrac{\pi}{1-\pi}\right)\)</span>. This means that a one unit increase in <span class="math inline">\(x_1\)</span> can be interpreted as an additive <span class="math inline">\(\beta_1\)</span> change in in the logit function, holding other terms fixed. But what does this mean?</p>
+<p>The <strong>odds of success</strong> is defined as the ratio of the probability of success to the probability of failure:
+<span class="math display">\[
 odds = \dfrac{\pi(X)}{1-\pi(X)}
-\]</span> For example, if the probability of success is 0.6 then the odds of success is <span class="math inline">\(0.6/0.4 = 1.5\)</span>. Meaning for every 6 successes, we see 4 failures. If the probability of success is 0.1, then the odds of success is <span class="math inline">\(0.1/0.9 \approx 0.111\)</span>, meaning for every 1 success we see 9 failures. Odds greater than 1 indicate the probability of success is above 50% while odds less than 1 indicate the probability of success is less than 50%.</p>
-<p>So, we now can see that the logit function equals the <strong>log-odds of success</strong>: <span class="math display">\[
+\]</span>
+For example, if the probability of success is 0.6 then the odds of success is <span class="math inline">\(0.6/0.4 = 1.5\)</span>. Meaning for every 6 successes, we see 4 failures. If the probability of success is 0.1, then the odds of success is <span class="math inline">\(0.1/0.9 \approx 0.111\)</span>, meaning for every 1 success we see 9 failures. Odds greater than 1 indicate the probability of success is above 50% while odds less than 1 indicate the probability of success is less than 50%.</p>
+<p>So, we now can see that the logit function equals the <strong>log-odds of success</strong>:
+<span class="math display">\[
 \ln \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right) = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
-\]</span> This model form is an example of a <strong>generalized linear model</strong> which relates the response <span class="math inline">\(Y\)</span> to predictors through a linear combination <span class="math inline">\(\eta\)</span> of predictors. Is does this by defining the following functions:</p>
+\]</span>
+This model form is an example of a <strong>generalized linear model</strong> which relates the response <span class="math inline">\(Y\)</span> to predictors through a linear combination <span class="math inline">\(\eta\)</span> of predictors. Is does this by defining the following functions:</p>
 <ul>
 <li>The <strong>kernel mean function</strong> defines the expected value (mean) of <span class="math inline">\(Y\)</span> as a function of <span class="math inline">\(\eta\)</span>.
 <ul>
@@ -448,46 +488,64 @@ odds = \dfrac{\pi(X)}{1-\pi(X)}
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-9-1.png" width="864" /></p>
 <div id="interpretation-2" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> Interpretation</h3>
-<p>Changes in predictors can be interpreted as changes in the <strong>odds</strong> of success (we can’t make general statement about changes in the <strong>probability</strong> of success). Specifically, we “unlog” the logit equation to get an expression for the odds of success for predictors <span class="math inline">\(x_1, \dotsc, x_p\)</span>: <span class="math display">\[
+<p>Changes in predictors can be interpreted as changes in the <strong>odds</strong> of success (we can’t make general statement about changes in the <strong>probability</strong> of success). Specifically, we “unlog” the logit equation to get an expression for the odds of success for predictors <span class="math inline">\(x_1, \dotsc, x_p\)</span>:
+<span class="math display">\[
 odds(x_1, \dotsc, x_p) = \dfrac{\pi(X)}{1-\pi(X)} = e^{\beta_0 + \beta_1 x_{1} + \dotsm +  \beta_p x_{p}}
 \]</span></p>
-<p>What happens if we increase <span class="math inline">\(x_1\)</span> by one unit, holding other predictors fixed? <span class="math display">\[
+<p>What happens if we increase <span class="math inline">\(x_1\)</span> by one unit, holding other predictors fixed?
+<span class="math display">\[
 odds(x_1+1, \dotsc, x_p)  = e^{\beta_0 + \beta_1 (x_{1}+1) + \dotsm +  \beta_p x_{p}} = e^{\beta_0 + \beta_1 x_{1} + \dotsm +  \beta_p x_{p}} \times e^{\beta_1}
-\]</span> Increasing <span class="math inline">\(x_1\)</span> by one unit has a <strong>multiplicative</strong> change of <span class="math inline">\(e^{\beta_1}\)</span> in the <strong>odds of success</strong>. Note that this is a similar interpretation to the exponential model in SLR or MLR.</p>
-<p>The multiplicative change of <span class="math inline">\(e^{\beta_1}\)</span> is also called the <strong>odds ratio</strong> for a one unit increase in <span class="math inline">\(x_1\)</span>. An odds <em>ratio</em> is just the ratio of the odds for two different groups, here groups with <span class="math inline">\(x_1+1\)</span> vs. <span class="math inline">\(x_1\)</span>: <span class="math display">\[
+\]</span>
+Increasing <span class="math inline">\(x_1\)</span> by one unit has a <strong>multiplicative</strong> change of <span class="math inline">\(e^{\beta_1}\)</span> in the <strong>odds of success</strong>. Note that this is a similar interpretation to the exponential model in SLR or MLR.</p>
+<p>The multiplicative change of <span class="math inline">\(e^{\beta_1}\)</span> is also called the <strong>odds ratio</strong> for a one unit increase in <span class="math inline">\(x_1\)</span>. An odds <em>ratio</em> is just the ratio of the odds for two different groups, here groups with <span class="math inline">\(x_1+1\)</span> vs. <span class="math inline">\(x_1\)</span>:
+<span class="math display">\[
 \dfrac{\textrm{odds of succes at } x_1+1}{\textrm{odds of succes at } x_1} = \dfrac{odds(x_1+1, \dotsc, x_p) }{odds(x_1, \dotsc, x_p) } = e^{\beta_1}
 \]</span></p>
-<p>What is we have a predictor that is logged? <span class="math display">\[
+<p>What is we have a predictor that is logged?
+<span class="math display">\[
 odds(x_1, \dotsc, x_p) = e^{\beta_0 + \beta_1 \ln(x_{1}) + \dotsm +  \beta_p x_{p}} =   e^{\beta_0}x_1^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}}
 \]</span></p>
-<p>Then our interpretation is similar to a power model. Changing <span class="math inline">\(x_1\)</span> by a factor of <span class="math inline">\(m\)</span>: <span class="math display">\[
+<p>Then our interpretation is similar to a power model. Changing <span class="math inline">\(x_1\)</span> by a factor of <span class="math inline">\(m\)</span>:
+<span class="math display">\[
 odds(mx_1, \dotsc, x_p) =    e^{\beta_0}(mx_1)^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}} =    e^{\beta_0}x_1^{\beta_1} e^{\beta_2 x_2 + \dotsm +  \beta_p x_{p}} \times m^{\beta_1}
-\]</span> results in a multiplicative change of <span class="math inline">\(m^{\beta_1}\)</span> in the odds of success.</p>
+\]</span>
+results in a multiplicative change of <span class="math inline">\(m^{\beta_1}\)</span> in the odds of success.</p>
 </div>
 </div>
 <div id="logistic-est" class="section level2">
 <h2><span class="header-section-number">4.4</span> Inference and estimation</h2>
-<p>Estimation of logistic model parameters <span class="math inline">\(\beta_0, \dotsc, \beta_p\)</span> is done using <strong>maximum likelihood</strong> estimation (MLE). The likelihood function is the probability of the observed data, writen as a function of our unknown <span class="math inline">\(\beta\)</span>’s *(which are used to compute <span class="math inline">\(\pi(X_i)\)</span>’s) <span class="math display">\[
+<p>Estimation of logistic model parameters <span class="math inline">\(\beta_0, \dotsc, \beta_p\)</span> is done using <strong>maximum likelihood</strong> estimation (MLE). The likelihood function is the probability of the observed data, writen as a function of our unknown <span class="math inline">\(\beta\)</span>’s *(which are used to compute <span class="math inline">\(\pi(X_i)\)</span>’s)
+<span class="math display">\[
 L(\beta) = \prod_{i=1}^n \pi(X_i)^{y_i} (1-\pi(X_i))^{1-y_i}
-\]</span> Notice that for each case <span class="math inline">\(i\)</span>, the term in this product is equal to just <span class="math inline">\(\pi(X_i)\)</span> when case <span class="math inline">\(i\)</span> is a success (<span class="math inline">\(y_i=1\)</span>) and equal to <span class="math inline">\(1-\pi(X_i)\)</span> when case <span class="math inline">\(i\)</span> is a failure (<span class="math inline">\(y_i=0\)</span>).</p>
+\]</span>
+Notice that for each case <span class="math inline">\(i\)</span>, the term in this product is equal to just <span class="math inline">\(\pi(X_i)\)</span> when case <span class="math inline">\(i\)</span> is a success (<span class="math inline">\(y_i=1\)</span>) and equal to <span class="math inline">\(1-\pi(X_i)\)</span> when case <span class="math inline">\(i\)</span> is a failure (<span class="math inline">\(y_i=0\)</span>).</p>
 <p>Our MLE method says to find the <span class="math inline">\(\beta\)</span>’s that maximize the likelihood <span class="math inline">\(L(\beta)\)</span> of the observed data. Unlike SLR or MLR, there is no “closed form” for these MLE <span class="math inline">\(\hat{\beta}_i\)</span> estimates (meaning we can’t write down a formula for the estimates). Rather, software uses a numerical optimization method to compute the MLEs <span class="math inline">\(\hat{\beta}_i\)</span> <strong>and</strong> the standard errors <span class="math inline">\(SE(\hat{\beta}_i)\)</span>. (The R function <code>glm</code> uses Iterative reweighted least squares.)</p>
 <p>These MLE estimates of <span class="math inline">\(\beta\)</span> parameters are approximately normally distributed and unbiased when n is “large enough.” Much like with “intro stats” inference, when your response variable is categorical (or, equivalently, binary 0/1), we usually use the normal distribution for inference (CI and tests). When your response variable is quantitative (like in SLR/MLR models), we usually use the t-distribution for inference.</p>
 <div id="confidence-intervals-for-pmbbeta_i" class="section level3">
 <h3><span class="header-section-number">4.4.1</span> Confidence intervals for <span class="math inline">\(\pmb{\beta_i}\)</span></h3>
-<p>A <span class="math inline">\(C\)</span>% confidence interval for <span class="math inline">\(\beta_i\)</span> equals <span class="math display">\[
+<p>A <span class="math inline">\(C\)</span>% confidence interval for <span class="math inline">\(\beta_i\)</span> equals
+<span class="math display">\[
 \hat{\beta}_i \pm z^*SE(\hat{\beta}_i)
-\]</span> where <span class="math inline">\(z^*\)</span> is the <span class="math inline">\((100-C)/2\)</span> percentile from the <span class="math inline">\(N(0,1)\)</span> distribution.</p>
+\]</span>
+where <span class="math inline">\(z^*\)</span> is the <span class="math inline">\((100-C)/2\)</span> percentile from the <span class="math inline">\(N(0,1)\)</span> distribution.</p>
 </div>
 <div id="hypothesis-tests-for-pmbbeta_i" class="section level3">
 <h3><span class="header-section-number">4.4.2</span> Hypothesis tests for <span class="math inline">\(\pmb{\beta_i}\)</span></h3>
-<p>We can test the hypothesis <span class="math display">\[
+<p>We can test the hypothesis
+<span class="math display">\[
 H_0: \beta_i = \beta^*_i
-\]</span> with the following z-test statistic: <span class="math display">\[
+\]</span>
+with the following z-test statistic:
+<span class="math display">\[
 z =\dfrac{\hat{\beta}_i - \beta^*_i}{SE(\hat{\beta}_i)}
-\]</span> where <span class="math inline">\(\beta^*_i\)</span> is our hypothesized value of <span class="math inline">\(\beta_i\)</span> . The <span class="math inline">\(N(0,1)\)</span> is used to compute the p-value that is appropriate for whatever <span class="math inline">\(H_A\)</span> is specified.</p>
-<p>The usual test results given by standard regression output tests whether a parameter value (intercept or slope) is equal to 0 vs. not equal to 0: <span class="math display">\[
+\]</span>
+where <span class="math inline">\(\beta^*_i\)</span> is our hypothesized value of <span class="math inline">\(\beta_i\)</span> . The <span class="math inline">\(N(0,1)\)</span> is used to compute the p-value that is appropriate for whatever <span class="math inline">\(H_A\)</span> is specified.</p>
+<p>The usual test results given by standard regression output tests whether a parameter value (intercept or slope) is equal to 0 vs. not equal to 0:
+<span class="math display">\[
 H_0: \beta_i = 0 \ \ \ \ \ H_A: \beta_i \neq 0
-\]</span> with a test stat of <span class="math display">\[
+\]</span>
+with a test stat of
+<span class="math display">\[
 z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 \]</span></p>
 </div>
@@ -505,7 +563,7 @@ z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 <ul>
 <li><code>fitted(my.glm)</code> gives the estimated probabilities of success for each case in your data</li>
 <li><code>predict(my.glm)</code> gives estimated log-odds of success for each case in your data. Add <code>newdata=</code> to get predicted log-odds for new data.</li>
-<li><code>predict(my.glm, type = &quot;response&quot;)</code> gives estimated probabilities of success for each case in your data. Add <code>newdata=</code> to get predicted log-odds for new data.</li>
+<li><code>predict(my.glm, type = "response")</code> gives estimated probabilities of success for each case in your data. Add <code>newdata=</code> to get predicted log-odds for new data.</li>
 </ul>
 <p>The <code>broom</code> package also allows us to get fitted probabilities or log odds for all cases in the data, or for new data:</p>
 <ul>
@@ -514,7 +572,7 @@ z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 <li>add <code>data=my.data</code> to get estimated log-odds added to the full data set <code>my.data</code> used in the <code>glm</code> fit</li>
 <li>add <code>newdata= new.data</code> to get predicted log-odds added to the new data set <code>new.data</code></li>
 </ul></li>
-<li><code>augment(my.glm, type.predict= &quot;response&quot;)</code> gets estimated probabilities of success added to the variables used in the <code>glm</code> fit.
+<li><code>augment(my.glm, type.predict= "response")</code> gets estimated probabilities of success added to the variables used in the <code>glm</code> fit.
 <ul>
 <li>add <code>data=my.data</code> to get estimated probabilities added to the full data set <code>my.data</code> used in the <code>glm</code> fit</li>
 <li>add <code>newdata= new.data</code> to get predicted probabilities added to the new data set <code>new.data</code></li>
@@ -524,196 +582,216 @@ z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 <div id="logistic-donner2" class="section level3">
 <h3><span class="header-section-number">4.4.4</span> Example: Donner party model</h3>
 <p>Let’s revist the Donner party data and start with considering the logistic regression of survival status on age (only). We can add the fitted logistic model probability curve the scatterplot we created in Section <a href="logistic.html#logistic-donner1">4.1.1</a>. We use the <code>glm</code> smoothing method with an <code>args</code> that specifies the <code>binomial</code> family:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Age, <span class="dt">y =</span> Ind_surv)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> .<span class="dv">01</span>) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span>binomial), <span class="dt">se=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;probability of survival&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Age, <span class="dt">y =</span> Ind_surv)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> <span class="fl">.01</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span>binomial), <span class="dt">se=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;probability of survival&quot;</span>)</a></code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>We can see that an age of about 30 yields an estimated survival probability of 50% while an age of about 45 yields an estimated survival probability of 25%. We can better quantify these values by fitting the model using the <code>glm</code> function.</p>
-<p>Here is our simple model, the logistic regression of survival on age: <span class="math display">\[
+<p>Here is our simple model, the logistic regression of survival on age:
+<span class="math display">\[
 logit(\pi) = \log(\dfrac{\pi}{1-\pi}) = \beta_0 + \beta_1 Age 
 \]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">levels</span>(donner<span class="op">$</span>Status)  <span class="co"># second level = Surived</span>
-## [1] &quot;Died&quot;     &quot;Survived&quot;
-<span class="op">&gt;</span><span class="st"> </span>donner.glm1 &lt;-<span class="st"> </span><span class="kw">glm</span>( Status <span class="op">~</span><span class="st"> </span>Age , <span class="dt">family=</span>binomial, <span class="dt">data=</span>donner)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(donner.glm1)
-## 
-## Call:
-## glm(formula = Status ~ Age, family = binomial, data = donner)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.5401  -1.1594  -0.4651   1.0842   1.7283  
-## 
-## Coefficients:
-##             Estimate Std. Error z value Pr(&gt;|z|)  
-## (Intercept)  1.81852    0.99937   1.820   0.0688 .
-## Age         -0.06647    0.03222  -2.063   0.0391 *
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 61.827  on 44  degrees of freedom
-## Residual deviance: 56.291  on 43  degrees of freedom
-## AIC: 60.291
-## 
-## Number of Fisher Scoring iterations: 4
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">confint</span>(donner.glm1)
-##                    2.5 %      97.5 %
-## (Intercept) -0.005987258  3.99016010
-## Age         -0.139737905 -0.01016096</code></pre></div>
-<p>The estimated log odds of survival is <span class="math display">\[
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">levels</span>(donner<span class="op">$</span>Status)  <span class="co"># second level = Surived</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="co">## [1] &quot;Died&quot;     &quot;Survived&quot;</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="op">&gt;</span><span class="st"> </span>donner.glm1 &lt;-<span class="st"> </span><span class="kw">glm</span>( Status <span class="op">~</span><span class="st"> </span>Age , <span class="dt">family=</span>binomial, <span class="dt">data=</span>donner)</a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(donner.glm1)</a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">## Call:</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co">## glm(formula = Status ~ Age, family = binomial, data = donner)</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="co">## Deviance Residuals: </span></a>
+<a class="sourceLine" id="cb10-10" title="10"><span class="co">##     Min       1Q   Median       3Q      Max  </span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="co">## -1.5401  -1.1594  -0.4651   1.0842   1.7283  </span></a>
+<a class="sourceLine" id="cb10-12" title="12"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="co">## Coefficients:</span></a>
+<a class="sourceLine" id="cb10-14" title="14"><span class="co">##             Estimate Std. Error z value Pr(&gt;|z|)  </span></a>
+<a class="sourceLine" id="cb10-15" title="15"><span class="co">## (Intercept)  1.81852    0.99937   1.820   0.0688 .</span></a>
+<a class="sourceLine" id="cb10-16" title="16"><span class="co">## Age         -0.06647    0.03222  -2.063   0.0391 *</span></a>
+<a class="sourceLine" id="cb10-17" title="17"><span class="co">## ---</span></a>
+<a class="sourceLine" id="cb10-18" title="18"><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
+<a class="sourceLine" id="cb10-19" title="19"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-20" title="20"><span class="co">## (Dispersion parameter for binomial family taken to be 1)</span></a>
+<a class="sourceLine" id="cb10-21" title="21"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-22" title="22"><span class="co">##     Null deviance: 61.827  on 44  degrees of freedom</span></a>
+<a class="sourceLine" id="cb10-23" title="23"><span class="co">## Residual deviance: 56.291  on 43  degrees of freedom</span></a>
+<a class="sourceLine" id="cb10-24" title="24"><span class="co">## AIC: 60.291</span></a>
+<a class="sourceLine" id="cb10-25" title="25"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-26" title="26"><span class="co">## Number of Fisher Scoring iterations: 4</span></a>
+<a class="sourceLine" id="cb10-27" title="27"><span class="op">&gt;</span><span class="st"> </span><span class="kw">confint</span>(donner.glm1)</a>
+<a class="sourceLine" id="cb10-28" title="28"><span class="co">##                    2.5 %      97.5 %</span></a>
+<a class="sourceLine" id="cb10-29" title="29"><span class="co">## (Intercept) -0.005987258  3.99016010</span></a>
+<a class="sourceLine" id="cb10-30" title="30"><span class="co">## Age         -0.139737905 -0.01016096</span></a></code></pre></div>
+<p>The estimated log odds of survival is
+<span class="math display">\[
 logit(\hat{\pi}) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = 1.81852  -0.06647  Age
-\]</span> and the estimated odds of survival is <span class="math display">\[
+\]</span>
+and the estimated odds of survival is
+<span class="math display">\[
 \hat{odds}(age) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = e^{1.81852}e^{-0.06647 Age}
-\]</span> and the estimated probability of survival is <span class="math display">\[
+\]</span>
+and the estimated probability of survival is
+<span class="math display">\[
 \hat{\pi}(age) =  \dfrac{e^{1.81852  -0.06647  Age}}{1+e^{1.81852  -0.06647  Age}}
 \]</span></p>
 <p>A one year increase in age will have a <span class="math inline">\(e^{-0.06647} = 0.936\)</span> multiplicative change on the odds of survival. A one year increase in age decreases the odds of survival by 6.4% (95% CI 0.3% to 12.2%).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span>)   <span class="co"># factor change</span>
-## [1] 0.935691
-<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># percent change</span>
-## [1] -6.430901
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>)   <span class="co"># factor change CI</span>
-## [1] 0.8784291 0.9966855
-<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># % change CI</span>
-## [1] -12.1570864  -0.3314455</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span>)   <span class="co"># factor change</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co">## [1] 0.935691</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># percent change</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co">## [1] -6.430901</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>)   <span class="co"># factor change CI</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="co">## [1] 0.8784291 0.9966855</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># % change CI</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="co">## [1] -12.1570864  -0.3314455</span></a></code></pre></div>
 <p>The <code>broom</code> package’s <code>tidy</code> function can also be used to get estimates, SEs and confidence intervals. If we add <code>exponentiate=TRUE</code>, then we we get exponentiated estiamtes and confidence intervals (but SE, test stat and p-values are untouched).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(broom)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm1, <span class="dt">conf.int=</span><span class="ot">TRUE</span>)
-## # A tibble: 2 x 7
-##   term        estimate std.error statistic p.value conf.low conf.high
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)   1.82      0.999       1.82  0.0688 -0.00599    3.99  
-## 2 Age          -0.0665    0.0322     -2.06  0.0391 -0.140     -0.0102
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm1, <span class="dt">conf.int=</span><span class="ot">TRUE</span>, <span class="dt">exponentiate =</span> <span class="ot">TRUE</span>)
-## # A tibble: 2 x 7
-##   term        estimate std.error statistic p.value conf.low conf.high
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)    6.16     0.999       1.82  0.0688    0.994    54.1  
-## 2 Age            0.936    0.0322     -2.06  0.0391    0.870     0.990</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(broom)</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm1, <span class="dt">conf.int=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co">## # A tibble: 2 x 7</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="co">##   term        estimate std.error statistic p.value conf.low conf.high</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co">## 1 (Intercept)   1.82      0.999       1.82  0.0688 -0.00599    3.99  </span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="co">## 2 Age          -0.0665    0.0322     -2.06  0.0391 -0.140     -0.0102</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm1, <span class="dt">conf.int=</span><span class="ot">TRUE</span>, <span class="dt">exponentiate =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="co">## # A tibble: 2 x 7</span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="co">##   term        estimate std.error statistic p.value conf.low conf.high</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="co">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="co">## 1 (Intercept)    6.16     0.999       1.82  0.0688    0.994    54.1  </span></a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="co">## 2 Age            0.936    0.0322     -2.06  0.0391    0.870     0.990</span></a></code></pre></div>
 <p>We can use the <code>predict</code> command with <code>response</code> type values to get predicted survival rates for 30 and 45 year olds:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>new.ages &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Age =</span> <span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">45</span>))
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">predict</span>(donner.glm1, <span class="dt">newdata =</span> new.ages, <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)
-##         1         2 
-## 0.4562149 0.2363774
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">30</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">30</span>))  <span class="co"># prob age=30</span>
-## [1] 0.4562174
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">45</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">45</span>))  <span class="co"># prob age=45</span>
-## [1] 0.2363799</code></pre></div>
-<p>So we have <span class="math display">\[
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="op">&gt;</span><span class="st"> </span>new.ages &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Age =</span> <span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">45</span>))</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">predict</span>(donner.glm1, <span class="dt">newdata =</span> new.ages, <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="co">##         1         2 </span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">## 0.4562149 0.2363774</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">30</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">30</span>))  <span class="co"># prob age=30</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="co">## [1] 0.4562174</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">45</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(<span class="fl">1.81852</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.06647</span><span class="op">*</span><span class="dv">45</span>))  <span class="co"># prob age=45</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="co">## [1] 0.2363799</span></a></code></pre></div>
+<p>So we have
+<span class="math display">\[
 \hat{\pi}(age = 30)  =  \dfrac{e^{1.81852  -0.06647(30)}}{1+e^{1.81852  -0.06647(30)}} \approx 0.456
-\]</span> and <span class="math display">\[
+\]</span>
+and
+<span class="math display">\[
 \hat{\pi}(age = 45)  =  \dfrac{e^{1.81852  -0.06647(45)}}{1+e^{1.81852  -0.06647(45)}} \approx 0.236
 \]</span></p>
-<p>Finally, what if we want to understand how the odds of <em>death</em> change as a function of age? Well, odds of death is equal to the ratio death to survival probabilities: <span class="math display">\[
+<p>Finally, what if we want to understand how the odds of <em>death</em> change as a function of age? Well, odds of death is equal to the ratio death to survival probabilities:
+<span class="math display">\[
 \hat{odds.death}(age) = \dfrac{1-\hat{\pi}}{\hat{\pi}} = \dfrac{1}{e^{1.81852}e^{-0.06647 Age}} = e^{-1.81852}e^{0.06647 Age}
-\]</span> A one year increase in age will have a <span class="math inline">\(e^{0.06647} = 1.069\)</span> multiplicative change on the odds of survival. A one year increase in age increases the odds of death by 6.9% (95% CI 0.3% to 13.8%).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">0.06647</span>)   <span class="co"># factor change in odds of death</span>
-## [1] 1.068729
-<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="fl">0.06647</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># percent change</span>
-## [1] 6.87289
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>)   <span class="co"># factor change CI</span>
-## [1] 1.003325 1.138396
-<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># % change CI</span>
-## [1]  0.3325478 13.8395756</code></pre></div>
+\]</span>
+A one year increase in age will have a <span class="math inline">\(e^{0.06647} = 1.069\)</span> multiplicative change on the odds of survival. A one year increase in age increases the odds of death by 6.9% (95% CI 0.3% to 13.8%).</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">0.06647</span>)   <span class="co"># factor change in odds of death</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">## [1] 1.068729</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="fl">0.06647</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># percent change</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">## [1] 6.87289</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>)   <span class="co"># factor change CI</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="co">## [1] 1.003325 1.138396</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># % change CI</span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="co">## [1]  0.3325478 13.8395756</span></a></code></pre></div>
 <p>We can verify our mathematical work by refitting a <code>glm</code> with an indicator of <em>death</em>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_death &lt;-<span class="st"> </span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">0</span>, <span class="dt">Died =</span> <span class="dv">1</span>)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(<span class="kw">glm</span>(Ind_death <span class="op">~</span><span class="st"> </span>Age, <span class="dt">family =</span> binomial, <span class="dt">data=</span>donner))
-## # A tibble: 2 x 5
-##   term        estimate std.error statistic p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 (Intercept)  -1.82      0.999      -1.82  0.0688
-## 2 Age           0.0665    0.0322      2.06  0.0391</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_death &lt;-<span class="st"> </span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">0</span>, <span class="dt">Died =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(<span class="kw">glm</span>(Ind_death <span class="op">~</span><span class="st"> </span>Age, <span class="dt">family =</span> binomial, <span class="dt">data=</span>donner))</a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co">## # A tibble: 2 x 5</span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="co">##   term        estimate std.error statistic p.value</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="co">## 1 (Intercept)  -1.82      0.999      -1.82  0.0688</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="co">## 2 Age           0.0665    0.0322      2.06  0.0391</span></a></code></pre></div>
 </div>
 <div id="logistic-donner3" class="section level3">
 <h3><span class="header-section-number">4.4.5</span> Example: Donner party, adding sex</h3>
-<p>We will fit the logistic regression of survival on age and sex: <span class="math display">\[
+<p>We will fit the logistic regression of survival on age and sex:
+<span class="math display">\[
 logit(\pi) = \log(\dfrac{\pi}{1-\pi}) = \beta_0 + \beta_1 Age + \beta_2 Male
 \]</span></p>
 <p>The estimated mode fit is:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner.glm2 &lt;-<span class="st"> </span><span class="kw">glm</span>( Status <span class="op">~</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Sex, <span class="dt">family=</span>binomial, <span class="dt">data=</span>donner)
-<span class="op">&gt;</span><span class="st"> </span>donner.glm2
-## 
-## Call:  glm(formula = Status ~ Age + Sex, family = binomial, data = donner)
-## 
-## Coefficients:
-## (Intercept)          Age      SexMale  
-##      3.2304      -0.0782      -1.5973  
-## 
-## Degrees of Freedom: 44 Total (i.e. Null);  42 Residual
-## Null Deviance:       61.83 
-## Residual Deviance: 51.26     AIC: 57.26
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm2, <span class="dt">conf.int=</span><span class="ot">TRUE</span>)
-## # A tibble: 3 x 7
-##   term        estimate std.error statistic p.value conf.low conf.high
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)   3.23      1.39        2.33  0.0198    0.851    6.43  
-## 2 Age          -0.0782    0.0373     -2.10  0.0359   -0.162   -0.0141
-## 3 SexMale      -1.60      0.755      -2.11  0.0345   -3.23    -0.195
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm2, <span class="dt">conf.int=</span><span class="ot">TRUE</span>, <span class="dt">exponentiate =</span> <span class="ot">TRUE</span>)
-## # A tibble: 3 x 7
-##   term        estimate std.error statistic p.value conf.low conf.high
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)   25.3      1.39        2.33  0.0198   2.34     618.   
-## 2 Age            0.925    0.0373     -2.10  0.0359   0.850      0.986
-## 3 SexMale        0.202    0.755      -2.11  0.0345   0.0396     0.823</code></pre></div>
-<p>The estimated log odds of survival is <span class="math display">\[
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="op">&gt;</span><span class="st"> </span>donner.glm2 &lt;-<span class="st"> </span><span class="kw">glm</span>( Status <span class="op">~</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Sex, <span class="dt">family=</span>binomial, <span class="dt">data=</span>donner)</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="op">&gt;</span><span class="st"> </span>donner.glm2</a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="co">## Call:  glm(formula = Status ~ Age + Sex, family = binomial, data = donner)</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="co">## </span></a>
+<a class="sourceLine" id="cb16-6" title="6"><span class="co">## Coefficients:</span></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="co">## (Intercept)          Age      SexMale  </span></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="co">##      3.2304      -0.0782      -1.5973  </span></a>
+<a class="sourceLine" id="cb16-9" title="9"><span class="co">## </span></a>
+<a class="sourceLine" id="cb16-10" title="10"><span class="co">## Degrees of Freedom: 44 Total (i.e. Null);  42 Residual</span></a>
+<a class="sourceLine" id="cb16-11" title="11"><span class="co">## Null Deviance:       61.83 </span></a>
+<a class="sourceLine" id="cb16-12" title="12"><span class="co">## Residual Deviance: 51.26     AIC: 57.26</span></a>
+<a class="sourceLine" id="cb16-13" title="13"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm2, <span class="dt">conf.int=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-14" title="14"><span class="co">## # A tibble: 3 x 7</span></a>
+<a class="sourceLine" id="cb16-15" title="15"><span class="co">##   term        estimate std.error statistic p.value conf.low conf.high</span></a>
+<a class="sourceLine" id="cb16-16" title="16"><span class="co">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb16-17" title="17"><span class="co">## 1 (Intercept)   3.23      1.39        2.33  0.0198    0.851    6.43  </span></a>
+<a class="sourceLine" id="cb16-18" title="18"><span class="co">## 2 Age          -0.0782    0.0373     -2.10  0.0359   -0.162   -0.0141</span></a>
+<a class="sourceLine" id="cb16-19" title="19"><span class="co">## 3 SexMale      -1.60      0.755      -2.11  0.0345   -3.23    -0.195</span></a>
+<a class="sourceLine" id="cb16-20" title="20"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(donner.glm2, <span class="dt">conf.int=</span><span class="ot">TRUE</span>, <span class="dt">exponentiate =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-21" title="21"><span class="co">## # A tibble: 3 x 7</span></a>
+<a class="sourceLine" id="cb16-22" title="22"><span class="co">##   term        estimate std.error statistic p.value conf.low conf.high</span></a>
+<a class="sourceLine" id="cb16-23" title="23"><span class="co">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb16-24" title="24"><span class="co">## 1 (Intercept)   25.3      1.39        2.33  0.0198   2.34     618.   </span></a>
+<a class="sourceLine" id="cb16-25" title="25"><span class="co">## 2 Age            0.925    0.0373     -2.10  0.0359   0.850      0.986</span></a>
+<a class="sourceLine" id="cb16-26" title="26"><span class="co">## 3 SexMale        0.202    0.755      -2.11  0.0345   0.0396     0.823</span></a></code></pre></div>
+<p>The estimated log odds of survival is
+<span class="math display">\[
 logit(\hat{\pi}) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = 3.23041 -0.07820  Age -1.59729 Male
-\]</span> and the estimated odds of survival is <span class="math display">\[
+\]</span>
+and the estimated odds of survival is
+<span class="math display">\[
 odds(Sex, Age) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = e^{3.23041}e^{-0.07820 Age}e^{-1.59729 Male} = (25.3)(0.925)^{Age}(0.202)^{Male}
-\]</span> and the estimated probability of survival is <span class="math display">\[
+\]</span>
+and the estimated probability of survival is
+<span class="math display">\[
 \hat{\pi}(Sex, Age) =  \dfrac{e^{3.23041 -0.07820  Age -1.59729 Male}}{1+e^{3.23041 -0.07820  Age -1.59729 Male}} 
 \]</span></p>
 <p>The exponentiated coefficient estimates give the odds ratios for a one unit increase in age or for males (compated to females).</p>
 <p>Holding gender constant, a one year increase in age decreases the odds of survival by 7.5% (95% CI 0.5% to 14.0%).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.07820</span>)  <span class="co"># age effect on odds</span>
-## [1] 0.9247795
-<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.07820</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># % change</span>
-## [1] -7.522055
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.07820</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03728</span>)  <span class="co"># CI for factor </span>
-## [1] 0.8596178 0.9948806
-<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.07820</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03728</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># CI for % change</span>
-## [1] -14.0382243  -0.5119394</code></pre></div>
-<p>Holding age constant, males had a 79.8% lower odds of survival compared to females (95% CI 11.0% to 95.4%). <span class="math display">\[
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.07820</span>)  <span class="co"># age effect on odds</span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="co">## [1] 0.9247795</span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.07820</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># % change</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="co">## [1] -7.522055</span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.07820</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03728</span>)  <span class="co"># CI for factor </span></a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="co">## [1] 0.8596178 0.9948806</span></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.07820</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03728</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># CI for % change</span></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="co">## [1] -14.0382243  -0.5119394</span></a></code></pre></div>
+<p>Holding age constant, males had a 79.8% lower odds of survival compared to females (95% CI 11.0% to 95.4%).
+<span class="math display">\[
 \textrm{estimated odds ratio of survival for males vs females} = \dfrac{\hat{odds}(Sex=male,Age)}{\hat{odds}(Sex=female,Age)} = e^{-1.5973}
 \]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span>)
-## [1] 0.2024444
-<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span>) <span class="op">-</span><span class="dv">1</span> )
-## [1] -79.75556
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.75547</span>)
-## [1] 0.0460520 0.8899447
-<span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.75547</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
-## [1] -95.39480 -11.00553</code></pre></div>
-<p>What if we wanted the odds ratio for comparing females to males? <span class="math display">\[
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span>)</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="co">## [1] 0.2024444</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span>) <span class="dv">-1</span> )</a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="co">## [1] -79.75556</span></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.75547</span>)</a>
+<a class="sourceLine" id="cb18-6" title="6"><span class="co">## [1] 0.0460520 0.8899447</span></a>
+<a class="sourceLine" id="cb18-7" title="7"><span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.75547</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="co">## [1] -95.39480 -11.00553</span></a></code></pre></div>
+<p>What if we wanted the odds ratio for comparing females to males?
+<span class="math display">\[
 \textrm{estimated odds ratio of survival for females vs males} = \dfrac{\hat{odds}(Sex=female,Age)}{\hat{odds}(Sex=male,Age)} = \dfrac{1}{e^{-1.5973}} = e^{1.5973}
-\]</span> Holding age constant, females had a 4.9-fold increased odds of survival (95% CI 1.1 to 21.7).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="co"># odds ratio Female/Male</span>
-<span class="er">&gt;</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span>)  
-## [1] 4.939628
-<span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.75547</span>)
-## [1] 21.714581  1.123665</code></pre></div>
+\]</span>
+Holding age constant, females had a 4.9-fold increased odds of survival (95% CI 1.1 to 21.7).</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="co"># odds ratio Female/Male</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="er">&gt;</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span>)  </a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="co">## [1] 4.939628</span></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">1.59729</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.75547</span>)</a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="co">## [1] 21.714581  1.123665</span></a></code></pre></div>
 <p>There are two separate log-odds, odds and probability functions for the two levels of <code>Sex</code> in the model. Since we do not have an interaction between <code>Sex</code> and <code>Age</code>, we have a parallel line log-odds model. To plot the probabilities for each <code>Sex</code> as <code>Age</code> varies, we need to get the fitted probabities for each case in the data set:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(broom)
-<span class="op">&gt;</span><span class="st"> </span>donner.aug2 &lt;-<span class="st"> </span><span class="kw">augment</span>(<span class="dt">data=</span>donner, donner.glm2, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(donner.aug2)
-## # A tibble: 6 x 12
-##     Age Sex   Status Ind_surv Ind_death .fitted .se.fit .resid   .hat
-##   &lt;int&gt; &lt;fct&gt; &lt;fct&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1    23 Male  Died          0         1   0.459  0.111  -1.11  0.0492
-## 2    40 Fema~ Survi~        1         0   0.526  0.160   1.13  0.103 
-## 3    40 Male  Survi~        1         0   0.183  0.0921  1.84  0.0567
-## 4    30 Male  Died          0         1   0.329  0.0924 -0.893 0.0387
-## 5    28 Male  Died          0         1   0.364  0.0949 -0.952 0.0389
-## 6    40 Male  Died          0         1   0.183  0.0921 -0.636 0.0567
-## # ... with 3 more variables: .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(broom)</a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="op">&gt;</span><span class="st"> </span>donner.aug2 &lt;-<span class="st"> </span><span class="kw">augment</span>(<span class="dt">data=</span>donner, donner.glm2, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(donner.aug2)</a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="co">## # A tibble: 6 x 12</span></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="co">##     Age Sex   Status Ind_surv Ind_death .fitted .se.fit .resid   .hat</span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="co">##   &lt;int&gt; &lt;fct&gt; &lt;fct&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb20-7" title="7"><span class="co">## 1    23 Male  Died          0         1   0.459  0.111  -1.11  0.0492</span></a>
+<a class="sourceLine" id="cb20-8" title="8"><span class="co">## 2    40 Fema~ Survi~        1         0   0.526  0.160   1.13  0.103 </span></a>
+<a class="sourceLine" id="cb20-9" title="9"><span class="co">## 3    40 Male  Survi~        1         0   0.183  0.0921  1.84  0.0567</span></a>
+<a class="sourceLine" id="cb20-10" title="10"><span class="co">## 4    30 Male  Died          0         1   0.329  0.0924 -0.893 0.0387</span></a>
+<a class="sourceLine" id="cb20-11" title="11"><span class="co">## 5    28 Male  Died          0         1   0.364  0.0949 -0.952 0.0389</span></a>
+<a class="sourceLine" id="cb20-12" title="12"><span class="co">## 6    40 Male  Died          0         1   0.183  0.0921 -0.636 0.0567</span></a>
+<a class="sourceLine" id="cb20-13" title="13"><span class="co">## # ... with 3 more variables: .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;</span></a></code></pre></div>
 <p>Then add <code>geom_line</code> with the <code>.fitted</code> probabilities for each <code>Sex</code> (by <code>linetype</code>) added to the y-axis of the jittered scatterplot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner.aug2, <span class="kw">aes</span>(<span class="dt">x =</span> Age, <span class="dt">y =</span> Ind_surv)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> .<span class="dv">01</span>) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>.fitted, <span class="dt">linetype=</span>Sex)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;probability of survival&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner.aug2, <span class="kw">aes</span>(<span class="dt">x =</span> Age, <span class="dt">y =</span> Ind_surv)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> <span class="fl">.01</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>.fitted, <span class="dt">linetype=</span>Sex)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;probability of survival&quot;</span>)</a></code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Note that these lines are <em>not</em> parallel on the probability scale while they are on the log-odds scale. This is because we apply the logistic function to the log-odds to produce our probabilities. The logistic function is not a linear function, so it does not produce parallel lines (or even lines at all).</p>
 </div>
@@ -721,7 +799,8 @@ odds(Sex, Age) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = e^{3.23041}e^{-0.07820 Age}e^{
 <div id="logistic-dev" class="section level2">
 <h2><span class="header-section-number">4.5</span> Deviance</h2>
 <p>In a MLR, ANOVA is used to determine how much of the overall variability in a quantatitive response is explained by the model. With large <span class="math inline">\(n\)</span> and/or normally distributed errors, F tests can be used to compare models based on how much the residual sum of squares is reduced by adding terms.</p>
-<p>In a GLM, <strong>deviance</strong> is the term used to measure “unexplained” variation in the response. When the GLM <em>is</em> a MLR model, deviance equals the residual sum of squares. In a logistic GLM deviance, denoted as <span class="math inline">\(G^2\)</span>, is the difference of two likelihoods (defined in @(logistic-est)): <span class="math display">\[
+<p>In a GLM, <strong>deviance</strong> is the term used to measure “unexplained” variation in the response. When the GLM <em>is</em> a MLR model, deviance equals the residual sum of squares. In a logistic GLM deviance, denoted as <span class="math inline">\(G^2\)</span>, is the difference of two likelihoods (defined in @(logistic-est)):
+<span class="math display">\[
 G^2 = 2[\ln L(\bar{\pi}) - \ln L(\hat{\pi}(X))] = 2\sum_{i=1}^n \left[ y_i \ln \left( \dfrac{y_i}{\hat{\pi}(X_i)} \right) + (1- y_i) \ln \left( \dfrac{1-y_i}{1-\hat{\pi}(X_i)} \right) \right]
 \]</span></p>
 <ul>
@@ -732,19 +811,23 @@ G^2 = 2[\ln L(\bar{\pi}) - \ln L(\hat{\pi}(X))] = 2\sum_{i=1}^n \left[ y_i \ln \
 <div id="drop-in-deviance-test" class="section level3">
 <h3><span class="header-section-number">4.5.1</span> Drop in Deviance test</h3>
 <ol style="list-style-type: decimal">
-<li><p>Hypotheses: <span class="math inline">\(H_0:\)</span> reduced model vs. <span class="math inline">\(H_A:\)</span> full model</p></li>
-<li>Test Statistic: The likelihood ratio test (LRT) stat compares the <strong>drop in deviance</strong> from the reduced to the full models <span class="math display">\[
+<li><p>Hypotheses: <span class="math inline">\(H_0:\)</span> reduced model vs. <span class="math inline">\(H_A:\)</span> full model</p></li>
+<li>Test Statistic: The likelihood ratio test (LRT) stat compares the <strong>drop in deviance</strong> from the reduced to the full models
+<span class="math display">\[
 LRT = G^2_{reduced} - $G^2$_{full}
 \]</span></li>
-<li><p>When <span class="math inline">\(n\)</span> is “large enough”, the LRT will have a chi-square (<span class="math inline">\(\chi^2\)</span>) distribution with <span class="math inline">\(df = df_{reduced} - df_{full}\)</span>.The p-value is a <strong>right tailed</strong> area <span class="math display">\[
+<li><p>When <span class="math inline">\(n\)</span> is “large enough”, the LRT will have a chi-square (<span class="math inline">\(\chi^2\)</span>) distribution with <span class="math inline">\(df = df_{reduced} - df_{full}\)</span>.The p-value is a <strong>right tailed</strong> area
+<span class="math display">\[
 p-value = P(\chi^2 &gt; LRT) =  1- pchisq(LRT, df)
 \]</span></p></li>
 </ol>
 <p>Special cases of drop in deviance tests:</p>
 <ul>
-<li><p>The <strong>overall</strong> drop in deviance test compares a null “intercept only” model to a logistic model: <span class="math display">\[
+<li><p>The <strong>overall</strong> drop in deviance test compares a null “intercept only” model to a logistic model:
+<span class="math display">\[
 H_0: \ln(odds) = \beta_0 \ \ \ \ H_A: \ln(odds) = \beta_0 + \beta_1 x_1 + \dotsm + \beta_p x_p
-\]</span> The deviance for the null model is computed by using the overall rate of success as the estimated <span class="math inline">\(\hat{\pi}\)</span> for all cases. This null deviance is similar in spirit to the total sum of squares in ANOVA.</p></li>
+\]</span>
+The deviance for the null model is computed by using the overall rate of success as the estimated <span class="math inline">\(\hat{\pi}\)</span> for all cases. This null deviance is similar in spirit to the total sum of squares in ANOVA.</p></li>
 <li><p>If our reduced and full models differ by <strong>one term</strong>, then the drop in deviance test will test the same hypotheses as the z-test (a.k.a. Wald test) for the term, but the two methods of testing are not identical. The two types of tests will usually give results that agree, but if they do not agree you should use the drop in deviance LRT test results.</p></li>
 </ul>
 <p>We can compare two logistic models in R via a drop in deviance test using the command</p>
@@ -754,105 +837,111 @@ H_0: \ln(odds) = \beta_0 \ \ \ \ H_A: \ln(odds) = \beta_0 + \beta_1 x_1 + \dotsm
 <div id="example-nes" class="section level3">
 <h3><span class="header-section-number">4.5.2</span> Example: NES</h3>
 <p>The National Election Studies project recorded party identification for two random samples of people during 1980 and 2000.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>nes &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/NES.csv&quot;</span>)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(nes)
-##       year age gender  race region     income union dem       educ
-## 1 year1980  70   male black      S  lower 1/3    no   1 HS or less
-## 2 year1980  67   male white     NC middle 1/3   yes   1 HS or less
-## 3 year1980  47 female black      S  lower 1/3    no   1 HS or less
-## 4 year1980  52 female white      W  upper 1/3   yes   0    College
-## 5 year1980  30 female white     NC  upper 1/3    no   1 HS or less
-## 6 year1980  37   male black     NC  upper 1/3    no   1    College</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="op">&gt;</span><span class="st"> </span>nes &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/NES.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(nes)</a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="co">##       year age gender  race region     income union dem       educ</span></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="co">## 1 year1980  70   male black      S  lower 1/3    no   1 HS or less</span></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="co">## 2 year1980  67   male white     NC middle 1/3   yes   1 HS or less</span></a>
+<a class="sourceLine" id="cb23-6" title="6"><span class="co">## 3 year1980  47 female black      S  lower 1/3    no   1 HS or less</span></a>
+<a class="sourceLine" id="cb23-7" title="7"><span class="co">## 4 year1980  52 female white      W  upper 1/3   yes   0    College</span></a>
+<a class="sourceLine" id="cb23-8" title="8"><span class="co">## 5 year1980  30 female white     NC  upper 1/3    no   1 HS or less</span></a>
+<a class="sourceLine" id="cb23-9" title="9"><span class="co">## 6 year1980  37   male black     NC  upper 1/3    no   1    College</span></a></code></pre></div>
 <p>Here we recode the binary Democrat voter party affiliation <code>dem</code> variable to record two levels: <code>Democrat</code> and <code>Other</code>. Here we see the proportion of Democrats (in red) by region for the survey years of 1980 and 2000. In the south, we see a decrease in the proportion of Democrats between 1980 and 2000. In the north east, we see an increase in the proportion of Democrats between 1980 and 2000. This gives us evidence that the effect of year (1980 vs 2000) on the odds of being a Democrat depend on the region of the country.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="co"># recode to make a factor version:</span>
-<span class="er">&gt;</span><span class="st"> </span>nes<span class="op">$</span>party &lt;-<span class="st"> </span><span class="kw">recode_factor</span>(nes<span class="op">$</span>dem, <span class="st">`</span><span class="dt">1</span><span class="st">`</span>=<span class="st">&quot;Democrat&quot;</span>, <span class="st">`</span><span class="dt">0</span><span class="st">`</span>=<span class="st">&quot;Other&quot;</span>)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(nes, <span class="kw">aes</span>(<span class="dt">x=</span>year, <span class="dt">fill =</span> party)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position=</span><span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region)</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="co"># recode to make a factor version:</span></a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="er">&gt;</span><span class="st"> </span>nes<span class="op">$</span>party &lt;-<span class="st"> </span><span class="kw">recode_factor</span>(nes<span class="op">$</span>dem, <span class="st">`</span><span class="dt">1</span><span class="st">`</span>=<span class="st">&quot;Democrat&quot;</span>, <span class="st">`</span><span class="dt">0</span><span class="st">`</span>=<span class="st">&quot;Other&quot;</span>)</a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(nes, <span class="kw">aes</span>(<span class="dt">x=</span>year, <span class="dt">fill =</span> party)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position=</span><span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-5" title="5"><span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region)</a></code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>This EDA suggests that an interaction between year and region is needed, so our first model for the log odds of being a <strong>Democrat</strong> (<code>dem = 1</code>) looks like <span class="math display">\[
+<p>This EDA suggests that an interaction between year and region is needed, so our first model for the log odds of being a <strong>Democrat</strong> (<code>dem = 1</code>) looks like
+<span class="math display">\[
 \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 +  \beta_5NE:2000 + \beta_6S:2000 + \beta_7 W:2000 
 \]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>nes.glm1 &lt;-<span class="st"> </span><span class="kw">glm</span>(dem <span class="op">~</span><span class="st"> </span>region<span class="op">*</span>year , <span class="dt">data=</span>nes, <span class="dt">family =</span> binomial)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(nes.glm1)
-## 
-## Call:
-## glm(formula = dem ~ region * year, family = binomial, data = nes)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.3666  -1.2049   0.9993   1.1131   1.1969  
-## 
-## Coefficients:
-##                       Estimate Std. Error z value Pr(&gt;|z|)   
-## (Intercept)           -0.04581    0.12359  -0.371  0.71090   
-## regionNE               0.02811    0.18159   0.155  0.87698   
-## regionS                0.45127    0.16199   2.786  0.00534 **
-## regionW                0.11035    0.19184   0.575  0.56515   
-## yearyear2000           0.19893    0.16924   1.175  0.23982   
-## regionNE:yearyear2000  0.25334    0.25923   0.977  0.32842   
-## regionS:yearyear2000  -0.63257    0.22136  -2.858  0.00427 **
-## regionW:yearyear2000  -0.08701    0.25748  -0.338  0.73540   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 3083.3  on 2231  degrees of freedom
-## Residual deviance: 3065.5  on 2224  degrees of freedom
-## AIC: 3081.5
-## 
-## Number of Fisher Scoring iterations: 4</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="op">&gt;</span><span class="st"> </span>nes.glm1 &lt;-<span class="st"> </span><span class="kw">glm</span>(dem <span class="op">~</span><span class="st"> </span>region<span class="op">*</span>year , <span class="dt">data=</span>nes, <span class="dt">family =</span> binomial)</a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(nes.glm1)</a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="co">## Call:</span></a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="co">## glm(formula = dem ~ region * year, family = binomial, data = nes)</span></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="co">## </span></a>
+<a class="sourceLine" id="cb25-7" title="7"><span class="co">## Deviance Residuals: </span></a>
+<a class="sourceLine" id="cb25-8" title="8"><span class="co">##     Min       1Q   Median       3Q      Max  </span></a>
+<a class="sourceLine" id="cb25-9" title="9"><span class="co">## -1.3666  -1.2049   0.9993   1.1131   1.1969  </span></a>
+<a class="sourceLine" id="cb25-10" title="10"><span class="co">## </span></a>
+<a class="sourceLine" id="cb25-11" title="11"><span class="co">## Coefficients:</span></a>
+<a class="sourceLine" id="cb25-12" title="12"><span class="co">##                       Estimate Std. Error z value Pr(&gt;|z|)   </span></a>
+<a class="sourceLine" id="cb25-13" title="13"><span class="co">## (Intercept)           -0.04581    0.12359  -0.371  0.71090   </span></a>
+<a class="sourceLine" id="cb25-14" title="14"><span class="co">## regionNE               0.02811    0.18159   0.155  0.87698   </span></a>
+<a class="sourceLine" id="cb25-15" title="15"><span class="co">## regionS                0.45127    0.16199   2.786  0.00534 **</span></a>
+<a class="sourceLine" id="cb25-16" title="16"><span class="co">## regionW                0.11035    0.19184   0.575  0.56515   </span></a>
+<a class="sourceLine" id="cb25-17" title="17"><span class="co">## yearyear2000           0.19893    0.16924   1.175  0.23982   </span></a>
+<a class="sourceLine" id="cb25-18" title="18"><span class="co">## regionNE:yearyear2000  0.25334    0.25923   0.977  0.32842   </span></a>
+<a class="sourceLine" id="cb25-19" title="19"><span class="co">## regionS:yearyear2000  -0.63257    0.22136  -2.858  0.00427 **</span></a>
+<a class="sourceLine" id="cb25-20" title="20"><span class="co">## regionW:yearyear2000  -0.08701    0.25748  -0.338  0.73540   </span></a>
+<a class="sourceLine" id="cb25-21" title="21"><span class="co">## ---</span></a>
+<a class="sourceLine" id="cb25-22" title="22"><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
+<a class="sourceLine" id="cb25-23" title="23"><span class="co">## </span></a>
+<a class="sourceLine" id="cb25-24" title="24"><span class="co">## (Dispersion parameter for binomial family taken to be 1)</span></a>
+<a class="sourceLine" id="cb25-25" title="25"><span class="co">## </span></a>
+<a class="sourceLine" id="cb25-26" title="26"><span class="co">##     Null deviance: 3083.3  on 2231  degrees of freedom</span></a>
+<a class="sourceLine" id="cb25-27" title="27"><span class="co">## Residual deviance: 3065.5  on 2224  degrees of freedom</span></a>
+<a class="sourceLine" id="cb25-28" title="28"><span class="co">## AIC: 3081.5</span></a>
+<a class="sourceLine" id="cb25-29" title="29"><span class="co">## </span></a>
+<a class="sourceLine" id="cb25-30" title="30"><span class="co">## Number of Fisher Scoring iterations: 4</span></a></code></pre></div>
 <p>The residual deviance for this model is <span class="math inline">\(G^2 = 3065.5\)</span> and the model has 2224 degrees of freedom. The null deviance of 3083.3 is for the “intercept only” model. The Wald z-tests suggest that terms involving the south are statistically significant.</p>
 <p>The model without the interaction terms also has a null deviance of 3083.3 (since the response and models are the same). But the reduced, no interaction, model’s residual deviance is higher than the interaction model at 3081.9.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>nes.glm2 &lt;-<span class="st"> </span><span class="kw">glm</span>(dem <span class="op">~</span><span class="st"> </span>region<span class="op">+</span>year , <span class="dt">data=</span>nes, <span class="dt">family =</span> binomial)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(nes.glm2)
-## 
-## Call:
-## glm(formula = dem ~ region + year, family = binomial, data = nes)
-## 
-## Deviance Residuals: 
-##    Min      1Q  Median      3Q     Max  
-## -1.261  -1.252   1.096   1.105   1.152  
-## 
-## Coefficients:
-##              Estimate Std. Error z value Pr(&gt;|z|)
-## (Intercept)  0.059324   0.095847   0.619    0.536
-## regionNE     0.132352   0.128824   1.027    0.304
-## regionS      0.113739   0.110055   1.033    0.301
-## regionW      0.068130   0.127806   0.533    0.594
-## yearyear2000 0.002029   0.085211   0.024    0.981
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 3083.3  on 2231  degrees of freedom
-## Residual deviance: 3081.9  on 2227  degrees of freedom
-## AIC: 3091.9
-## 
-## Number of Fisher Scoring iterations: 3</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="op">&gt;</span><span class="st"> </span>nes.glm2 &lt;-<span class="st"> </span><span class="kw">glm</span>(dem <span class="op">~</span><span class="st"> </span>region<span class="op">+</span>year , <span class="dt">data=</span>nes, <span class="dt">family =</span> binomial)</a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(nes.glm2)</a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb26-4" title="4"><span class="co">## Call:</span></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="co">## glm(formula = dem ~ region + year, family = binomial, data = nes)</span></a>
+<a class="sourceLine" id="cb26-6" title="6"><span class="co">## </span></a>
+<a class="sourceLine" id="cb26-7" title="7"><span class="co">## Deviance Residuals: </span></a>
+<a class="sourceLine" id="cb26-8" title="8"><span class="co">##    Min      1Q  Median      3Q     Max  </span></a>
+<a class="sourceLine" id="cb26-9" title="9"><span class="co">## -1.261  -1.252   1.096   1.105   1.152  </span></a>
+<a class="sourceLine" id="cb26-10" title="10"><span class="co">## </span></a>
+<a class="sourceLine" id="cb26-11" title="11"><span class="co">## Coefficients:</span></a>
+<a class="sourceLine" id="cb26-12" title="12"><span class="co">##              Estimate Std. Error z value Pr(&gt;|z|)</span></a>
+<a class="sourceLine" id="cb26-13" title="13"><span class="co">## (Intercept)  0.059324   0.095847   0.619    0.536</span></a>
+<a class="sourceLine" id="cb26-14" title="14"><span class="co">## regionNE     0.132352   0.128824   1.027    0.304</span></a>
+<a class="sourceLine" id="cb26-15" title="15"><span class="co">## regionS      0.113739   0.110055   1.033    0.301</span></a>
+<a class="sourceLine" id="cb26-16" title="16"><span class="co">## regionW      0.068130   0.127806   0.533    0.594</span></a>
+<a class="sourceLine" id="cb26-17" title="17"><span class="co">## yearyear2000 0.002029   0.085211   0.024    0.981</span></a>
+<a class="sourceLine" id="cb26-18" title="18"><span class="co">## </span></a>
+<a class="sourceLine" id="cb26-19" title="19"><span class="co">## (Dispersion parameter for binomial family taken to be 1)</span></a>
+<a class="sourceLine" id="cb26-20" title="20"><span class="co">## </span></a>
+<a class="sourceLine" id="cb26-21" title="21"><span class="co">##     Null deviance: 3083.3  on 2231  degrees of freedom</span></a>
+<a class="sourceLine" id="cb26-22" title="22"><span class="co">## Residual deviance: 3081.9  on 2227  degrees of freedom</span></a>
+<a class="sourceLine" id="cb26-23" title="23"><span class="co">## AIC: 3091.9</span></a>
+<a class="sourceLine" id="cb26-24" title="24"><span class="co">## </span></a>
+<a class="sourceLine" id="cb26-25" title="25"><span class="co">## Number of Fisher Scoring iterations: 3</span></a></code></pre></div>
 <p>This reduced model form suggests that neither year nor region are statistically significant.</p>
-<p>After fitting an interaction model for <code>region</code> and <code>year</code>, we can use a drop in deviance test to determine if the effect of year depends on region by comparing the interaction and no interaction models: <span class="math display">\[
+<p>After fitting an interaction model for <code>region</code> and <code>year</code>, we can use a drop in deviance test to determine if the effect of year depends on region by comparing the interaction and no interaction models:
+<span class="math display">\[
 H_): \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 
-\]</span> <span class="math display">\[
+\]</span>
+<span class="math display">\[
 H_A: \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 +  \beta_5NE:2000 + \beta_6S:2000 + \beta_7 W:2000 
 \]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">anova</span>(nes.glm2, nes.glm1, <span class="dt">test  =</span> <span class="st">&quot;Chisq&quot;</span>)
-## Analysis of Deviance Table
-## 
-## Model 1: dem ~ region + year
-## Model 2: dem ~ region * year
-##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    
-## 1      2227     3081.9                          
-## 2      2224     3065.5  3   16.361 0.0009562 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre></div>
-<p>The LRT stat equals <span class="math display">\[
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">anova</span>(nes.glm2, nes.glm1, <span class="dt">test  =</span> <span class="st">&quot;Chisq&quot;</span>)</a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="co">## Analysis of Deviance Table</span></a>
+<a class="sourceLine" id="cb27-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="co">## Model 1: dem ~ region + year</span></a>
+<a class="sourceLine" id="cb27-5" title="5"><span class="co">## Model 2: dem ~ region * year</span></a>
+<a class="sourceLine" id="cb27-6" title="6"><span class="co">##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    </span></a>
+<a class="sourceLine" id="cb27-7" title="7"><span class="co">## 1      2227     3081.9                          </span></a>
+<a class="sourceLine" id="cb27-8" title="8"><span class="co">## 2      2224     3065.5  3   16.361 0.0009562 ***</span></a>
+<a class="sourceLine" id="cb27-9" title="9"><span class="co">## ---</span></a>
+<a class="sourceLine" id="cb27-10" title="10"><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a></code></pre></div>
+<p>The LRT stat equals
+<span class="math display">\[
 LRT = 3081.9 - 3065.5 = 16.361 
-\]</span> The degrees of freedom for the test is 3, so the p-value is <span class="math display">\[
+\]</span>
+The degrees of freedom for the test is 3, so the p-value is
+<span class="math display">\[
 P(\chi^2 &gt; 16.361) = 1-pchisq(16.361, 3) = 0.00096
 \]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="fl">16.361</span>, <span class="dv">3</span>)
-## [1] 0.0009562069</code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="fl">16.361</span>, <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb28-2" title="2"><span class="co">## [1] 0.0009562069</span></a></code></pre></div>
 <p>We can conclude that the full model is better than the smaller model. There is at least one region’s change in party affiliation between 1980 and 2000 that is different from the other regions. The statistical significance of the southern region show that this region’s change in affiliation between years is different than the change in the NC (baseline) region.</p>
 </div>
 </div>
@@ -873,55 +962,68 @@ P(\chi^2 &gt; 16.361) = 1-pchisq(16.361, 3) = 0.00096
 <p>A severe windstorm blew through northern MN the evening of July 4, 1999, impacting the a large portion of the BWCA. After the storm, foresters surveyed the area to assess damamge and understand how some trees survived the storm while others did not. The data set <code>blowBF.csv</code> contains data on 659 balsam fir trees: 426 survived the storm and while 233 did not.</p>
 <p>For this first simple logistic model we are interested in modeling the probability that a tree died (or survived) during the storm as a function of its diameter (inches). We are phrasing this in terms of “died” because of the way the response <code>y</code> is coded: a 1 means died and 0 means survived. The coding matters only so we interpret model coefficients correctly. The same conclusions about the relationship between diameter and died/survived would be the same regardless of the coding.</p>
 <p>To determine whether diameter needs to be transformed, we need to construct an empirical log odds plot. THere are 659 cases in the data set, so if we divide cases into 20 groups we will get just over 30 cases within each quantile bin. Here we use the <code>dplyr</code> function <code>ntile</code> to divide cases by diameter <code>D</code> into 20 groups based on the 5th, 10th, 15, …, 95th percentiles of <code>D</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>blowBF &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/blowBF.csv&quot;</span>)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">dim</span>(blowBF)
-## [1] 659   5
-<span class="op">&gt;</span><span class="st"> </span>blowBF &lt;-<span class="st"> </span><span class="kw">mutate</span>(blowBF, <span class="dt">D.grps =</span> <span class="kw">ntile</span>(D, <span class="dt">n =</span> <span class="dv">20</span>))
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(blowBF<span class="op">$</span>D.grps)
-## 
-##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
-## 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 32</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="op">&gt;</span><span class="st"> </span>blowBF &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/blowBF.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dim</span>(blowBF)</a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="co">## [1] 659   5</span></a>
+<a class="sourceLine" id="cb29-4" title="4"><span class="op">&gt;</span><span class="st"> </span>blowBF &lt;-<span class="st"> </span><span class="kw">mutate</span>(blowBF, <span class="dt">D.grps =</span> <span class="kw">ntile</span>(D, <span class="dt">n =</span> <span class="dv">20</span>))</a>
+<a class="sourceLine" id="cb29-5" title="5"><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(blowBF<span class="op">$</span>D.grps)</a>
+<a class="sourceLine" id="cb29-6" title="6"><span class="co">## </span></a>
+<a class="sourceLine" id="cb29-7" title="7"><span class="co">##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 </span></a>
+<a class="sourceLine" id="cb29-8" title="8"><span class="co">## 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 32</span></a></code></pre></div>
 <p>Then we <code>group_by</code> our binning <code>D.grps</code> variable and compute the summaries: (1) the median diameter in each group, the proportion of success (<code>died</code>) in each group and the log-odds of success (<code>died</code>) in each group.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>blowBF.empLO &lt;-blowBF <span class="op">%&gt;%</span>
-<span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(D.grps) <span class="op">%&gt;%</span>
-<span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="dt">D.grps.med =</span> <span class="kw">median</span>(D),    <span class="co"># median D of groups</span>
-<span class="op">+</span><span class="st">             </span><span class="dt">pi.emp =</span> <span class="kw">mean</span>(y),         <span class="co"># proportion died</span>
-<span class="op">+</span><span class="st">             </span><span class="dt">log.odds.emp =</span> <span class="kw">log</span>(pi.emp<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>pi.emp)))    <span class="co"># log odds</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="op">&gt;</span><span class="st"> </span>blowBF.empLO &lt;-blowBF <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(D.grps) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="dt">D.grps.med =</span> <span class="kw">median</span>(D),    <span class="co"># median D of groups</span></a>
+<a class="sourceLine" id="cb30-4" title="4"><span class="op">+</span><span class="st">             </span><span class="dt">pi.emp =</span> <span class="kw">mean</span>(y),         <span class="co"># proportion died</span></a>
+<a class="sourceLine" id="cb30-5" title="5"><span class="op">+</span><span class="st">             </span><span class="dt">log.odds.emp =</span> <span class="kw">log</span>(pi.emp<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>pi.emp)))    <span class="co"># log odds</span></a></code></pre></div>
 <p>A plot of the empirical log-odds against median diameter in each group shows some curvature:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>blowBF.empLO
-## # A tibble: 20 x 4
-##    D.grps D.grps.med pi.emp log.odds.emp
-##     &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;
-##  1      1        5   0.0606      -2.74  
-##  2      2        5   0.0606      -2.74  
-##  3      3        5   0.0909      -2.30  
-##  4      4        6   0.0909      -2.30  
-##  5      5        6   0.0303      -3.47  
-##  6      6        6.5 0.182       -1.50  
-##  7      7        7   0.212       -1.31  
-##  8      8        7   0.152       -1.72  
-##  9      9        8   0.182       -1.50  
-## 10     10        8   0.152       -1.72  
-## 11     11        9   0.212       -1.31  
-## 12     12        9   0.424       -0.305 
-## 13     13       10   0.364       -0.560 
-## 14     14       10.5 0.485       -0.0606
-## 15     15       11   0.636        0.560 
-## 16     16       13   0.727        0.981 
-## 17     17       14   0.606        0.431 
-## 18     18       15   0.788        1.31  
-## 19     19       17   0.818        1.50  
-## 20     20       21.5 0.812        1.47
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.empLO, <span class="kw">aes</span>(<span class="dt">x=</span>D.grps.med, <span class="dt">y=</span>log.odds.emp)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() </code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="op">&gt;</span><span class="st"> </span>blowBF.empLO</a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="co">## # A tibble: 20 x 4</span></a>
+<a class="sourceLine" id="cb31-3" title="3"><span class="co">##    D.grps D.grps.med pi.emp log.odds.emp</span></a>
+<a class="sourceLine" id="cb31-4" title="4"><span class="co">##     &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb31-5" title="5"><span class="co">##  1      1        5   0.0606      -2.74  </span></a>
+<a class="sourceLine" id="cb31-6" title="6"><span class="co">##  2      2        5   0.0606      -2.74  </span></a>
+<a class="sourceLine" id="cb31-7" title="7"><span class="co">##  3      3        5   0.0909      -2.30  </span></a>
+<a class="sourceLine" id="cb31-8" title="8"><span class="co">##  4      4        6   0.0909      -2.30  </span></a>
+<a class="sourceLine" id="cb31-9" title="9"><span class="co">##  5      5        6   0.0303      -3.47  </span></a>
+<a class="sourceLine" id="cb31-10" title="10"><span class="co">##  6      6        6.5 0.182       -1.50  </span></a>
+<a class="sourceLine" id="cb31-11" title="11"><span class="co">##  7      7        7   0.212       -1.31  </span></a>
+<a class="sourceLine" id="cb31-12" title="12"><span class="co">##  8      8        7   0.152       -1.72  </span></a>
+<a class="sourceLine" id="cb31-13" title="13"><span class="co">##  9      9        8   0.182       -1.50  </span></a>
+<a class="sourceLine" id="cb31-14" title="14"><span class="co">## 10     10        8   0.152       -1.72  </span></a>
+<a class="sourceLine" id="cb31-15" title="15"><span class="co">## 11     11        9   0.212       -1.31  </span></a>
+<a class="sourceLine" id="cb31-16" title="16"><span class="co">## 12     12        9   0.424       -0.305 </span></a>
+<a class="sourceLine" id="cb31-17" title="17"><span class="co">## 13     13       10   0.364       -0.560 </span></a>
+<a class="sourceLine" id="cb31-18" title="18"><span class="co">## 14     14       10.5 0.485       -0.0606</span></a>
+<a class="sourceLine" id="cb31-19" title="19"><span class="co">## 15     15       11   0.636        0.560 </span></a>
+<a class="sourceLine" id="cb31-20" title="20"><span class="co">## 16     16       13   0.727        0.981 </span></a>
+<a class="sourceLine" id="cb31-21" title="21"><span class="co">## 17     17       14   0.606        0.431 </span></a>
+<a class="sourceLine" id="cb31-22" title="22"><span class="co">## 18     18       15   0.788        1.31  </span></a>
+<a class="sourceLine" id="cb31-23" title="23"><span class="co">## 19     19       17   0.818        1.50  </span></a>
+<a class="sourceLine" id="cb31-24" title="24"><span class="co">## 20     20       21.5 0.812        1.47</span></a>
+<a class="sourceLine" id="cb31-25" title="25"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.empLO, <span class="kw">aes</span>(<span class="dt">x=</span>D.grps.med, <span class="dt">y=</span>log.odds.emp)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb31-26" title="26"><span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() </a></code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>Looking at diameter on the log-scale shows a more linear plot. This is our reason for using <code>log(D)</code> in our logistic model for tree survival status.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.empLO, <span class="kw">aes</span>(<span class="dt">x=</span>D.grps.med, <span class="dt">y=</span>log.odds.emp)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>()</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.empLO, <span class="kw">aes</span>(<span class="dt">x=</span>D.grps.med, <span class="dt">y=</span>log.odds.emp)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>()</a></code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
-
 </div>
+</div>
+<div id="logistic-resid" class="section level2">
+<h2><span class="header-section-number">4.7</span> Residuals and Case influence</h2>
+<p>The case influence statistics of leverage and Cook’s distance are used with logistic models, just as they are with regular linear models. Both can be obtained with the <code>broom</code> <code>augment</code> command and we can plot then against predictors using the <code>ggnostic</code> command from <code>GGally</code>. You can also see Cook’s distance against case number with <code>plot(my.glm, which = 4)</code>.</p>
+<p>Residuals are not so clear cut for a GLM compared to a MLR. For now, we will just concern ourselves with response residuals which are a case’s binary response minus it’s predicted probabity of success (estimated mean value):
+<span class="math display">\[
+r_i = y_i - \hat{\pi}(X_i)
+\]</span>
+We can get these residuals by requesting the “response” type of residual:</p>
+<ul>
+<li><code>resid(my.glm, type = "response")</code></li>
+<li><code>augment(my.glm, type.predict = "response", type.residuals = "response")</code></li>
+</ul>
+
 </div>
 </div>
             </section>
@@ -977,10 +1079,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

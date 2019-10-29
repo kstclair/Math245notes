@@ -548,3 +548,15 @@ ggplot(blowBF.empLO, aes(x=D.grps.med, y=log.odds.emp)) +
 
 ```
 
+## Residuals and Case influence {#logistic-resid}
+
+The case influence statistics of leverage and Cook's distance are used with logistic models, just as they are with regular linear models. Both can be obtained with the `broom` `augment` command and we can plot then against predictors using the `ggnostic` command from `GGally`. You can also see Cook's distance against case number with `plot(my.glm, which = 4)`.
+
+Residuals are not so clear cut for a GLM compared to a MLR. For now, we will just concern ourselves with response residuals which are a case's binary response minus it's predicted probabity of success (estimated mean value):
+$$
+r_i = y_i - \hat{\pi}(X_i)
+$$
+We can get these residuals by requesting the "response" type of residual:
+
+- `resid(my.glm, type = "response")`
+- `augment(my.glm, type.predict = "response", type.residuals = "response")` 
