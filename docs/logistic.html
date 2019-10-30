@@ -737,7 +737,7 @@ G^2 = 2[\ln L(\bar{\pi}) - \ln L(\hat{\pi}(X))] = 2\sum_{i=1}^n \left[ y_i \ln \
 <ol style="list-style-type: decimal">
 <li><p>Hypotheses: <span class="math inline">\(H_0:\)</span> reduced model vs. <span class="math inline">\(H_A:\)</span> full model</p></li>
 <li>Test Statistic: The likelihood ratio test (LRT) stat compares the <strong>drop in deviance</strong> from the reduced to the full models <span class="math display">\[
-LRT = G^2_{reduced} - $G^2$_{full}
+LRT = G^2_{reduced} - G^2_{full}
 \]</span></li>
 <li><p>When <span class="math inline">\(n\)</span> is “large enough”, the LRT will have a chi-square (<span class="math inline">\(\chi^2\)</span>) distribution with <span class="math inline">\(df = df_{reduced} - df_{full}\)</span>.The p-value is a <strong>right tailed</strong> area <span class="math display">\[
 p-value = P(\chi^2 &gt; LRT) =  1- pchisq(LRT, df)

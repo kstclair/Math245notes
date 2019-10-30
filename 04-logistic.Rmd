@@ -418,7 +418,7 @@ Deviance, sometimes called *residual* deviance, is close to 0 when the logistic 
 
 2. Test Statistic: The likelihood ratio test (LRT) stat compares the **drop in deviance** from the reduced to the full models
 $$
-LRT = G^2_{reduced} - $G^2$_{full}
+LRT = G^2_{reduced} - G^2_{full}
 $$
 3. When $n$ is "large enough", the LRT will have a chi-square ($\chi^2$) distribution with $df = df_{reduced} - df_{full}$.The p-value is a **right tailed** area
 $$
