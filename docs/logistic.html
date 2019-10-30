@@ -226,7 +226,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="logistic.html"><a href="logistic.html#logistic-bernoulli"><i class="fa fa-check"></i><b>4.2</b> The Bernoulli distribution</a></li>
 <li class="chapter" data-level="4.3" data-path="logistic.html"><a href="logistic.html#logistic-model"><i class="fa fa-check"></i><b>4.3</b> The logistic model form</a><ul>
-<li class="chapter" data-level="4.3.1" data-path="logistic.html"><a href="logistic.html#interpretation-2"><i class="fa fa-check"></i><b>4.3.1</b> Interpretation</a></li>
+<li class="chapter" data-level="4.3.1" data-path="logistic.html"><a href="logistic.html#logistic-int"><i class="fa fa-check"></i><b>4.3.1</b> Interpretation</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="logistic.html"><a href="logistic.html#logistic-est"><i class="fa fa-check"></i><b>4.4</b> Inference and estimation</a><ul>
 <li class="chapter" data-level="4.4.1" data-path="logistic.html"><a href="logistic.html#confidence-intervals-for-pmbbeta_i"><i class="fa fa-check"></i><b>4.4.1</b> Confidence intervals for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
@@ -245,6 +245,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.7" data-path="logistic.html"><a href="logistic.html#logistic-resid"><i class="fa fa-check"></i><b>4.7</b> Residuals and Case influence</a><ul>
 <li class="chapter" data-level="4.7.1" data-path="logistic.html"><a href="logistic.html#example-bwca2"><i class="fa fa-check"></i><b>4.7.1</b> Example: Boundary Waters Canoe Area (BWCA) blowdown</a></li>
 </ul></li>
+<li class="chapter" data-level="4.8" data-path="logistic.html"><a href="logistic.html#binomial-responses"><i class="fa fa-check"></i><b>4.8</b> Binomial responses</a></li>
+<li class="chapter" data-level="4.9" data-path="logistic.html"><a href="logistic.html#inference-for-binomial-response-models"><i class="fa fa-check"></i><b>4.9</b> Inference for Binomial response models</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>5</b> Poisson Regression</a></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
@@ -449,7 +451,7 @@ odds = \dfrac{\pi(X)}{1-\pi(X)}
 <li>These two functions are inverses of one another.</li>
 </ul>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-9-1.png" width="864" /></p>
-<div id="interpretation-2" class="section level3">
+<div id="logistic-int" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> Interpretation</h3>
 <p>Changes in predictors can be interpreted as changes in the <strong>odds</strong> of success (we can’t make general statement about changes in the <strong>probability</strong> of success). Specifically, we “unlog” the logit equation to get an expression for the odds of success for predictors <span class="math inline">\(x_1, \dotsc, x_p\)</span>: <span class="math display">\[
 odds(x_1, \dotsc, x_p) = \dfrac{\pi(X)}{1-\pi(X)} = e^{\beta_0 + \beta_1 x_{1} + \dotsm +  \beta_p x_{p}}
@@ -835,7 +837,7 @@ H_0: \ln(odds) = \beta_0 \ \ \ \ H_A: \ln(odds) = \beta_0 + \beta_1 x_1 + \dotsm
 ## Number of Fisher Scoring iterations: 3</code></pre></div>
 <p>This reduced model form suggests that neither year nor region are statistically significant.</p>
 <p>After fitting an interaction model for <code>region</code> and <code>year</code>, we can use a drop in deviance test to determine if the effect of year depends on region by comparing the interaction and no interaction models: <span class="math display">\[
-H_): \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 
+H_0: \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 
 \]</span> <span class="math display">\[
 H_A: \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 +  \beta_5NE:2000 + \beta_6S:2000 + \beta_7 W:2000 
 \]</span></p>
@@ -1003,8 +1005,33 @@ r_i = y_i - \hat{\pi}(X_i)
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)</code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
-
 </div>
+</div>
+<div id="binomial-responses" class="section level2">
+<h2><span class="header-section-number">4.8</span> Binomial responses</h2>
+<p>Logistic models can also be used with responses that are <strong>Binomial counts</strong>. For each case <span class="math inline">\(i\)</span> we define:</p>
+<ul>
+<li><span class="math inline">\(Y_i=\)</span> number of successes in <span class="math inline">\(m_i\)</span> independent Bernoulli (success/failure) trials</li>
+<li><span class="math inline">\(X_i = (x_{1,i}, \dotsc, x_{p,i})\)</span> be the predictors for this case</li>
+<li><span class="math inline">\(\pi(X_i)\)</span> is the probability of success for each of the <span class="math inline">\(n_i\)</span> trials</li>
+</ul>
+<p>For example, suppose we have <span class="math inline">\(n\)</span> plots of land and we plant <span class="math inline">\(m_i\)</span> seeds on each. A reponse <span class="math inline">\(Y_i\)</span> could be the number of seeds that germinate in plot <span class="math inline">\(i\)</span>. Each seed has a <span class="math inline">\(\pi(X_i)\)</span> probability of germinating, and this probability could depend on plot-level predictors like amount of rain in plot <span class="math inline">\(i\)</span> or amount of fertilizer applied to plot <span class="math inline">\(i\)</span>.</p>
+<p>Under the conditions listed above, each response is modeled by a <strong>Binomial</strong> distribution: <span class="math display">\[Y_i \mid X_i \overset{indep.}{\sim} Binom(m_i, \pi(X_i))\]</span></p>
+<p>The mean response for each case is <span class="math display">\[
+E(Y_i \mid X_i) = \mu_{y \mid x} = m_i \pi(X_i)
+\]</span> and the standard deviation is <span class="math display">\[
+SD(Y_i \mid X_i) = \sigma_{y \mid x} = \sqrt{m_i \pi(X_i)(1-\pi(X_i))}
+\]</span></p>
+<p>We again use a logistic function (kernel mean function) to express the probability of success as a function of predictors: <span class="math display">\[
+\pi(X_i) = \dfrac{e^{\eta_i}}{1 + e^{\eta_i}} = \dfrac{e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}{1 + e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}
+\]</span> and a logit (log odds) function to express the linear combination of predictors as a function of the probability of success: <span class="math display">\[
+\eta_i =  \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}=  \ln \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right)
+\]</span></p>
+<p>Interpretation of a logistic model for a binomial response is exactly the same as a binary response model (<a href="logistic.html#logistic-int">4.3.1</a>).</p>
+</div>
+<div id="inference-for-binomial-response-models" class="section level2">
+<h2><span class="header-section-number">4.9</span> Inference for Binomial response models</h2>
+
 </div>
 </div>
             </section>

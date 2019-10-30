@@ -139,7 +139,7 @@ curve(log(x/(1-x)), from=0, to=1,  xlab="p", ylab="logit(p)")
 title("logit")
 ```
 
-### Interpretation
+### Interpretation {#logistic-int}
 Changes in predictors can be interpreted as changes in the **odds** of success (we can't make general statement about changes in the **probability** of success). Specifically, we  "unlog" the logit equation to get an expression for the odds of success for predictors $x_1, \dotsc, x_p$:
 $$
 odds(x_1, \dotsc, x_p) = \dfrac{\pi(X)}{1-\pi(X)} = e^{\beta_0 + \beta_1 x_{1} + \dotsm +  \beta_p x_{p}}
@@ -477,7 +477,7 @@ This reduced model form suggests that neither year nor region are statistically 
 
 After fitting an interaction model for `region` and `year`, we can use a drop in deviance test to determine if the effect of year depends on region by comparing the interaction and no interaction models:
 $$
-H_): \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 
+H_0: \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 
 $$
 $$
 H_A: \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 +  \beta_5NE:2000 + \beta_6S:2000 + \beta_7 W:2000 
@@ -628,3 +628,37 @@ ggplot(blowBF.residBad, aes(x=D.grps.med,y=resid.mean)) +
 
 
 
+## Binomial responses
+
+Logistic models can also be used with responses that are **Binomial counts**. For each case $i$ we define:
+
+- $Y_i=$ number of successes in $m_i$ independent Bernoulli (success/failure) trials
+- $X_i = (x_{1,i}, \dotsc, x_{p,i})$ be the predictors for this case
+- $\pi(X_i)$ is the probability of success for each of the $n_i$ trials
+
+For example, suppose we have $n$ plots of land and we plant $m_i$ seeds on each. A reponse $Y_i$ could be the number of seeds that germinate in plot $i$. Each seed has a $\pi(X_i)$ probability of germinating, and this probability could depend on plot-level predictors like amount of rain in plot $i$ or amount of fertilizer applied to plot $i$. 
+
+Under the conditions listed above, each response is modeled by a **Binomial** distribution:
+$$Y_i \mid X_i \overset{indep.}{\sim} Binom(m_i, \pi(X_i))$$
+
+The mean response for each case is
+$$
+E(Y_i \mid X_i) = \mu_{y \mid x} = m_i \pi(X_i)
+$$
+and the standard deviation is 
+$$
+SD(Y_i \mid X_i) = \sigma_{y \mid x} = \sqrt{m_i \pi(X_i)(1-\pi(X_i))}
+$$
+
+We again use a logistic function (kernel mean function) to express the probability of success as a function of predictors:
+$$
+\pi(X_i) = \dfrac{e^{\eta_i}}{1 + e^{\eta_i}} = \dfrac{e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}{1 + e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}}
+$$
+and a logit (log odds) function to express the linear combination of predictors as a function of the probability of success:
+$$
+\eta_i =  \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}=  \ln \left(  \dfrac{\pi(X_i)}{1-\pi(X_i)}\right)
+$$
+
+Interpretation of a logistic model for a binomial response is exactly the same as a binary response model (\@ref(logistic-int)). 
+
+## Inference for Binomial response models
