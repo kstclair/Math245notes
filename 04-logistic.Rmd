@@ -636,7 +636,14 @@ Logistic models can also be used with responses that are **Binomial counts**. Fo
 - $X_i = (x_{1,i}, \dotsc, x_{p,i})$ be the predictors for this case
 - $\pi(X_i)$ is the probability of success for each of the $n_i$ trials
 
-For example, suppose we have $n$ plots of land and we plant $m_i$ seeds on each. A reponse $Y_i$ could be the number of seeds that germinate in plot $i$. Each seed has a $\pi(X_i)$ probability of germinating, and this probability could depend on plot-level predictors like amount of rain in plot $i$ or amount of fertilizer applied to plot $i$. 
+For example, suppose we have $n$ plots of land and we plant $m_i$ seeds on each. A reponse $Y_i$ could be the number of seeds that germinate in plot $i$. Each seed has a $\pi(X_i)$ probability of germinating, and this probability could depend on plot-level predictors like amount of rain in plot $i$ or amount of fertilizer applied to plot $i$. Here is an example of what this data could look like for a sample of $n=3$ plots
+
+plot ID | Y (# germinate) | m (# plants) | Fertilizer (lbs/plot) | Rain (inches)
+---- | ---- | ---- | ---- | ----
+1   | 2 | 4 | 1 | 3 
+2 | 4 | 5 | 2.4 | 1.1
+3 | 1  | 4 | 1.6 | 2.9
+
 
 Under the conditions listed above, each response is modeled by a **Binomial** distribution:
 $$Y_i \mid X_i \overset{indep.}{\sim} Binom(m_i, \pi(X_i))$$
@@ -661,4 +668,63 @@ $$
 
 Interpretation of a logistic model for a binomial response is exactly the same as a binary response model (\@ref(logistic-int)). 
 
+### Connection to binary responses
+When we only observed $m_i = 1$ trials, then the Binomial count is exactly the same as a binary Bernoullie count since it can only take on the value of 0 or 1:
+$$
+Binom(m_i = 1, \pi(X_i)) = Bern(\pi(X_i))
+$$
+
+We can always "expand" binomial count data to represent all $\sum m_i$ Bernoulli trials that are recording success and failures across all trials. For example, in the plant scenario above, a "trial" represents the success or failure of one plant. So we could have recorded *plant-level* characteristics with 2 successes in plot 1 and 2 failures (out of $m_1 = 4$ plants), etc. This binary data representation would look like where `Binary_Y` is a 1 if a plant germinates and a 0 if it did not:
+
+plot ID | Binary_Y | m (# plants) | Fertilizer (lbs/plot) | Rain (inches)
+---- | ---- | ---- | ---- | ----
+1   | 1 | 4 | 1 | 3 
+1   | 1 | 4 | 1 | 3 
+1   | 0 | 4 | 1 | 3 
+1   | 0 | 4 | 1 | 3 
+2 | 1 | 5 | 2.4 | 1.1
+2 | 1 | 5 | 2.4 | 1.1
+2 | 1 | 5 | 2.4 | 1.1
+2 | 1 | 5 | 2.4 | 1.1
+2 | 0 | 5 | 2.4 | 1.1
+3 | 1  | 4 | 1.6 | 2.9
+3 | 0  | 4 | 1.6 | 2.9
+3 | 0  | 4 | 1.6 | 2.9
+
+Notice in this representation of the data, we are just repeated the common plot-level predictor values that are common to all plants within a plot. This is an inefficient way to represent our data unless we have *plant-level* measurements too. This binary representation also is not a great way to store this data because it limits our ability to check the model assumptions about independence. We will expand on this idea in our "goodness-of-fit" discussion below. 
+
 ## Inference for Binomial response models
+
+Here are the similarities between binomial and binary response logistic models:
+
+- Interpretation of $\beta$ in the two models is the same.
+- "Wald" z-tests and confidence intervals for $\beta$ parameters are the same.
+- Drop-in-deviance model comparison tests are the same.
+- R functions of `fitted`, `predict`, `augment` are the same.
+
+Here are some key differences:
+
+- The formula for deviance $G^2$ is different because our probability model is (slightly) different. 
+- In binary models, Wald inference relies on "large $n$". In binomial models, we either need "large $n$" and/or large $m_i$ values. E.g. In the binomial model, $n=5$ is fine if all $m_1 = 1000$.
+- The R function `glm` wants a response equal to the empirical proportion of successes, $Y_i/m_i$, along with the number of binomial trials $m_i$ in our `glm` specification:
+```
+glm(y/m ~ x1 + x2, family = binomial, weights = m, data=)
+```
+
+### Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)
+
+In case study 21.1, we have data collected from 18 islands in this archipelago. In 1949, scientists recorded the number of "at risk" species on each island. Ten years later, they recorded how many of these species were extinct. We want to model the extinction rate for each island as a function of the island size. 
+```{r}
+library(Sleuth3)
+island <- case2101
+summary(island)
+nrow(island)
+```
+
+Our variables are
+
+- `Island` gives us an identifier of each island (case)
+- `Area` is our predictor $x_i$ for each island
+- `AtRisk` is $m_i$, the number of animals available for extinction
+- `Extinct` is $y_i$, the number (out of $m_i$) that went extinct
+
