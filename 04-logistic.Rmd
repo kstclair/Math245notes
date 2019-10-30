@@ -511,7 +511,7 @@ The two main assumptions that we can check with a binary logistic: independence 
     - within each group, compute the proportion of successes $\tilde{\pi}_{emp}$
     - then compute the log odds of success $logit_{emp} = \ln(\dfrac{\tilde{\pi}_{emp}}{1-\tilde{\pi}_{emp}})$
     
-### Example: Boundary Waters Canoe Area (BWCA) blowdown
+### Example: Boundary Waters Canoe Area (BWCA) blowdown {#example-bwca1}
 A severe windstorm blew through northern MN the evening of July 4, 1999, impacting the a large portion of the BWCA. After the storm, foresters surveyed the area to assess damamge and understand how some trees survived the storm while others did not. The data set `blowBF.csv` contains data on 659 balsam fir trees: 426  survived the storm and while 233 did not. 
 
 For this first simple logistic model we are interested in modeling the probability that a tree died (or survived) during the storm as a function of its diameter (inches). We are phrasing this in terms of "died" because of the way the response `y` is coded: a 1 means died and 0 means survived. The coding matters only so we interpret model coefficients correctly. The same conclusions about the relationship between diameter and died/survived would be the same regardless of the coding. 
@@ -545,7 +545,6 @@ Looking at diameter on the log-scale shows a more linear plot. This is our reaso
 ggplot(blowBF.empLO, aes(x=D.grps.med, y=log.odds.emp)) + 
   geom_point() + 
   scale_x_log10()
-
 ```
 
 ## Residuals and Case influence {#logistic-resid}
@@ -560,3 +559,72 @@ We can get these residuals by requesting the "response" type of residual:
 
 - `resid(my.glm, type = "response")`
 - `augment(my.glm, type.predict = "response", type.residuals = "response")` 
+
+These response residuals are always between -1 and 1, and should average out to 0. Values close to -1 or 1 are cases that could be of interest since they are poorly predicted. Using them in a "usual" residual plot doesn't always lead to a usual visual model checking tool. [Gelman and Hill](http://www.stat.columbia.edu/~gelman/arm/) suggest binning, or grouping, cases by a predictor and computing mean residual value within each group (much like the empirical log odds plot)
+
+- group cases into groups with similar predictor values
+- within each group, compute the mean response residual
+-  plot mean predictor value against mean response residual value for each group. 
+
+A null plot will show mean residual values with no trend around the horizontal 0-line. We do not need to see constant variance in this plot because our Bernoulli response model does not assume constant variance. 
+
+    
+### Example: Boundary Waters Canoe Area (BWCA) blowdown {#example-bwca2}
+
+Back to the BWCA data. Let's fit the logistic regression of the binary indicator of death `y` against the log of diameter. We see that the odds of death increase as diameter increases, which agrees with our empirical log odds plot from Section \@ref(example-bwca1)
+```{r}
+fir.glm<- glm(y ~ log(D), family=binomial, data=blowBF)
+tidy(fir.glm)
+```
+
+We've already computed a binning variable `D.grps` for diameter in Section \@ref(example-bwca1).
+```{r}
+head(blowBF)
+```
+
+We now need to augment the (entire)  data set with response residuals
+```{r}
+blowBF.aug <- augment(data=blowBF, fir.glm, type.predict = "response", type.residuals = "response")
+head(blowBF.aug)
+```
+
+Plotting these residuals against log diameter shows an "odd" looking residual plot that is hard to interpret:
+```{r}
+ggplot(blowBF.aug, aes(x=D, y=.resid)) +
+  geom_jitter(height = .05) + 
+  scale_x_log10() + 
+  geom_hline(yintercept = 0)
+```
+
+To help understand if the *average* residual value for each diameter varies around 0 we can using the binning variable `D.grps` and find the mean residual value for each group.
+```{r}
+blowBF.resid <- blowBF.aug %>%
+  group_by(D.grps) %>%
+  summarize(lnD.grps.med = median(log(D)),    # median log(D) of groups
+            fitted.mean = mean(.fitted),       # mean prob
+            resid.mean = mean(.resid))        # mean residual
+```
+
+We then plot the mean binned residual against the median (middle) log diameter value for each group. Here we see mean residual values that roughly vary around 0 which suggests that our transformation choice for diameter looks okay. 
+```{r}
+ggplot(blowBF.resid, aes(x=lnD.grps.med,y=resid.mean)) + 
+  geom_point() + 
+  geom_hline(yintercept = 0)
+```
+
+What if we hadn't logged diameter?  The binned residual plot shows more of a trend then the log diameter model. Residuals are mostly negative for small diameters (trees that survived (0) that have probabilities of death that are "too high") and mostly positive values for mid- to high-diameter bins (trees that died (1) that have probabilities of death that are "too low"). 
+```{r}
+fir.glmBad <- glm(y ~  D, family=binomial, data=blowBF)
+blowBF.augBad <- augment(data=blowBF, fir.glmBad, type.predict = "response", type.residuals = "response")
+blowBF.residBad <- blowBF.augBad %>%
+  group_by(D.grps) %>%
+  summarize(D.grps.med = median(D),    # median D of groups
+            fitted.mean = mean(.fitted),       # mean prob
+            resid.mean = mean(.resid))        # mean residual
+ggplot(blowBF.residBad, aes(x=D.grps.med,y=resid.mean)) + 
+  geom_point() + 
+  geom_hline(yintercept = 0)
+```
+
+
+
