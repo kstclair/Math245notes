@@ -728,3 +728,105 @@ Our variables are
 - `AtRisk` is $m_i$, the number of animals available for extinction
 - `Extinct` is $y_i$, the number (out of $m_i$) that went extinct
 
+#### EDA
+Our model of interest is the logistic regression of the number extinct against area, meaning the log odds is a linear function of area (or some function of area). Our first model attempt will look like:
+$$
+\log \left( \dfrac{\pi(x_i)}{1-\pi(x_i)}\right) = \beta_0 + \beta_1 area_i
+$$
+where $\pi(X_i)$ represents the probability of extinction ("success") for island $i$. 
+
+We check to see if area is linearly related to the log odds by first computing the proportion of extinctions ("successes") for each island, then using this to compute the empirical log odds. Here we do this by using `mutate` to add `prop` and `logOdds` to the island data set:
+```{r}
+library(dplyr)
+island <- mutate(island, 
+                 prop = Extinct/AtRisk, 
+                 logOdds = log(prop/(1-prop)))
+```
+
+Then we plot the `logOdds` against area, and see that we definitely don't have a linear relationship:
+```{r}
+library(ggplot2)
+ggplot(island, aes(x = Area, y = logOdds)) + 
+  geom_point() + 
+  labs(title="empirical log odds vs. area")
+```
+
+Since area is very right skewed, the first transformation choice could be log. We do find that log of area is linearly related to the log odds of extinction. 
+```{r}
+ggplot(island, aes(x = Area, y = logOdds)) + 
+  geom_point() + 
+  scale_x_log10() + labs(title="empirical log odds vs. log(area)")
+```
+
+#### Model fit
+Our logistic model says that given an island size $x_i$,  $Y_i$, the number of extinctions on island $i$, is a binomial variable
+$$
+Y_i \mid X_i \sim Binom(\pi(x_i), m_i)
+$$
+where $\pi(X_i)$ is the probability of extinction **for each of the $m_i$ at risk species on island $i$**. Based on the EDA, we will fit the logit model:
+$$
+\log \left( \dfrac{\pi(x_i)}{1-\pi(x_i)}\right) = \beta_0 + \beta_1 \ln(area_i)
+$$
+
+The `glm` fit needs to use the ratio of $y$ (`Extinct`) to $m$ (`AtRisk`) as the response and `weights` equal to $m$ (`AtRisk`):
+```{r}
+krunnit.glm <- glm(Extinct/AtRisk ~ log(Area), family="binomial", weights=AtRisk, data=island)
+summary(krunnit.glm)
+```
+
+The estimated odds log odds of extinction is $-1.1962 - 0.29710\log(area)$ and the estimated odds of extinction is 
+$$
+\dfrac{\hat{\pi}}{1-\hat{\pi}} = e^{-1.1962 - 0.29710\ln(area)} = e^{-1.1962}Area^{- 0.29710}
+$$
+
+The Wald z-test shows that the effect of area on extinction rates is statistically signicant (z=-5.416, p < 0.0001). Doubling an island area is associated with an 18.6% reduction in the odds of extinction of at risk species. We are 95% confident that doubling the area of an island is associated with anywhere from a 12.3% to 24.5% decrease in extiction rates. 
+
+$$
+OR = \dfrac{\hat{odds}(2 \times Area)}{\hat{odds}(Area)} = 2^{- 0.29710} = 0.814
+$$
+
+```{r}
+# factor change calcluations: 
+2^-.29710  # factor change in odds for double
+2^(-.29710 + c(-1,1)*qnorm(.975)*0.05485)  # CI for factor
+# percent change calculations:
+(2^-.29710 - 1)*100   # % change for double
+(2^(-.29710 + c(-1,1)*qnorm(.975)*0.05485) - 1)*100  # CI for % change
+```
+
+We are 95% confident that a 10% increase in the area of an island is associated with a 1.8% to 3.8% decrease in the odds of extinction for at risk species. 
+```{r}
+# increase area by 10% = multiply by factor of 1.1
+1.1^-.29710
+(1.1^-.29710 - 1)*100
+# 95% CI for effect on odds
+1.1^(-.29710 + c(-1,1)*qnorm(.975)*0.05485)
+(1.1^(-.29710 + c(-1,1)*qnorm(.975)*0.05485) - 1)*100
+```
+
+The estimated log odds of extinction for a 5 km$^2$ island is 
+$$
+\dfrac{\hat{\pi}(x=5)}{1-\hat{\pi}(x=5)} = e^{-1.1962 - 0.29710\log(5)} = e^{-1.1962}5^{- 0.29710} = -1.674364
+$$
+The estimated probability of exinction for at risk species on a 5 km$^2$ island is 15.7%.
+$$
+\hat{\pi}(x=5) = \dfrac{e^{-1.1962 - 0.29710\log(5)}}{1+e^{-1.1962 - 0.29710\log(5)}}= \dfrac{e^{-1.674364}}{1+e^{-1.674364}} = 0.1578432
+$$
+
+```{r}
+# estimated probability of extiction on a 5 km^2 island
+predict(krunnit.glm, newdata=list(Area=5), type="response")
+# verify (not needed, just make sure you can also do these calculations by hand for exam 3)
+( logit <- -1.1962 - 0.2971*log(5) )
+( prob <- exp(logit)/(1+exp(logit)) )
+```
+
+####Visualize
+We can add the estimated extinction probability curve using the `geom_smooth` function, adding `glm` as the smoothing method and `family` equal to Binomial. We also need to specify the $m_i$ used in the `glm` fit and this is done as an `aes` argument with `weight = AtRisk`. If you forget the `weight` argument you won't be seeing the correct probability curve!
+
+```{r}
+ggplot(island, aes(x=log(Area), y = Extinct/AtRisk, weight = AtRisk)) + 
+  geom_point() + 
+  geom_smooth(method="glm", se=FALSE,  method.args = list(family="binomial")) +
+  labs(title="Extinction probability as a function of area")
+```
