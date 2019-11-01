@@ -634,7 +634,7 @@ Logistic models can also be used with responses that are **Binomial counts**. Fo
 
 - $Y_i=$ number of successes in $m_i$ independent Bernoulli (success/failure) trials
 - $X_i = (x_{1,i}, \dotsc, x_{p,i})$ be the predictors for this case
-- $\pi(X_i)$ is the probability of success for each of the $n_i$ trials
+- $\pi(X_i)$ is the probability of success for each of the $m_i$ trials
 
 For example, suppose we have $n$ plots of land and we plant $m_i$ seeds on each. A reponse $Y_i$ could be the number of seeds that germinate in plot $i$. Each seed has a $\pi(X_i)$ probability of germinating, and this probability could depend on plot-level predictors like amount of rain in plot $i$ or amount of fertilizer applied to plot $i$. Here is an example of what this data could look like for a sample of $n=3$ plots
 
@@ -821,7 +821,7 @@ predict(krunnit.glm, newdata=list(Area=5), type="response")
 ( prob <- exp(logit)/(1+exp(logit)) )
 ```
 
-####Visualize
+#### Visualize
 We can add the estimated extinction probability curve using the `geom_smooth` function, adding `glm` as the smoothing method and `family` equal to Binomial. We also need to specify the $m_i$ used in the `glm` fit and this is done as an `aes` argument with `weight = AtRisk`. If you forget the `weight` argument you won't be seeing the correct probability curve!
 
 ```{r}
