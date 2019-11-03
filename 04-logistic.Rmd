@@ -863,13 +863,13 @@ A viable alternative model is the *saturated* "model" described above, which rea
 
 The saturated model will have the best "fit" (highest likelihood) of the two models, but if the "fit" (likelihood) of the logistic model is "close" then we can claim that the logistic model is adequate. This is the motivation behind a "goodness-of-fit" test. 
 
-Our hypothese for teh GOF test are:
+Our hypothese for the GOF test are:
 $$
 H_0: \textrm{logistic model}
 $$
 vs. 
 $$
-H_0: \textrm{saturated model}
+H_A: \textrm{saturated model}
 $$
 
 The test statistic for this is equal to the **residual deviance of the logistic model** (difference in the $H_A$ and $H_0$ likelihoods):
@@ -1043,14 +1043,14 @@ ggplot(island.aug, aes(x=Area, y=AtRisk, size=.hat)) +
   scale_x_log10() + 
   geom_point(data=slice(island.aug, 1,17), color="red") + 
   geom_point(data=slice(island.aug, 2,3), color="blue")+ 
-  labs(title("at risk vs. area, size denotes leverage"))
+  labs(title="at risk vs. area, size denotes leverage")
 
 ggplot(island.aug, aes(x=Area, y=AtRisk, size=.cooksd)) + 
   geom_point() + 
   scale_x_log10() + 
   geom_point(data=slice(island.aug, 1,17), color="red") + 
   geom_point(data=slice(island.aug, 2,3), color="blue")+ 
-  labs(title("at risk vs. area, size denotes Cook's distance"))
+  labs(title="at risk vs. area, size denotes Cook's distance")
 ```
 
 - Case 1 (Ulkokrunni) is the island with the largest area and the largest number at risk ($m_i$). For this reason case 1 has largest leverage but it doesn't have an large residual value so it doesn't have high Cook's distance. (See the fitted probability curve in Section \@ref(logistic-exViz)).

@@ -1320,7 +1320,7 @@ OR = \dfrac{\hat{odds}(2 \times Area)}{\hat{odds}(Area)} = 2^{- 0.29710} = 0.814
 <span class="op">&gt;</span><span class="st"> </span>( prob &lt;-<span class="st"> </span><span class="kw">exp</span>(logit)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(logit)) )
 ## [1] 0.1578432</code></pre></div>
 </div>
-<div id="visualize" class="section level4">
+<div id="logistic-exViz" class="section level4">
 <h4><span class="header-section-number">4.9.1.3</span> Visualize</h4>
 <p>We can add the estimated extinction probability curve using the <code>geom_smooth</code> function, adding <code>glm</code> as the smoothing method and <code>family</code> equal to Binomial. We also need to specify the <span class="math inline">\(m_i\)</span> used in the <code>glm</code> fit and this is done as an <code>aes</code> argument with <code>weight = AtRisk</code>. If you forget the <code>weight</code> argument you won’t be seeing the correct probability curve!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(island, <span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">log</span>(Area), <span class="dt">y =</span> Extinct<span class="op">/</span>AtRisk, <span class="dt">weight =</span> AtRisk)) <span class="op">+</span><span class="st"> </span>
@@ -1353,10 +1353,10 @@ G^2 = 2[\ln L(\bar{\pi}) - \ln L(\hat{\pi}(X))] = 2\sum_{i=1}^n \left[ y_i \ln \
 <p>In our binomial logistic model, we are assuming that an observed count for case <span class="math inline">\(i\)</span> behaves like a binomial random variable: <span class="math inline">\(Y_i \mid X_i \sim Binom(m_i, \pi(X_i))\)</span> where <span class="math inline">\(\pi(X_i)\)</span> is a function of <span class="math inline">\(p+1\)</span> <span class="math inline">\(\beta\)</span> parameters and the <span class="math inline">\(p\)</span> predictor terms.</p>
 <p>A viable alternative model is the <em>saturated</em> “model” described above, which really isn’t a model that relates predictors to the response. Rather, it just uses the <span class="math inline">\(n\)</span> empirical proportion of successes <span class="math inline">\(\bar{\pi} = y_i/m_i\)</span> for each case as the probability of success for all <span class="math inline">\(m_i\)</span> trials. (So there are <span class="math inline">\(n\)</span> parameters in this “model”.)</p>
 <p>The saturated model will have the best “fit” (highest likelihood) of the two models, but if the “fit” (likelihood) of the logistic model is “close” then we can claim that the logistic model is adequate. This is the motivation behind a “goodness-of-fit” test.</p>
-<p>Our hypothese for teh GOF test are: <span class="math display">\[
+<p>Our hypothese for the GOF test are: <span class="math display">\[
 H_0: \textrm{logistic model}
 \]</span> vs. <span class="math display">\[
-H_0: \textrm{saturated model}
+H_A: \textrm{saturated model}
 \]</span></p>
 <p>The test statistic for this is equal to the <strong>residual deviance of the logistic model</strong> (difference in the <span class="math inline">\(H_A\)</span> and <span class="math inline">\(H_0\)</span> likelihoods): <span class="math display">\[
 G^2 = 2[\ln L(\bar{\pi}) - \ln L(\hat{\pi}(X))]
@@ -1538,30 +1538,78 @@ Dres_i =  sign(y_i - m_i\hat{\pi}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(GGally)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggnostic</span>(krunnit.glm, <span class="dt">columnsY =</span> <span class="kw">c</span>(<span class="st">&quot;.hat&quot;</span>,<span class="st">&quot;.cooksd&quot;</span>))</code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
-<p>Finally, we dig a bit deeper and look at the data for the four highlighted cases above. We also plot weight (number at risk) against log area and highlight the small residual cases in blue (cases 2 and 3)</p>
+<p>Finally, we dig a bit deeper and look at the data for the four highlighted cases above. We also plot weight (number at risk) against log area and highlight the small residual cases in blue (cases 2 and 3) and the larger residual cases (1, 17).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>island.aug &lt;-<span class="st"> </span><span class="kw">augment</span>(krunnit.glm, <span class="dt">data=</span>island, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>)
-<span class="op">&gt;</span><span class="st"> </span>island.aug <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">slice</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">17</span>)
-## # A tibble: 4 x 13
-##   Island  Area AtRisk Extinct   prop logOdds .fitted .se.fit  .resid  .hat
-##   &lt;fct&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
-## 1 Ulkok~ 186.      75       5 0.0667  -2.64   0.0602  0.0149  0.233  0.293
-## 2 Maakr~ 106.      67       3 0.0448  -3.06   0.0704  0.0154 -0.874  0.242
-## 3 Risti~  30.7     66      10 0.152   -1.72   0.0985  0.0158  1.35   0.185
-## 4 Tiira~   0.2     40      13 0.325   -0.731  0.328   0.0383 -0.0381 0.266
-## # ... with 3 more variables: .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;
+<span class="op">&gt;</span><span class="st"> </span>island.aug <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">slice</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">17</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>.se.fit, <span class="op">-</span>.sigma)
+## # A tibble: 4 x 11
+##   Island  Area AtRisk Extinct   prop logOdds .fitted  .resid  .hat .cooksd
+##   &lt;fct&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Ulkok~ 186.      75       5 0.0667  -2.64   0.0602  0.233  0.293 1.63e-2
+## 2 Maakr~ 106.      67       3 0.0448  -3.06   0.0704 -0.874  0.242 1.41e-1
+## 3 Risti~  30.7     66      10 0.152   -1.72   0.0985  1.35   0.185 2.89e-1
+## 4 Tiira~   0.2     40      13 0.325   -0.731  0.328  -0.0381 0.266 3.59e-4
+## # ... with 1 more variable: .std.resid &lt;dbl&gt;
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(<span class="kw">select</span>(island.aug, Area, AtRisk))
+##       Area             AtRisk     
+##  Min.   :  0.070   Min.   : 6.00  
+##  1st Qu.:  0.625   1st Qu.:22.00  
+##  Median :  2.150   Median :31.00  
+##  Mean   : 19.804   Mean   :35.11  
+##  3rd Qu.:  4.725   3rd Qu.:42.25  
+##  Max.   :185.800   Max.   :75.00
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(island.aug, <span class="kw">aes</span>(<span class="dt">x=</span>Area, <span class="dt">y=</span>AtRisk, <span class="dt">size=</span>.hat)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">1</span>,<span class="dv">17</span>), <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">2</span>,<span class="dv">3</span>), <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>)</code></pre></div>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">2</span>,<span class="dv">3</span>), <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>)<span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;at risk vs. area, size denotes leverage&quot;</span>)</code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(island.aug, <span class="kw">aes</span>(<span class="dt">x=</span>Area, <span class="dt">y=</span>AtRisk, <span class="dt">size=</span>.cooksd)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">1</span>,<span class="dv">17</span>), <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">2</span>,<span class="dv">3</span>), <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>)</code></pre></div>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">2</span>,<span class="dv">3</span>), <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>)<span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;at risk vs. area, size denotes Cook&#39;s distance&quot;</span>)</code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-57-2.png" width="672" /></p>
+<ul>
+<li><p>Case 1 (Ulkokrunni) is the island with the largest area and the largest number at risk (<span class="math inline">\(m_i\)</span>). For this reason case 1 has largest leverage but it doesn’t have an large residual value so it doesn’t have high Cook’s distance. (See the fitted probability curve in Section <a href="logistic.html#logistic-exViz">4.9.1.3</a>).</p></li>
+<li><p>Case 17 (Tiirakari) has the <em>second smallest</em> area but a large number of at risk species given its small size. For this reason it has <em>larger</em> leverage than case 18 which has the smallest area but smaller number at risk. The fitted probability curve is very close to this case, though, so it has a small residual and low Cook’s distance.</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>island.aug <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">slice</span>(<span class="dv">18</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>.se.fit, <span class="op">-</span>.sigma)
+## # A tibble: 1 x 11
+##   Island  Area AtRisk Extinct  prop logOdds .fitted .resid   .hat .cooksd
+##   &lt;fct&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Risti~  0.07      6       3   0.5       0   0.400  0.496 0.0708  0.0103
+## # ... with 1 more variable: .std.resid &lt;dbl&gt;</code></pre></div>
+<ul>
+<li>Case 3 (Ristikari) has the third largest area (30.7) but it’s number at risk (66) is only one smaller than case 2 (Maakrunni) which is the second largest area (106). Case 3 also has a much larger residual than case 2, which results in it having the highest Cook’s distance value in the data set.</li>
+</ul>
+<p>In the end, though, none of these cases is overly influential in the model it and removal of case 3, the highest Cook’s distance, changes the estamate of <span class="math inline">\(\beta_1\)</span> from 0.30 to 0.33 and it’s significance doesn’t change. No cases need to be omitted from our analysis.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(<span class="kw">glm</span>(Extinct<span class="op">/</span>AtRisk <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>, <span class="dt">weights=</span>AtRisk, <span class="dt">data=</span>island, <span class="dt">subset=</span><span class="op">-</span><span class="dv">3</span>))
+## 
+## Call:
+## glm(formula = Extinct/AtRisk ~ log(Area), family = &quot;binomial&quot;, 
+##     data = island, weights = AtRisk, subset = -3)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -1.69885  -0.51675   0.02167   0.56804   1.47846  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.21921    0.11994 -10.165  &lt; 2e-16 ***
+## log(Area)   -0.33234    0.06148  -5.405 6.47e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 45.1373  on 16  degrees of freedom
+## Residual deviance:  9.7483  on 15  degrees of freedom
+## AIC: 69.087
+## 
+## Number of Fisher Scoring iterations: 4</code></pre></div>
 </div>
 </div>
 <div id="logistic-quasi" class="section level2">
