@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-11-02">
+<meta name="date" content="2019-11-03">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -252,10 +252,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.9.1" data-path="logistic.html"><a href="logistic.html#example-krunnit-islands-archipelago-sleuth-case-study-21.1"><i class="fa fa-check"></i><b>4.9.1</b> Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)</a></li>
 </ul></li>
 <li class="chapter" data-level="4.10" data-path="logistic.html"><a href="logistic.html#logistic-binomDev"><i class="fa fa-check"></i><b>4.10</b> Deviance for Binomial responses</a><ul>
-<li class="chapter" data-level="4.10.1" data-path="logistic.html"><a href="logistic.html#goodness-of-fit-test"><i class="fa fa-check"></i><b>4.10.1</b> Goodness-of-fit test</a></li>
+<li class="chapter" data-level="4.10.1" data-path="logistic.html"><a href="logistic.html#logistic-gof"><i class="fa fa-check"></i><b>4.10.1</b> Goodness-of-fit test</a></li>
 <li class="chapter" data-level="4.10.2" data-path="logistic.html"><a href="logistic.html#example-krunnit-islands-archipelago-sleuth-case-study-21.1-1"><i class="fa fa-check"></i><b>4.10.2</b> Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)</a></li>
 </ul></li>
-<li class="chapter" data-level="4.11" data-path="logistic.html"><a href="logistic.html#logistic-binomResid"><i class="fa fa-check"></i><b>4.11</b> Residuals and case influence for Binomial responses</a></li>
+<li class="chapter" data-level="4.11" data-path="logistic.html"><a href="logistic.html#logistic-assump"><i class="fa fa-check"></i><b>4.11</b> Checking Assumptions</a><ul>
+<li class="chapter" data-level="4.11.1" data-path="logistic.html"><a href="logistic.html#example-krunnit-islands-archipelago-sleuth-case-study-21.1-2"><i class="fa fa-check"></i><b>4.11.1</b> Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.12" data-path="logistic.html"><a href="logistic.html#logistic-binomResid"><i class="fa fa-check"></i><b>4.12</b> Residuals and case influence for binomial responses</a><ul>
+<li class="chapter" data-level="4.12.1" data-path="logistic.html"><a href="logistic.html#example-krunnit-islands-archipelago-sleuth-case-study-21.1-3"><i class="fa fa-check"></i><b>4.12.1</b> Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.13" data-path="logistic.html"><a href="logistic.html#logistic-quasi"><i class="fa fa-check"></i><b>4.13</b> Quasi-binomial logistic model</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>5</b> Poisson Regression</a></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
@@ -1216,7 +1222,7 @@ Binom(m_i = 1, \pi(X_i)) = Bern(\pi(X_i))
 <li><code>AtRisk</code> is <span class="math inline">\(m_i\)</span>, the number of animals available for extinction</li>
 <li><code>Extinct</code> is <span class="math inline">\(y_i\)</span>, the number (out of <span class="math inline">\(m_i\)</span>) that went extinct</li>
 </ul>
-<div id="eda-2" class="section level4">
+<div id="logistic-BinomEDAex" class="section level4">
 <h4><span class="header-section-number">4.9.1.1</span> EDA</h4>
 <p>Our model of interest is the logistic regression of the number extinct against area, meaning the log odds is a linear function of area (or some function of area). Our first model attempt will look like: <span class="math display">\[
 \log \left( \dfrac{\pi(x_i)}{1-\pi(x_i)}\right) = \beta_0 + \beta_1 area_i
@@ -1342,7 +1348,7 @@ G^2 = 2[\ln L(\bar{\pi}) - \ln L(\hat{\pi}(X))] = 2\sum_{i=1}^n \left[ y_i \ln \
 <li><p><strong>Drop-in-deviance</strong>: Used to compare two models, just like in binary logistic models. Details are in Section <a href="logistic.html#logistic-dev">4.5</a>.</p></li>
 <li><p><strong>Goodness-of-fit</strong>: Used to test binomial response model adequacy.</p></li>
 </ol>
-<div id="goodness-of-fit-test" class="section level3">
+<div id="logistic-gof" class="section level3">
 <h3><span class="header-section-number">4.10.1</span> Goodness-of-fit test</h3>
 <p>In our binomial logistic model, we are assuming that an observed count for case <span class="math inline">\(i\)</span> behaves like a binomial random variable: <span class="math inline">\(Y_i \mid X_i \sim Binom(m_i, \pi(X_i))\)</span> where <span class="math inline">\(\pi(X_i)\)</span> is a function of <span class="math inline">\(p+1\)</span> <span class="math inline">\(\beta\)</span> parameters and the <span class="math inline">\(p\)</span> predictor terms.</p>
 <p>A viable alternative model is the <em>saturated</em> “model” described above, which really isn’t a model that relates predictors to the response. Rather, it just uses the <span class="math inline">\(n\)</span> empirical proportion of successes <span class="math inline">\(\bar{\pi} = y_i/m_i\)</span> for each case as the probability of success for all <span class="math inline">\(m_i\)</span> trials. (So there are <span class="math inline">\(n\)</span> parameters in this “model”.)</p>
@@ -1383,9 +1389,13 @@ p-value = 1-P(\chi^2 &gt; G^2) = 1-pchisq(G^2, df=n-(p+1))
 </div>
 <div id="example-krunnit-islands-archipelago-sleuth-case-study-21.1-1" class="section level3">
 <h3><span class="header-section-number">4.10.2</span> Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)</h3>
-<p>For our exinction model, our GOF test hypotheses are <span class="math display">\[
+<p>For our extinction model, our GOF test hypotheses are <span class="math display">\[
 H_0: \ln(odds) = \beta_0 + \beta_1 \ln(area),  \ \ \ \ \ H_A: \ln odds= \alpha_i  \textrm{ (saturated model) }
-\]</span> Our test stat is the residual deviance of <span class="math inline">\(G^2 = 12.062\)</span> from the null model</p>
+\]</span> We can conduct a GOF test because all our <span class="math inline">\(m_i\)</span>’s (<code>AtRisk</code>), are above 5:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(island<span class="op">$</span>AtRisk)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    6.00   22.00   31.00   35.11   42.25   75.00</code></pre></div>
+<p>Our test stat is the residual deviance of <span class="math inline">\(G^2 = 12.062\)</span> from the null model</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(krunnit.glm)
 ## 
 ## Call:
@@ -1447,8 +1457,115 @@ p-value = 1- P(\chi^2 &gt; 12.062) = 1- pchisq(12.062, df=16) = 0.7397
 <p>The residual deviance for this model is about double the deviance of the log-area model. The much smaller p-value of 0.076 suggest that the null model may not be adequate, which our initial EDA for the log-odds suggested.</p>
 </div>
 </div>
+<div id="logistic-assump" class="section level2">
+<h2><span class="header-section-number">4.11</span> Checking Assumptions</h2>
+<p>Assumptions in a binomial logistic model include the same assumptions as binary models (Section @(logistic-assump)): cases are independent and log-odds are a linear function of predictors.</p>
+<ul>
+<li>Independence of cases takes an understanding of how the data was collected.</li>
+<li>Log-odds linearity can be checked with an empirical log-odds plot against quantitative predictors (as done in Section <a href="logistic.html#logistic-BinomEDAex">4.9.1.1</a>) and residual plots.</li>
+</ul>
+<p>A third assumptions is that given predictor values, the counts of successes <span class="math inline">\(Y_i\)</span> has a binomial distribution. This means that for each case <span class="math inline">\(i\)</span></p>
+<ul>
+<li>the <span class="math inline">\(m_i\)</span> trials are independent events, and a success or failure for one trial doesn’t affect the outcome of another trial, and</li>
+<li>the probability of success <span class="math inline">\(\pi(X_i)\)</span> is the same for all <span class="math inline">\(m_i\)</span> trials.</li>
+</ul>
+<p>If one, or both, of these assumptions is violated, then it often induces <strong>extra-binomial variation</strong> (a.k.a. <strong>overdispersion</strong>). This means that the actual variation in our response <span class="math inline">\(SD(Y\mid X_i)\)</span> is <strong>larger</strong> than the binomial SD of <span class="math inline">\(\sqrt{m_i\pi(X_i)(1-\pi(X_i))}\)</span> that our model assumes. So the response variation is more dispersed than what our model assumes, making our reported <strong>standard errors and p-values too small</strong> and we could be over-reporting statistical significance.</p>
+<p>We can use the goodness-of-fit test (<a href="logistic.html#logistic-gof">4.10.1</a>), when <span class="math inline">\(m_i\)</span> are large enough, to check our binomial distribution assumption. If we do find evidence of lack-of-fit in our binomial model, then you should</p>
+<ul>
+<li>Check deviance residuals as case influence stats to see if an outlier(s) is affecting GOF results.</li>
+<li>Check the log odds form and see if transformations of quantitative predictors are needed</li>
+<li>If outliers and transformations aren’t a concern, then consider an alternative model:
+<ul>
+<li>binary logistic model if trial-level predictors are available</li>
+<li>quasi-binmial logistic model (Section <a href="logistic.html#logistic-quasi">4.13</a>)</li>
+<li>a model that allows for correlated trials (like a mixed-effects logistic model)</li>
+</ul></li>
+</ul>
+<div id="example-krunnit-islands-archipelago-sleuth-case-study-21.1-2" class="section level3">
+<h3><span class="header-section-number">4.11.1</span> Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)</h3>
+<p>How might the Krunnit Island extinction counts violate the binomial counts model assumptions:</p>
+<ul>
+<li><p><strong>Independence</strong>: This assumption implies that the extinction, or not, of all at risk species on an island are independent events. This could be violated if the extinction of one species makes the extinction of a second more likely. This might occur if the prey of a predator species goes extinct, making extinction of the predator species more likely.</p></li>
+<li><p><strong>Probability</strong>: This assumption implies that the probability <span class="math inline">\(\pi(X_i)\)</span> of extinction on island <span class="math inline">\(i\)</span> is the same for all at risk species on island <span class="math inline">\(i\)</span>. This could be violated if, for example, species living primarily on the interior of the island had a lower chance of extinction than species living on the coastal region. Since location of each at risk species is unaccounted for in our model, then the overall number of extinct species on the island is not a binomial variable.</p></li>
+</ul>
+</div>
+</div>
 <div id="logistic-binomResid" class="section level2">
-<h2><span class="header-section-number">4.11</span> Residuals and case influence for Binomial responses</h2>
+<h2><span class="header-section-number">4.12</span> Residuals and case influence for binomial responses</h2>
+<p>We have a few options for residuals for a binomial logistic model. The two most common residuals to consider are Pearson residuals and deviance residuals.</p>
+<p><strong>Pearson residuals</strong> are basically response residuals standardized based on the binomial SD: <span class="math display">\[
+pr_i = \dfrac{ y_i - m_i\hat{\pi}(X_i)}{\sqrt{m_i\hat{\pi}(X_i)(1-\hat{\pi}(X_i))}}
+\]</span> We can get these residuals by requesting the “pearson” type of residual:</p>
+<ul>
+<li><code>resid(my.glm, type = &quot;pearson&quot;)</code></li>
+<li><code>augment(my.glm,  type.residuals = &quot;pearson&quot;)</code></li>
+</ul>
+<p><strong>Deviance residuals</strong> are each case’s contribution to the residual deviance, with a <span class="math inline">\(\pm\)</span> based on whether we over- or under-estimate a case’s response (the <span class="math inline">\(\pm\)</span> is denoted by <span class="math inline">\(sign(y_i - m_i\hat{\pi}(X_i))\)</span>): <span class="math display">\[
+Dres_i =  sign(y_i - m_i\hat{\pi}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i}{m_i\hat{\pi}(X_i)} \right) + (m_i- y_i) \ln \left( \dfrac{m_i-y_i}{m_i-m_i\hat{\pi}(X_i)} \right) \right] }
+\]</span> We can get these residuals by requesting the default residual values:</p>
+<ul>
+<li><code>resid(my.glm)</code></li>
+<li><code>augment(my.glm)</code></li>
+</ul>
+<p>Pearson residuals are “easy” to interpret as the number of estimated SD’s a response is from it’s estimated mean. Deviance residuals are good to check if you find significant results in a GOF test. When <span class="math inline">\(m_i\)</span>’s are large (at least 5), both types of residuals should be similar in value and have a <span class="math inline">\(N(0,1)\)</span> distribution (approximately). This means that most cases (~95%) should have residual values no more extreme than <span class="math inline">\(\pm 2\)</span>. Regardless of size of <span class="math inline">\(m_i\)</span>, we should plot residuals vs. quantitative predictors to assess linearity of the log odds.</p>
+<p>Case influence stats of leverage and Cook’s distance can also be used to look for outliers. In a GLM, leverage measures both a cases’s “extremeness” in terms of it’s predictor values <strong>and</strong> it’s extremeness in terms of it’s <strong>weight</strong> <span class="math inline">\(m_i\)</span> in the model. A case with high value of <span class="math inline">\(m_i\)</span> has a high number of trials and we are better able to estimate the probability of success for this case compared to a case with a smaller number of trials. For this reason, cases with higher value of <span class="math inline">\(m_i\)</span> are given more weight, and hence higher leverage, in the fitted model (e.g. in the estiamtes of <span class="math inline">\(\hat{\beta}\)</span>). The value of Cook’s distance also takes into account a cases leverage (measured both by predictor values and by <span class="math inline">\(m_i\)</span> size) and a case’s residual value.</p>
+<p>You can get Pearson residuals, leverage and Cook’s distance with <code>plot(my.glm, which = 5)</code>. You can also get leverage and Cook’s distance vs. predictor values with <code>ggnostic(my.glm, columnsY = c(&quot;.hat&quot;,&quot;.cooksd&quot;))</code> from the <code>GGally</code> package.</p>
+<div id="example-krunnit-islands-archipelago-sleuth-case-study-21.1-3" class="section level3">
+<h3><span class="header-section-number">4.12.1</span> Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)</h3>
+<p>Here we use the <code>augment</code> command to get both sets of residuals for the logistic regression of extinction on log area. Neither plot shows an obvious trend, so the linearity assumption looks to be met.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>island.aug &lt;-<span class="st"> </span><span class="kw">augment</span>(krunnit.glm, <span class="dt">type.residual=</span><span class="st">&quot;pearson&quot;</span>)
+<span class="op">&gt;</span><span class="st"> </span>plotA &lt;-<span class="st"> </span><span class="kw">ggplot</span>(island.aug, <span class="kw">aes</span>(<span class="dt">x=</span>log.Area., <span class="dt">y=</span>.resid)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>()  <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)  <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Pearson residual plot&quot;</span>)
+<span class="op">&gt;</span><span class="st"> </span>
+<span class="er">&gt;</span><span class="st"> </span>island.aug &lt;-<span class="st"> </span><span class="kw">augment</span>(krunnit.glm)
+<span class="op">&gt;</span><span class="st"> </span>plotB &lt;-<span class="st"> </span><span class="kw">ggplot</span>(island.aug, <span class="kw">aes</span>(<span class="dt">x=</span>log.Area., <span class="dt">y=</span>.resid)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>()  <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)  <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Deviance residual plot&quot;</span>)
+<span class="op">&gt;</span><span class="st"> </span>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(gridExtra)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">grid.arrange</span>(plotA, plotB, <span class="dt">ncol=</span><span class="dv">2</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p>Since all at risk counts are rather large (all cases are 6 or larger), we can expect the residuals to be approximately <span class="math inline">\(N(0,1)\)</span>. The residual plots above show no cases that are extreme is magnitude. A normal QQ plot shows rough normality with the min and max residuals case deviating a bit from the reference line.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(krunnit.glm, <span class="dt">which=</span><span class="dv">2</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p>We can plot residuals and case influence stats with all 18 cases identified with the <code>plot</code> command. Here we see that rows 1,2 and 17 have largest leverage while case 3 looks to have the highest Cook’s distance value.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(krunnit.glm, <span class="dt">which=</span><span class="dv">5</span>, <span class="dt">id.n=</span><span class="dv">18</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p>Here we see that the case influence stats against log area and against the model weights, number at risk:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(GGally)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggnostic</span>(krunnit.glm, <span class="dt">columnsY =</span> <span class="kw">c</span>(<span class="st">&quot;.hat&quot;</span>,<span class="st">&quot;.cooksd&quot;</span>))</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<p>Finally, we dig a bit deeper and look at the data for the four highlighted cases above. We also plot weight (number at risk) against log area and highlight the small residual cases in blue (cases 2 and 3)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>island.aug &lt;-<span class="st"> </span><span class="kw">augment</span>(krunnit.glm, <span class="dt">data=</span>island, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>)
+<span class="op">&gt;</span><span class="st"> </span>island.aug <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">slice</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">17</span>)
+## # A tibble: 4 x 13
+##   Island  Area AtRisk Extinct   prop logOdds .fitted .se.fit  .resid  .hat
+##   &lt;fct&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+## 1 Ulkok~ 186.      75       5 0.0667  -2.64   0.0602  0.0149  0.233  0.293
+## 2 Maakr~ 106.      67       3 0.0448  -3.06   0.0704  0.0154 -0.874  0.242
+## 3 Risti~  30.7     66      10 0.152   -1.72   0.0985  0.0158  1.35   0.185
+## 4 Tiira~   0.2     40      13 0.325   -0.731  0.328   0.0383 -0.0381 0.266
+## # ... with 3 more variables: .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(island.aug, <span class="kw">aes</span>(<span class="dt">x=</span>Area, <span class="dt">y=</span>AtRisk, <span class="dt">size=</span>.hat)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">1</span>,<span class="dv">17</span>), <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">2</span>,<span class="dv">3</span>), <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(island.aug, <span class="kw">aes</span>(<span class="dt">x=</span>Area, <span class="dt">y=</span>AtRisk, <span class="dt">size=</span>.cooksd)) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">1</span>,<span class="dv">17</span>), <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">2</span>,<span class="dv">3</span>), <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>)</code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-57-2.png" width="672" /></p>
+</div>
+</div>
+<div id="logistic-quasi" class="section level2">
+<h2><span class="header-section-number">4.13</span> Quasi-binomial logistic model</h2>
 
 </div>
 </div>

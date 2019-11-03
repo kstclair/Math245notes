@@ -728,7 +728,7 @@ Our variables are
 - `AtRisk` is $m_i$, the number of animals available for extinction
 - `Extinct` is $y_i$, the number (out of $m_i$) that went extinct
 
-#### EDA
+#### EDA {#logistic-BinomEDAex}
 Our model of interest is the logistic regression of the number extinct against area, meaning the log odds is a linear function of area (or some function of area). Our first model attempt will look like:
 $$
 \log \left( \dfrac{\pi(x_i)}{1-\pi(x_i)}\right) = \beta_0 + \beta_1 area_i
@@ -821,7 +821,7 @@ predict(krunnit.glm, newdata=list(Area=5), type="response")
 ( prob <- exp(logit)/(1+exp(logit)) )
 ```
 
-#### Visualize
+#### Visualize {#logistic-exViz}
 We can add the estimated extinction probability curve using the `geom_smooth` function, adding `glm` as the smoothing method and `family` equal to Binomial. We also need to specify the $m_i$ used in the `glm` fit and this is done as an `aes` argument with `weight = AtRisk`. If you forget the `weight` argument you won't be seeing the correct probability curve!
 
 ```{r}
@@ -855,7 +855,7 @@ Deviance for binomial models can be used for two types of hypothesis tests:
 
 2. **Goodness-of-fit**: Used to test binomial response model adequacy. 
 
-### Goodness-of-fit test
+### Goodness-of-fit test {#logistic-gof}
 
 In our binomial logistic model, we are assuming that an observed count for case $i$ behaves like a binomial random variable: $Y_i \mid X_i \sim Binom(m_i, \pi(X_i))$ where $\pi(X_i)$ is a function of $p+1$ $\beta$ parameters and the $p$ predictor terms. 
 
@@ -901,10 +901,15 @@ For a GOF test, you should consider the following interpretations for "large" or
 
 ### Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)
 
-For our exinction model, our GOF test hypotheses are
+For our extinction model, our GOF test hypotheses are
 $$
 H_0: \ln(odds) = \beta_0 + \beta_1 \ln(area),  \ \ \ \ \ H_A: \ln odds= \alpha_i  \textrm{ (saturated model) }
 $$
+We can conduct a GOF test because all our $m_i$'s (`AtRisk`), are above 5:
+```{r}
+summary(island$AtRisk)
+```
+
 Our test stat is the residual deviance of $G^2 = 12.062$ from the null model
 ```{r}
 summary(krunnit.glm)
@@ -918,7 +923,7 @@ $$
 1-pchisq(12.062, df=16)
 ```
 
-The large p-value means that we do not reject the null hypothesis. Our model for the probability of extinction given log-area looks to be adequate.
+The large p-value means that we do not reject the null hypothesis. Our model for the probability of extinction given log-area looks to be adequate. 
 
 
 Note that if we hadn't used log of area in our model our conclusions from the GOF would suggest something different:
@@ -930,4 +935,137 @@ summary(krunnit.glmBad)
 The residual deviance for this model is about double the deviance of the log-area model. The much smaller p-value of 0.076 suggest that the null model may not be adequate, which our initial EDA for the log-odds suggested. 
 
 
-## Residuals and case influence for Binomial responses {#logistic-binomResid}
+
+
+## Checking Assumptions {#logistic-assump}
+
+Assumptions in a binomial logistic model include the same assumptions as binary models (Section \@(logistic-assump)): cases are independent and log-odds are a linear function of predictors. 
+
+- Independence of cases takes an understanding of how the data was collected. 
+- Log-odds linearity can be checked with an empirical log-odds plot against quantitative predictors (as done in Section \@ref(logistic-BinomEDAex)) and residual plots. 
+
+A third assumptions is that given predictor values, the counts of successes $Y_i$ has a binomial distribution. This means that for each case $i$
+
+- the $m_i$ trials are independent events, and a success or failure for one trial doesn't affect the outcome of another trial, and
+- the probability of success $\pi(X_i)$ is the same for all $m_i$ trials. 
+
+If one, or both, of these assumptions is violated, then it often induces **extra-binomial variation** (a.k.a. **overdispersion**). This means that the actual variation in our response $SD(Y\mid X_i)$ is **larger** than the  binomial SD of $\sqrt{m_i\pi(X_i)(1-\pi(X_i))}$ that our model assumes. So the response variation is more dispersed than what our model assumes, making our reported **standard errors and p-values too small** and we could be over-reporting statistical significance. 
+
+We can use the goodness-of-fit test (\@ref(logistic-gof)), when $m_i$ are large enough, to check our binomial distribution assumption. If we do find evidence of lack-of-fit in our binomial model, then you should
+
+- Check deviance residuals as case influence stats to see if an outlier(s) is  affecting GOF results. 
+- Check the log odds form and see if transformations of quantitative predictors are needed
+- If outliers and transformations aren't a concern, then consider an alternative model:
+    - binary logistic model if trial-level predictors are available
+    - quasi-binmial logistic model (Section \@ref(logistic-quasi))
+    - a model that allows for correlated trials (like a mixed-effects logistic model) 
+
+### Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)
+
+How might the Krunnit Island extinction counts violate the binomial counts model assumptions:
+
+- **Independence**: This assumption implies that the extinction, or not, of all at risk species on an island are independent events. This could be violated if the extinction of one species makes the extinction of a second more likely. This might occur if the prey of a predator species goes extinct, making extinction of the predator species more likely. 
+
+- **Probability**: This assumption implies that the probability $\pi(X_i)$ of extinction on island $i$ is the same for all at risk species on island $i$. This could be violated if, for example, species living primarily on the interior of the island had a lower chance of extinction than species living on the coastal region. Since location of each at risk species is unaccounted for in our model, then the overall number of extinct species on the island is not a binomial variable.  
+
+## Residuals and case influence for binomial responses {#logistic-binomResid}
+
+We have a few options for residuals for a binomial logistic model. The two most common residuals to consider are Pearson residuals and deviance residuals. 
+
+**Pearson residuals** are basically response residuals standardized based on the binomial SD:
+$$
+pr_i = \dfrac{ y_i - m_i\hat{\pi}(X_i)}{\sqrt{m_i\hat{\pi}(X_i)(1-\hat{\pi}(X_i))}}
+$$
+We can get these residuals by requesting the "pearson" type of residual:
+
+- `resid(my.glm, type = "pearson")`
+- `augment(my.glm,  type.residuals = "pearson")` 
+
+
+**Deviance residuals** are each case's contribution to the residual deviance, with a $\pm$ based on whether we over- or under-estimate a case's response (the $\pm$ is denoted by $sign(y_i - m_i\hat{\pi}(X_i))$):
+$$
+Dres_i =  sign(y_i - m_i\hat{\pi}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i}{m_i\hat{\pi}(X_i)} \right) + (m_i- y_i) \ln \left( \dfrac{m_i-y_i}{m_i-m_i\hat{\pi}(X_i)} \right) \right] }
+$$
+We can get these residuals by requesting the default residual values:
+
+- `resid(my.glm)`
+- `augment(my.glm)` 
+
+Pearson residuals are "easy" to interpret as the number of estimated SD's a response is from it's estimated mean. Deviance residuals are good to check if you find significant results in a GOF test. When $m_i$'s are large (at least 5), both types of residuals should be similar in value and have a $N(0,1)$ distribution (approximately). This means that most cases (~95%) should have residual values no more extreme than $\pm 2$.  Regardless of size of $m_i$, we should plot residuals vs. quantitative predictors to assess linearity of the log odds.
+
+Case influence stats of leverage and Cook's distance can also be used to look for outliers. In a GLM, leverage measures both a cases's "extremeness" in terms of it's predictor values **and** it's extremeness in terms of it's **weight** $m_i$ in the model. A case with high value of $m_i$ has a high number of trials and we are better able to estimate the probability of success for this case compared to a case with a smaller number of trials. For this reason, cases with higher value of $m_i$ are given more weight, and hence higher leverage, in the fitted model (e.g. in the estiamtes of $\hat{\beta}$). The value of Cook's distance also takes into account a cases leverage (measured both by predictor values and by $m_i$ size) and a case's residual value. 
+
+You can get Pearson residuals, leverage and Cook's distance with `plot(my.glm, which = 5)`. You can also get leverage and Cook's distance vs. predictor values with `ggnostic(my.glm, columnsY = c(".hat",".cooksd"))` from the `GGally` package.
+
+### Example: Krunnit Islands archipelago (Sleuth Case Study 21.1)
+
+Here we use the `augment` command to get both sets of residuals for the logistic regression of extinction on log area. Neither plot shows an obvious trend, so the linearity assumption looks to be met. 
+```{r}
+island.aug <- augment(krunnit.glm, type.residual="pearson")
+plotA <- ggplot(island.aug, aes(x=log.Area., y=.resid)) + 
+  geom_point()  + 
+  geom_hline(yintercept = 0)  + 
+  labs(title="Pearson residual plot")
+
+island.aug <- augment(krunnit.glm)
+plotB <- ggplot(island.aug, aes(x=log.Area., y=.resid)) + 
+  geom_point()  + 
+  geom_hline(yintercept = 0)  + 
+  labs(title="Deviance residual plot")
+
+library(gridExtra)
+grid.arrange(plotA, plotB, ncol=2)
+```
+
+Since all at risk counts are rather large (all cases are 6 or larger), we can expect the residuals to be approximately $N(0,1)$. The residual plots above show no cases that are extreme is magnitude. A normal QQ plot shows rough normality with the min and max residuals case deviating a bit from the reference line. 
+```{r}
+plot(krunnit.glm, which=2)
+```
+
+We can plot residuals and case influence stats with all 18 cases identified with the `plot` command. Here we see that rows 1,2 and 17 have largest leverage while case 3 looks to have the highest Cook's distance value.  
+```{r}
+plot(krunnit.glm, which=5, id.n=18)
+```
+
+Here we see that the case influence stats against log area and against the model weights, number at risk:
+```{r}
+library(GGally)
+ggnostic(krunnit.glm, columnsY = c(".hat",".cooksd"))
+```
+
+Finally, we dig a bit deeper and look at the data for the four highlighted cases above. We also  plot weight (number at risk) against log area and highlight the small residual cases in blue (cases 2 and 3) and the larger residual cases (1, 17).
+```{r}
+island.aug <- augment(krunnit.glm, data=island, type.predict = "response")
+island.aug %>% slice(1,2,3,17) %>% select(-.se.fit, -.sigma)
+summary(select(island.aug, Area, AtRisk))
+ggplot(island.aug, aes(x=Area, y=AtRisk, size=.hat)) + 
+  geom_point() + 
+  scale_x_log10() + 
+  geom_point(data=slice(island.aug, 1,17), color="red") + 
+  geom_point(data=slice(island.aug, 2,3), color="blue")+ 
+  labs(title("at risk vs. area, size denotes leverage"))
+
+ggplot(island.aug, aes(x=Area, y=AtRisk, size=.cooksd)) + 
+  geom_point() + 
+  scale_x_log10() + 
+  geom_point(data=slice(island.aug, 1,17), color="red") + 
+  geom_point(data=slice(island.aug, 2,3), color="blue")+ 
+  labs(title("at risk vs. area, size denotes Cook's distance"))
+```
+
+- Case 1 (Ulkokrunni) is the island with the largest area and the largest number at risk ($m_i$). For this reason case 1 has largest leverage but it doesn't have an large residual value so it doesn't have high Cook's distance. (See the fitted probability curve in Section \@ref(logistic-exViz)).
+
+- Case 17 (Tiirakari) has the *second smallest* area but a large number of at risk species given its small size. For this reason it has *larger* leverage than case 18 which has the smallest area but smaller number at risk. The fitted probability curve is very close to this case, though, so it has a small residual and low Cook's distance. 
+```{r}
+island.aug %>% slice(18) %>% select(-.se.fit, -.sigma)
+```
+
+- Case 3 (Ristikari) has the third largest area (30.7) but it's number at risk (66) is only one smaller than case 2 (Maakrunni) which is the second largest area (106). Case 3 also has a much larger residual than case 2, which results in it having the highest Cook's distance value in the data set. 
+
+In the end, though, none of these cases is overly influential in the model it and removal of case 3, the highest Cook's distance, changes the estamate of $\beta_1$ from 0.30 to 0.33 and it's significance doesn't change. No cases need to be omitted from our analysis. 
+
+```{r}
+summary(glm(Extinct/AtRisk ~ log(Area), family="binomial", weights=AtRisk, data=island, subset=-3))
+```
+
+## Quasi-binomial logistic model {#logistic-quasi}
