@@ -944,7 +944,7 @@ Assumptions in a binomial logistic model include the same assumptions as binary 
 - Independence of cases takes an understanding of how the data was collected. 
 - Log-odds linearity can be checked with an empirical log-odds plot against quantitative predictors (as done in Section \@ref(logistic-BinomEDAex)) and residual plots. 
 
-A third assumptions is that given predictor values, the counts of successes $Y_i$ has a binomial distribution. This means that for each case $i$
+A third assumption is that given predictor values, the counts of successes $Y_i$ has a binomial distribution. This means that for each case $i$
 
 - the $m_i$ trials are independent events, and a success or failure for one trial doesn't affect the outcome of another trial, and
 - the probability of success $\pi(X_i)$ is the same for all $m_i$ trials. 
