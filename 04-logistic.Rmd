@@ -1112,3 +1112,81 @@ We can get compare quasi-binomial models using deviance with the command
 anova(red.quasi, full.quasi, test = "F")
 ```
 
+Note that the method of estimation dispersion as $G^2/(n-(p+1))$ is *one* way to estimate this parameter. This idea is based on the fact that the $G^2$ value will have an approximate $\chi^2$ distribution with expected value of $n-(p+1)$ when the binomial model is  adequate. Comparing the actual value of $G^2$ to this expectation tells us our dispersion rate. Another way to compute this value is to look at the **sum of the squared Pearson residuals**, which should also have an expected value of $n-(p+1)$. The ratio of these two quantities is actually what the `glm` function uses to compute the dispersion parameter. Often there is no pratical difference between these two ways of estimation the dispersion parameter.  
+
+### Example: Moth predation (Case Study 21.2)
+
+Sleuth case study 21.2 models the probability that a moth is "removed" from a tree (eaten by a bird) as a function of the color of the moth (`morph`, light or dark) and the distance the moth was from Liverpool (`Distance`, one of 7 locations, measured in km). The number of moths available at each location and in each color group is measured by `Place`. 
+```{r}
+library(Sleuth3)
+moth <- case2102
+dim(moth)
+summary(moth)
+```
+
+To make our `glm` results match those of the textbook (which have an indicator for the `dark` level), we will relevel `Morph` to make `dark` the second level (Section \@ref(factors)):
+```{r}
+library(forcats)
+moth$Morph2 <- fct_relevel(moth$Morph, "light", "dark")
+levels(moth$Morph2)
+```
+
+We will now fit the binomial logistic regression of number removed on the interaction of morph color and distance:
+```{r}
+moth.glm <- glm(Removed/Placed ~ Morph2*Distance, 
+                family=binomial, weights= Placed, data=moth)
+summary(moth.glm)
+```
+
+A goodness-of-fit test doesn't give a *strong* indication of overdispersion, but as the book suggests, given the design of the study, it is completely reasonable to assume there are other factors besides distance from Liverpool that could affect the probability of removal at each location. Since these factors aren't accounted for in the model, we may want to use a quasi-binomial model that accounts for this unmodeled variation. 
+```{r}
+1-pchisq(13.23, df=10)   # GOF p-value
+```
+
+Using the `glm` results for the binomial fit, our estimated dispersion parameter is
+$$
+\hat{\psi} = \dfrac{G^2}{n-(p+1)} = \dfrac{13.23}{14-(3+1)} = `r 13.23/10`
+$$
+
+In a quasi-binomial model, the SE's will be larger than the binomial model SE's by a factor of $\sqrt{1.323} = 1.150$, or about 15% larger. For example, the quasi-binomial SE for the interaction term will be
+$$
+SE_{quasi} = \sqrt{1.323} \times 0.008085 \approx `r sqrt(1.323)*0.008085`
+$$
+
+We can fit this quasi-binomial model in R, and get these dispersion and SE values as follows:
+```{r}
+moth.quasi <- glm(Removed/Placed ~ Morph2*Distance, 
+                family=quasibinomial, weights= Placed, data=moth)
+summary(moth.quasi)
+sqrt(1.270859)
+```
+
+Notice that the dispersion parameter is estimated as 1.27 by the `glm` function, using the ratio of the sum of squared Pearson residuals against degrees of freedom:
+```{r}
+sum(resid(moth.glm, type="pearson")^2)/10
+```
+
+Both dispersion estimates, either 1.32 or 1.27, are valid estimates and both indicate that the binomial model SEs are expanded by a factor of about 1.13-1.15. The quasi-binomial SE for the interaction term is reported to be about 0.009 which is what we computed by hand above. 
+
+We can compare the model with and without the interaction term with a quasi-binomial F test comparison:
+```{r}
+moth.quasi2 <- glm(Removed/Placed ~ Morph2 + Distance, 
+                family=quasibinomial, weights= Placed, data=moth)
+summary(moth.quasi2)
+anova(moth.quasi2, moth.quasi, test="F")
+```
+
+The F test stat is computed as the drop in deviance between the two models, divided by the number of terms tested and the dispersion parameter:
+$$
+F = \dfrac{(25.161 - 13.230)/1}{1.323} = \dfrac{11.931/1}{1.323} \approx `r 11.931/1.323`
+$$
+This test stat yields a p-value of 0.013 which, along with the Wald z-test, supports the conclusion that the interaction term is statistically significant. 
+```{r}
+1-pf(9.02, 1, 10)  #1=numerator df, 10=denominator df
+```
+
+
+
+
+
+
