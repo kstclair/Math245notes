@@ -1069,3 +1069,46 @@ summary(glm(Extinct/AtRisk ~ log(Area), family="binomial", weights=AtRisk, data=
 ```
 
 ## Quasi-binomial logistic model {#logistic-quasi}
+
+A quasi-binomial logistic regression model is one model option when your GOF test suggests that your binomial model assumptions of independent trials and/or constant probability of success across trials are not met. The idea behind this model is to estimate the amount of "overdispersion" and use this value to correct your binimial model SEs. 
+
+In a quasi-binomial model we let $\psi$ measure overdispersion so that the responce variance equals:
+$$
+V_{quasi}(Y_i \mid X_i)= \psi m_i \pi(X_i)(1-\pi(X_i))  =\psi V_{binom}(Y_i \mid X_i)
+$$
+If $\psi>1$, then our responses are more variable than binomial responses should be and $V_{quasi}(Y_i \mid X_i) > V_{binom}(Y_i \mid X_i)$. It is possible to have underdispersion, where $\psi < 1$ in which case $V_{quasi}(Y_i \mid X_i) < V_{binom}(Y_i \mid X_i)$.
+
+A "quasi" model is not a real model in the sense that we are defining a probability model and likelihood for the $Y_i$'s. Rather, we are still going to fit a binomial model and use MLE estimates from the binomial likelihood for our estimated parameters. We then estimate $\psi$ and adjust our binomial model SE accordingly to adjust over overdispersion. 
+
+Steps to fitting a quasi-binomial model:
+
+1. Fit the binomial logistic regression model, then estimate the dispersion parameter by comparing the model residual deviance to $n-(p+1)$ which is it's expected value if the model was adequate:
+$$
+\hat{\psi} = \dfrac{G^2}{n-(p+1)}
+$$
+
+2. Parameter estimates for $\beta$ are from the binomial model. 
+
+3. Standard errors for $\hat{\beta}$'s are expanded (if $\hat{\psi}>1$) to account for overdispersion by a factor of $\sqrt{\hat{\psi}}$:
+$$
+SE_{quasi}(\hat{\beta}_i) = \sqrt{\hat{\psi}}SE_{binom}(\hat{\beta}_i)
+$$
+
+4. Conduct "z"-inference (Wald tests/CI) using SEs equal to  $SE_{quasi}(\hat{\beta}_i)$
+
+5. Compare quasi-binomial models using a F-test stat equal to 
+$$
+F = \dfrac{G^2/(\textrm{# terms tested})}{\hat{\psi}}
+$$
+using an F-distribution with degrees of freedom equal to the number of terms tested and $n-(p+1)$. (The "usual" df for an ANOVA F test.)
+
+We can get inference results for steps 1-4 above by adding `family = quasibinomial` to our `glm` regression fit:
+```
+glm(y/m ~ x1 + x2, family = quasibinomial, weights = m, data=mydata)
+```
+
+We can get compare quasi-binomial models using deviance with the command
+```
+anova(red.quasi, full.quasi, test = "F")
+```
+

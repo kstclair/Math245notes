@@ -1738,6 +1738,35 @@ We can get these residuals by requesting the default residual values:</p>
 </div>
 <div id="logistic-quasi" class="section level2">
 <h2><span class="header-section-number">4.13</span> Quasi-binomial logistic model</h2>
+<p>A quasi-binomial logistic regression model is one model option when your GOF test suggests that your binomial model assumptions of independent trials and/or constant probability of success across trials are not met. The idea behind this model is to estimate the amount of “overdispersion” and use this value to correct your binimial model SEs.</p>
+<p>In a quasi-binomial model we let <span class="math inline">\(\psi\)</span> measure overdispersion so that the responce variance equals:
+<span class="math display">\[
+V_{quasi}(Y_i \mid X_i)= \psi m_i \pi(X_i)(1-\pi(X_i))  =\psi V_{binom}(Y_i \mid X_i)
+\]</span>
+If <span class="math inline">\(\psi&gt;1\)</span>, then our responses are more variable than binomial responses should be and <span class="math inline">\(V_{quasi}(Y_i \mid X_i) &gt; V_{binom}(Y_i \mid X_i)\)</span>. It is possible to have underdispersion, where <span class="math inline">\(\psi &lt; 1\)</span> in which case <span class="math inline">\(V_{quasi}(Y_i \mid X_i) &lt; V_{binom}(Y_i \mid X_i)\)</span>.</p>
+<p>A “quasi” model is not a real model in the sense that we are defining a probability model and likelihood for the <span class="math inline">\(Y_i\)</span>’s. Rather, we are still going to fit a binomial model and use MLE estimates from the binomial likelihood for our estimated parameters. We then estimate <span class="math inline">\(\psi\)</span> and adjust our binomial model SE accordingly to adjust over overdispersion.</p>
+<p>Steps to fitting a quasi-binomial model:</p>
+<ol style="list-style-type: decimal">
+<li><p>Fit the binomial logistic regression model, then estimate the dispersion parameter by comparing the model residual deviance to <span class="math inline">\(n-(p+1)\)</span> which is it’s expected value if the model was adequate:
+<span class="math display">\[
+\hat{\psi} = \dfrac{G^2}{n-(p+1)}
+\]</span></p></li>
+<li><p>Parameter estimates for <span class="math inline">\(\beta\)</span> are from the binomial model.</p></li>
+<li><p>Standard errors for <span class="math inline">\(\hat{\beta}\)</span>’s are expanded (if <span class="math inline">\(\hat{\psi}&gt;1\)</span>) to account for overdispersion by a factor of <span class="math inline">\(\sqrt{\hat{\psi}}\)</span>:
+<span class="math display">\[
+SE_{quasi}(\hat{\beta}_i) = \sqrt{\hat{\psi}}SE_{binom}(\hat{\beta}_i)
+\]</span></p></li>
+<li><p>Conduct “z”-inference (Wald tests/CI) using SEs equal to <span class="math inline">\(SE_{quasi}(\hat{\beta}_i)\)</span></p></li>
+<li><p>Compare quasi-binomial models using a F-test stat equal to
+<span class="math display">\[
+F = \dfrac{G^2/(\textrm{# terms tested})}{\hat{\psi}}
+\]</span>
+using an F-distribution with degrees of freedom equal to the number of terms tested and <span class="math inline">\(n-(p+1)\)</span>. (The “usual” df for an ANOVA F test.)</p></li>
+</ol>
+<p>We can get inference results for steps 1-4 above by adding <code>family = quasibinomial</code> to our <code>glm</code> regression fit:</p>
+<pre><code>glm(y/m ~ x1 + x2, family = quasibinomial, weights = m, data=mydata)</code></pre>
+<p>We can get compare quasi-binomial models using deviance with the command</p>
+<pre><code>anova(red.quasi, full.quasi, test = &quot;F&quot;)</code></pre>
 
 </div>
 </div>
