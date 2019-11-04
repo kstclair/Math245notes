@@ -836,7 +836,7 @@ ggplot(island, aes(x=log(Area), y = Extinct/AtRisk, weight = AtRisk)) +
 
 In Binomial logistic regression, the likelihood function is equal to 
 $$
-L(\beta) \propto \prod_{i=1}^n \binom{m_i}{y_i} \pi(X_i)^{y_i} (1-\pi(X_i))^{m_i-y_i}
+L(\beta) = \prod_{i=1}^n \binom{m_i}{y_i} \pi(X_i)^{y_i} (1-\pi(X_i))^{m_i-y_i}
 $$
 In a binomial logistic regression the deviance is equal to
 $$
