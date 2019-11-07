@@ -6,7 +6,7 @@ knitr::opts_chunk$set(echo = TRUE, eval=TRUE, prompt=TRUE, collapse = TRUE, mess
 ```
 
 
-This chapter covers material from chapters 20-21 of Sleuth. 
+This chapter covers material from chapters 20-22 of Sleuth. 
 
 ## The variables
 Suppose we have a **categorical** response variable $Y$ that can take one of two values, which we will generically call a **success** or **failure**. We want to relate the **probability of success** to $p$ explantory variables (aka predictors, covariates) $x_1, \dotsc, x_p$. There is no restriction on the type of covariates, they can be both quantitative and categorical variables.
@@ -223,7 +223,7 @@ Once you fit a `glm` model, you can extract attributes of the model
 
 - `fitted(my.glm)` gives the estimated probabilities of success for each case in your data
 - `predict(my.glm)` gives estimated log-odds of success for each case in your data. Add `newdata=` to get predicted log-odds for new data.
-- `predict(my.glm, type = "response")` gives estimated probabilities of success for each case in your data. Add `newdata=` to get predicted log-odds for new data.
+- `predict(my.glm, type = "response")` gives estimated probabilities of success for each case in your data. Add `newdata=` to get predicted probabilities for new data.
 
 The `broom` package also allows us to get fitted probabilities or log odds for all cases in the data, or for new data:
 

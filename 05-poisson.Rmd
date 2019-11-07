@@ -1,2 +1,263 @@
 # Poisson Regression {#poisson}
 
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::opts_chunk$set(echo = TRUE, eval=TRUE, prompt=TRUE, collapse = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(broom)
+library(gridExtra)
+```
+
+
+This chapter covers material from chapter 23 of Sleuth. 
+
+## The Poisson distribution {#pois-dist}
+
+The Poisson distribution is a probability model for a random variable that counts the number of "events" (or successes) that occur in a fixed period of time and/or space. For example:
+
+- the number of accidents that occur *per month* at an intersection 
+- the number of cancer cases *per year* in a county
+- the number of potholes *per mile* on interstate 35
+
+To model these types of counts with a Poisson distribution, we must assume that
+
+- two events can't occur at exactly the same time/location (e.g. two different accidents can't occur at exactly the same time)
+- events occur independently over time/space (e.g. the occurance of one accident isn't going to make another more or less likely)
+
+If $Y$ is a random variable with a Poisson distribution, then the probability that it equals some number $y$ is
+$$
+P(Y = y) = \dfrac{e^{\lambda}\lambda^y}{y!}  \ \ \textrm{ for any } y = 0,1,2,\dotsc
+$$
+Note that Poisson counts $Y$ don't have an "upper limit" like Binomial counts do so it can take on any integer value from 0 on up. 
+
+The parameter $\lambda$ ("lambda") in this model tells us the *mean* response value, or the expected number of events per unit of time/space:
+$$
+E(Y) = \mu = \lambda
+$$
+We need to have $\lambda >0$ since our counts can't take on negative values. The variance of $Y$ is *also* equal to the mean:
+$$
+Var(Y) = \sigma^2 = \lambda
+$$ 
+and the standard deviation is then equal to 
+$$
+SD(Y) = \sigma = \sqrt{\lambda}
+$$
+
+So the expected rate of events $\mu = \lambda$  also tells us how variable our observed counts are likely to be. The larger the mean rate of events, the more variable our counts will be. Hence, our Poisson regression model will *not* have a "constant variance" assumption. The Poisson distribution is also skewed right for small values of the mean rate but becomes more symmetric as $\mu$ gets bigger. The plots below display Poisson distributions for a few values of $\mu$.
+
+
+```{r, echo=FALSE}
+set.seed(52115)
+plotA <- ggplot(data.frame(x=0:6), aes(x,y=dpois(x,1))) + geom_segment(aes(xend=x,yend=0)) + labs(title="mu = 1")
+plotB <- ggplot(data.frame(x=0:10), aes(x,y=dpois(x,2))) + geom_segment(aes(xend=x,yend=0))+ labs(title="mu = 2")
+plotC <- ggplot(data.frame(x=0:20), aes(x,y=dpois(x,6))) + geom_segment(aes(xend=x,yend=0)) + labs(title="mu = 6")
+plotD <- ggplot(data.frame(x=0:33), aes(x,y=dpois(x,16))) + geom_segment(aes(xend=x,yend=0)) + labs(title="mu = 16")
+
+grid.arrange(plotA,plotB,plotC,plotD)
+```
+
+
+## The Poisson model form {#logistic-model}
+
+We will assume that our response $Y_i$ for case $i$ is modeled by a Poisson distribution with mean (expected rate) that we will denote as $\mu(Y_i \mid X_i)$ (instead of $\lambda$, just to be consistent with earlier models):
+$$
+Y_i \mid X_i \overset{indep.}{\sim} Pois(\mu(Y_i \mid X_i))
+$$
+
+Our modeling goal is once again to model the mean response $\mu(Y_i \mid X_i)$ as a function of predictor $X_i = (x_{1,i}, \dotsc, x_{p,i})$. To do this we need to ensure that we have a model that always maps values of $X_i$ to *positive* values of $\mu(Y_i \mid X_i)$. We will do this by using another **generalized linear model**. 
+
+The **link function** for our model is the log function defines the linear combination of predictors as the log of the mean response:
+$$
+\ln(\mu(Y_i \mid X_i)) = \eta_i = \beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}
+$$
+The **kernel mean function** for our model, which is the inverse of the link, is the exponential function so that 
+$$
+\mu(Y_i \mid X_i)  = e^{\eta_i} =e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}
+$$
+This ensures that for any value of $\eta_i$, we get a positive value for our mean response. This is an example of a *log-linear* model.
+
+The scatterplots below show an example of data generated from a SLR model and a Poisson model. Notice that the mean line in a SLR is a linear function of $x$ and we see symmetric, constant variation around the mean line. In the Poisson model data, we see a non-linear increase in the mean response as $x$ grows, along with increasing variation around the mean line. The variation around the mean line is right-skewed for smaller mean values but becomes more symmetric for larger mean values. 
+```{r, echo=FALSE}
+set.seed(1290482)
+x <- runif(1000, 0, 20)
+y <- rpois(1000, exp(-1.7 + .2*x))
+plotA <- ggplot(data.frame(x,y), aes(x=x, y=y)) + 
+  geom_point() + 
+  stat_function(fun=function(x) {exp(-1.7+.2*x)}, color="blue", size=2) + 
+  labs(title="Poisson model")
+y <- rnorm(1000, -1.7 + 2*x, sd=10)
+plotB <- ggplot(data.frame(x,y), aes(x=x, y=y)) + 
+  geom_point() + 
+  stat_function(fun=function(x) {-1.7 + 2*x}, color="blue", size=2) + 
+  labs(title="SLR model")
+grid.arrange(plotB, plotA, nrow=2)
+```
+
+### Interpretation
+
+If we have untransformed predictors, we can say that a 1 unit increase in $x_1$, for example, is associated with a $e^{\beta_1}$ *multiplicative* change in the **mean response** $\mu$:
+$$
+\mu(Y \mid X+1)  = e^{\beta_0 + \beta_1 (x_{1}+1) + \dotsm +  \beta_p x_{p}} = \mu(Y \mid X)e^{\beta_1} 
+$$
+
+Notice that this is similar to interpretation of an exponential model in SLR/MLR (Section \@ref(slr-trans)), except that in the Poisson model we are setting our linear combination of terms equal to the **logged-mean response** $\ln(\mu_Y \mid X)$. In the SLR/MLR model, we are setting our linear combination of terms equal to the **mean of the logged-responses** $\mu(\ln(y) \mid X)$. Interpretation of the Poisson log-linear model is easier because exponentiating the linear combination returns to us the the *mean* response. 
+
+If we took the natural log of $x_1$, we can say that a multiplicative change of $m$  in $x_1$ is associated with a $m^{\beta_1}$ *multiplicative* change in the **mean response** $\mu$:
+$$
+\mu(Y \mid mX)  = e^{\beta_0 + \beta_1 \ln(mx_{1}) + \dotsm +  \beta_p x_{p}} = \mu(Y \mid X)m^{\beta_1} 
+$$
+
+## EDA
+
+The Poisson model assumes that the quantitative predictors are linearly related to the log of the mean response. EDA to check this assume consists of a scatterplot of $\ln(y)$ vs. $x$, looking for a transformation of $x$, if needed, that displays a linear relationship. Constant variance is not assumed. 
+
+### Example: Possums
+
+The data in `possums` was collected from a sample of  $n = 151$ 3-hectare sites in Australia. Our goal is to determine which factors are associated with good habitat for possums. The response recored for each site is `y`= the number of possum species found on the site. We will start by just considering the predictors  `Bark` = bark quality index (low to high quality).
+```{r}
+possums <- read.csv("http://people.carleton.edu/~kstclair/data/possums.csv")
+summary(possums$y)
+summary(possums$Bark)
+```
+At least 25% of sites had no possum species observed, and about 75% of sites had 2 or fewer species observed. The middle 50% of sites had bark indices between 6 and 10. 
+
+To check if `Bark` needs to be transformed, we need look at log-`y` vs `Bark`. Since `y` has many 0 species counts we will need to add a small amount (.5) to the vector `y` before plotting.  As bark index increases, there is a slightly non-linear increase in number of species observed for untransformed `Bark`. The plot of `log(y)` vs. `log(bark)` looks  more linear.
+```{r}
+plotA <- ggplot(possums, aes(x=Bark, y = y + .5)) + 
+  geom_point() +  geom_smooth(se=FALSE) + 
+  scale_y_log10() + 
+  labs(title="Number species vs. Bark index")
+
+plotB <- ggplot(possums, aes(x=Bark, y = y + .5)) + 
+  geom_point() + geom_smooth(se=FALSE) + 
+  scale_y_log10() + scale_x_log10() + 
+  labs(title="Log-number species vs. log-Bark index")
+
+grid.arrange(plotA, plotB, nrow=1)
+```
+
+
+## Inference and estimation {#poisson-est}
+
+Estimation of Poisson model parameters $\beta_0, \dotsc, \beta_p$ is done using **maximum likelihood** estimation (again!). The likelihood function is the probability of the observed data, writen as a function of our unknown $\beta$'s where here $\mu(X_i)  = e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}$ 
+$$
+L(\beta) = \prod_{i=1}^n \dfrac{e^{\mu(X_i)}\mu(X_i)^{y_i}}{y_i!} 
+$$
+
+
+Like other GLMs, these MLE estimates of $\beta$ parameters are approximately normally distributed and unbiased when n is "large enough" or when $\mu(X_i)$'s are "large enough." 
+
+### Confidence intervals for $\pmb{\beta_i}$
+A $C$% confidence interval for $\beta_i$ equals
+$$
+\hat{\beta}_i \pm z^*SE(\hat{\beta}_i)
+$$
+where $z^*$ is the   $(100-C)/2$ percentile from the $N(0,1)$ distribution. To get the multiplicative change in the mean response, we just exponentiate the CI:
+$$
+e^{\hat{\beta}_i \pm z^*SE(\hat{\beta}_i)}
+$$
+
+### Hypothesis tests for $\pmb{\beta_i}$
+We can test the hypothesis
+$$
+H_0: \beta_i = \beta^*_i
+$$
+with the following z-test statistic:
+$$
+z =\dfrac{\hat{\beta}_i - \beta^*_i}{SE(\hat{\beta}_i)}
+$$
+where $\beta^*_i$ is our hypothesized value of $\beta_i$ . The $N(0,1)$ is used to compute the p-value that is appropriate for whatever $H_A$ is specified. 
+
+The usual test results given by standard regression output tests whether a parameter value (intercept or slope) is equal to 0 vs. not equal to 0:
+$$
+H_0: \beta_i = 0 \ \ \ \ \ H_A: \beta_i \neq 0
+$$
+with a test stat of 
+$$
+z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
+$$
+
+
+### R `glm` 
+We fit a Poisson regression model in R with the `glm` function. The basic syntax is
+```
+glm(y ~ x1 + x2, family = poisson, data= )
+```
+Careful not to forget the `family=poisson` argument! If you omit this, you will just be trying to fit a regular MLR model which is not appropriate for a categorical response. 
+
+Once you fit a `glm` model, you can extract attributes of the model
+
+- `fitted(my.glm)` gives the estimated mean response $\hat{\mu}_i$ for each case in your data
+- `predict(my.glm)` gives estimated **log-mean** $\hat{\eta}_i$ for each case in your data. Add `newdata=` to get predicted log-mean for new data.
+- `predict(my.glm, type = "response")` gives estimated **mean** $\hat{\mu}_i$  for each case in your data. Add `newdata=` to get predicted means for new data.
+
+The `broom` package also allows us to get fitted probabilities or log odds for all cases in the data, or for new data:
+
+- `augment(my.glm)` gets estimated **log-mean** $\hat{\eta}_i$ added to the variables used in the `glm` fit. 
+    - add `data=my.data` to get estimated log-means added to the full data set `my.data` used in the `glm` fit
+    - add `newdata= new.data` to get predicted log-means added to the new data set `new.data`
+- `augment(my.glm, type.predict= "response")` gets estimated **mean** $\hat{\mu}_i$  added to the variables used in the `glm` fit. 
+    - add `data=my.data` to get estimated means added to the full data set `my.data` used in the `glm` fit
+    - add `newdata= new.data` to get predicted means added to the new data set `new.data`
+
+
+### Example: Possums
+
+Our EDA above used `log(y)` just to explore whether we needed to transform our predictors bark. (Since log of our response should be linearly related to our predictor in Poisson regression.) But our Poisson model is just fit with `y`, not `log(y)` since our Poisson model already assumes log-linearity. We will fit the following Poisson regression of number of species on log-bark index:
+$$
+\ln(\mu(Y \mid x)) = \beta_0 + \beta_1 \ln(Bark)
+$$
+
+The model fit is below. 
+```{r}
+pos.glm <- glm(y ~ log(Bark), family=poisson, data=possums)
+summary(pos.glm)
+```
+
+The estimated log mean function is
+$$
+\ln(\hat{\mu}(y \mid x)) =  -0.8801 + 0.5945 \ln(Bark)
+$$
+and the estimated mean function is 
+$$
+\hat{\mu}(Y \mid x) = e^{-0.8801 + 0.5945 \ln(Bark)} =  e^{-0.8801}Bark^{0.5945}
+$$
+The estimated mean number of possums per 3-hectare when Bark quality is 10 is 1.63 species:
+$$
+\hat{\mu}(Y \mid x=10) =   e^{-0.8801}10^{0.5945} =1.6302
+$$
+```{r}
+predict(pos.glm, newdata=list(Bark=10))  # log mean
+exp(predict(pos.glm, newdata=list(Bark=10)))  # mean 
+predict(pos.glm, newdata=list(Bark=10), type="response")  # mean
+```
+
+With $n=151$, we have a large enough sample size to trust normal-inference methods for our MLE estimates. If $n$ was smaller, you would want to check summaries of the estimated mean values. Here we see that they range from an estimated 0.4 species per plot to 3.1 species per plot. 
+```{r}
+summary(fitted(pos.glm))
+```
+
+Bark index has a statistically significant effect on the mean number of species (z=4.45, p < 0.0001). Doubling bark index is associated with a 51% increase in the estimated mean number of species per 3-hectare plot (95% CI 26% to 81%).
+$$
+2^{0.5945}  = `r 2^(0.5945)` \ \ \ 2^{0.5945 + c(-1,1)*qnorm(.975)*0.1335} = `r 2^(0.5945 + c(-1,1)*qnorm(.975)*0.1335)`
+$$
+
+```{r}
+2^(.5945)  # double bark index
+100*(2^(.5945) - 1)
+# 95% CI for beta1
+0.5945 + c(-1,1)*qnorm(.975)*0.1335
+# 95% CI for factor change in mu (doubling bark)
+2^(0.5945 + c(-1,1)*qnorm(.975)*0.1335)
+100*(2^(0.5945 + c(-1,1)*qnorm(.975)*0.1335) - 1)
+```
+
+We can visualize the mean response $\hat{\mu}(Y \mid x) = e^{-0.8801 + 0.5945 \ln(Bark)}$ on a plot log-bark and number of species by first plotting (un-logged) `y` against the log of `Bark`. Then we add the `geom_smooth` with `glm` smoother method and a `poisson` family listed as the argument. Here we also include a smaller amount of `jitter` to avoid overplotting.
+$as a function of Bark index
+```{r}
+ggplot(possums, aes(x=Bark, y=y)) +
+  geom_jitter(width = .01, height=.1) + scale_x_log10() + 
+  geom_smooth(method="glm", method.args = list(family=poisson), se=FALSE) + 
+  labs(title="Poisson regression of # species on log-bark index", 
+       y = "# of species", x="bark index")
+```
