@@ -126,7 +126,7 @@ To check if `Bark` needs to be transformed, we need look at log-`y` vs `Bark`. S
 plotA <- ggplot(possums, aes(x=Bark, y = y + .5)) + 
   geom_point() +  geom_smooth(se=FALSE) + 
   scale_y_log10() + 
-  labs(title="Number species vs. Bark index")
+  labs(title="Log-Number species vs. Bark index")
 
 plotB <- ggplot(possums, aes(x=Bark, y = y + .5)) + 
   geom_point() + geom_smooth(se=FALSE) + 
