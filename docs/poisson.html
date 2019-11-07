@@ -301,13 +301,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.4.1" data-path="poisson.html"><a href="poisson.html#confidence-intervals-for-pmbbeta_i-1"><i class="fa fa-check"></i><b>5.4.1</b> Confidence intervals for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
 <li class="chapter" data-level="5.4.2" data-path="poisson.html"><a href="poisson.html#hypothesis-tests-for-pmbbeta_i-1"><i class="fa fa-check"></i><b>5.4.2</b> Hypothesis tests for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
 <li class="chapter" data-level="5.4.3" data-path="poisson.html"><a href="poisson.html#r-glm-1"><i class="fa fa-check"></i><b>5.4.3</b> R <code>glm</code></a></li>
-<li class="chapter" data-level="5.4.4" data-path="poisson.html"><a href="poisson.html#example-possums-1"><i class="fa fa-check"></i><b>5.4.4</b> Example: Possums</a></li>
+<li class="chapter" data-level="5.4.4" data-path="poisson.html"><a href="poisson.html#pois-ex2"><i class="fa fa-check"></i><b>5.4.4</b> Example: Possums</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="poisson.html"><a href="poisson.html#pois-dev"><i class="fa fa-check"></i><b>5.5</b> Deviance for Binomial responses</a><ul>
 <li class="chapter" data-level="5.5.1" data-path="poisson.html"><a href="poisson.html#pois-did"><i class="fa fa-check"></i><b>5.5.1</b> Drop-in-deviance test</a></li>
 </ul></li>
 <li class="chapter" data-level="5.6" data-path="poisson.html"><a href="poisson.html#pois-assump"><i class="fa fa-check"></i><b>5.6</b> Checking Assumptions</a><ul>
 <li class="chapter" data-level="5.6.1" data-path="poisson.html"><a href="poisson.html#pois-gof"><i class="fa fa-check"></i><b>5.6.1</b> Goodness-of-fit test</a></li>
+<li class="chapter" data-level="5.6.2" data-path="poisson.html"><a href="poisson.html#gof-alternative"><i class="fa fa-check"></i><b>5.6.2</b> GOF alternative</a></li>
+<li class="chapter" data-level="5.6.3" data-path="poisson.html"><a href="poisson.html#example-possums-1"><i class="fa fa-check"></i><b>5.6.3</b> Example: Possums</a></li>
 </ul></li>
 <li class="chapter" data-level="5.7" data-path="poisson.html"><a href="poisson.html#pois-resid"><i class="fa fa-check"></i><b>5.7</b> Residuals and case influence for binomial responses</a></li>
 </ul></li>
@@ -566,7 +568,7 @@ z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 </ul></li>
 </ul>
 </div>
-<div id="example-possums-1" class="section level3">
+<div id="pois-ex2" class="section level3">
 <h3><span class="header-section-number">5.4.4</span> Example: Possums</h3>
 <p>Our EDA above used <code>log(y)</code> just to explore whether we needed to transform our predictors bark. (Since log of our response should be linearly related to our predictor in Poisson regression.) But our Poisson model is just fit with <code>y</code>, not <code>log(y)</code> since our Poisson model already assumes log-linearity. We will fit the following Poisson regression of number of species on log-bark index:
 <span class="math display">\[
@@ -747,6 +749,134 @@ The suggested rule of thumb for “large <span class="math inline">\(\hat{\mu}_i
 </ul></li>
 </ul></li>
 </ul>
+</div>
+<div id="gof-alternative" class="section level3">
+<h3><span class="header-section-number">5.6.2</span> GOF alternative</h3>
+<p>If the GOF p-value approximation is suspect due to small estimated means, then one ad hoc method of assessing the “Poisson-ness” of the data would be to compare the sample mean and variances of cases with similar predictor values. Since a Poisson variable should have mean and variances that are similar in size, this can be used to detect if our counts are overdispersed. The basic algorithm is similar to that used in the BWCA empirical log-odds plot outlined in Section @ref(#example-bwca1).</p>
+<ol style="list-style-type: decimal">
+<li>Group cases into groups with similar predictor values</li>
+<li>Within each group, compute the sample mean and sample variance of the observed counts <code>y</code></li>
+<li>Plot means against variances, if they following the y=x line then the Poisson assumption looks adequate.</li>
+</ol>
+</div>
+<div id="example-possums-1" class="section level3">
+<h3><span class="header-section-number">5.6.3</span> Example: Possums</h3>
+<p>In Section <a href="poisson.html#pois-ex2">5.4.4</a> we tested the statistical significance of log-Bark with a Wald z-test. We could have instead used a drop in deviance test for this one term. Hypotheses are the same but the mechanics of each are slightly different. Either method is ok since n=151 is fairly large so their conclusions should be similar.</p>
+<p>Using <code>anova</code> for this one-term model will test the significance of the one term, log-Bark, against the “null” model with only the intercept term. Here our test statistic is <span class="math inline">\(G^2 = 19.979\)</span> since this is the amount that the residual deviance decreases when adding log-Bark. The p-value, comptuted from a chi-square distribution with 1 degree of freedom, is extremely small indicating the strong significance of this term.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">anova</span>(pos.glm, <span class="dt">test=</span><span class="st">&quot;Chisq&quot;</span>)</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co">## Analysis of Deviance Table</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co">## Model: poisson, link: log</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="co">## </span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="co">## Response: y</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co">## </span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="co">## Terms added sequentially (first to last)</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="co">## </span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="co">## </span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="co">##           Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    </span></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="co">## NULL                        150     187.49              </span></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="co">## log(Bark)  1   19.979       149     167.51 7.828e-06 ***</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co">## ---</span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a></code></pre></div>
+<div id="goodness-of-fit" class="section level4">
+<h4><span class="header-section-number">5.6.3.1</span> Goodness-of-fit</h4>
+<p>We might be tempted to take the deviance from our log-Bark model and run a GOF test to assess Poisson model adequacy:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(pos.glm)</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="co">## </span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co">## Call:</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="co">## glm(formula = y ~ log(Bark), family = poisson, data = possums)</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">## </span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co">## Deviance Residuals: </span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="co">##      Min        1Q    Median        3Q       Max  </span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="co">## -2.18523  -1.26246  -0.07764   0.55078   2.11368  </span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="co">## </span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="co">## Coefficients:</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="co">##             Estimate Std. Error z value Pr(&gt;|z|)    </span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="co">## (Intercept)  -0.8801     0.3027  -2.907  0.00365 ** </span></a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="co">## log(Bark)     0.5945     0.1335   4.453 8.45e-06 ***</span></a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="co">## ---</span></a>
+<a class="sourceLine" id="cb12-15" title="15"><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
+<a class="sourceLine" id="cb12-16" title="16"><span class="co">## </span></a>
+<a class="sourceLine" id="cb12-17" title="17"><span class="co">## (Dispersion parameter for poisson family taken to be 1)</span></a>
+<a class="sourceLine" id="cb12-18" title="18"><span class="co">## </span></a>
+<a class="sourceLine" id="cb12-19" title="19"><span class="co">##     Null deviance: 187.49  on 150  degrees of freedom</span></a>
+<a class="sourceLine" id="cb12-20" title="20"><span class="co">## Residual deviance: 167.51  on 149  degrees of freedom</span></a>
+<a class="sourceLine" id="cb12-21" title="21"><span class="co">## AIC: 452.31</span></a>
+<a class="sourceLine" id="cb12-22" title="22"><span class="co">## </span></a>
+<a class="sourceLine" id="cb12-23" title="23"><span class="co">## Number of Fisher Scoring iterations: 5</span></a>
+<a class="sourceLine" id="cb12-24" title="24"><span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="fl">167.51</span>, <span class="dt">df=</span><span class="dv">149</span>)  <span class="co"># p-value??</span></a>
+<a class="sourceLine" id="cb12-25" title="25"><span class="co">## [1] 0.1425203</span></a></code></pre></div>
+<p>While the goodness of fit test gives a p-value of 0.1425, suggesting adequacy, we should be suspect because most estimated means are small and well below our “large <span class="math inline">\(\hat{\mu}_i\)</span>” threshold of 5.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(<span class="kw">fitted</span>(pos.glm))</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="co">##  0.4147  1.2033  1.4277  1.4768  1.6302  3.1325</span></a></code></pre></div>
+<p>Our alternative method of checking whether our response is behaving like Poisson counts is the EDA check of sample means vs variances. We need to group cases by similar bark amounts. We can first note that the bark index is a rather discrete measure with many values (especially in mid-range values)</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(possums<span class="op">$</span>Bark)</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">## </span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="co">##  1  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 23 24 27 30 </span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">##  2  2 11 15 26 19 16 10 13  5  5  4  3  4  3  4  2  3  1  1  1  1</span></a></code></pre></div>
+<p>We could simply try grouping by each individual bark value and getting the mean and variance of the observed counts for each. This will result in some 1 case bark values having a variance of <code>NA</code> (since we can’t measure variability of one data value):</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="op">&gt;</span><span class="st"> </span>pos.byBark &lt;-<span class="st"> </span>possums <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(Bark) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="dt">nY =</span> <span class="kw">n</span>(), <span class="dt">meanY =</span> <span class="kw">mean</span>(y), <span class="dt">varY =</span> <span class="kw">var</span>(y))</a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="op">&gt;</span><span class="st"> </span>pos.byBark <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">n=</span><span class="ot">Inf</span>)</a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">## # A tibble: 22 x 4</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="co">##     Bark    nY meanY   varY</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="co">##    &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="co">##  1     1     2 0.5    0.5  </span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="co">##  2     3     2 0      0    </span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="co">##  3     4    11 1      0.6  </span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="co">##  4     5    15 0.933  0.781</span></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="co">##  5     6    26 1.08   1.11 </span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="co">##  6     7    19 1.79   1.06 </span></a>
+<a class="sourceLine" id="cb15-14" title="14"><span class="co">##  7     8    16 1.12   0.917</span></a>
+<a class="sourceLine" id="cb15-15" title="15"><span class="co">##  8     9    10 1.8    1.96 </span></a>
+<a class="sourceLine" id="cb15-16" title="16"><span class="co">##  9    10    13 1.69   2.23 </span></a>
+<a class="sourceLine" id="cb15-17" title="17"><span class="co">## 10    11     5 1.8    1.7  </span></a>
+<a class="sourceLine" id="cb15-18" title="18"><span class="co">## 11    12     5 2      2    </span></a>
+<a class="sourceLine" id="cb15-19" title="19"><span class="co">## 12    13     4 1      0.667</span></a>
+<a class="sourceLine" id="cb15-20" title="20"><span class="co">## 13    14     3 1.33   2.33 </span></a>
+<a class="sourceLine" id="cb15-21" title="21"><span class="co">## 14    15     4 3      3.33 </span></a>
+<a class="sourceLine" id="cb15-22" title="22"><span class="co">## 15    16     3 2.33   2.33 </span></a>
+<a class="sourceLine" id="cb15-23" title="23"><span class="co">## 16    17     4 3.5    1.67 </span></a>
+<a class="sourceLine" id="cb15-24" title="24"><span class="co">## 17    18     2 2      2    </span></a>
+<a class="sourceLine" id="cb15-25" title="25"><span class="co">## 18    19     3 1.33   2.33 </span></a>
+<a class="sourceLine" id="cb15-26" title="26"><span class="co">## 19    23     1 2     NA    </span></a>
+<a class="sourceLine" id="cb15-27" title="27"><span class="co">## 20    24     1 3     NA    </span></a>
+<a class="sourceLine" id="cb15-28" title="28"><span class="co">## 21    27     1 1     NA    </span></a>
+<a class="sourceLine" id="cb15-29" title="29"><span class="co">## 22    30     1 3     NA</span></a></code></pre></div>
+<p>Then plot mean count vs the variance of count. The means and variances for each value of bark are similar, so we have no graphical evidence of lack of fit.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(pos.byBark, <span class="kw">aes</span>(<span class="dt">x=</span>meanY, <span class="dt">y=</span>varY)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">geom_abline</span>(<span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>, <span class="dt">linetype=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Alternatively, we could first group the cases according to the <code>ntile</code> function. Here we divide cases up into 12 similar groups based on bark, then get stats for each group and plot. A similar conclusion is made with this visual. No strong evidence of a trend in variance always being bigger (or smaller) than the mean count.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="op">&gt;</span><span class="st"> </span>pos.byBark2 &lt;-<span class="st"> </span>possums <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="op">+</span><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">Bark.grp =</span> <span class="kw">ntile</span>(Bark, <span class="dt">n=</span><span class="dv">12</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(Bark.grp) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="op">+</span><span class="st">   </span><span class="kw">summarize</span>(<span class="dt">nY =</span> <span class="kw">n</span>(), <span class="dt">meanY =</span> <span class="kw">mean</span>(y), <span class="dt">varY =</span> <span class="kw">var</span>(y))</a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="op">&gt;</span><span class="st"> </span>pos.byBark2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">n=</span><span class="ot">Inf</span>)</a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="co">## # A tibble: 12 x 4</span></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="co">##    Bark.grp    nY meanY  varY</span></a>
+<a class="sourceLine" id="cb17-9" title="9"><span class="co">##       &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="co">##  1        1    13 0.769 0.526</span></a>
+<a class="sourceLine" id="cb17-11" title="11"><span class="co">##  2        2    13 0.923 0.577</span></a>
+<a class="sourceLine" id="cb17-12" title="12"><span class="co">##  3        3    12 1.08  0.992</span></a>
+<a class="sourceLine" id="cb17-13" title="13"><span class="co">##  4        4    13 1     1.33 </span></a>
+<a class="sourceLine" id="cb17-14" title="14"><span class="co">##  5        5    12 1.42  1.17 </span></a>
+<a class="sourceLine" id="cb17-15" title="15"><span class="co">##  6        6    13 2     1.17 </span></a>
+<a class="sourceLine" id="cb17-16" title="16"><span class="co">##  7        7    13 1.15  0.641</span></a>
+<a class="sourceLine" id="cb17-17" title="17"><span class="co">##  8        8    12 1.5   2.09 </span></a>
+<a class="sourceLine" id="cb17-18" title="18"><span class="co">##  9        9    13 1.69  2.23 </span></a>
+<a class="sourceLine" id="cb17-19" title="19"><span class="co">## 10       10    12 1.83  1.42 </span></a>
+<a class="sourceLine" id="cb17-20" title="20"><span class="co">## 11       11    13 2     2.5  </span></a>
+<a class="sourceLine" id="cb17-21" title="21"><span class="co">## 12       12    12 2.42  2.08</span></a>
+<a class="sourceLine" id="cb17-22" title="22"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(pos.byBark2, <span class="kw">aes</span>(<span class="dt">x=</span>meanY, <span class="dt">y=</span>varY)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-23" title="23"><span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-24" title="24"><span class="op">+</span><span class="st">   </span><span class="kw">geom_abline</span>(<span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>, <span class="dt">linetype=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+</div>
 </div>
 </div>
 <div id="pois-resid" class="section level2">

@@ -202,7 +202,7 @@ The `broom` package also allows us to get fitted probabilities or log odds for a
     - add `newdata= new.data` to get predicted means added to the new data set `new.data`
 
 
-### Example: Possums
+### Example: Possums {#pois-ex2}
 
 Our EDA above used `log(y)` just to explore whether we needed to transform our predictors bark. (Since log of our response should be linearly related to our predictor in Poisson regression.) But our Poisson model is just fit with `y`, not `log(y)` since our Poisson model already assumes log-linearity. We will fit the following Poisson regression of number of species on log-bark index:
 $$
@@ -363,6 +363,69 @@ For a GOF test, you should consider the following interpretations for "large" or
             - events occurances are not independent, usually clustered in some way
             - your choice of predictors isn't sufficient (i.e. you are missing key explanatory variables)
 
+### GOF alternative
+
+If the GOF p-value approximation is suspect due to small estimated means, then one ad hoc method of assessing the "Poisson-ness" of the data would be to compare the sample mean and variances of cases with similar predictor values. Since a Poisson variable should have mean and variances that are similar in size, this can be used to detect if our counts are overdispersed. The basic algorithm is similar to that used in the BWCA empirical log-odds plot outlined in Section \@ref(#example-bwca1). 
+
+1. Group cases into groups with similar predictor values
+2. Within each group, compute the sample mean and sample variance of the observed counts `y`
+3. Plot means against variances, if they following the y=x line then the Poisson assumption looks adequate.  
+
+
+### Example: Possums
+
+In Section \@ref(pois-ex2) we tested the statistical significance of log-Bark with a Wald z-test. We could have instead used a drop in deviance test for this one term. Hypotheses are the same but the mechanics of each are slightly different. Either method is ok since n=151 is fairly large so their conclusions should be similar. 
+
+Using `anova` for this one-term model will test the significance of the one term, log-Bark, against the "null" model with only the intercept term. Here our test statistic is $G^2 = 19.979$ since this is the amount that the residual deviance decreases when adding log-Bark. The p-value, comptuted from a chi-square distribution with 1 degree of freedom, is extremely small indicating the strong significance of this term.
+```{r}
+anova(pos.glm, test="Chisq")
+```
+
+#### Goodness-of-fit
+
+We might be tempted to take the deviance from our log-Bark model and run a GOF test to assess Poisson model adequacy:
+```{r}
+summary(pos.glm)
+1-pchisq(167.51, df=149)  # p-value??
+```
+
+While the goodness of fit test gives a p-value of 0.1425, suggesting adequacy,  we should be suspect because most estimated means are small and well below our "large $\hat{\mu}_i$" threshold of 5.
+
+```{r}
+summary(fitted(pos.glm))
+```
+
+Our alternative method of checking whether our response is behaving like Poisson counts is the EDA check of sample means vs variances. We need to group cases by similar bark amounts. We can first note that the bark index is a rather discrete measure with many values (especially in mid-range values)
+```{r}
+table(possums$Bark)
+```
+
+We could simply try grouping by each individual bark value and getting the mean and variance of the observed counts for each. This will result in some 1 case bark values having a variance of `NA` (since we can't measure variability of one data value):
+```{r}
+pos.byBark <- possums %>% 
+  group_by(Bark) %>%
+  summarize(nY = n(), meanY = mean(y), varY = var(y))
+pos.byBark %>% print(n=Inf)
+```
+Then plot mean count vs the variance of count. The means and variances for each value of bark are similar, so we have no graphical evidence of lack of fit.
+```{r}
+ggplot(pos.byBark, aes(x=meanY, y=varY)) + 
+  geom_point() + 
+  geom_abline(intercept=0, slope=1, linetype=2)
+```
+
+Alternatively, we could first group the cases according to the `ntile` function. Here we divide cases up into 12 similar groups based on bark, then get stats for each group and plot. A similar conclusion is made with this visual. No strong evidence of a trend in variance always being bigger (or smaller) than the mean count. 
+```{r}
+library(tidyverse)
+pos.byBark2 <- possums %>% 
+  mutate(Bark.grp = ntile(Bark, n=12)) %>%
+  group_by(Bark.grp) %>%
+  summarize(nY = n(), meanY = mean(y), varY = var(y))
+pos.byBark2 %>% print(n=Inf)
+ggplot(pos.byBark2, aes(x=meanY, y=varY)) + 
+  geom_point() + 
+  geom_abline(intercept=0, slope=1, linetype=2)
+```
 
 ## Residuals and case influence for binomial responses {#pois-resid}
 
