@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-11-06">
+<meta name="date" content="2019-11-07">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -279,6 +279,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.4.3" data-path="poisson.html"><a href="poisson.html#r-glm-1"><i class="fa fa-check"></i><b>5.4.3</b> R <code>glm</code></a></li>
 <li class="chapter" data-level="5.4.4" data-path="poisson.html"><a href="poisson.html#example-possums-1"><i class="fa fa-check"></i><b>5.4.4</b> Example: Possums</a></li>
 </ul></li>
+<li class="chapter" data-level="5.5" data-path="poisson.html"><a href="poisson.html#pois-dev"><i class="fa fa-check"></i><b>5.5</b> Deviance for Binomial responses</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="poisson.html"><a href="poisson.html#pois-did"><i class="fa fa-check"></i><b>5.5.1</b> Drop-in-deviance test</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="poisson.html"><a href="poisson.html#pois-assump"><i class="fa fa-check"></i><b>5.6</b> Checking Assumptions</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="poisson.html"><a href="poisson.html#pois-gof"><i class="fa fa-check"></i><b>5.6.1</b> Goodness-of-fit test</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="logistic.html"><a href="logistic.html#logistic-binomResid"><i class="fa fa-check"></i><b>5.7</b> Residuals and case influence for binomial responses</a></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="rrstudio.html"><a href="rrstudio.html"><i class="fa fa-check"></i><b>A</b> R and Rstudio</a><ul>
@@ -580,8 +587,122 @@ z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Poisson regression of # species on log-bark index&quot;</span>, 
 <span class="op">+</span><span class="st">        </span><span class="dt">y =</span> <span class="st">&quot;# of species&quot;</span>, <span class="dt">x=</span><span class="st">&quot;bark index&quot;</span>)</code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-
 </div>
+</div>
+<div id="pois-dev" class="section level2">
+<h2><span class="header-section-number">5.5</span> Deviance for Binomial responses</h2>
+<p>In Poisson regression, the deviance is equal to <span class="math display">\[
+G^2 = 2[\ln L(\bar{\mu}) - \ln L(\hat{\mu}(X))] = 2\sum_{i=1}^n \left[ y_i \ln \left( \dfrac{y_i}{\hat{\mu}(X_i)} \right) - (y_i- \hat{\mu}(X_i))  \right]
+\]</span> Note that cases with large <span class="math inline">\(y_i\)</span> can contribute the most to this summation of individual case-level deviance.</p>
+<p>Again, the two likelihoods that are used to construct residual deviance are:</p>
+<ul>
+<li><span class="math inline">\(L(\hat{\mu}(X)):\)</span> likelihood of the data that plugs in estimates <span class="math inline">\(\hat{\mu}(X_i)\)</span> from the Poisson model.</li>
+<li><span class="math inline">\(L(\bar{\mu}):\)</span> likelihood of the data that plugs in estimates <span class="math inline">\(\bar{\mu} = y_i\)</span>, basing a case’s “predicted” value soley on the response observed for that case. This again is called a <strong>saturated</strong> model and it will always have a higher likelihood than the logistic model: <span class="math inline">\(L(\bar{\mu}) \geq L(\hat{\mu}(X))\)</span>.</li>
+</ul>
+<p>Deviance for binomial models can be used for two types of hypothesis tests:</p>
+<div id="pois-did" class="section level3">
+<h3><span class="header-section-number">5.5.1</span> Drop-in-deviance test</h3>
+<p>This test is used to compare two models, just like in logistic models. Details are in Section <a href="logistic.html#logistic-dev">4.5</a>. One difference between the logistic model and Poisson is the “large sample size” condition needed to trust the drop-in-deviance p-value approximation. In Poisson models, we need either a large sample size <span class="math inline">\(n\)</span> or <span class="math inline">\(\hat{\mu}\)</span>’s that are large.</p>
+<p>Two compare two Poisson models using deviance, run</p>
+<pre><code>anova(pois.red, pois.full, test = &quot;Chisq&quot;)</code></pre>
+</div>
+</div>
+<div id="pois-assump" class="section level2">
+<h2><span class="header-section-number">5.6</span> Checking Assumptions</h2>
+<p><strong>Assumptions</strong> in a Poisson model include</p>
+<ul>
+<li><strong>Cases are independent:</strong> Independence of cases takes an understanding of how the data was collected.</li>
+<li><strong>Log-mean linearity:</strong> Log-mean linearity can be checked with an a plot of log-response against quantitative predictors and residual plots.</li>
+</ul>
+<p>A <strong>third assumption</strong> is that given predictor values, the <strong>counts of events <span class="math inline">\(Y_i\)</span> has a Poisson distribution</strong>. This means that for each case <span class="math inline">\(i\)</span> we assume the following:</p>
+<ul>
+<li><strong>The events occur independently</strong>, and there is no clustering of events across time or space. Clustering of event occurrences induces more variation in our responses than our Poisson model assumes.</li>
+</ul>
+<p>For example, if one rush hour accident makes more accidents more likely in that time period, then we could see big swings in monthly accident counts. Some months with no rush hour accidents will see low counts while months with a rush hour accident could see a big uptick in total accident counts. This idea is demonstrated in the code below with the <code>y.clus</code> variable (10 accidents per month in winter months and 0 in other months) which has the same mean as a Poisson vector of accident counts, but which has a much larger measure of SD.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="co"># monthly accident counts from a Poisson with mean around 3:</span>
+<span class="er">&gt;</span><span class="st"> </span>y.pois &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">0</span>, <span class="dv">4</span>)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(y.pois)
+## [1] 3.333333
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">sd</span>(y.pois)
+## [1] 1.922751
+<span class="op">&gt;</span><span class="st"> </span><span class="co"># monthly accident counts clustered in winter with mean around 3:</span>
+<span class="er">&gt;</span><span class="st"> </span>y.clus &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">10</span>)
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(y.clus)   <span class="co"># same average</span>
+## [1] 3.333333
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">sd</span>(y.clus)     <span class="co"># much bigger variance than poisson counts!</span>
+## [1] 4.92366</code></pre></div>
+<ul>
+<li><strong>We have enough explanatory power in our predictors to adequately model the mean response.</strong> If we lack this, then we can’t adequately explain variations in our observed counts and we our residual deviance will be very large.</li>
+</ul>
+<p>If one, or both, of these assumptions is violated, then it often induces <strong>extra-Poisson variation</strong> (a.k.a. <strong>overdispersion</strong>). This means that the actual variation in our response <span class="math inline">\(SD(Y\mid X_i)\)</span> is <strong>larger</strong> than the Poisson SD of <span class="math inline">\(\sqrt{\mu(X_i)}\)</span> that our model assumes. So the response variation is more dispersed than what our model assumes, making our reported <strong>standard errors and p-values too small</strong> and we could be over-reporting statistical significance.</p>
+<p>We can use another goodness-of-fit test, when <span class="math inline">\(\mu_i\)</span> are large enough, to check our Poisson distribution assumption. If we do find evidence of lack-of-fit in our model, then you should</p>
+<ul>
+<li>Check deviance residuals as case influence stats to see if an outlier(s) is affecting GOF results.</li>
+<li>Check the log mean form and see if transformations of quantitative predictors are needed</li>
+<li>If outliers and transformations aren’t a concern, then consider an alternative model:
+<ul>
+<li>quasi-Poisson logistic model</li>
+<li>a model that allows for correlated trials (like a mixed-effects Poisson model)</li>
+</ul></li>
+</ul>
+<div id="pois-gof" class="section level3">
+<h3><span class="header-section-number">5.6.1</span> Goodness-of-fit test</h3>
+<p>In our Poisson model, we are assuming that an observed count for case <span class="math inline">\(i\)</span> behaves like a Poisson random variable. We compare our Poisson model’s estimated mean counts for each case to the observed counts from the saturated model described above. The saturated model will have the best “fit” (highest likelihood) of the two models, but if the “fit” (likelihood) of the logistic model is “close” then we can claim that the logistic model is adequate. This is the motivation behind a “goodness-of-fit” test.</p>
+<p>Our hypothese for the GOF test are: <span class="math display">\[
+H_0: \textrm{Poisson model}
+\]</span> vs. <span class="math display">\[
+H_A: \textrm{saturated model}
+\]</span></p>
+<p>The test statistic for this is equal to the <strong>residual deviance of the Poisson model</strong> (difference in the <span class="math inline">\(H_A\)</span> and <span class="math inline">\(H_0\)</span> likelihoods): <span class="math display">\[
+G^2 = 2[\ln L(\bar{\mu}) - \ln L(\hat{\mu}(X))]
+\]</span></p>
+<p>If <span class="math inline">\(H_0\)</span> is true and the data does fit the Poisson model, then when estimated <span class="math inline">\(\hat{\mu}_i\)</span>’s are large, <span class="math inline">\(G^2\)</span> will have an approximate <strong>chi-square distribution</strong> with <span class="math inline">\(n - (p+1)\)</span> (model) degrees of freedom. (Note that <span class="math inline">\(n-(p+1)\)</span> is the difference in the number of parameters in the two models.) The p-value is the probability of observing deviance larger than our model’s value: <span class="math display">\[
+p-value = 1-P(\chi^2 &gt; G^2) = 1-pchisq(G^2, df=n-(p+1))
+\]</span> The suggested rule of thumb for “large <span class="math inline">\(\hat{\mu}_i\)</span>”&quot; is that we want most <span class="math inline">\(\hat{\mu}_i\)</span>’s to be at least 5.</p>
+<p>For a GOF test, you should consider the following interpretations for “large” or “small” p-values:</p>
+<ul>
+<li><strong>Do not reject the null:</strong> (large p-value)
+<ul>
+<li>Your Poisson model is adequate.</li>
+<li>You don’t have a large enough sample size <span class="math inline">\(n\)</span> to have the <em>power</em> to detect inadequacies in your model.</li>
+</ul></li>
+<li><strong>Reject the null:</strong> (small p-value)
+<ul>
+<li>You have outlier(s) that are inflating the residual deviance.</li>
+<li>Your logistic model is inadequate.
+<ul>
+<li>Your mean model is inadequate, it is ill-fitting and transformations are needed</li>
+<li>Extra-Poisson variation: your response counts aren’t well modeled by a Poisson model. For each case:
+<ul>
+<li>events occurances are not independent, usually clustered in some way</li>
+<li>your choice of predictors isn’t sufficient (i.e. you are missing key explanatory variables)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="logistic-binomResid" class="section level2">
+<h2><span class="header-section-number">5.7</span> Residuals and case influence for binomial responses</h2>
+<p>We have a few options for residuals for a binomial logistic model. The two most common residuals to consider are Pearson residuals and deviance residuals.</p>
+<p><strong>Pearson residuals</strong> are basically response residuals standardized based on the binomial SD: <span class="math display">\[
+pr_i = \dfrac{ y_i - \hat{\mu}(X_i)}{\sqrt{\hat{\mu}(X_i)}}
+\]</span> We can get these residuals by requesting the “pearson” type of residual:</p>
+<ul>
+<li><code>resid(my.glm, type = &quot;pearson&quot;)</code></li>
+<li><code>augment(my.glm,  type.residuals = &quot;pearson&quot;)</code></li>
+</ul>
+<p><strong>Deviance residuals</strong> are each case’s contribution to the residual deviance, with a <span class="math inline">\(\pm\)</span> based on whether we over- or under-estimate a case’s response (the <span class="math inline">\(\pm\)</span> is denoted by <span class="math inline">\(sign(y_i - m_i\hat{\pi}(X_i))\)</span>): <span class="math display">\[
+Dres_i =  sign(y_i - m_i\hat{\pi}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i}{\hat{\mu}(X_i)} \right) - (y_i- \hat{\mu}(X_i))  \right] }
+\]</span> We can get these residuals by requesting the default residual values:</p>
+<ul>
+<li><code>resid(my.glm)</code></li>
+<li><code>augment(my.glm)</code></li>
+</ul>
+<p>As with model GLMs: Pearson residuals are “easy” to interpret as the number of estimated SD’s a response is from it’s estimated mean. Deviance residuals are good to check if you find significant results in a GOF test. When <span class="math inline">\(\hat{\mu}(X_i)\)</span>’s are large (at least 5), both types of residuals should be similar in value and have a <span class="math inline">\(N(0,1)\)</span> distribution (approximately). This means that most cases (~95%) should have residual values no more extreme than <span class="math inline">\(\pm 2\)</span>. Regardless of size of <span class="math inline">\(m_i\)</span>, we should plot residuals vs. quantitative predictors to assess linearity of the log odds.</p>
+<p>Case influence stats of leverage and Cook’s distance can also be used to look for outliers. In a GLM, leverage measures both a cases’s “extremeness” in terms of it’s predictor values <strong>and</strong> it’s extremeness in terms of it’s <strong>weight</strong>. In a <strong>Poisson</strong> model, a case’s weight is <span class="math inline">\(\hat{\mu}(X_i)\)</span>. A case with higher values of <span class="math inline">\(\hat{\mu}(X_i)\)</span> are given more weight, and hence higher leverage, in the fitted model (e.g. in the estiamtes of <span class="math inline">\(\hat{\beta}\)</span>). The value of Cook’s distance also takes into account a cases leverage and a case’s residual value.</p>
+<p>You can get Pearson residuals, leverage and Cook’s distance with <code>plot(my.glm, which = 5)</code>. You can also get leverage and Cook’s distance vs. predictor values with <code>ggnostic(my.glm, columnsY = c(&quot;.hat&quot;,&quot;.cooksd&quot;))</code> from the <code>GGally</code> package.</p>
+
 </div>
 </div>
 
