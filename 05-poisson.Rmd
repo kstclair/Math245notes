@@ -363,7 +363,7 @@ For a GOF test, you should consider the following interpretations for "large" or
             - your choice of predictors isn't sufficient (i.e. you are missing key explanatory variables)
 
 
-## Residuals and case influence for binomial responses {#logistic-binomResid}
+## Residuals and case influence for binomial responses {#pois-resid}
 
 We have a few options for residuals for a binomial logistic model. The two most common residuals to consider are Pearson residuals and deviance residuals. 
 
@@ -379,7 +379,7 @@ We can get these residuals by requesting the "pearson" type of residual:
 
 **Deviance residuals** are each case's contribution to the residual deviance, with a $\pm$ based on whether we over- or under-estimate a case's response (the $\pm$ is denoted by $sign(y_i - m_i\hat{\pi}(X_i))$):
 $$
-Dres_i =  sign(y_i - m_i\hat{\pi}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i}{\hat{\mu}(X_i)} \right) - (y_i- \hat{\mu}(X_i))  \right] }
+Dres_i =  sign(y_i - \hat{\mu}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i}{\hat{\mu}(X_i)} \right) - (y_i- \hat{\mu}(X_i))  \right] }
 $$
 We can get these residuals by requesting the default residual values:
 
