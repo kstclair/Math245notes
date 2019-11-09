@@ -455,3 +455,48 @@ As with model GLMs: Pearson residuals are "easy" to interpret as the number of e
 Case influence stats of leverage and Cook's distance can also be used to look for outliers. In a GLM, leverage measures both a cases's "extremeness" in terms of it's predictor values **and** it's extremeness in terms of it's **weight**. In a **Poisson** model, a case's weight is $\hat{\mu}(X_i)$. A case with higher values of $\hat{\mu}(X_i)$  are given more weight, and hence higher leverage, in the fitted model (e.g. in the estiamtes of $\hat{\beta}$). The value of Cook's distance also takes into account a cases leverage  and a case's residual value. 
 
 You can get Pearson residuals, leverage and Cook's distance with `plot(my.glm, which = 5)`. You can also get leverage and Cook's distance vs. predictor values with `ggnostic(my.glm, columnsY = c(".hat",".cooksd"))` from the `GGally` package.
+
+### Example: Possums
+The   `ggnostic` plot options gives you deviance residuals against your predictor(s). 
+```{r}
+library(GGally)
+ggnostic(pos.glm, columnsY = c(".resid"))
+```
+
+Alternatively, you can plot indivdidually by hand:
+```{r}
+possums.aug <- augment(pos.glm, data=possums)
+plotA <- ggplot(possums.aug,  aes(x=Bark, y=.resid)) + 
+  geom_jitter(height = .01, width = .05) + 
+  scale_x_log10() + 
+  geom_hline(yintercept = 0) + labs(title="Deviance residuals")
+possums.aug <- augment(pos.glm, data=possums, type.resid = "pearson")
+plotB <- ggplot(possums.aug,  aes(x=Bark, y=.resid)) + 
+  geom_jitter(height = .01, width = .05) + 
+  scale_x_log10() + 
+  geom_hline(yintercept = 0) + labs(title="Pearson residuals")
+grid.arrange(plotA, plotB, nrow=1)
+```
+
+
+We can get Cook's distance and leverage values from `plot`:
+```{r}
+plot(pos.glm, which=4, id.n = 10)
+plot(pos.glm, which=5, id.n = 10)
+```
+or use `ggnostic`:
+```{r}
+ggnostic(pos.glm, columnsY=c(".hat", ".cooksd"))
+```
+
+Case 3 stands out with the highest Cook's distance, likely because it has the second highest leverage (and Bark value) and it is overestimated by a decent amount. Because it has a higher estimated mean response (around 3) then all but one case in the data. Case 1 has highest leverage because it has the highest bark index and highest estimated mean. The two cases with the lowest bark index (101, 147) do not have the highest leverage values because their estimated means are the smallest in the data set. The other higher leverage cases have higher bark values and estimated means. The other higher Cook's distance cases (75,86,114) have higher predicted values and are poorly predicted with actual counts of either 0 or 5. A quick check shows that case 3 is not all that influential in changing the effect of bark. 
+
+```{r}
+possums.aug <- augment(pos.glm, data=possums, type.predict="response")
+plotA <- ggplot(possums.aug, aes(x=Bark, y=.hat, size=.fitted)) + 
+  geom_point() + labs(title="Leverage vs Bark (size=mu)")
+plotB <- ggplot(possums.aug, aes(x=Bark, y=.cooksd, size=.fitted)) + 
+  geom_point() + labs(title="Cook's D vs Bark (size=mu)")
+grid.arrange(plotA, plotB, nrow=1) 
+```
+
