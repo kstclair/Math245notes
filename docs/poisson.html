@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-11-09">
+<meta name="date" content="2019-11-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -290,6 +290,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.7" data-path="poisson.html"><a href="poisson.html#pois-resid"><i class="fa fa-check"></i><b>5.7</b> Residuals and case influence for binomial responses</a><ul>
 <li class="chapter" data-level="5.7.1" data-path="poisson.html"><a href="poisson.html#example-possums-2"><i class="fa fa-check"></i><b>5.7.1</b> Example: Possums</a></li>
 </ul></li>
+<li class="chapter" data-level="5.8" data-path="poisson.html"><a href="poisson.html#pois-quasi"><i class="fa fa-check"></i><b>5.8</b> Quasi-Poisson logistic model</a></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="rrstudio.html"><a href="rrstudio.html"><i class="fa fa-check"></i><b>A</b> R and Rstudio</a><ul>
@@ -869,8 +870,34 @@ Dres_i =  sign(y_i - \hat{\mu}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i}{\
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Cook&#39;s D vs Bark (size=mu)&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">grid.arrange</span>(plotA, plotB, <span class="dt">nrow=</span><span class="dv">1</span>) </code></pre></div>
 <p><img src="Math245notes_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-
 </div>
+</div>
+<div id="pois-quasi" class="section level2">
+<h2><span class="header-section-number">5.8</span> Quasi-Poisson logistic model</h2>
+<p>A quasi-Poisson model is similar in motivation and fit as a quasi-Binomial model from Section <a href="logistic.html#logistic-quasi">4.13</a>. A quasi-Poisson logistic regression model is one model option when your GOF test suggests that your Poisson model assumptions of independent event occurance and constant rate of occurances is not met. The idea behind this model is to estimate the amount of “overdispersion” and use this value to correct your Poisson model SEs.</p>
+<p>In a quasi-Poisson model we let <span class="math inline">\(\psi\)</span> measure overdispersion so that the responce variance equals: <span class="math display">\[
+V_{quasi}(Y_i \mid X_i)= \psi \mu(X_i)  =\psi V_{poisson}(Y_i \mid X_i)
+\]</span> If <span class="math inline">\(\psi&gt;1\)</span>, then our responses are more variable than Poisson responses should be and <span class="math inline">\(V_{quasi}(Y_i \mid X_i) &gt; V_{poisson}(Y_i \mid X_i)\)</span>. It is possible to have underdispersion, where <span class="math inline">\(\psi &lt; 1\)</span> in which case <span class="math inline">\(V_{quasi}(Y_i \mid X_i) &lt; V_{poisson}(Y_i \mid X_i)\)</span>.</p>
+<p>Steps to fitting a quasi-Poisson model:</p>
+<ol style="list-style-type: decimal">
+<li><p>Fit the Poisson regression model, then estimate the dispersion parameter by comparing the model residual deviance to <span class="math inline">\(n-(p+1)\)</span> which is it’s expected value if the model was adequate: <span class="math display">\[
+\hat{\psi} = \dfrac{G^2}{n-(p+1)}
+\]</span></p></li>
+<li><p>Parameter estimates for <span class="math inline">\(\beta\)</span> are from the Poisson model.</p></li>
+<li><p>Standard errors for <span class="math inline">\(\hat{\beta}\)</span>’s are expanded (if <span class="math inline">\(\hat{\psi}&gt;1\)</span>) to account for overdispersion by a factor of <span class="math inline">\(\sqrt{\hat{\psi}}\)</span>: <span class="math display">\[
+SE_{quasi}(\hat{\beta}_i) = \sqrt{\hat{\psi}}SE_{binom}(\hat{\beta}_i)
+\]</span></p></li>
+<li><p>Conduct “z”-inference (Wald tests/CI) using SEs equal to <span class="math inline">\(SE_{quasi}(\hat{\beta}_i)\)</span></p></li>
+<li><p>Compare quasi-Poisson models using a F-test stat equal to <span class="math display">\[
+F = \dfrac{G^2/(\textrm{# terms tested})}{\hat{\psi}}
+\]</span> using an F-distribution with degrees of freedom equal to the number of terms tested and <span class="math inline">\(n-(p+1)\)</span>. (The “usual” df for an ANOVA F test.)</p></li>
+</ol>
+<p>We can get inference results for steps 1-4 above by adding <code>family = quasipoisson</code> to our <code>glm</code> regression fit:</p>
+<pre><code>glm(y ~ x1 + x2, family = quasipoisson, data=mydata)</code></pre>
+<p>We can get compare quasi-Poisson models using deviance with the command</p>
+<pre><code>anova(red.quasi, full.quasi, test = &quot;F&quot;)</code></pre>
+<p>Again, the method of estimation dispersion as <span class="math inline">\(G^2/(n-(p+1))\)</span> is <em>one</em> way to estimate this parameter by comparing the actual value of <span class="math inline">\(G^2\)</span> to this expectation tells us our dispersion rate. Another way to compute this value is to look at the <strong>sum of the squared Pearson residuals</strong>, which should also have an expected value of <span class="math inline">\(n-(p+1)\)</span>. The ratio of these two quantities is actually what the <code>glm</code> function uses to compute the dispersion parameter. Often there is no pratical difference between these two ways of estimation the dispersion parameter.</p>
+
 </div>
 </div>
 

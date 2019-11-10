@@ -500,3 +500,48 @@ plotB <- ggplot(possums.aug, aes(x=Bark, y=.cooksd, size=.fitted)) +
 grid.arrange(plotA, plotB, nrow=1) 
 ```
 
+
+
+## Quasi-Poisson logistic model {#pois-quasi}
+
+A quasi-Poisson model is similar in motivation and fit as a quasi-Binomial model from Section \@ref(logistic-quasi). A quasi-Poisson logistic regression model is one model option when your GOF test suggests that your Poisson model assumptions of independent event occurance and constant rate of occurances is not met. The idea behind this model is to estimate the amount of "overdispersion" and use this value to correct your Poisson model SEs. 
+
+In a quasi-Poisson model we let $\psi$ measure overdispersion so that the responce variance equals:
+$$
+V_{quasi}(Y_i \mid X_i)= \psi \mu(X_i)  =\psi V_{poisson}(Y_i \mid X_i)
+$$
+If $\psi>1$, then our responses are more variable than Poisson responses should be and $V_{quasi}(Y_i \mid X_i) > V_{poisson}(Y_i \mid X_i)$. It is possible to have underdispersion, where $\psi < 1$ in which case $V_{quasi}(Y_i \mid X_i) < V_{poisson}(Y_i \mid X_i)$.
+
+Steps to fitting a quasi-Poisson model:
+
+1. Fit the Poisson  regression model, then estimate the dispersion parameter by comparing the model residual deviance to $n-(p+1)$ which is it's expected value if the model was adequate:
+$$
+\hat{\psi} = \dfrac{G^2}{n-(p+1)}
+$$
+
+2. Parameter estimates for $\beta$ are from the Poisson model. 
+
+3. Standard errors for $\hat{\beta}$'s are expanded (if $\hat{\psi}>1$) to account for overdispersion by a factor of $\sqrt{\hat{\psi}}$:
+$$
+SE_{quasi}(\hat{\beta}_i) = \sqrt{\hat{\psi}}SE_{binom}(\hat{\beta}_i)
+$$
+
+4. Conduct "z"-inference (Wald tests/CI) using SEs equal to  $SE_{quasi}(\hat{\beta}_i)$
+
+5. Compare quasi-Poisson models using a F-test stat equal to 
+$$
+F = \dfrac{G^2/(\textrm{# terms tested})}{\hat{\psi}}
+$$
+using an F-distribution with degrees of freedom equal to the number of terms tested and $n-(p+1)$. (The "usual" df for an ANOVA F test.)
+
+We can get inference results for steps 1-4 above by adding `family = quasipoisson` to our `glm` regression fit:
+```
+glm(y ~ x1 + x2, family = quasipoisson, data=mydata)
+```
+
+We can get compare quasi-Poisson models using deviance with the command
+```
+anova(red.quasi, full.quasi, test = "F")
+```
+
+Again, the method of estimation dispersion as $G^2/(n-(p+1))$ is *one* way to estimate this parameter by comparing the actual value of $G^2$ to this expectation tells us our dispersion rate. Another way to compute this value is to look at the **sum of the squared Pearson residuals**, which should also have an expected value of $n-(p+1)$. The ratio of these two quantities is actually what the `glm` function uses to compute the dispersion parameter. Often there is no pratical difference between these two ways of estimation the dispersion parameter.  
