@@ -48,6 +48,13 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -414,7 +421,7 @@ Var(Y) = \sigma^2 = \lambda
 SD(Y) = \sigma = \sqrt{\lambda}
 \]</span></p>
 <p>So the expected rate of events <span class="math inline">\(\mu = \lambda\)</span> also tells us how variable our observed counts are likely to be. The larger the mean rate of events, the more variable our counts will be. Hence, our Poisson regression model will <em>not</em> have a “constant variance” assumption. The Poisson distribution is also skewed right for small values of the mean rate but becomes more symmetric as <span class="math inline">\(\mu\)</span> gets bigger. The plots below display Poisson distributions for a few values of <span class="math inline">\(\mu\)</span>.</p>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-242-1.png" width="672" /></p>
 </div>
 <div id="logistic-model" class="section level2">
 <h2><span class="header-section-number">5.2</span> The Poisson model form</h2>
@@ -427,7 +434,7 @@ Y_i \mid X_i \overset{indep.}{\sim} Pois(\mu(Y_i \mid X_i))
 \]</span> The <strong>kernel mean function</strong> for our model, which is the inverse of the link, is the exponential function so that <span class="math display">\[
 \mu(Y_i \mid X_i)  = e^{\eta_i} =e^{\beta_0 + \beta_1 x_{1,i} + \dotsm +  \beta_p x_{p,i}}
 \]</span> This ensures that for any value of <span class="math inline">\(\eta_i\)</span>, we get a positive value for our mean response. This is an example of a <em>log-linear</em> model.</p>
-<p>The scatterplots below show an example of data generated from a SLR model and a Poisson model. Notice that the mean line in a SLR is a linear function of <span class="math inline">\(x\)</span> and we see symmetric, constant variation around the mean line. In the Poisson model data, we see a non-linear increase in the mean response as <span class="math inline">\(x\)</span> grows, along with increasing variation around the mean line. The variation around the mean line is right-skewed for smaller mean values but becomes more symmetric for larger mean values. <img src="Math245notes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>The scatterplots below show an example of data generated from a SLR model and a Poisson model. Notice that the mean line in a SLR is a linear function of <span class="math inline">\(x\)</span> and we see symmetric, constant variation around the mean line. In the Poisson model data, we see a non-linear increase in the mean response as <span class="math inline">\(x\)</span> grows, along with increasing variation around the mean line. The variation around the mean line is right-skewed for smaller mean values but becomes more symmetric for larger mean values. <img src="Math245notes_files/figure-html/unnamed-chunk-243-1.png" width="672" /></p>
 <div id="interpretation-2" class="section level3">
 <h3><span class="header-section-number">5.2.1</span> Interpretation</h3>
 <p>If we have untransformed predictors, we can say that a 1 unit increase in <span class="math inline">\(x_1\)</span>, for example, is associated with a <span class="math inline">\(e^{\beta_1}\)</span> <em>multiplicative</em> change in the <strong>mean response</strong> <span class="math inline">\(\mu\)</span>: <span class="math display">\[
@@ -466,7 +473,7 @@ Y_i \mid X_i \overset{indep.}{\sim} Pois(\mu(Y_i \mid X_i))
 <span class="op">&gt;</span><span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">grid.arrange</span>(plotA, plotB, <span class="dt">nrow=</span><span class="dv">1</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-245-1.png" width="672" /></p>
 </div>
 </div>
 <div id="poisson-est" class="section level2">
@@ -592,7 +599,7 @@ z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span>poisson), <span class="dt">se=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Poisson regression of # species on log-bark index&quot;</span>, 
 <span class="op">+</span><span class="st">        </span><span class="dt">y =</span> <span class="st">&quot;# of species&quot;</span>, <span class="dt">x=</span><span class="st">&quot;bark index&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-250-1.png" width="672" /></p>
 </div>
 </div>
 <div id="pois-dev" class="section level2">
@@ -786,7 +793,7 @@ p-value = 1-P(\chi^2 &gt; G^2) = 1-pchisq(G^2, df=n-(p+1))
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(pos.byBark, <span class="kw">aes</span>(<span class="dt">x=</span>meanY, <span class="dt">y=</span>varY)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_abline</span>(<span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>, <span class="dt">linetype=</span><span class="dv">2</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-257-1.png" width="672" /></p>
 <p>Alternatively, we could first group the cases according to the <code>ntile</code> function. Here we divide cases up into 12 similar groups based on bark, then get stats for each group and plot. A similar conclusion is made with this visual. No strong evidence of a trend in variance always being bigger (or smaller) than the mean count.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(tidyverse)
 <span class="op">&gt;</span><span class="st"> </span>pos.byBark2 &lt;-<span class="st"> </span>possums <span class="op">%&gt;%</span><span class="st"> </span>
@@ -812,7 +819,7 @@ p-value = 1-P(\chi^2 &gt; G^2) = 1-pchisq(G^2, df=n-(p+1))
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(pos.byBark2, <span class="kw">aes</span>(<span class="dt">x=</span>meanY, <span class="dt">y=</span>varY)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_abline</span>(<span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>, <span class="dt">linetype=</span><span class="dv">2</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-258-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -841,7 +848,7 @@ Dres_i =  sign(y_i - \hat{\mu}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i}{\
 <p>The <code>ggnostic</code> plot options gives you deviance residuals against your predictor(s).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(GGally)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggnostic</span>(pos.glm, <span class="dt">columnsY =</span> <span class="kw">c</span>(<span class="st">&quot;.resid&quot;</span>))</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-259-1.png" width="672" /></p>
 <p>Alternatively, you can plot indivdidually by hand:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>possums.aug &lt;-<span class="st"> </span><span class="kw">augment</span>(pos.glm, <span class="dt">data=</span>possums)
 <span class="op">&gt;</span><span class="st"> </span>plotA &lt;-<span class="st"> </span><span class="kw">ggplot</span>(possums.aug,  <span class="kw">aes</span>(<span class="dt">x=</span>Bark, <span class="dt">y=</span>.resid)) <span class="op">+</span><span class="st"> </span>
@@ -854,14 +861,14 @@ Dres_i =  sign(y_i - \hat{\mu}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i}{\
 <span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Pearson residuals&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">grid.arrange</span>(plotA, plotB, <span class="dt">nrow=</span><span class="dv">1</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-260-1.png" width="672" /></p>
 <p>We can get Cook’s distance and leverage values from <code>plot</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(pos.glm, <span class="dt">which=</span><span class="dv">4</span>, <span class="dt">id.n =</span> <span class="dv">10</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-261-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(pos.glm, <span class="dt">which=</span><span class="dv">5</span>, <span class="dt">id.n =</span> <span class="dv">10</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-21-2.png" width="672" /> or use <code>ggnostic</code>:</p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-261-2.png" width="672" /> or use <code>ggnostic</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggnostic</span>(pos.glm, <span class="dt">columnsY=</span><span class="kw">c</span>(<span class="st">&quot;.hat&quot;</span>, <span class="st">&quot;.cooksd&quot;</span>))</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-262-1.png" width="672" /></p>
 <p>Case 3 stands out with the highest Cook’s distance, likely because it has the second highest leverage (and Bark value) and it is overestimated by a decent amount. Because it has a higher estimated mean response (around 3) then all but one case in the data. Case 1 has highest leverage because it has the highest bark index and highest estimated mean. The two cases with the lowest bark index (101, 147) do not have the highest leverage values because their estimated means are the smallest in the data set. The other higher leverage cases have higher bark values and estimated means. The other higher Cook’s distance cases (75,86,114) have higher predicted values and are poorly predicted with actual counts of either 0 or 5. A quick check shows that case 3 is not all that influential in changing the effect of bark.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>possums.aug &lt;-<span class="st"> </span><span class="kw">augment</span>(pos.glm, <span class="dt">data=</span>possums, <span class="dt">type.predict=</span><span class="st">&quot;response&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span>plotA &lt;-<span class="st"> </span><span class="kw">ggplot</span>(possums.aug, <span class="kw">aes</span>(<span class="dt">x=</span>Bark, <span class="dt">y=</span>.hat, <span class="dt">size=</span>.fitted)) <span class="op">+</span><span class="st"> </span>
@@ -869,7 +876,7 @@ Dres_i =  sign(y_i - \hat{\mu}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i}{\
 <span class="op">&gt;</span><span class="st"> </span>plotB &lt;-<span class="st"> </span><span class="kw">ggplot</span>(possums.aug, <span class="kw">aes</span>(<span class="dt">x=</span>Bark, <span class="dt">y=</span>.cooksd, <span class="dt">size=</span>.fitted)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Cook&#39;s D vs Bark (size=mu)&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">grid.arrange</span>(plotA, plotB, <span class="dt">nrow=</span><span class="dv">1</span>) </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-263-1.png" width="672" /></p>
 </div>
 </div>
 <div id="pois-quasi" class="section level2">

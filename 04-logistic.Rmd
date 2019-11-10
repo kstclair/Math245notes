@@ -56,7 +56,7 @@ donner %>%
 
 But these stats are not quite what we want when trying to model survival as a function of age. E.g. of people who survived, we know that the mean age was 27.2 while of people who died, the mean age was 35.5. But this is the wrong direction of conditioning, we would like to say how survival rates change as we increase age by a year, for example. We could employ a scatterplot for this purpose, but we need to recode (in `dplyr`) `Status` into a binary variable that recodes survival as a 1 and death as a 0:
 ```{r}
-donner$Ind_surv <- recode(donner$Status, Survived = 1, Died = 0)
+donner$Ind_surv <- dplyr::recode(donner$Status, Survived = 1, Died = 0)
 ```
 Then use a `jitter` plot to avoid overplotting:
 ```{r}
@@ -316,7 +316,7 @@ exp(0.06647 + c(-1,1)*qnorm(0.975)*0.03222)   # factor change CI
 
 We can verify our mathematical work by refitting a `glm` with an indicator of *death*:
 ```{r}
-donner$Ind_death <- recode(donner$Status, Survived = 0, Died = 1)
+donner$Ind_death <- dplyr::recode(donner$Status, Survived = 0, Died = 1)
 tidy(glm(Ind_death ~ Age, family = binomial, data=donner))
 ```
 

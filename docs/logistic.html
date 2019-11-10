@@ -25,7 +25,7 @@
 <meta name="author" content="Katie St. Clair, Carleton College">
 
 
-<meta name="date" content="2019-11-06">
+<meta name="date" content="2019-11-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -48,6 +48,13 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -273,6 +280,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.3" data-path="poisson.html"><a href="poisson.html#eda-2"><i class="fa fa-check"></i><b>5.3</b> EDA</a><ul>
 <li class="chapter" data-level="5.3.1" data-path="poisson.html"><a href="poisson.html#example-possums"><i class="fa fa-check"></i><b>5.3.1</b> Example: Possums</a></li>
 </ul></li>
+<li class="chapter" data-level="5.4" data-path="poisson.html"><a href="poisson.html#poisson-est"><i class="fa fa-check"></i><b>5.4</b> Inference and estimation</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="poisson.html"><a href="poisson.html#confidence-intervals-for-pmbbeta_i-1"><i class="fa fa-check"></i><b>5.4.1</b> Confidence intervals for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
+<li class="chapter" data-level="5.4.2" data-path="poisson.html"><a href="poisson.html#hypothesis-tests-for-pmbbeta_i-1"><i class="fa fa-check"></i><b>5.4.2</b> Hypothesis tests for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
+<li class="chapter" data-level="5.4.3" data-path="poisson.html"><a href="poisson.html#r-glm-1"><i class="fa fa-check"></i><b>5.4.3</b> R <code>glm</code></a></li>
+<li class="chapter" data-level="5.4.4" data-path="poisson.html"><a href="poisson.html#pois-ex2"><i class="fa fa-check"></i><b>5.4.4</b> Example: Possums</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="poisson.html"><a href="poisson.html#pois-dev"><i class="fa fa-check"></i><b>5.5</b> Deviance for Binomial responses</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="poisson.html"><a href="poisson.html#pois-did"><i class="fa fa-check"></i><b>5.5.1</b> Drop-in-deviance test</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="poisson.html"><a href="poisson.html#pois-assump"><i class="fa fa-check"></i><b>5.6</b> Checking Assumptions</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="poisson.html"><a href="poisson.html#pois-gof"><i class="fa fa-check"></i><b>5.6.1</b> Goodness-of-fit test</a></li>
+<li class="chapter" data-level="5.6.2" data-path="poisson.html"><a href="poisson.html#gof-alternative"><i class="fa fa-check"></i><b>5.6.2</b> GOF alternative</a></li>
+<li class="chapter" data-level="5.6.3" data-path="poisson.html"><a href="poisson.html#example-possums-1"><i class="fa fa-check"></i><b>5.6.3</b> Example: Possums</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="poisson.html"><a href="poisson.html#pois-resid"><i class="fa fa-check"></i><b>5.7</b> Residuals and case influence for binomial responses</a><ul>
+<li class="chapter" data-level="5.7.1" data-path="poisson.html"><a href="poisson.html#example-possums-2"><i class="fa fa-check"></i><b>5.7.1</b> Example: Possums</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="poisson.html"><a href="poisson.html#pois-quasi"><i class="fa fa-check"></i><b>5.8</b> Quasi-Poisson logistic model</a></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="rrstudio.html"><a href="rrstudio.html"><i class="fa fa-check"></i><b>A</b> R and Rstudio</a><ul>
@@ -393,7 +418,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">fill =</span> Status, <span class="dt">x =</span> Sex)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position=</span><span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;proportion&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Surival rates by Sex&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-176-1.png" width="672" /></p>
 <p>We can use the <code>dplyr</code> package’s <code>group_by</code> function to divide the data into the two <code>Sex</code> groups and compute the proportion who <code>Survived</code> within each group. Here we see that 2/3 of females survived while only 1/3 of males survived.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)
 <span class="op">&gt;</span><span class="st"> </span>donner <span class="op">%&gt;%</span><span class="st"> </span>
@@ -409,7 +434,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Status, <span class="dt">y =</span> Age)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">coord_flip</span>()</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-178-1.png" width="672" /></p>
 <p>We can get stats by status group:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner <span class="op">%&gt;%</span>
 <span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(Status) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># for each status group</span>
@@ -420,11 +445,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 1 Died            35.5     14.3             30
 ## 2 Survived        27.2      8.00            25</code></pre></div>
 <p>But these stats are not quite what we want when trying to model survival as a function of age. E.g. of people who survived, we know that the mean age was 27.2 while of people who died, the mean age was 35.5. But this is the wrong direction of conditioning, we would like to say how survival rates change as we increase age by a year, for example. We could employ a scatterplot for this purpose, but we need to recode (in <code>dplyr</code>) <code>Status</code> into a binary variable that recodes survival as a 1 and death as a 0:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_surv &lt;-<span class="st"> </span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">1</span>, <span class="dt">Died =</span> <span class="dv">0</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_surv &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">1</span>, <span class="dt">Died =</span> <span class="dv">0</span>)</code></pre></div>
 <p>Then use a <code>jitter</code> plot to avoid overplotting:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(donner, <span class="kw">aes</span>(<span class="dt">x =</span> Age, <span class="dt">y =</span> Ind_surv)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> .<span class="dv">01</span>) </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-181-1.png" width="672" /></p>
 <p>As we increase age, try vertically “slicing” these points. The proportion of survivals in these similar age groups will just be the mean of the binary 0’s and 1’s in each slice. We have more blue points than red in the low age slices than in high age, so we see that the probability of survival tends to decrease as age increases. We will next consider how to construct a model that gives us a “best fit” curve for this probability of surival.</p>
 </div>
 </div>
@@ -475,7 +500,7 @@ odds = \dfrac{\pi(X)}{1-\pi(X)}
 </ul></li>
 <li>These two functions are inverses of one another.</li>
 </ul>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-9-1.png" width="864" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-182-1.png" width="864" /></p>
 <div id="logistic-int" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> Interpretation</h3>
 <p>Changes in predictors can be interpreted as changes in the <strong>odds</strong> of success (we can’t make general statement about changes in the <strong>probability</strong> of success). Specifically, we “unlog” the logit equation to get an expression for the odds of success for predictors <span class="math inline">\(x_1, \dotsc, x_p\)</span>: <span class="math display">\[
@@ -558,7 +583,7 @@ z =\dfrac{\hat{\beta}_i - 0}{SE(\hat{\beta}_i)}
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> .<span class="dv">01</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span>binomial), <span class="dt">se=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;probability of survival&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-183-1.png" width="672" /></p>
 <p>We can see that an age of about 30 yields an estimated survival probability of 50% while an age of about 45 yields an estimated survival probability of 25%. We can better quantify these values by fitting the model using the <code>glm</code> function.</p>
 <p>Here is our simple model, the logistic regression of survival on age: <span class="math display">\[
 logit(\pi) = \log(\dfrac{\pi}{1-\pi}) = \beta_0 + \beta_1 Age 
@@ -649,7 +674,7 @@ logit(\hat{\pi}) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = 1.81852  -0.06647  Age
 <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="kw">exp</span>(<span class="fl">0.06647</span> <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="kw">qnorm</span>(<span class="fl">0.975</span>)<span class="op">*</span><span class="fl">0.03222</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># % change CI</span>
 ## [1]  0.3325478 13.8395756</code></pre></div>
 <p>We can verify our mathematical work by refitting a <code>glm</code> with an indicator of <em>death</em>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_death &lt;-<span class="st"> </span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">0</span>, <span class="dt">Died =</span> <span class="dv">1</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>donner<span class="op">$</span>Ind_death &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">recode</span>(donner<span class="op">$</span>Status, <span class="dt">Survived =</span> <span class="dv">0</span>, <span class="dt">Died =</span> <span class="dv">1</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">tidy</span>(<span class="kw">glm</span>(Ind_death <span class="op">~</span><span class="st"> </span>Age, <span class="dt">family =</span> binomial, <span class="dt">data=</span>donner))
 ## # A tibble: 2 x 5
 ##   term        estimate std.error statistic p.value
@@ -744,7 +769,7 @@ odds(Sex, Age) = \dfrac{\hat{\pi}}{1-\hat{\pi}} = e^{3.23041}e^{-0.07820 Age}e^{
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color=</span>Status), <span class="dt">height =</span> .<span class="dv">01</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>.fitted, <span class="dt">linetype=</span>Sex)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;probability of survival&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-195-1.png" width="672" /></p>
 <p>Note that these lines are <em>not</em> parallel on the probability scale while they are on the log-odds scale. This is because we apply the logistic function to the log-odds to produce our probabilities. The logistic function is not a linear function, so it does not produce parallel lines (or even lines at all).</p>
 </div>
 </div>
@@ -799,7 +824,7 @@ H_0: \ln(odds) = \beta_0 \ \ \ \ H_A: \ln(odds) = \beta_0 + \beta_1 x_1 + \dotsm
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(nes, <span class="kw">aes</span>(<span class="dt">x=</span>year, <span class="dt">fill =</span> party)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position=</span><span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
 <p>This EDA suggests that an interaction between year and region is needed, so our first model for the log odds of being a <strong>Democrat</strong> (<code>dem = 1</code>) looks like <span class="math display">\[
 \ln(odds) = \beta_0 + \beta_1NE + \beta_2S + \beta_3W +\beta_4Year2000 +  \beta_5NE:2000 + \beta_6S:2000 + \beta_7 W:2000 
 \]</span></p>
@@ -944,12 +969,12 @@ P(\chi^2 &gt; 16.361) = 1-pchisq(16.361, 3) = 0.00096
 ## 20     20       21.5 0.812        1.47
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.empLO, <span class="kw">aes</span>(<span class="dt">x=</span>D.grps.med, <span class="dt">y=</span>log.odds.emp)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() </code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-204-1.png" width="672" /></p>
 <p>Looking at diameter on the log-scale shows a more linear plot. This is our reason for using <code>log(D)</code> in our logistic model for tree survival status.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.empLO, <span class="kw">aes</span>(<span class="dt">x=</span>D.grps.med, <span class="dt">y=</span>log.odds.emp)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>()</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-205-1.png" width="672" /></p>
 </div>
 </div>
 <div id="logistic-resid" class="section level2">
@@ -1006,7 +1031,7 @@ r_i = y_i - \hat{\pi}(X_i)
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="dt">height =</span> .<span class="dv">05</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-209-1.png" width="672" /></p>
 <p>To help understand if the <em>average</em> residual value for each diameter varies around 0 we can using the binning variable <code>D.grps</code> and find the mean residual value for each group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>blowBF.resid &lt;-<span class="st"> </span>blowBF.aug <span class="op">%&gt;%</span>
 <span class="op">+</span><span class="st">   </span><span class="kw">group_by</span>(D.grps) <span class="op">%&gt;%</span>
@@ -1017,7 +1042,7 @@ r_i = y_i - \hat{\pi}(X_i)
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.resid, <span class="kw">aes</span>(<span class="dt">x=</span>lnD.grps.med,<span class="dt">y=</span>resid.mean)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-211-1.png" width="672" /></p>
 <p>What if we hadn’t logged diameter? The binned residual plot shows more of a trend then the log diameter model. Residuals are mostly negative for small diameters (trees that survived (0) that have probabilities of death that are “too high”) and mostly positive values for mid- to high-diameter bins (trees that died (1) that have probabilities of death that are “too low”).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>fir.glmBad &lt;-<span class="st"> </span><span class="kw">glm</span>(y <span class="op">~</span><span class="st">  </span>D, <span class="dt">family=</span>binomial, <span class="dt">data=</span>blowBF)
 <span class="op">&gt;</span><span class="st"> </span>blowBF.augBad &lt;-<span class="st"> </span><span class="kw">augment</span>(<span class="dt">data=</span>blowBF, fir.glmBad, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>, <span class="dt">type.residuals =</span> <span class="st">&quot;response&quot;</span>)
@@ -1029,7 +1054,7 @@ r_i = y_i - \hat{\pi}(X_i)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(blowBF.residBad, <span class="kw">aes</span>(<span class="dt">x=</span>D.grps.med,<span class="dt">y=</span>resid.mean)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-212-1.png" width="672" /></p>
 </div>
 </div>
 <div id="binomial-responses" class="section level2">
@@ -1247,12 +1272,12 @@ Binom(m_i = 1, \pi(X_i)) = Bern(\pi(X_i))
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(island, <span class="kw">aes</span>(<span class="dt">x =</span> Area, <span class="dt">y =</span> logOdds)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;empirical log odds vs. area&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-215-1.png" width="672" /></p>
 <p>Since area is very right skewed, the first transformation choice could be log. We do find that log of area is linearly related to the log odds of extinction.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(island, <span class="kw">aes</span>(<span class="dt">x =</span> Area, <span class="dt">y =</span> logOdds)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;empirical log odds vs. log(area)&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-216-1.png" width="672" /></p>
 </div>
 <div id="model-fit" class="section level4">
 <h4><span class="header-section-number">4.9.1.2</span> Model fit</h4>
@@ -1337,7 +1362,7 @@ OR = \dfrac{\hat{odds}(2 \times Area)}{\hat{odds}(Area)} = 2^{- 0.29710} = 0.814
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">se=</span><span class="ot">FALSE</span>,  <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>)) <span class="op">+</span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Extinction probability as a function of area&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-221-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -1537,17 +1562,17 @@ Dres_i =  sign(y_i - m_i\hat{\pi}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i
 <span class="op">&gt;</span><span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(gridExtra)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">grid.arrange</span>(plotA, plotB, <span class="dt">ncol=</span><span class="dv">2</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-226-1.png" width="672" /></p>
 <p>Since all at risk counts are rather large (all cases are 6 or larger), we can expect the residuals to be approximately <span class="math inline">\(N(0,1)\)</span>. The residual plots above show no cases that are extreme is magnitude. A normal QQ plot shows rough normality with the min and max residuals case deviating a bit from the reference line.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(krunnit.glm, <span class="dt">which=</span><span class="dv">2</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
 <p>We can plot residuals and case influence stats with all 18 cases identified with the <code>plot</code> command. Here we see that rows 1,2 and 17 have largest leverage while case 3 looks to have the highest Cook’s distance value.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(krunnit.glm, <span class="dt">which=</span><span class="dv">5</span>, <span class="dt">id.n=</span><span class="dv">18</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-228-1.png" width="672" /></p>
 <p>Here we see that the case influence stats against log area and against the model weights, number at risk:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(GGally)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">ggnostic</span>(krunnit.glm, <span class="dt">columnsY =</span> <span class="kw">c</span>(<span class="st">&quot;.hat&quot;</span>,<span class="st">&quot;.cooksd&quot;</span>))</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
 <p>Finally, we dig a bit deeper and look at the data for the four highlighted cases above. We also plot weight (number at risk) against log area and highlight the small residual cases in blue (cases 2 and 3) and the larger residual cases (1, 17).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>island.aug &lt;-<span class="st"> </span><span class="kw">augment</span>(krunnit.glm, <span class="dt">data=</span>island, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>)
 <span class="op">&gt;</span><span class="st"> </span>island.aug <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">slice</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">17</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>.se.fit, <span class="op">-</span>.sigma)
@@ -1573,7 +1598,7 @@ Dres_i =  sign(y_i - m_i\hat{\pi}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">1</span>,<span class="dv">17</span>), <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">2</span>,<span class="dv">3</span>), <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>)<span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;at risk vs. area, size denotes leverage&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(island.aug, <span class="kw">aes</span>(<span class="dt">x=</span>Area, <span class="dt">y=</span>AtRisk, <span class="dt">size=</span>.cooksd)) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
@@ -1581,7 +1606,7 @@ Dres_i =  sign(y_i - m_i\hat{\pi}(X_i)) \sqrt{2 \left[ y_i \ln \left( \dfrac{y_i
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">1</span>,<span class="dv">17</span>), <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">slice</span>(island.aug, <span class="dv">2</span>,<span class="dv">3</span>), <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>)<span class="op">+</span><span class="st"> </span>
 <span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;at risk vs. area, size denotes Cook&#39;s distance&quot;</span>)</code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-57-2.png" width="672" /></p>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-230-2.png" width="672" /></p>
 <ul>
 <li><p>Case 1 (Ulkokrunni) is the island with the largest area and the largest number at risk (<span class="math inline">\(m_i\)</span>). For this reason case 1 has largest leverage but it doesn’t have an large residual value so it doesn’t have high Cook’s distance. (See the fitted probability curve in Section <a href="logistic.html#logistic-exViz">4.9.1.3</a>).</p></li>
 <li><p>Case 17 (Tiirakari) has the <em>second smallest</em> area but a large number of at risk species given its small size. For this reason it has <em>larger</em> leverage than case 18 which has the smallest area but smaller number at risk. The fitted probability curve is very close to this case, though, so it has a small residual and low Cook’s distance.</p></li>
