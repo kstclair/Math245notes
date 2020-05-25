@@ -136,3 +136,5 @@ $$
     c. What is the percent change in estimated median response if we increase $x$ by 50%?
     d. What is the multiplicative change in estimated median response if we reduce the value of $x$ by 20%?
     e. What is the percent change in estimated median response if we reduce the value of $x$ by 20%?
+    
+Here is a link to the [solution](https://kstclair.github.io/Math245/Rhandouts/worksheetLogs_Solution.pdf)
