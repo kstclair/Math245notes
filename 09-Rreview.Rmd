@@ -173,7 +173,7 @@ You can read a .csv file into R using its URL or file path (which is system depe
 mydata <- read.csv("<data file path>/mydata.csv") 
 ```
 
-Alternatively, you can download (then upload if using mirage) a needed data set to your **data** folder located in your **Mathxxx** folder. Once this is done, and your **Mathxxx project** is started, you can easily read the data set into R using the command
+Alternatively, you can download (then upload if using maize) a needed data set to your **data** folder located in your **Mathxxx** folder. Once this is done, and your **Mathxxx project** is started, you can easily read the data set into R using the command
 ```{r, eval=FALSE}
 mydata <- read.csv("data/mydata.csv")
 ```

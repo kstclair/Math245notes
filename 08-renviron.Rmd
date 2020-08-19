@@ -21,7 +21,7 @@ The default location that R looks for "stuff" or saves "stuff" is called your **
 [1] "C:/Users/kstclair/Documents"
 ```
 
-Or from the mirage server, 
+Or from the maize server, 
 
 ```
 > getwd()
@@ -40,13 +40,13 @@ Your first task in Rstudio for Math 245 will be to create a Math 245 project:
 
 ![](http://www.rstudio.com/images/docs/projects_new.png)
 
-3. Click on **New project** (again), then enter **Math245** as your Directory name (no spaces). Use the **Browse** button to put this project in a good spot on your computer or accept the default location on mirage. 
+3. Click on **New project** (again), then enter **Math245** as your Directory name (no spaces). Use the **Browse** button to put this project in a good spot on your computer or accept the default location on maize. 
 4. Click on **Create Project**. Your Rstudio session should not change in looks all that much but check your computer should now contain a **Math245** folder in the location you chose. This folder will contain a **Math245.Rproj** icon. 
 5. Your working directory is now set to this **Math245** folder. Check this with the `getwd()` command.
 
 Starting your Math245 project:
 
-1. Rstudio default settings are to start up your last project when you reopen Rstudio. So just opening Rstudio (or loggin onto mirage) usually opens your Math245 project. You will see your project name in the upper right-hand project button location.
+1. Rstudio default settings are to start up your last project when you reopen Rstudio. So just opening Rstudio (or loggin onto maize) usually opens your Math245 project. You will see your project name in the upper right-hand project button location.
 2. Alternatively, start your R project by **double clicking on the project icon** in your Math245 folder. You will know you are in
 3. You can also open or change projects with the drop-down project menu. 
 
