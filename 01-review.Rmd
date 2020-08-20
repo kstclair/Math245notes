@@ -167,7 +167,7 @@ Our basic plan for analysis looks like:
 4. Conclusion:  interpret results, avoid lots of stats jargon!
 
 
-####  Data
+####  Data input
 
 Read in the data and check variable names:
 ```{r, eval = FALSE}
@@ -201,7 +201,7 @@ agstrat2 <- droplevels(agstrat2)
 table(agstrat2$region)
 ```
 
-#### EDA
+#### Exploratory data analysis
 
 **(2a) In 2-3 sentences, compare the distributions (shape, center, spread) of `farms92` by `region` (W vs. NC).**
 

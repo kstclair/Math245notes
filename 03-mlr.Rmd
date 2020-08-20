@@ -1577,7 +1577,7 @@ We can use the `plot(my.lm, which = 4)` command to plot Cook's distance against 
 plot(sleep.lm3a, which=4, id.n = 5)
 ```
 
-We can use the `plot(my.lm, which = 5)` command to plot standardized residuals (y-axis) against leverage (x-axis) with contours given by Cook's distance. For this model fit, we have two cases (13, 17) with standardized residuals below -2 but these are mid-range leverage cases and all Cook's distances are below 0.5. THe largest Cook's distance case, 32, has the third largest leverage value. 
+We can use the `plot(my.lm, which = 5)` command to plot standardized residuals (y-axis) against leverage (x-axis) with contours given by Cook's distance. For this model fit, we have two cases (13, 17) with standardized residuals below -2 but these are mid-range leverage cases and all Cook's distances are below 0.5. The largest Cook's distance case, 28, has the third largest leverage value. 
 ```{r}
 plot(sleep.lm3a, which=5, id.n=5)
 ```
