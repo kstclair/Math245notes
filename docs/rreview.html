@@ -51,6 +51,13 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -448,133 +455,133 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">C.1.3</span> Vectors</h3>
 <p>Vectors are a simple type of object and even single numbers (called scalars) are vectors with a length of 1. Here are a few ways to create vectors.</p>
 <p>The <code>:</code> operator creates a sequence of numbers that increase or decrease by 1.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="rreview.html#cb2-1"></a><span class="dv">3</span><span class="op">:</span><span class="dv">10</span> </span>
-<span id="cb2-2"><a href="rreview.html#cb2-2"></a><span class="dv">0</span><span class="op">:-</span><span class="dv">3</span>  </span></code></pre></div>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="rreview.html#cb258-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span><span class="op">:</span><span class="dv">10</span> </span>
+<span id="cb258-2"><a href="rreview.html#cb258-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span><span class="op">:-</span><span class="dv">3</span>  </span></code></pre></div>
 <div class="solution">
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="rreview.html#cb3-1"></a><span class="dv">3</span><span class="op">:</span><span class="dv">10</span> </span></code></pre></div>
-<pre><code>## [1]  3  4  5  6  7  8  9 10</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="rreview.html#cb5-1"></a><span class="dv">0</span><span class="op">:-</span><span class="dv">3</span>  </span></code></pre></div>
-<pre><code>## [1]  0 -1 -2 -3</code></pre>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="rreview.html#cb259-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span><span class="op">:</span><span class="dv">10</span> </span>
+<span id="cb259-2"><a href="rreview.html#cb259-2"></a><span class="co">## [1]  3  4  5  6  7  8  9 10</span></span>
+<span id="cb259-3"><a href="rreview.html#cb259-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span><span class="op">:-</span><span class="dv">3</span>  </span>
+<span id="cb259-4"><a href="rreview.html#cb259-4"></a><span class="co">## [1]  0 -1 -2 -3</span></span></code></pre></div>
 </div>
 <p>The <code>seq</code> function also creates sequences of a given length or increment.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="rreview.html#cb7-1"></a><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dt">by=</span>.<span class="dv">5</span>) </span></code></pre></div>
-<pre><code>## [1] 1.0 1.5 2.0 2.5 3.0</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="rreview.html#cb9-1"></a><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dt">length=</span><span class="dv">10</span>)  </span></code></pre></div>
-<pre><code>##  [1] 1.000000 1.222222 1.444444 1.666667 1.888889 2.111111 2.333333 2.555556
-##  [9] 2.777778 3.000000</code></pre>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="rreview.html#cb260-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dt">by=</span>.<span class="dv">5</span>) </span>
+<span id="cb260-2"><a href="rreview.html#cb260-2"></a><span class="co">## [1] 1.0 1.5 2.0 2.5 3.0</span></span>
+<span id="cb260-3"><a href="rreview.html#cb260-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dt">length=</span><span class="dv">10</span>)  </span>
+<span id="cb260-4"><a href="rreview.html#cb260-4"></a><span class="co">##  [1] 1.000000 1.222222 1.444444 1.666667 1.888889 2.111111 2.333333 2.555556</span></span>
+<span id="cb260-5"><a href="rreview.html#cb260-5"></a><span class="co">##  [9] 2.777778 3.000000</span></span></code></pre></div>
 <p>Use the combine function <code>c()</code> to create any particular arrangement:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="rreview.html#cb11-1"></a><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="op">-</span><span class="dv">1</span>) </span></code></pre></div>
-<pre><code>## [1]  5  2  4 -1</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="rreview.html#cb13-1"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="op">-</span><span class="dv">1</span>) </span>
-<span id="cb13-2"><a href="rreview.html#cb13-2"></a>x </span></code></pre></div>
-<pre><code>## [1]  5  2  4 -1</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="rreview.html#cb15-1"></a>y &lt;-<span class="st"> </span><span class="kw">c</span>(x,<span class="dv">0</span><span class="op">:</span><span class="dv">3</span>,x) </span>
-<span id="cb15-2"><a href="rreview.html#cb15-2"></a>y  </span></code></pre></div>
-<pre><code>##  [1]  5  2  4 -1  0  1  2  3  5  2  4 -1</code></pre>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="rreview.html#cb261-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="op">-</span><span class="dv">1</span>) </span>
+<span id="cb261-2"><a href="rreview.html#cb261-2"></a><span class="co">## [1]  5  2  4 -1</span></span>
+<span id="cb261-3"><a href="rreview.html#cb261-3"></a><span class="op">&gt;</span><span class="st"> </span>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="op">-</span><span class="dv">1</span>) </span>
+<span id="cb261-4"><a href="rreview.html#cb261-4"></a><span class="op">&gt;</span><span class="st"> </span>x </span>
+<span id="cb261-5"><a href="rreview.html#cb261-5"></a><span class="co">## [1]  5  2  4 -1</span></span>
+<span id="cb261-6"><a href="rreview.html#cb261-6"></a><span class="op">&gt;</span><span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">c</span>(x,<span class="dv">0</span><span class="op">:</span><span class="dv">3</span>,x) </span>
+<span id="cb261-7"><a href="rreview.html#cb261-7"></a><span class="op">&gt;</span><span class="st"> </span>y  </span>
+<span id="cb261-8"><a href="rreview.html#cb261-8"></a><span class="co">##  [1]  5  2  4 -1  0  1  2  3  5  2  4 -1</span></span></code></pre></div>
 <p>The <code>rep</code> command allows repetition:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="rreview.html#cb17-1"></a><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">5</span>) </span></code></pre></div>
-<pre><code>## [1] 0 0 0 0 0</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="rreview.html#cb19-1"></a><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))  </span></code></pre></div>
-<pre><code>## [1] 0 0 0 1 1</code></pre>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="rreview.html#cb262-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">5</span>) </span>
+<span id="cb262-2"><a href="rreview.html#cb262-2"></a><span class="co">## [1] 0 0 0 0 0</span></span>
+<span id="cb262-3"><a href="rreview.html#cb262-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))  </span>
+<span id="cb262-4"><a href="rreview.html#cb262-4"></a><span class="co">## [1] 0 0 0 1 1</span></span></code></pre></div>
 <p>You can also create vectors of characters (letters or words):</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="rreview.html#cb21-1"></a><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>) </span></code></pre></div>
-<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="rreview.html#cb23-1"></a><span class="kw">c</span>(<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;de&quot;</span>)  </span></code></pre></div>
-<pre><code>## [1] &quot;abc&quot; &quot;de&quot;</code></pre>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="rreview.html#cb263-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>) </span>
+<span id="cb263-2"><a href="rreview.html#cb263-2"></a><span class="co">## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;</span></span>
+<span id="cb263-3"><a href="rreview.html#cb263-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;de&quot;</span>)  </span>
+<span id="cb263-4"><a href="rreview.html#cb263-4"></a><span class="co">## [1] &quot;abc&quot; &quot;de&quot;</span></span></code></pre></div>
 <p>Logical (true/false) vectors do not use double quotes:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="rreview.html#cb25-1"></a><span class="kw">c</span>(T,T,F)  </span></code></pre></div>
-<pre><code>## [1]  TRUE  TRUE FALSE</code></pre>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="rreview.html#cb264-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">c</span>(T,T,F)  </span>
+<span id="cb264-2"><a href="rreview.html#cb264-2"></a><span class="co">## [1]  TRUE  TRUE FALSE</span></span></code></pre></div>
 </div>
 <div id="arithmetic" class="section level3">
 <h3><span class="header-section-number">C.1.4</span> Arithmetic</h3>
 <p>Here’s some basic commands:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="rreview.html#cb27-1"></a>x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span> </span>
-<span id="cb27-2"><a href="rreview.html#cb27-2"></a>x<span class="op">*</span><span class="dv">2</span> </span></code></pre></div>
-<pre><code>## [1] 2 4 6 8</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="rreview.html#cb29-1"></a>x<span class="op">^</span><span class="dv">2</span> </span></code></pre></div>
-<pre><code>## [1]  1  4  9 16</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="rreview.html#cb31-1"></a>(x<span class="dv">-2</span>)<span class="op">/</span><span class="dv">3</span>  </span></code></pre></div>
-<pre><code>## [1] -0.3333333  0.0000000  0.3333333  0.6666667</code></pre>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="rreview.html#cb265-1"></a><span class="op">&gt;</span><span class="st"> </span>x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span> </span>
+<span id="cb265-2"><a href="rreview.html#cb265-2"></a><span class="op">&gt;</span><span class="st"> </span>x<span class="op">*</span><span class="dv">2</span> </span>
+<span id="cb265-3"><a href="rreview.html#cb265-3"></a><span class="co">## [1] 2 4 6 8</span></span>
+<span id="cb265-4"><a href="rreview.html#cb265-4"></a><span class="op">&gt;</span><span class="st"> </span>x<span class="op">^</span><span class="dv">2</span> </span>
+<span id="cb265-5"><a href="rreview.html#cb265-5"></a><span class="co">## [1]  1  4  9 16</span></span>
+<span id="cb265-6"><a href="rreview.html#cb265-6"></a><span class="op">&gt;</span><span class="st"> </span>(x<span class="dv">-2</span>)<span class="op">/</span><span class="dv">3</span>  </span>
+<span id="cb265-7"><a href="rreview.html#cb265-7"></a><span class="co">## [1] -0.3333333  0.0000000  0.3333333  0.6666667</span></span></code></pre></div>
 <p>Arithmetic involving vectors is done elementwise.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="rreview.html#cb33-1"></a>y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) </span>
-<span id="cb33-2"><a href="rreview.html#cb33-2"></a>x<span class="op">*</span>y </span></code></pre></div>
-<pre><code>## [1] -1  2 -3  4</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="rreview.html#cb35-1"></a>x<span class="op">-</span>y  </span></code></pre></div>
-<pre><code>## [1] 2 1 4 3</code></pre>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="rreview.html#cb266-1"></a><span class="op">&gt;</span><span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) </span>
+<span id="cb266-2"><a href="rreview.html#cb266-2"></a><span class="op">&gt;</span><span class="st"> </span>x<span class="op">*</span>y </span>
+<span id="cb266-3"><a href="rreview.html#cb266-3"></a><span class="co">## [1] -1  2 -3  4</span></span>
+<span id="cb266-4"><a href="rreview.html#cb266-4"></a><span class="op">&gt;</span><span class="st"> </span>x<span class="op">-</span>y  </span>
+<span id="cb266-5"><a href="rreview.html#cb266-5"></a><span class="co">## [1] 2 1 4 3</span></span></code></pre></div>
 <p>Special functions are available that work elementwise or on the entire vector. Here are a few:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="rreview.html#cb37-1"></a><span class="kw">sqrt</span>(x) </span></code></pre></div>
-<pre><code>## [1] 1.000000 1.414214 1.732051 2.000000</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="rreview.html#cb39-1"></a><span class="kw">log</span>(x) </span></code></pre></div>
-<pre><code>## [1] 0.0000000 0.6931472 1.0986123 1.3862944</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="rreview.html#cb41-1"></a><span class="kw">exp</span>(x) </span></code></pre></div>
-<pre><code>## [1]  2.718282  7.389056 20.085537 54.598150</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="rreview.html#cb43-1"></a><span class="kw">sum</span>(x) </span></code></pre></div>
-<pre><code>## [1] 10</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="rreview.html#cb45-1"></a><span class="kw">mean</span>(x) </span></code></pre></div>
-<pre><code>## [1] 2.5</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="rreview.html#cb47-1"></a><span class="kw">sd</span>(x) </span></code></pre></div>
-<pre><code>## [1] 1.290994</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="rreview.html#cb49-1"></a><span class="kw">sqrt</span>(<span class="kw">sum</span>(x<span class="op">^</span><span class="dv">2</span>))  </span></code></pre></div>
-<pre><code>## [1] 5.477226</code></pre>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="rreview.html#cb267-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">sqrt</span>(x) </span>
+<span id="cb267-2"><a href="rreview.html#cb267-2"></a><span class="co">## [1] 1.000000 1.414214 1.732051 2.000000</span></span>
+<span id="cb267-3"><a href="rreview.html#cb267-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">log</span>(x) </span>
+<span id="cb267-4"><a href="rreview.html#cb267-4"></a><span class="co">## [1] 0.0000000 0.6931472 1.0986123 1.3862944</span></span>
+<span id="cb267-5"><a href="rreview.html#cb267-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">exp</span>(x) </span>
+<span id="cb267-6"><a href="rreview.html#cb267-6"></a><span class="co">## [1]  2.718282  7.389056 20.085537 54.598150</span></span>
+<span id="cb267-7"><a href="rreview.html#cb267-7"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">sum</span>(x) </span>
+<span id="cb267-8"><a href="rreview.html#cb267-8"></a><span class="co">## [1] 10</span></span>
+<span id="cb267-9"><a href="rreview.html#cb267-9"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(x) </span>
+<span id="cb267-10"><a href="rreview.html#cb267-10"></a><span class="co">## [1] 2.5</span></span>
+<span id="cb267-11"><a href="rreview.html#cb267-11"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">sd</span>(x) </span>
+<span id="cb267-12"><a href="rreview.html#cb267-12"></a><span class="co">## [1] 1.290994</span></span>
+<span id="cb267-13"><a href="rreview.html#cb267-13"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>(x<span class="op">^</span><span class="dv">2</span>))  </span>
+<span id="cb267-14"><a href="rreview.html#cb267-14"></a><span class="co">## [1] 5.477226</span></span></code></pre></div>
 <p>More summary stats can be found with the commands <code>min</code>, <code>max</code>, <code>median</code>, <code>quantile</code>, <code>summary</code>, and <code>var</code>.</p>
 <p>You usually use the special functions above with numeric vectors (<code>int</code> or <code>num</code>), but you can use these functions with logical vectors too. The logical vector is coerced into a integer vector with <code>1</code> for <code>TRUE</code> and <code>0</code> for <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="rreview.html#cb51-1"></a>y &lt;-<span class="st"> </span><span class="kw">c</span>(T,T,F)</span>
-<span id="cb51-2"><a href="rreview.html#cb51-2"></a>y</span></code></pre></div>
-<pre><code>## [1]  TRUE  TRUE FALSE</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="rreview.html#cb53-1"></a><span class="kw">sum</span>(y)  <span class="co"># number of TRUE&#39;s in y</span></span></code></pre></div>
-<pre><code>## [1] 2</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="rreview.html#cb55-1"></a><span class="kw">mean</span>(y)  <span class="co"># proportion of TRUE&#39;s in y</span></span></code></pre></div>
-<pre><code>## [1] 0.6666667</code></pre>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="rreview.html#cb268-1"></a><span class="op">&gt;</span><span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">c</span>(T,T,F)</span>
+<span id="cb268-2"><a href="rreview.html#cb268-2"></a><span class="op">&gt;</span><span class="st"> </span>y</span>
+<span id="cb268-3"><a href="rreview.html#cb268-3"></a><span class="co">## [1]  TRUE  TRUE FALSE</span></span>
+<span id="cb268-4"><a href="rreview.html#cb268-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">sum</span>(y)  <span class="co"># number of TRUE&#39;s in y</span></span>
+<span id="cb268-5"><a href="rreview.html#cb268-5"></a><span class="co">## [1] 2</span></span>
+<span id="cb268-6"><a href="rreview.html#cb268-6"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(y)  <span class="co"># proportion of TRUE&#39;s in y</span></span>
+<span id="cb268-7"><a href="rreview.html#cb268-7"></a><span class="co">## [1] 0.6666667</span></span></code></pre></div>
 </div>
 <div id="subsetting" class="section level3">
 <h3><span class="header-section-number">C.1.5</span> Subsetting</h3>
 <p>You can access one or more elements in a vector by specifying a certain <em>index</em> of elements within the vector: <code>vector[index]</code>.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="rreview.html#cb57-1"></a>w&lt;-<span class="kw">c</span>(<span class="dv">30</span>,<span class="dv">50</span>,<span class="dv">20</span>,<span class="dv">60</span>,<span class="dv">40</span>,<span class="dv">20</span>) </span>
-<span id="cb57-2"><a href="rreview.html#cb57-2"></a><span class="kw">length</span>(w)  </span></code></pre></div>
-<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="rreview.html#cb269-1"></a><span class="op">&gt;</span><span class="st"> </span>w&lt;-<span class="kw">c</span>(<span class="dv">30</span>,<span class="dv">50</span>,<span class="dv">20</span>,<span class="dv">60</span>,<span class="dv">40</span>,<span class="dv">20</span>) </span>
+<span id="cb269-2"><a href="rreview.html#cb269-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">length</span>(w)  </span>
+<span id="cb269-3"><a href="rreview.html#cb269-3"></a><span class="co">## [1] 6</span></span></code></pre></div>
 <p>The first element of <code>w</code>:</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="rreview.html#cb59-1"></a>w[<span class="dv">1</span>]  </span></code></pre></div>
-<pre><code>## [1] 30</code></pre>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="rreview.html#cb270-1"></a><span class="op">&gt;</span><span class="st"> </span>w[<span class="dv">1</span>]  </span>
+<span id="cb270-2"><a href="rreview.html#cb270-2"></a><span class="co">## [1] 30</span></span></code></pre></div>
 <p>The first and third elements:</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="rreview.html#cb61-1"></a>w[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]  </span></code></pre></div>
-<pre><code>## [1] 30 20</code></pre>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="rreview.html#cb271-1"></a><span class="op">&gt;</span><span class="st"> </span>w[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]  </span>
+<span id="cb271-2"><a href="rreview.html#cb271-2"></a><span class="co">## [1] 30 20</span></span></code></pre></div>
 <p>All elements except the first and third:</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="rreview.html#cb63-1"></a>w[<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]  </span></code></pre></div>
-<pre><code>## [1] 50 60 40 20</code></pre>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="rreview.html#cb272-1"></a><span class="op">&gt;</span><span class="st"> </span>w[<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]  </span>
+<span id="cb272-2"><a href="rreview.html#cb272-2"></a><span class="co">## [1] 50 60 40 20</span></span></code></pre></div>
 <p>The elements that are at most 40:</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="rreview.html#cb65-1"></a>w[w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">40</span>]  </span></code></pre></div>
-<pre><code>## [1] 30 20 40 20</code></pre>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="rreview.html#cb273-1"></a><span class="op">&gt;</span><span class="st"> </span>w[w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">40</span>]  </span>
+<span id="cb273-2"><a href="rreview.html#cb273-2"></a><span class="co">## [1] 30 20 40 20</span></span></code></pre></div>
 <p>The <em>position</em> of these elements that are at most 40:</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="rreview.html#cb67-1"></a><span class="kw">which</span>(w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">40</span>)  </span></code></pre></div>
-<pre><code>## [1] 1 3 5 6</code></pre>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="rreview.html#cb274-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">which</span>(w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">40</span>)  </span>
+<span id="cb274-2"><a href="rreview.html#cb274-2"></a><span class="co">## [1] 1 3 5 6</span></span></code></pre></div>
 <p>The mean of <code>w</code> and the mean of only the elements in <code>w</code> that are less than or equal to 4:</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="rreview.html#cb69-1"></a><span class="kw">mean</span>(w) </span></code></pre></div>
-<pre><code>## [1] 36.66667</code></pre>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="rreview.html#cb71-1"></a><span class="kw">mean</span>(w[w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">40</span>])  </span></code></pre></div>
-<pre><code>## [1] 27.5</code></pre>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="rreview.html#cb275-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(w) </span>
+<span id="cb275-2"><a href="rreview.html#cb275-2"></a><span class="co">## [1] 36.66667</span></span>
+<span id="cb275-3"><a href="rreview.html#cb275-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(w[w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">40</span>])  </span>
+<span id="cb275-4"><a href="rreview.html#cb275-4"></a><span class="co">## [1] 27.5</span></span></code></pre></div>
 <p>Expressions involving inequalities create a logical vector which is <code>TRUE</code> when the expression is true:</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="rreview.html#cb73-1"></a>w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">40</span> </span></code></pre></div>
-<pre><code>## [1]  TRUE FALSE  TRUE FALSE  TRUE  TRUE</code></pre>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="rreview.html#cb75-1"></a>w <span class="op">==</span><span class="st"> </span><span class="dv">40</span>  </span></code></pre></div>
-<pre><code>## [1] FALSE FALSE FALSE FALSE  TRUE FALSE</code></pre>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="rreview.html#cb276-1"></a><span class="op">&gt;</span><span class="st"> </span>w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">40</span> </span>
+<span id="cb276-2"><a href="rreview.html#cb276-2"></a><span class="co">## [1]  TRUE FALSE  TRUE FALSE  TRUE  TRUE</span></span>
+<span id="cb276-3"><a href="rreview.html#cb276-3"></a><span class="op">&gt;</span><span class="st"> </span>w <span class="op">==</span><span class="st"> </span><span class="dv">40</span>  </span>
+<span id="cb276-4"><a href="rreview.html#cb276-4"></a><span class="co">## [1] FALSE FALSE FALSE FALSE  TRUE FALSE</span></span></code></pre></div>
 <p>So when a vector is indexed by a TRUE/FALSE vector only the <code>TRUE</code> entries will be displayed (and used in any command involving this vector). Here is the logical vector for entries in <code>w</code> that are not equal to 40:</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="rreview.html#cb77-1"></a>w <span class="op">!=</span><span class="st"> </span><span class="dv">40</span>  </span></code></pre></div>
-<pre><code>## [1]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE</code></pre>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="rreview.html#cb277-1"></a><span class="op">&gt;</span><span class="st"> </span>w <span class="op">!=</span><span class="st"> </span><span class="dv">40</span>  </span>
+<span id="cb277-2"><a href="rreview.html#cb277-2"></a><span class="co">## [1]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE</span></span></code></pre></div>
 <p>Here are the values of the entries of <code>w</code> excluding those equal to 40:</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="rreview.html#cb79-1"></a>w[w <span class="op">!=</span><span class="st"> </span><span class="dv">40</span>]  </span></code></pre></div>
-<pre><code>## [1] 30 50 20 60 20</code></pre>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="rreview.html#cb278-1"></a><span class="op">&gt;</span><span class="st"> </span>w[w <span class="op">!=</span><span class="st"> </span><span class="dv">40</span>]  </span>
+<span id="cb278-2"><a href="rreview.html#cb278-2"></a><span class="co">## [1] 30 50 20 60 20</span></span></code></pre></div>
 <p>Here is the sum of the values of the entries of <code>w</code> excluding those equal to 40:</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="rreview.html#cb81-1"></a><span class="kw">sum</span>(w[w <span class="op">!=</span><span class="st"> </span><span class="dv">40</span>])  </span></code></pre></div>
-<pre><code>## [1] 180</code></pre>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="rreview.html#cb279-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">sum</span>(w[w <span class="op">!=</span><span class="st"> </span><span class="dv">40</span>])  </span>
+<span id="cb279-2"><a href="rreview.html#cb279-2"></a><span class="co">## [1] 180</span></span></code></pre></div>
 <p>Adding a logical (T/F) vector tells you how many elements in the vector are equal to <code>TRUE</code>. Here is the number of entries in <code>w</code> that are not equal to 40:</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="rreview.html#cb83-1"></a><span class="kw">sum</span>(w <span class="op">!=</span><span class="st"> </span><span class="dv">40</span>)  </span></code></pre></div>
-<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="rreview.html#cb280-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">sum</span>(w <span class="op">!=</span><span class="st"> </span><span class="dv">40</span>)  </span>
+<span id="cb280-2"><a href="rreview.html#cb280-2"></a><span class="co">## [1] 5</span></span></code></pre></div>
 <p>Finally, the vector operators <code>|</code> and <code>&amp;</code> mean <strong>OR</strong> and <strong>AND</strong>, respectively. We can find the entries in <code>w</code> that are less than 30 OR greater than 50 with</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="rreview.html#cb85-1"></a>(w <span class="op">&lt;</span><span class="st"> </span><span class="dv">30</span>) <span class="op">|</span><span class="st"> </span>(w <span class="op">&gt;</span><span class="st"> </span><span class="dv">50</span>)  </span></code></pre></div>
-<pre><code>## [1] FALSE FALSE  TRUE  TRUE FALSE  TRUE</code></pre>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="rreview.html#cb281-1"></a><span class="op">&gt;</span><span class="st"> </span>(w <span class="op">&lt;</span><span class="st"> </span><span class="dv">30</span>) <span class="op">|</span><span class="st"> </span>(w <span class="op">&gt;</span><span class="st"> </span><span class="dv">50</span>)  </span>
+<span id="cb281-2"><a href="rreview.html#cb281-2"></a><span class="co">## [1] FALSE FALSE  TRUE  TRUE FALSE  TRUE</span></span></code></pre></div>
 <p>We can find the entries that are at most 50 AND at least 30 with</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="rreview.html#cb87-1"></a>(w <span class="op">&gt;=</span><span class="st"> </span><span class="dv">30</span>) <span class="op">&amp;</span><span class="st"> </span>(w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">50</span>)  </span></code></pre></div>
-<pre><code>## [1]  TRUE  TRUE FALSE FALSE  TRUE FALSE</code></pre>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="rreview.html#cb282-1"></a><span class="op">&gt;</span><span class="st"> </span>(w <span class="op">&gt;=</span><span class="st"> </span><span class="dv">30</span>) <span class="op">&amp;</span><span class="st"> </span>(w <span class="op">&lt;=</span><span class="st"> </span><span class="dv">50</span>)  </span>
+<span id="cb282-2"><a href="rreview.html#cb282-2"></a><span class="co">## [1]  TRUE  TRUE FALSE FALSE  TRUE FALSE</span></span></code></pre></div>
 </div>
 </div>
 <div id="data" class="section level2">
@@ -583,315 +590,307 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">C.2.1</span> Reading Data into R</h3>
 <p>The most common way to read data into R is by storing it in a <em>comma separated values</em> (<code>.csv</code>) format. Non-textbook data files for this class will either be on my webpage <a href="http://people.carleton.edu/~kstclair/data">http://people.carleton.edu/~kstclair/data</a>.</p>
 <p>You can read a .csv file into R using its URL or file path (which is system dependent):</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="rreview.html#cb89-1"></a>mydata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;&lt;data file path&gt;/mydata.csv&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="rreview.html#cb283-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;&lt;data file path&gt;/mydata.csv&quot;</span>) </span></code></pre></div>
 <p>Alternatively, you can download (then upload if using maize) a needed data set to your <strong>data</strong> folder located in your <strong>Mathxxx</strong> folder. Once this is done, and your <strong>Mathxxx project</strong> is started, you can easily read the data set into R using the command</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="rreview.html#cb90-1"></a>mydata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/mydata.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="rreview.html#cb284-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/mydata.csv&quot;</span>)</span></code></pre></div>
 <p>You don’t need an extended file path name because your project should set your working directory to your <strong>Mathxxx</strong> folder and the <strong>data</strong> folder containing you <code>.csv</code> is a subfolder in this working directory.</p>
 <p>Many textbooks have R packages that contain data sets used in the book. Here I’ll use the <code>SDaA</code> packge used in my Math 255 (Sampling) course. Once you load this library you have automatic access to add textbook data files identified by the name given in the book.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="rreview.html#cb91-1"></a><span class="co"># install.packages(&quot;SDaA&quot;)  # only run this once, ever</span></span>
-<span id="cb91-2"><a href="rreview.html#cb91-2"></a><span class="kw">library</span>(SDaA)</span>
-<span id="cb91-3"><a href="rreview.html#cb91-3"></a><span class="kw">class</span>(agstrat)</span></code></pre></div>
-<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="rreview.html#cb285-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co"># install.packages(&quot;SDaA&quot;)  # only run this once, ever</span></span>
+<span id="cb285-2"><a href="rreview.html#cb285-2"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(SDaA)</span>
+<span id="cb285-3"><a href="rreview.html#cb285-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">class</span>(agstrat)</span>
+<span id="cb285-4"><a href="rreview.html#cb285-4"></a><span class="co">## [1] &quot;data.frame&quot;</span></span></code></pre></div>
 <p>The object <code>agstrat</code> is called a <em>data frame</em>. The rest of this handout will explain how R data frames can be explored, used and changed.</p>
 </div>
 <div id="investigating-a-data-frame" class="section level3">
 <h3><span class="header-section-number">C.2.2</span> Investigating a Data Frame</h3>
 <p>You can see an entire data frame by typing its name. You can see the first or last 5 rows of a data frame with the following commands:</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="rreview.html#cb93-1"></a><span class="kw">head</span>(agstrat)  </span></code></pre></div>
-<pre><code>##              county state acres92 acres87 acres82 farms92 farms87 farms82
-## 1     PIERCE COUNTY    NE  297326  332862  319619     725     857     865
-## 2   JENNINGS COUNTY    IN  124694  131481  139111     658     671     751
-## 3      WAYNE COUNTY    OH  246938  263457  268434    1582    1734    1866
-## 4  VAN BUREN COUNTY    MI  206781  190251  197055    1164    1278    1464
-## 5    OZAUKEE COUNTY    WI   78772   85201   89331     448     483     527
-## 6 CLEARWATER COUNTY    MN  210897  229537  213105     583     699     693
-##   largef92 largef87 largef82 smallf92 smallf87 smallf82 region   rn   weight
-## 1       54       54       42       58       67       48     NC  805 10.23301
-## 2       14       13       14       42       36       38     NC  241 10.23301
-## 3       20       19       16      175      186      184     NC  913 10.23301
-## 4       23       17        9       56       66       55     NC  478 10.23301
-## 5        6        5        5       56       49       48     NC 1028 10.23301
-## 6       34       32       23        8       19       13     NC  496 10.23301</code></pre>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="rreview.html#cb95-1"></a><span class="kw">tail</span>(agstrat)   </span></code></pre></div>
-<pre><code>##               county state acres92 acres87 acres82 farms92 farms87 farms82
-## 295  FRANKLIN COUNTY    WA  670149  660813  632519     857     894     856
-## 296       LEA COUNTY    NM 2149450 2220431 2178568     544     561     534
-## 297  THURSTON COUNTY    WA   59890   56799   67628     811     806     856
-## 298 CARSON CITY (IC)    NV    5361   17859   18780      28      37      34
-## 299   BANNOCK COUNTY    ID  325338  358189  352306     588     655     617
-## 300  LA PLATA COUNTY    CO  587339  613579  589167     709     682     625
-##     largef92 largef87 largef82 smallf92 smallf87 smallf82 region  rn   weight
-## 295      127      140      120      107      109      101      W 371 10.29268
-## 296      208      205      191       59       67       63      W 259 10.29268
-## 297        5        4        4      171      143      151      W 394 10.29268
-## 298        3        2        2       15       15       17      W 295 10.29268
-## 299       79       81       83       98      112      106      W 148 10.29268
-## 300       67       79       66       25       39       33      W 112 10.29268</code></pre>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="rreview.html#cb286-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(agstrat)  </span>
+<span id="cb286-2"><a href="rreview.html#cb286-2"></a><span class="co">##              county state acres92 acres87 acres82 farms92 farms87 farms82</span></span>
+<span id="cb286-3"><a href="rreview.html#cb286-3"></a><span class="co">## 1     PIERCE COUNTY    NE  297326  332862  319619     725     857     865</span></span>
+<span id="cb286-4"><a href="rreview.html#cb286-4"></a><span class="co">## 2   JENNINGS COUNTY    IN  124694  131481  139111     658     671     751</span></span>
+<span id="cb286-5"><a href="rreview.html#cb286-5"></a><span class="co">## 3      WAYNE COUNTY    OH  246938  263457  268434    1582    1734    1866</span></span>
+<span id="cb286-6"><a href="rreview.html#cb286-6"></a><span class="co">## 4  VAN BUREN COUNTY    MI  206781  190251  197055    1164    1278    1464</span></span>
+<span id="cb286-7"><a href="rreview.html#cb286-7"></a><span class="co">## 5    OZAUKEE COUNTY    WI   78772   85201   89331     448     483     527</span></span>
+<span id="cb286-8"><a href="rreview.html#cb286-8"></a><span class="co">## 6 CLEARWATER COUNTY    MN  210897  229537  213105     583     699     693</span></span>
+<span id="cb286-9"><a href="rreview.html#cb286-9"></a><span class="co">##   largef92 largef87 largef82 smallf92 smallf87 smallf82 region   rn   weight</span></span>
+<span id="cb286-10"><a href="rreview.html#cb286-10"></a><span class="co">## 1       54       54       42       58       67       48     NC  805 10.23301</span></span>
+<span id="cb286-11"><a href="rreview.html#cb286-11"></a><span class="co">## 2       14       13       14       42       36       38     NC  241 10.23301</span></span>
+<span id="cb286-12"><a href="rreview.html#cb286-12"></a><span class="co">## 3       20       19       16      175      186      184     NC  913 10.23301</span></span>
+<span id="cb286-13"><a href="rreview.html#cb286-13"></a><span class="co">## 4       23       17        9       56       66       55     NC  478 10.23301</span></span>
+<span id="cb286-14"><a href="rreview.html#cb286-14"></a><span class="co">## 5        6        5        5       56       49       48     NC 1028 10.23301</span></span>
+<span id="cb286-15"><a href="rreview.html#cb286-15"></a><span class="co">## 6       34       32       23        8       19       13     NC  496 10.23301</span></span>
+<span id="cb286-16"><a href="rreview.html#cb286-16"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">tail</span>(agstrat)   </span>
+<span id="cb286-17"><a href="rreview.html#cb286-17"></a><span class="co">##               county state acres92 acres87 acres82 farms92 farms87 farms82</span></span>
+<span id="cb286-18"><a href="rreview.html#cb286-18"></a><span class="co">## 295  FRANKLIN COUNTY    WA  670149  660813  632519     857     894     856</span></span>
+<span id="cb286-19"><a href="rreview.html#cb286-19"></a><span class="co">## 296       LEA COUNTY    NM 2149450 2220431 2178568     544     561     534</span></span>
+<span id="cb286-20"><a href="rreview.html#cb286-20"></a><span class="co">## 297  THURSTON COUNTY    WA   59890   56799   67628     811     806     856</span></span>
+<span id="cb286-21"><a href="rreview.html#cb286-21"></a><span class="co">## 298 CARSON CITY (IC)    NV    5361   17859   18780      28      37      34</span></span>
+<span id="cb286-22"><a href="rreview.html#cb286-22"></a><span class="co">## 299   BANNOCK COUNTY    ID  325338  358189  352306     588     655     617</span></span>
+<span id="cb286-23"><a href="rreview.html#cb286-23"></a><span class="co">## 300  LA PLATA COUNTY    CO  587339  613579  589167     709     682     625</span></span>
+<span id="cb286-24"><a href="rreview.html#cb286-24"></a><span class="co">##     largef92 largef87 largef82 smallf92 smallf87 smallf82 region  rn   weight</span></span>
+<span id="cb286-25"><a href="rreview.html#cb286-25"></a><span class="co">## 295      127      140      120      107      109      101      W 371 10.29268</span></span>
+<span id="cb286-26"><a href="rreview.html#cb286-26"></a><span class="co">## 296      208      205      191       59       67       63      W 259 10.29268</span></span>
+<span id="cb286-27"><a href="rreview.html#cb286-27"></a><span class="co">## 297        5        4        4      171      143      151      W 394 10.29268</span></span>
+<span id="cb286-28"><a href="rreview.html#cb286-28"></a><span class="co">## 298        3        2        2       15       15       17      W 295 10.29268</span></span>
+<span id="cb286-29"><a href="rreview.html#cb286-29"></a><span class="co">## 299       79       81       83       98      112      106      W 148 10.29268</span></span>
+<span id="cb286-30"><a href="rreview.html#cb286-30"></a><span class="co">## 300       67       79       66       25       39       33      W 112 10.29268</span></span></code></pre></div>
 <p>You can get the dimensions (# rows by # columns) and variable names is a data frame with</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="rreview.html#cb97-1"></a><span class="kw">dim</span>(agstrat)  </span></code></pre></div>
-<pre><code>## [1] 300  17</code></pre>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="rreview.html#cb287-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">dim</span>(agstrat)  </span>
+<span id="cb287-2"><a href="rreview.html#cb287-2"></a><span class="co">## [1] 300  17</span></span></code></pre></div>
 <p>You can see the variable names with</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="rreview.html#cb99-1"></a><span class="kw">names</span>(agstrat)   </span></code></pre></div>
-<pre><code>##  [1] &quot;county&quot;   &quot;state&quot;    &quot;acres92&quot;  &quot;acres87&quot;  &quot;acres82&quot;  &quot;farms92&quot; 
-##  [7] &quot;farms87&quot;  &quot;farms82&quot;  &quot;largef92&quot; &quot;largef87&quot; &quot;largef82&quot; &quot;smallf92&quot;
-## [13] &quot;smallf87&quot; &quot;smallf82&quot; &quot;region&quot;   &quot;rn&quot;       &quot;weight&quot;</code></pre>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="rreview.html#cb288-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">names</span>(agstrat)   </span>
+<span id="cb288-2"><a href="rreview.html#cb288-2"></a><span class="co">##  [1] &quot;county&quot;   &quot;state&quot;    &quot;acres92&quot;  &quot;acres87&quot;  &quot;acres82&quot;  &quot;farms92&quot; </span></span>
+<span id="cb288-3"><a href="rreview.html#cb288-3"></a><span class="co">##  [7] &quot;farms87&quot;  &quot;farms82&quot;  &quot;largef92&quot; &quot;largef87&quot; &quot;largef82&quot; &quot;smallf92&quot;</span></span>
+<span id="cb288-4"><a href="rreview.html#cb288-4"></a><span class="co">## [13] &quot;smallf87&quot; &quot;smallf82&quot; &quot;region&quot;   &quot;rn&quot;       &quot;weight&quot;</span></span></code></pre></div>
 <p>or variable names and types with the structure command</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="rreview.html#cb101-1"></a><span class="kw">str</span>(agstrat)   </span></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:	300 obs. of  17 variables:
-##  $ county  : Factor w/ 261 levels &quot;ALEXANDER COUNTY&quot;,..: 180 115 254 241 175 37 186 94 243 212 ...
-##  $ state   : Factor w/ 46 levels &quot;AL&quot;,&quot;AR&quot;,&quot;AZ&quot;,..: 27 13 32 20 44 21 37 10 22 14 ...
-##  $ acres92 : int  297326 124694 246938 206781 78772 210897 507101 332358 402202 535359 ...
-##  $ acres87 : int  332862 131481 263457 190251 85201 229537 552844 337990 396638 503582 ...
-##  $ acres82 : int  319619 139111 268434 197055 89331 213105 541015 355823 400466 513458 ...
-##  $ farms92 : int  725 658 1582 1164 448 583 321 986 1249 488 ...
-##  $ farms87 : int  857 671 1734 1278 483 699 371 1065 1251 518 ...
-##  $ farms82 : int  865 751 1866 1464 527 693 341 1208 1320 571 ...
-##  $ largef92: int  54 14 20 23 6 34 163 56 86 216 ...
-##  $ largef87: int  54 13 19 17 5 32 180 36 78 204 ...
-##  $ largef82: int  42 14 16 9 5 23 176 42 69 193 ...
-##  $ smallf92: int  58 42 175 56 56 8 10 90 42 16 ...
-##  $ smallf87: int  67 36 186 66 49 19 24 115 38 37 ...
-##  $ smallf82: int  48 38 184 55 48 13 16 132 28 24 ...
-##  $ region  : Factor w/ 4 levels &quot;NC&quot;,&quot;NE&quot;,&quot;S&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ rn      : int  805 241 913 478 1028 496 969 42 676 383 ...
-##  $ weight  : num  10.2 10.2 10.2 10.2 10.2 ...</code></pre>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="rreview.html#cb289-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">str</span>(agstrat)   </span>
+<span id="cb289-2"><a href="rreview.html#cb289-2"></a><span class="co">## &#39;data.frame&#39;:	300 obs. of  17 variables:</span></span>
+<span id="cb289-3"><a href="rreview.html#cb289-3"></a><span class="co">##  $ county  : chr  &quot;PIERCE COUNTY&quot; &quot;JENNINGS COUNTY&quot; &quot;WAYNE COUNTY&quot; &quot;VAN BUREN COUNTY&quot; ...</span></span>
+<span id="cb289-4"><a href="rreview.html#cb289-4"></a><span class="co">##  $ state   : chr  &quot;NE&quot; &quot;IN&quot; &quot;OH&quot; &quot;MI&quot; ...</span></span>
+<span id="cb289-5"><a href="rreview.html#cb289-5"></a><span class="co">##  $ acres92 : int  297326 124694 246938 206781 78772 210897 507101 332358 402202 535359 ...</span></span>
+<span id="cb289-6"><a href="rreview.html#cb289-6"></a><span class="co">##  $ acres87 : int  332862 131481 263457 190251 85201 229537 552844 337990 396638 503582 ...</span></span>
+<span id="cb289-7"><a href="rreview.html#cb289-7"></a><span class="co">##  $ acres82 : int  319619 139111 268434 197055 89331 213105 541015 355823 400466 513458 ...</span></span>
+<span id="cb289-8"><a href="rreview.html#cb289-8"></a><span class="co">##  $ farms92 : int  725 658 1582 1164 448 583 321 986 1249 488 ...</span></span>
+<span id="cb289-9"><a href="rreview.html#cb289-9"></a><span class="co">##  $ farms87 : int  857 671 1734 1278 483 699 371 1065 1251 518 ...</span></span>
+<span id="cb289-10"><a href="rreview.html#cb289-10"></a><span class="co">##  $ farms82 : int  865 751 1866 1464 527 693 341 1208 1320 571 ...</span></span>
+<span id="cb289-11"><a href="rreview.html#cb289-11"></a><span class="co">##  $ largef92: int  54 14 20 23 6 34 163 56 86 216 ...</span></span>
+<span id="cb289-12"><a href="rreview.html#cb289-12"></a><span class="co">##  $ largef87: int  54 13 19 17 5 32 180 36 78 204 ...</span></span>
+<span id="cb289-13"><a href="rreview.html#cb289-13"></a><span class="co">##  $ largef82: int  42 14 16 9 5 23 176 42 69 193 ...</span></span>
+<span id="cb289-14"><a href="rreview.html#cb289-14"></a><span class="co">##  $ smallf92: int  58 42 175 56 56 8 10 90 42 16 ...</span></span>
+<span id="cb289-15"><a href="rreview.html#cb289-15"></a><span class="co">##  $ smallf87: int  67 36 186 66 49 19 24 115 38 37 ...</span></span>
+<span id="cb289-16"><a href="rreview.html#cb289-16"></a><span class="co">##  $ smallf82: int  48 38 184 55 48 13 16 132 28 24 ...</span></span>
+<span id="cb289-17"><a href="rreview.html#cb289-17"></a><span class="co">##  $ region  : chr  &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; ...</span></span>
+<span id="cb289-18"><a href="rreview.html#cb289-18"></a><span class="co">##  $ rn      : int  805 241 913 478 1028 496 969 42 676 383 ...</span></span>
+<span id="cb289-19"><a href="rreview.html#cb289-19"></a><span class="co">##  $ weight  : num  10.2 10.2 10.2 10.2 10.2 ...</span></span></code></pre></div>
 <p>You can view the data frame in Rstudio’s viewer window with</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="rreview.html#cb103-1"></a><span class="kw">View</span>(agstrat) </span></code></pre></div>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="rreview.html#cb290-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">View</span>(agstrat) </span></code></pre></div>
 </div>
 <div id="access" class="section level3">
 <h3><span class="header-section-number">C.2.3</span> Accessing Data</h3>
 <p>You can also access and edit information in a data frame by subscripting the data frame. Suppose you want to look at the variable <code>farms92</code> (the number of farms per county in 1992). This variable is the 6th column in the data frame. You can access its contents with either command:</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="rreview.html#cb104-1"></a>agstrat[,<span class="dv">6</span>]  </span></code></pre></div>
-<pre><code>##   [1]  725  658 1582 1164  448  583  321  986 1249  488 1308  657  974  780  293
-##  [16]  201  362  309  500  530  491  305 1383  740  325  783  440  832  682  198
-##  [31]  283 1000  547  953  771  979  427  963  545  942  949  544  822  955 1421
-##  [46]  532  272 1669  308  401  171  480 1433  900  378   58  760 1216 1086  833
-##  [61]  682 1280 1262 1029 1190  618  554  497  744  698  786 1305 1058  855  741
-##  [76]  828 1140  509  759 1080  658  663 1447 1398  511 1529  623  742  386  468
-##  [91]  738  759  746  680  792  327  777  205 1190  629  426  395  721 1367  659
-## [106]  249  550  440  438   74  668  147  488 1367  395  940  602  716    0  433
-## [121]  451  142  537  427  689  179   14  547  872 1444  549  345  235  406   40
-## [136]  705  169  394  219  774   74  561  290  414  781 1037  992  342  179 2760
-## [151]   56  315   49 1226  389  226  334  303 1152  403 2086  946 1342  612  407
-## [166]  986  199   17  704 1120  127  261  642  348 1360  297  404  114 1582  328
-## [181]  404   34  330  132  151  966  146  374  694  455  838  915  812  732  540
-## [196]  108  419 1609  417  560 1903 1956  270  433  617  910  298  288  456  199
-## [211]  507  772  476  113  440  110 1004  199  339  818  689  491  659  215  301
-## [226]  606  355  376  695  889 1234  532  195  711  515 1547   90  651  361  147
-## [241]  747   33  128  137  940  477  445  278  447  162  280  640 1579   29 1031
-## [256] 1006  320  849 1232  267 1441   23  850  612  733  451  179  641  233  661
-## [271]  495  195  508 3157  442  358  107  149 1696 1027  415  490  418  134  257
-## [286]  525  599  366   16  874  419 1054 1257  110  857  544  811   28  588  709</code></pre>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="rreview.html#cb106-1"></a>agstrat<span class="op">$</span>farms92  </span></code></pre></div>
-<pre><code>##   [1]  725  658 1582 1164  448  583  321  986 1249  488 1308  657  974  780  293
-##  [16]  201  362  309  500  530  491  305 1383  740  325  783  440  832  682  198
-##  [31]  283 1000  547  953  771  979  427  963  545  942  949  544  822  955 1421
-##  [46]  532  272 1669  308  401  171  480 1433  900  378   58  760 1216 1086  833
-##  [61]  682 1280 1262 1029 1190  618  554  497  744  698  786 1305 1058  855  741
-##  [76]  828 1140  509  759 1080  658  663 1447 1398  511 1529  623  742  386  468
-##  [91]  738  759  746  680  792  327  777  205 1190  629  426  395  721 1367  659
-## [106]  249  550  440  438   74  668  147  488 1367  395  940  602  716    0  433
-## [121]  451  142  537  427  689  179   14  547  872 1444  549  345  235  406   40
-## [136]  705  169  394  219  774   74  561  290  414  781 1037  992  342  179 2760
-## [151]   56  315   49 1226  389  226  334  303 1152  403 2086  946 1342  612  407
-## [166]  986  199   17  704 1120  127  261  642  348 1360  297  404  114 1582  328
-## [181]  404   34  330  132  151  966  146  374  694  455  838  915  812  732  540
-## [196]  108  419 1609  417  560 1903 1956  270  433  617  910  298  288  456  199
-## [211]  507  772  476  113  440  110 1004  199  339  818  689  491  659  215  301
-## [226]  606  355  376  695  889 1234  532  195  711  515 1547   90  651  361  147
-## [241]  747   33  128  137  940  477  445  278  447  162  280  640 1579   29 1031
-## [256] 1006  320  849 1232  267 1441   23  850  612  733  451  179  641  233  661
-## [271]  495  195  508 3157  442  358  107  149 1696 1027  415  490  418  134  257
-## [286]  525  599  366   16  874  419 1054 1257  110  857  544  811   28  588  709</code></pre>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="rreview.html#cb108-1"></a>agstrat[,<span class="st">&quot;farms92&quot;</span>]    </span></code></pre></div>
-<pre><code>##   [1]  725  658 1582 1164  448  583  321  986 1249  488 1308  657  974  780  293
-##  [16]  201  362  309  500  530  491  305 1383  740  325  783  440  832  682  198
-##  [31]  283 1000  547  953  771  979  427  963  545  942  949  544  822  955 1421
-##  [46]  532  272 1669  308  401  171  480 1433  900  378   58  760 1216 1086  833
-##  [61]  682 1280 1262 1029 1190  618  554  497  744  698  786 1305 1058  855  741
-##  [76]  828 1140  509  759 1080  658  663 1447 1398  511 1529  623  742  386  468
-##  [91]  738  759  746  680  792  327  777  205 1190  629  426  395  721 1367  659
-## [106]  249  550  440  438   74  668  147  488 1367  395  940  602  716    0  433
-## [121]  451  142  537  427  689  179   14  547  872 1444  549  345  235  406   40
-## [136]  705  169  394  219  774   74  561  290  414  781 1037  992  342  179 2760
-## [151]   56  315   49 1226  389  226  334  303 1152  403 2086  946 1342  612  407
-## [166]  986  199   17  704 1120  127  261  642  348 1360  297  404  114 1582  328
-## [181]  404   34  330  132  151  966  146  374  694  455  838  915  812  732  540
-## [196]  108  419 1609  417  560 1903 1956  270  433  617  910  298  288  456  199
-## [211]  507  772  476  113  440  110 1004  199  339  818  689  491  659  215  301
-## [226]  606  355  376  695  889 1234  532  195  711  515 1547   90  651  361  147
-## [241]  747   33  128  137  940  477  445  278  447  162  280  640 1579   29 1031
-## [256] 1006  320  849 1232  267 1441   23  850  612  733  451  179  641  233  661
-## [271]  495  195  508 3157  442  358  107  149 1696 1027  415  490  418  134  257
-## [286]  525  599  366   16  874  419 1054 1257  110  857  544  811   28  588  709</code></pre>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="rreview.html#cb291-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat[,<span class="dv">6</span>]  </span>
+<span id="cb291-2"><a href="rreview.html#cb291-2"></a><span class="co">##   [1]  725  658 1582 1164  448  583  321  986 1249  488 1308  657  974  780  293</span></span>
+<span id="cb291-3"><a href="rreview.html#cb291-3"></a><span class="co">##  [16]  201  362  309  500  530  491  305 1383  740  325  783  440  832  682  198</span></span>
+<span id="cb291-4"><a href="rreview.html#cb291-4"></a><span class="co">##  [31]  283 1000  547  953  771  979  427  963  545  942  949  544  822  955 1421</span></span>
+<span id="cb291-5"><a href="rreview.html#cb291-5"></a><span class="co">##  [46]  532  272 1669  308  401  171  480 1433  900  378   58  760 1216 1086  833</span></span>
+<span id="cb291-6"><a href="rreview.html#cb291-6"></a><span class="co">##  [61]  682 1280 1262 1029 1190  618  554  497  744  698  786 1305 1058  855  741</span></span>
+<span id="cb291-7"><a href="rreview.html#cb291-7"></a><span class="co">##  [76]  828 1140  509  759 1080  658  663 1447 1398  511 1529  623  742  386  468</span></span>
+<span id="cb291-8"><a href="rreview.html#cb291-8"></a><span class="co">##  [91]  738  759  746  680  792  327  777  205 1190  629  426  395  721 1367  659</span></span>
+<span id="cb291-9"><a href="rreview.html#cb291-9"></a><span class="co">## [106]  249  550  440  438   74  668  147  488 1367  395  940  602  716    0  433</span></span>
+<span id="cb291-10"><a href="rreview.html#cb291-10"></a><span class="co">## [121]  451  142  537  427  689  179   14  547  872 1444  549  345  235  406   40</span></span>
+<span id="cb291-11"><a href="rreview.html#cb291-11"></a><span class="co">## [136]  705  169  394  219  774   74  561  290  414  781 1037  992  342  179 2760</span></span>
+<span id="cb291-12"><a href="rreview.html#cb291-12"></a><span class="co">## [151]   56  315   49 1226  389  226  334  303 1152  403 2086  946 1342  612  407</span></span>
+<span id="cb291-13"><a href="rreview.html#cb291-13"></a><span class="co">## [166]  986  199   17  704 1120  127  261  642  348 1360  297  404  114 1582  328</span></span>
+<span id="cb291-14"><a href="rreview.html#cb291-14"></a><span class="co">## [181]  404   34  330  132  151  966  146  374  694  455  838  915  812  732  540</span></span>
+<span id="cb291-15"><a href="rreview.html#cb291-15"></a><span class="co">## [196]  108  419 1609  417  560 1903 1956  270  433  617  910  298  288  456  199</span></span>
+<span id="cb291-16"><a href="rreview.html#cb291-16"></a><span class="co">## [211]  507  772  476  113  440  110 1004  199  339  818  689  491  659  215  301</span></span>
+<span id="cb291-17"><a href="rreview.html#cb291-17"></a><span class="co">## [226]  606  355  376  695  889 1234  532  195  711  515 1547   90  651  361  147</span></span>
+<span id="cb291-18"><a href="rreview.html#cb291-18"></a><span class="co">## [241]  747   33  128  137  940  477  445  278  447  162  280  640 1579   29 1031</span></span>
+<span id="cb291-19"><a href="rreview.html#cb291-19"></a><span class="co">## [256] 1006  320  849 1232  267 1441   23  850  612  733  451  179  641  233  661</span></span>
+<span id="cb291-20"><a href="rreview.html#cb291-20"></a><span class="co">## [271]  495  195  508 3157  442  358  107  149 1696 1027  415  490  418  134  257</span></span>
+<span id="cb291-21"><a href="rreview.html#cb291-21"></a><span class="co">## [286]  525  599  366   16  874  419 1054 1257  110  857  544  811   28  588  709</span></span>
+<span id="cb291-22"><a href="rreview.html#cb291-22"></a><span class="op">&gt;</span><span class="st"> </span>agstrat<span class="op">$</span>farms92  </span>
+<span id="cb291-23"><a href="rreview.html#cb291-23"></a><span class="co">##   [1]  725  658 1582 1164  448  583  321  986 1249  488 1308  657  974  780  293</span></span>
+<span id="cb291-24"><a href="rreview.html#cb291-24"></a><span class="co">##  [16]  201  362  309  500  530  491  305 1383  740  325  783  440  832  682  198</span></span>
+<span id="cb291-25"><a href="rreview.html#cb291-25"></a><span class="co">##  [31]  283 1000  547  953  771  979  427  963  545  942  949  544  822  955 1421</span></span>
+<span id="cb291-26"><a href="rreview.html#cb291-26"></a><span class="co">##  [46]  532  272 1669  308  401  171  480 1433  900  378   58  760 1216 1086  833</span></span>
+<span id="cb291-27"><a href="rreview.html#cb291-27"></a><span class="co">##  [61]  682 1280 1262 1029 1190  618  554  497  744  698  786 1305 1058  855  741</span></span>
+<span id="cb291-28"><a href="rreview.html#cb291-28"></a><span class="co">##  [76]  828 1140  509  759 1080  658  663 1447 1398  511 1529  623  742  386  468</span></span>
+<span id="cb291-29"><a href="rreview.html#cb291-29"></a><span class="co">##  [91]  738  759  746  680  792  327  777  205 1190  629  426  395  721 1367  659</span></span>
+<span id="cb291-30"><a href="rreview.html#cb291-30"></a><span class="co">## [106]  249  550  440  438   74  668  147  488 1367  395  940  602  716    0  433</span></span>
+<span id="cb291-31"><a href="rreview.html#cb291-31"></a><span class="co">## [121]  451  142  537  427  689  179   14  547  872 1444  549  345  235  406   40</span></span>
+<span id="cb291-32"><a href="rreview.html#cb291-32"></a><span class="co">## [136]  705  169  394  219  774   74  561  290  414  781 1037  992  342  179 2760</span></span>
+<span id="cb291-33"><a href="rreview.html#cb291-33"></a><span class="co">## [151]   56  315   49 1226  389  226  334  303 1152  403 2086  946 1342  612  407</span></span>
+<span id="cb291-34"><a href="rreview.html#cb291-34"></a><span class="co">## [166]  986  199   17  704 1120  127  261  642  348 1360  297  404  114 1582  328</span></span>
+<span id="cb291-35"><a href="rreview.html#cb291-35"></a><span class="co">## [181]  404   34  330  132  151  966  146  374  694  455  838  915  812  732  540</span></span>
+<span id="cb291-36"><a href="rreview.html#cb291-36"></a><span class="co">## [196]  108  419 1609  417  560 1903 1956  270  433  617  910  298  288  456  199</span></span>
+<span id="cb291-37"><a href="rreview.html#cb291-37"></a><span class="co">## [211]  507  772  476  113  440  110 1004  199  339  818  689  491  659  215  301</span></span>
+<span id="cb291-38"><a href="rreview.html#cb291-38"></a><span class="co">## [226]  606  355  376  695  889 1234  532  195  711  515 1547   90  651  361  147</span></span>
+<span id="cb291-39"><a href="rreview.html#cb291-39"></a><span class="co">## [241]  747   33  128  137  940  477  445  278  447  162  280  640 1579   29 1031</span></span>
+<span id="cb291-40"><a href="rreview.html#cb291-40"></a><span class="co">## [256] 1006  320  849 1232  267 1441   23  850  612  733  451  179  641  233  661</span></span>
+<span id="cb291-41"><a href="rreview.html#cb291-41"></a><span class="co">## [271]  495  195  508 3157  442  358  107  149 1696 1027  415  490  418  134  257</span></span>
+<span id="cb291-42"><a href="rreview.html#cb291-42"></a><span class="co">## [286]  525  599  366   16  874  419 1054 1257  110  857  544  811   28  588  709</span></span>
+<span id="cb291-43"><a href="rreview.html#cb291-43"></a><span class="op">&gt;</span><span class="st"> </span>agstrat[,<span class="st">&quot;farms92&quot;</span>]    </span>
+<span id="cb291-44"><a href="rreview.html#cb291-44"></a><span class="co">##   [1]  725  658 1582 1164  448  583  321  986 1249  488 1308  657  974  780  293</span></span>
+<span id="cb291-45"><a href="rreview.html#cb291-45"></a><span class="co">##  [16]  201  362  309  500  530  491  305 1383  740  325  783  440  832  682  198</span></span>
+<span id="cb291-46"><a href="rreview.html#cb291-46"></a><span class="co">##  [31]  283 1000  547  953  771  979  427  963  545  942  949  544  822  955 1421</span></span>
+<span id="cb291-47"><a href="rreview.html#cb291-47"></a><span class="co">##  [46]  532  272 1669  308  401  171  480 1433  900  378   58  760 1216 1086  833</span></span>
+<span id="cb291-48"><a href="rreview.html#cb291-48"></a><span class="co">##  [61]  682 1280 1262 1029 1190  618  554  497  744  698  786 1305 1058  855  741</span></span>
+<span id="cb291-49"><a href="rreview.html#cb291-49"></a><span class="co">##  [76]  828 1140  509  759 1080  658  663 1447 1398  511 1529  623  742  386  468</span></span>
+<span id="cb291-50"><a href="rreview.html#cb291-50"></a><span class="co">##  [91]  738  759  746  680  792  327  777  205 1190  629  426  395  721 1367  659</span></span>
+<span id="cb291-51"><a href="rreview.html#cb291-51"></a><span class="co">## [106]  249  550  440  438   74  668  147  488 1367  395  940  602  716    0  433</span></span>
+<span id="cb291-52"><a href="rreview.html#cb291-52"></a><span class="co">## [121]  451  142  537  427  689  179   14  547  872 1444  549  345  235  406   40</span></span>
+<span id="cb291-53"><a href="rreview.html#cb291-53"></a><span class="co">## [136]  705  169  394  219  774   74  561  290  414  781 1037  992  342  179 2760</span></span>
+<span id="cb291-54"><a href="rreview.html#cb291-54"></a><span class="co">## [151]   56  315   49 1226  389  226  334  303 1152  403 2086  946 1342  612  407</span></span>
+<span id="cb291-55"><a href="rreview.html#cb291-55"></a><span class="co">## [166]  986  199   17  704 1120  127  261  642  348 1360  297  404  114 1582  328</span></span>
+<span id="cb291-56"><a href="rreview.html#cb291-56"></a><span class="co">## [181]  404   34  330  132  151  966  146  374  694  455  838  915  812  732  540</span></span>
+<span id="cb291-57"><a href="rreview.html#cb291-57"></a><span class="co">## [196]  108  419 1609  417  560 1903 1956  270  433  617  910  298  288  456  199</span></span>
+<span id="cb291-58"><a href="rreview.html#cb291-58"></a><span class="co">## [211]  507  772  476  113  440  110 1004  199  339  818  689  491  659  215  301</span></span>
+<span id="cb291-59"><a href="rreview.html#cb291-59"></a><span class="co">## [226]  606  355  376  695  889 1234  532  195  711  515 1547   90  651  361  147</span></span>
+<span id="cb291-60"><a href="rreview.html#cb291-60"></a><span class="co">## [241]  747   33  128  137  940  477  445  278  447  162  280  640 1579   29 1031</span></span>
+<span id="cb291-61"><a href="rreview.html#cb291-61"></a><span class="co">## [256] 1006  320  849 1232  267 1441   23  850  612  733  451  179  641  233  661</span></span>
+<span id="cb291-62"><a href="rreview.html#cb291-62"></a><span class="co">## [271]  495  195  508 3157  442  358  107  149 1696 1027  415  490  418  134  257</span></span>
+<span id="cb291-63"><a href="rreview.html#cb291-63"></a><span class="co">## [286]  525  599  366   16  874  419 1054 1257  110  857  544  811   28  588  709</span></span></code></pre></div>
 <p>If you just want the first two entries in <code>farms92</code>:</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="rreview.html#cb110-1"></a>agstrat[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">6</span>] </span></code></pre></div>
-<pre><code>## [1] 725 658</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="rreview.html#cb112-1"></a>agstrat<span class="op">$</span>farms92[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]   </span></code></pre></div>
-<pre><code>## [1] 725 658</code></pre>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="rreview.html#cb292-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">6</span>] </span>
+<span id="cb292-2"><a href="rreview.html#cb292-2"></a><span class="co">## [1] 725 658</span></span>
+<span id="cb292-3"><a href="rreview.html#cb292-3"></a><span class="op">&gt;</span><span class="st"> </span>agstrat<span class="op">$</span>farms92[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]   </span>
+<span id="cb292-4"><a href="rreview.html#cb292-4"></a><span class="co">## [1] 725 658</span></span></code></pre></div>
 <p>The variable region is a categorical variable, or <code>factor</code> variable to R. We can see the <code>levels</code> of region with</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="rreview.html#cb114-1"></a><span class="kw">str</span>(agstrat<span class="op">$</span>region)</span></code></pre></div>
-<pre><code>##  Factor w/ 4 levels &quot;NC&quot;,&quot;NE&quot;,&quot;S&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="rreview.html#cb116-1"></a><span class="kw">levels</span>(agstrat<span class="op">$</span>region)   </span></code></pre></div>
-<pre><code>## [1] &quot;NC&quot; &quot;NE&quot; &quot;S&quot;  &quot;W&quot;</code></pre>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="rreview.html#cb293-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">str</span>(agstrat<span class="op">$</span>region)</span>
+<span id="cb293-2"><a href="rreview.html#cb293-2"></a><span class="co">##  chr [1:300] &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; ...</span></span>
+<span id="cb293-3"><a href="rreview.html#cb293-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">levels</span>(agstrat<span class="op">$</span>region)   </span>
+<span id="cb293-4"><a href="rreview.html#cb293-4"></a><span class="co">## NULL</span></span></code></pre></div>
 <p>So region has 4 levels called NC, NE, S, and W. Note that these levels are ordered alphabetically, which is typically done with factor variables from data sets that are read into R.</p>
 </div>
 <div id="Rreview-subset" class="section level3">
 <h3><span class="header-section-number">C.2.4</span> Subsetting a Data Frame</h3>
 <p>You can subset a data frame just as you can subset a vector (see the Basics handout). We might want to subset a data frame to extract certain columns (variables), or we may want to extract certain rows (observations), or some combination of both.</p>
 <p>Suppose you want a data frame that only contains the variables <code>region</code> and <code>farms92</code>: One way to do this is with the <code>select</code> command from the <code>dplyr</code> package:</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="rreview.html#cb118-1"></a><span class="kw">library</span>(dplyr)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="rreview.html#cb122-1"></a>agstrat2 &lt;-<span class="st"> </span><span class="kw">select</span>(agstrat, region, farms92) </span>
-<span id="cb122-2"><a href="rreview.html#cb122-2"></a><span class="kw">str</span>(agstrat2) </span></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:	300 obs. of  2 variables:
-##  $ region : Factor w/ 4 levels &quot;NC&quot;,&quot;NE&quot;,&quot;S&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ farms92: int  725 658 1582 1164 448 583 321 986 1249 488 ...</code></pre>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="rreview.html#cb294-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb294-2"><a href="rreview.html#cb294-2"></a><span class="op">&gt;</span><span class="st"> </span>agstrat2 &lt;-<span class="st"> </span><span class="kw">select</span>(agstrat, region, farms92) </span>
+<span id="cb294-3"><a href="rreview.html#cb294-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">str</span>(agstrat2) </span>
+<span id="cb294-4"><a href="rreview.html#cb294-4"></a><span class="co">## &#39;data.frame&#39;:	300 obs. of  2 variables:</span></span>
+<span id="cb294-5"><a href="rreview.html#cb294-5"></a><span class="co">##  $ region : chr  &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; ...</span></span>
+<span id="cb294-6"><a href="rreview.html#cb294-6"></a><span class="co">##  $ farms92: int  725 658 1582 1164 448 583 321 986 1249 488 ...</span></span></code></pre></div>
 <p>Suppose you want a data frame that only contains data from the north central (<code>NC</code>) and west (<code>W</code>) regions. Here we use the <code>dplyr</code> command <code>filter</code> to specify the criteria that tells us that <code>region</code> should be either <code>"W"</code> or <code>"NC"</code>:</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="rreview.html#cb124-1"></a>agstrat3 &lt;-<span class="st"> </span><span class="kw">filter</span>(agstrat, region <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;W&quot;</span>, <span class="st">&quot;NC&quot;</span>))</span>
-<span id="cb124-2"><a href="rreview.html#cb124-2"></a><span class="kw">str</span>(agstrat3)   </span></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:	144 obs. of  17 variables:
-##  $ county  : Factor w/ 261 levels &quot;ALEXANDER COUNTY&quot;,..: 180 115 254 241 175 37 186 94 243 212 ...
-##  $ state   : Factor w/ 46 levels &quot;AL&quot;,&quot;AR&quot;,&quot;AZ&quot;,..: 27 13 32 20 44 21 37 10 22 14 ...
-##  $ acres92 : int  297326 124694 246938 206781 78772 210897 507101 332358 402202 535359 ...
-##  $ acres87 : int  332862 131481 263457 190251 85201 229537 552844 337990 396638 503582 ...
-##  $ acres82 : int  319619 139111 268434 197055 89331 213105 541015 355823 400466 513458 ...
-##  $ farms92 : int  725 658 1582 1164 448 583 321 986 1249 488 ...
-##  $ farms87 : int  857 671 1734 1278 483 699 371 1065 1251 518 ...
-##  $ farms82 : int  865 751 1866 1464 527 693 341 1208 1320 571 ...
-##  $ largef92: int  54 14 20 23 6 34 163 56 86 216 ...
-##  $ largef87: int  54 13 19 17 5 32 180 36 78 204 ...
-##  $ largef82: int  42 14 16 9 5 23 176 42 69 193 ...
-##  $ smallf92: int  58 42 175 56 56 8 10 90 42 16 ...
-##  $ smallf87: int  67 36 186 66 49 19 24 115 38 37 ...
-##  $ smallf82: int  48 38 184 55 48 13 16 132 28 24 ...
-##  $ region  : Factor w/ 4 levels &quot;NC&quot;,&quot;NE&quot;,&quot;S&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ rn      : int  805 241 913 478 1028 496 969 42 676 383 ...
-##  $ weight  : num  10.2 10.2 10.2 10.2 10.2 ...</code></pre>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="rreview.html#cb295-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat3 &lt;-<span class="st"> </span><span class="kw">filter</span>(agstrat, region <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;W&quot;</span>, <span class="st">&quot;NC&quot;</span>))</span>
+<span id="cb295-2"><a href="rreview.html#cb295-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">str</span>(agstrat3)   </span>
+<span id="cb295-3"><a href="rreview.html#cb295-3"></a><span class="co">## &#39;data.frame&#39;:	144 obs. of  17 variables:</span></span>
+<span id="cb295-4"><a href="rreview.html#cb295-4"></a><span class="co">##  $ county  : chr  &quot;PIERCE COUNTY&quot; &quot;JENNINGS COUNTY&quot; &quot;WAYNE COUNTY&quot; &quot;VAN BUREN COUNTY&quot; ...</span></span>
+<span id="cb295-5"><a href="rreview.html#cb295-5"></a><span class="co">##  $ state   : chr  &quot;NE&quot; &quot;IN&quot; &quot;OH&quot; &quot;MI&quot; ...</span></span>
+<span id="cb295-6"><a href="rreview.html#cb295-6"></a><span class="co">##  $ acres92 : int  297326 124694 246938 206781 78772 210897 507101 332358 402202 535359 ...</span></span>
+<span id="cb295-7"><a href="rreview.html#cb295-7"></a><span class="co">##  $ acres87 : int  332862 131481 263457 190251 85201 229537 552844 337990 396638 503582 ...</span></span>
+<span id="cb295-8"><a href="rreview.html#cb295-8"></a><span class="co">##  $ acres82 : int  319619 139111 268434 197055 89331 213105 541015 355823 400466 513458 ...</span></span>
+<span id="cb295-9"><a href="rreview.html#cb295-9"></a><span class="co">##  $ farms92 : int  725 658 1582 1164 448 583 321 986 1249 488 ...</span></span>
+<span id="cb295-10"><a href="rreview.html#cb295-10"></a><span class="co">##  $ farms87 : int  857 671 1734 1278 483 699 371 1065 1251 518 ...</span></span>
+<span id="cb295-11"><a href="rreview.html#cb295-11"></a><span class="co">##  $ farms82 : int  865 751 1866 1464 527 693 341 1208 1320 571 ...</span></span>
+<span id="cb295-12"><a href="rreview.html#cb295-12"></a><span class="co">##  $ largef92: int  54 14 20 23 6 34 163 56 86 216 ...</span></span>
+<span id="cb295-13"><a href="rreview.html#cb295-13"></a><span class="co">##  $ largef87: int  54 13 19 17 5 32 180 36 78 204 ...</span></span>
+<span id="cb295-14"><a href="rreview.html#cb295-14"></a><span class="co">##  $ largef82: int  42 14 16 9 5 23 176 42 69 193 ...</span></span>
+<span id="cb295-15"><a href="rreview.html#cb295-15"></a><span class="co">##  $ smallf92: int  58 42 175 56 56 8 10 90 42 16 ...</span></span>
+<span id="cb295-16"><a href="rreview.html#cb295-16"></a><span class="co">##  $ smallf87: int  67 36 186 66 49 19 24 115 38 37 ...</span></span>
+<span id="cb295-17"><a href="rreview.html#cb295-17"></a><span class="co">##  $ smallf82: int  48 38 184 55 48 13 16 132 28 24 ...</span></span>
+<span id="cb295-18"><a href="rreview.html#cb295-18"></a><span class="co">##  $ region  : chr  &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; &quot;NC&quot; ...</span></span>
+<span id="cb295-19"><a href="rreview.html#cb295-19"></a><span class="co">##  $ rn      : int  805 241 913 478 1028 496 969 42 676 383 ...</span></span>
+<span id="cb295-20"><a href="rreview.html#cb295-20"></a><span class="co">##  $ weight  : num  10.2 10.2 10.2 10.2 10.2 ...</span></span></code></pre></div>
 <p>Note one problem with this new data frame: the region variable still thinks it has 4 levels even though S and NE are not in this data frame</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="rreview.html#cb126-1"></a><span class="kw">levels</span>(agstrat3<span class="op">$</span>region)  </span></code></pre></div>
-<pre><code>## [1] &quot;NC&quot; &quot;NE&quot; &quot;S&quot;  &quot;W&quot;</code></pre>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="rreview.html#cb128-1"></a><span class="kw">table</span>(agstrat3<span class="op">$</span>region)   </span></code></pre></div>
-<pre><code>## 
-##  NC  NE   S   W 
-## 103   0   0  41</code></pre>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="rreview.html#cb296-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">levels</span>(agstrat3<span class="op">$</span>region)  </span>
+<span id="cb296-2"><a href="rreview.html#cb296-2"></a><span class="co">## NULL</span></span>
+<span id="cb296-3"><a href="rreview.html#cb296-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat3<span class="op">$</span>region)   </span>
+<span id="cb296-4"><a href="rreview.html#cb296-4"></a><span class="co">## </span></span>
+<span id="cb296-5"><a href="rreview.html#cb296-5"></a><span class="co">##  NC   W </span></span>
+<span id="cb296-6"><a href="rreview.html#cb296-6"></a><span class="co">## 103  41</span></span></code></pre></div>
 <p>This could create a problem when we want to use the region variable in future analyzes. An easy solution exists using the <code>droplevels</code> command on the data frame</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="rreview.html#cb130-1"></a>agstrat3 &lt;-<span class="st"> </span><span class="kw">droplevels</span>(agstrat3)  </span>
-<span id="cb130-2"><a href="rreview.html#cb130-2"></a><span class="kw">table</span>(agstrat3<span class="op">$</span>region)   </span></code></pre></div>
-<pre><code>## 
-##  NC   W 
-## 103  41</code></pre>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="rreview.html#cb297-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat3 &lt;-<span class="st"> </span><span class="kw">droplevels</span>(agstrat3)  </span>
+<span id="cb297-2"><a href="rreview.html#cb297-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat3<span class="op">$</span>region)   </span>
+<span id="cb297-3"><a href="rreview.html#cb297-3"></a><span class="co">## </span></span>
+<span id="cb297-4"><a href="rreview.html#cb297-4"></a><span class="co">##  NC   W </span></span>
+<span id="cb297-5"><a href="rreview.html#cb297-5"></a><span class="co">## 103  41</span></span></code></pre></div>
 </div>
 <div id="creating-a-data-frame" class="section level3">
 <h3><span class="header-section-number">C.2.5</span> Creating a data frame</h3>
 <p>One way to create a data frame is to create vectors that will form the variables (columns), then binding them together in a data frame:</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="rreview.html#cb132-1"></a>x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>  </span>
-<span id="cb132-2"><a href="rreview.html#cb132-2"></a>y &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>),<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>))  </span>
-<span id="cb132-3"><a href="rreview.html#cb132-3"></a>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y)  </span>
-<span id="cb132-4"><a href="rreview.html#cb132-4"></a><span class="kw">str</span>(my.data)  </span></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:	10 obs. of  2 variables:
-##  $ x: int  1 2 3 4 5 6 7 8 9 10
-##  $ y: chr  &quot;a&quot; &quot;a&quot; &quot;a&quot; &quot;a&quot; ...</code></pre>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="rreview.html#cb134-1"></a>my.data </span></code></pre></div>
-<pre><code>##     x y
-## 1   1 a
-## 2   2 a
-## 3   3 a
-## 4   4 a
-## 5   5 a
-## 6   6 b
-## 7   7 b
-## 8   8 b
-## 9   9 b
-## 10 10 b</code></pre>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="rreview.html#cb298-1"></a><span class="op">&gt;</span><span class="st"> </span>x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>  </span>
+<span id="cb298-2"><a href="rreview.html#cb298-2"></a><span class="op">&gt;</span><span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>),<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>))  </span>
+<span id="cb298-3"><a href="rreview.html#cb298-3"></a><span class="op">&gt;</span><span class="st"> </span>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y)  </span>
+<span id="cb298-4"><a href="rreview.html#cb298-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">str</span>(my.data)  </span>
+<span id="cb298-5"><a href="rreview.html#cb298-5"></a><span class="co">## &#39;data.frame&#39;:	10 obs. of  2 variables:</span></span>
+<span id="cb298-6"><a href="rreview.html#cb298-6"></a><span class="co">##  $ x: int  1 2 3 4 5 6 7 8 9 10</span></span>
+<span id="cb298-7"><a href="rreview.html#cb298-7"></a><span class="co">##  $ y: chr  &quot;a&quot; &quot;a&quot; &quot;a&quot; &quot;a&quot; ...</span></span>
+<span id="cb298-8"><a href="rreview.html#cb298-8"></a><span class="op">&gt;</span><span class="st"> </span>my.data </span>
+<span id="cb298-9"><a href="rreview.html#cb298-9"></a><span class="co">##     x y</span></span>
+<span id="cb298-10"><a href="rreview.html#cb298-10"></a><span class="co">## 1   1 a</span></span>
+<span id="cb298-11"><a href="rreview.html#cb298-11"></a><span class="co">## 2   2 a</span></span>
+<span id="cb298-12"><a href="rreview.html#cb298-12"></a><span class="co">## 3   3 a</span></span>
+<span id="cb298-13"><a href="rreview.html#cb298-13"></a><span class="co">## 4   4 a</span></span>
+<span id="cb298-14"><a href="rreview.html#cb298-14"></a><span class="co">## 5   5 a</span></span>
+<span id="cb298-15"><a href="rreview.html#cb298-15"></a><span class="co">## 6   6 b</span></span>
+<span id="cb298-16"><a href="rreview.html#cb298-16"></a><span class="co">## 7   7 b</span></span>
+<span id="cb298-17"><a href="rreview.html#cb298-17"></a><span class="co">## 8   8 b</span></span>
+<span id="cb298-18"><a href="rreview.html#cb298-18"></a><span class="co">## 9   9 b</span></span>
+<span id="cb298-19"><a href="rreview.html#cb298-19"></a><span class="co">## 10 10 b</span></span></code></pre></div>
 </div>
 <div id="adding-a-new-column-to-a-data-frame" class="section level3">
 <h3><span class="header-section-number">C.2.6</span> Adding a new column to a data frame</h3>
 <p>Suppose you want to add a variable called <code>w</code> to the data frame <code>my.data</code>.</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="rreview.html#cb136-1"></a>w &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>)  </span>
-<span id="cb136-2"><a href="rreview.html#cb136-2"></a>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">w=</span>w)  </span>
-<span id="cb136-3"><a href="rreview.html#cb136-3"></a>my.data </span></code></pre></div>
-<pre><code>##     x y           w
-## 1   1 a -1.13498572
-## 2   2 a  0.12707328
-## 3   3 a -0.32341330
-## 4   4 a  0.72422981
-## 5   5 a  1.11517727
-## 6   6 b -1.26673047
-## 7   7 b -0.05280457
-## 8   8 b  0.19934346
-## 9   9 b  3.18212709
-## 10 10 b  0.86499578</code></pre>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="rreview.html#cb299-1"></a><span class="op">&gt;</span><span class="st"> </span>w &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>)  </span>
+<span id="cb299-2"><a href="rreview.html#cb299-2"></a><span class="op">&gt;</span><span class="st"> </span>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">w=</span>w)  </span>
+<span id="cb299-3"><a href="rreview.html#cb299-3"></a><span class="op">&gt;</span><span class="st"> </span>my.data </span>
+<span id="cb299-4"><a href="rreview.html#cb299-4"></a><span class="co">##     x y          w</span></span>
+<span id="cb299-5"><a href="rreview.html#cb299-5"></a><span class="co">## 1   1 a  0.4225894</span></span>
+<span id="cb299-6"><a href="rreview.html#cb299-6"></a><span class="co">## 2   2 a -1.4431160</span></span>
+<span id="cb299-7"><a href="rreview.html#cb299-7"></a><span class="co">## 3   3 a  0.7034792</span></span>
+<span id="cb299-8"><a href="rreview.html#cb299-8"></a><span class="co">## 4   4 a -1.3228236</span></span>
+<span id="cb299-9"><a href="rreview.html#cb299-9"></a><span class="co">## 5   5 a -0.7072092</span></span>
+<span id="cb299-10"><a href="rreview.html#cb299-10"></a><span class="co">## 6   6 b  0.4225562</span></span>
+<span id="cb299-11"><a href="rreview.html#cb299-11"></a><span class="co">## 7   7 b -0.5278992</span></span>
+<span id="cb299-12"><a href="rreview.html#cb299-12"></a><span class="co">## 8   8 b  0.4161620</span></span>
+<span id="cb299-13"><a href="rreview.html#cb299-13"></a><span class="co">## 9   9 b -0.2602577</span></span>
+<span id="cb299-14"><a href="rreview.html#cb299-14"></a><span class="co">## 10 10 b -0.3578865</span></span></code></pre></div>
 </div>
 <div id="missing-data" class="section level3">
 <h3><span class="header-section-number">C.2.7</span> Missing Data</h3>
 <p>The missing data value in R is NA. Any blank field (or NA field) in the .csv file will be recognized as a missing value when the data is read into R with the <code>read.csv</code> command. But suppose we have missing data in a data set we’ve entered by hand</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="rreview.html#cb138-1"></a>u &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="ot">NA</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>) </span>
-<span id="cb138-2"><a href="rreview.html#cb138-2"></a>v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>,<span class="dv">5</span>), <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</span>
-<span id="cb138-3"><a href="rreview.html#cb138-3"></a>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">u=</span>u, <span class="dt">v=</span>v)  </span>
-<span id="cb138-4"><a href="rreview.html#cb138-4"></a>my.data   </span></code></pre></div>
-<pre><code>##     x y           w  u  v
-## 1   1 a -1.13498572 NA NA
-## 2   2 a  0.12707328  2 NA
-## 3   3 a -0.32341330  3 NA
-## 4   4 a  0.72422981  4 NA
-## 5   5 a  1.11517727  5 NA
-## 6   6 b -1.26673047 NA  1
-## 7   7 b -0.05280457  7  2
-## 8   8 b  0.19934346  8  3
-## 9   9 b  3.18212709  9  4
-## 10 10 b  0.86499578 10  5</code></pre>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="rreview.html#cb300-1"></a><span class="op">&gt;</span><span class="st"> </span>u &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="ot">NA</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>) </span>
+<span id="cb300-2"><a href="rreview.html#cb300-2"></a><span class="op">&gt;</span><span class="st"> </span>v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>,<span class="dv">5</span>), <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</span>
+<span id="cb300-3"><a href="rreview.html#cb300-3"></a><span class="op">&gt;</span><span class="st"> </span>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my.data,<span class="dt">u=</span>u, <span class="dt">v=</span>v)  </span>
+<span id="cb300-4"><a href="rreview.html#cb300-4"></a><span class="op">&gt;</span><span class="st"> </span>my.data   </span>
+<span id="cb300-5"><a href="rreview.html#cb300-5"></a><span class="co">##     x y          w  u  v</span></span>
+<span id="cb300-6"><a href="rreview.html#cb300-6"></a><span class="co">## 1   1 a  0.4225894 NA NA</span></span>
+<span id="cb300-7"><a href="rreview.html#cb300-7"></a><span class="co">## 2   2 a -1.4431160  2 NA</span></span>
+<span id="cb300-8"><a href="rreview.html#cb300-8"></a><span class="co">## 3   3 a  0.7034792  3 NA</span></span>
+<span id="cb300-9"><a href="rreview.html#cb300-9"></a><span class="co">## 4   4 a -1.3228236  4 NA</span></span>
+<span id="cb300-10"><a href="rreview.html#cb300-10"></a><span class="co">## 5   5 a -0.7072092  5 NA</span></span>
+<span id="cb300-11"><a href="rreview.html#cb300-11"></a><span class="co">## 6   6 b  0.4225562 NA  1</span></span>
+<span id="cb300-12"><a href="rreview.html#cb300-12"></a><span class="co">## 7   7 b -0.5278992  7  2</span></span>
+<span id="cb300-13"><a href="rreview.html#cb300-13"></a><span class="co">## 8   8 b  0.4161620  8  3</span></span>
+<span id="cb300-14"><a href="rreview.html#cb300-14"></a><span class="co">## 9   9 b -0.2602577  9  4</span></span>
+<span id="cb300-15"><a href="rreview.html#cb300-15"></a><span class="co">## 10 10 b -0.3578865 10  5</span></span></code></pre></div>
 <p>We can see which entries in u are missing with the <code>is.na</code> command</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="rreview.html#cb140-1"></a><span class="kw">is.na</span>(my.data<span class="op">$</span>u)  </span></code></pre></div>
-<pre><code>##  [1]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="rreview.html#cb301-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">is.na</span>(my.data<span class="op">$</span>u)  </span>
+<span id="cb301-2"><a href="rreview.html#cb301-2"></a><span class="co">##  [1]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</span></span></code></pre></div>
 <p>or with the <code>summary</code> command:</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="rreview.html#cb142-1"></a><span class="kw">summary</span>(my.data)</span></code></pre></div>
-<pre><code>##        x              y                   w                 u        
-##  Min.   : 1.00   Length:10          Min.   :-1.2667   Min.   : 2.00  
-##  1st Qu.: 3.25   Class :character   1st Qu.:-0.2558   1st Qu.: 3.75  
-##  Median : 5.50   Mode  :character   Median : 0.1632   Median : 6.00  
-##  Mean   : 5.50                      Mean   : 0.3435   Mean   : 6.00  
-##  3rd Qu.: 7.75                      3rd Qu.: 0.8298   3rd Qu.: 8.25  
-##  Max.   :10.00                      Max.   : 3.1821   Max.   :10.00  
-##                                                       NA&#39;s   :2      
-##        v    
-##  Min.   :1  
-##  1st Qu.:2  
-##  Median :3  
-##  Mean   :3  
-##  3rd Qu.:4  
-##  Max.   :5  
-##  NA&#39;s   :5</code></pre>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="rreview.html#cb302-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(my.data)</span>
+<span id="cb302-2"><a href="rreview.html#cb302-2"></a><span class="co">##        x              y                   w                 u        </span></span>
+<span id="cb302-3"><a href="rreview.html#cb302-3"></a><span class="co">##  Min.   : 1.00   Length:10          Min.   :-1.4431   Min.   : 2.00  </span></span>
+<span id="cb302-4"><a href="rreview.html#cb302-4"></a><span class="co">##  1st Qu.: 3.25   Class :character   1st Qu.:-0.6624   1st Qu.: 3.75  </span></span>
+<span id="cb302-5"><a href="rreview.html#cb302-5"></a><span class="co">##  Median : 5.50   Mode  :character   Median :-0.3091   Median : 6.00  </span></span>
+<span id="cb302-6"><a href="rreview.html#cb302-6"></a><span class="co">##  Mean   : 5.50                      Mean   :-0.2654   Mean   : 6.00  </span></span>
+<span id="cb302-7"><a href="rreview.html#cb302-7"></a><span class="co">##  3rd Qu.: 7.75                      3rd Qu.: 0.4210   3rd Qu.: 8.25  </span></span>
+<span id="cb302-8"><a href="rreview.html#cb302-8"></a><span class="co">##  Max.   :10.00                      Max.   : 0.7035   Max.   :10.00  </span></span>
+<span id="cb302-9"><a href="rreview.html#cb302-9"></a><span class="co">##                                                       NA&#39;s   :2      </span></span>
+<span id="cb302-10"><a href="rreview.html#cb302-10"></a><span class="co">##        v    </span></span>
+<span id="cb302-11"><a href="rreview.html#cb302-11"></a><span class="co">##  Min.   :1  </span></span>
+<span id="cb302-12"><a href="rreview.html#cb302-12"></a><span class="co">##  1st Qu.:2  </span></span>
+<span id="cb302-13"><a href="rreview.html#cb302-13"></a><span class="co">##  Median :3  </span></span>
+<span id="cb302-14"><a href="rreview.html#cb302-14"></a><span class="co">##  Mean   :3  </span></span>
+<span id="cb302-15"><a href="rreview.html#cb302-15"></a><span class="co">##  3rd Qu.:4  </span></span>
+<span id="cb302-16"><a href="rreview.html#cb302-16"></a><span class="co">##  Max.   :5  </span></span>
+<span id="cb302-17"><a href="rreview.html#cb302-17"></a><span class="co">##  NA&#39;s   :5</span></span></code></pre></div>
 <p>We can use the <code>drop_na</code> command from the <code>tidyr</code> package to create an <code>NA</code>-free version of our data frame. Applying it to the entire data frame returns only rows that have observations for all variables:</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="rreview.html#cb144-1"></a><span class="kw">library</span>(tidyr)</span>
-<span id="cb144-2"><a href="rreview.html#cb144-2"></a>my.data.noNA &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data)</span>
-<span id="cb144-3"><a href="rreview.html#cb144-3"></a>my.data.noNA</span></code></pre></div>
-<pre><code>##    x y           w  u v
-## 1  7 b -0.05280457  7 2
-## 2  8 b  0.19934346  8 3
-## 3  9 b  3.18212709  9 4
-## 4 10 b  0.86499578 10 5</code></pre>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="rreview.html#cb303-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(tidyr)</span>
+<span id="cb303-2"><a href="rreview.html#cb303-2"></a><span class="op">&gt;</span><span class="st"> </span>my.data.noNA &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data)</span>
+<span id="cb303-3"><a href="rreview.html#cb303-3"></a><span class="op">&gt;</span><span class="st"> </span>my.data.noNA</span>
+<span id="cb303-4"><a href="rreview.html#cb303-4"></a><span class="co">##    x y          w  u v</span></span>
+<span id="cb303-5"><a href="rreview.html#cb303-5"></a><span class="co">## 1  7 b -0.5278992  7 2</span></span>
+<span id="cb303-6"><a href="rreview.html#cb303-6"></a><span class="co">## 2  8 b  0.4161620  8 3</span></span>
+<span id="cb303-7"><a href="rreview.html#cb303-7"></a><span class="co">## 3  9 b -0.2602577  9 4</span></span>
+<span id="cb303-8"><a href="rreview.html#cb303-8"></a><span class="co">## 4 10 b -0.3578865 10 5</span></span></code></pre></div>
 <p>There are times when you only want to remove NA’s for a limited number of variables. Add these variable names as arguments to the <code>drop_na</code> command to only remove rows with NA’s for those variables. Here we only remove <code>NA</code>s from <code>u</code> (rows 1 and 6):</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="rreview.html#cb146-1"></a>my.data.noNAu &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data, u)</span>
-<span id="cb146-2"><a href="rreview.html#cb146-2"></a>my.data.noNAu</span></code></pre></div>
-<pre><code>##    x y           w  u  v
-## 1  2 a  0.12707328  2 NA
-## 2  3 a -0.32341330  3 NA
-## 3  4 a  0.72422981  4 NA
-## 4  5 a  1.11517727  5 NA
-## 5  7 b -0.05280457  7  2
-## 6  8 b  0.19934346  8  3
-## 7  9 b  3.18212709  9  4
-## 8 10 b  0.86499578 10  5</code></pre>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="rreview.html#cb304-1"></a><span class="op">&gt;</span><span class="st"> </span>my.data.noNAu &lt;-<span class="st"> </span><span class="kw">drop_na</span>(my.data, u)</span>
+<span id="cb304-2"><a href="rreview.html#cb304-2"></a><span class="op">&gt;</span><span class="st"> </span>my.data.noNAu</span>
+<span id="cb304-3"><a href="rreview.html#cb304-3"></a><span class="co">##    x y          w  u  v</span></span>
+<span id="cb304-4"><a href="rreview.html#cb304-4"></a><span class="co">## 1  2 a -1.4431160  2 NA</span></span>
+<span id="cb304-5"><a href="rreview.html#cb304-5"></a><span class="co">## 2  3 a  0.7034792  3 NA</span></span>
+<span id="cb304-6"><a href="rreview.html#cb304-6"></a><span class="co">## 3  4 a -1.3228236  4 NA</span></span>
+<span id="cb304-7"><a href="rreview.html#cb304-7"></a><span class="co">## 4  5 a -0.7072092  5 NA</span></span>
+<span id="cb304-8"><a href="rreview.html#cb304-8"></a><span class="co">## 5  7 b -0.5278992  7  2</span></span>
+<span id="cb304-9"><a href="rreview.html#cb304-9"></a><span class="co">## 6  8 b  0.4161620  8  3</span></span>
+<span id="cb304-10"><a href="rreview.html#cb304-10"></a><span class="co">## 7  9 b -0.2602577  9  4</span></span>
+<span id="cb304-11"><a href="rreview.html#cb304-11"></a><span class="co">## 8 10 b -0.3578865 10  5</span></span></code></pre></div>
 <p>Sometimes data sets (especially “read-world”" data) do not use blank fields to indicate missing data. For example, perhaps an unrealistic value is given as filler for a missing data point, like <code>-99</code> for a positive integer variable or <code>9999</code> for a smaller scale variable. The source where you find your data should tell you if special fields (like <code>-99</code> or <code>9999</code>) are used to indicate missing data. Once you determine what the missing data indicator is, you can import the data set using the <code>read.csv</code> command with the added argument <code>na.strings = c("-99"," ")</code>. This argument tells R that missing data is coded either as an <code>NA</code>, a blank entry or as a <code>-99</code> entry.</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="rreview.html#cb148-1"></a>mydata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;&lt;file path&gt;&quot;</span>, <span class="dt">na.strings =</span> <span class="kw">c</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot; &quot;</span>, <span class="st">&quot;-99&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="rreview.html#cb305-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;&lt;file path&gt;&quot;</span>, <span class="dt">na.strings =</span> <span class="kw">c</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot; &quot;</span>, <span class="st">&quot;-99&quot;</span>))</span></code></pre></div>
 </div>
 </div>
 <div id="eda" class="section level2">
@@ -900,183 +899,176 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="categorical" class="section level3">
 <h3><span class="header-section-number">C.3.1</span> Categorical:</h3>
 <p>The <code>table</code> command is useful when summarizing a categorical variable like region</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="rreview.html#cb149-1"></a><span class="kw">table</span>(agstrat<span class="op">$</span>region) </span></code></pre></div>
-<pre><code>## 
-##  NC  NE   S   W 
-## 103  21 135  41</code></pre>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="rreview.html#cb306-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat<span class="op">$</span>region) </span>
+<span id="cb306-2"><a href="rreview.html#cb306-2"></a><span class="co">## </span></span>
+<span id="cb306-3"><a href="rreview.html#cb306-3"></a><span class="co">##  NC  NE   S   W </span></span>
+<span id="cb306-4"><a href="rreview.html#cb306-4"></a><span class="co">## 103  21 135  41</span></span></code></pre></div>
 <p>There are 103 counties in the north central region, 21 in the northeast, 135 in the south, and 41 in the west. We get a contingency table by entering two categorical variables</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="rreview.html#cb151-1"></a><span class="kw">table</span>(agstrat<span class="op">$</span>state,agstrat<span class="op">$</span>region)  </span></code></pre></div>
-<pre><code>##     
-##      NC NE  S  W
-##   AL  0  0  5  0
-##   AR  0  0  9  0
-##   AZ  0  0  0  1
-##   CA  0  0  0  1
-##   CO  0  0  0  5
-##   CT  0  1  0  0
-##   FL  0  0  4  0
-##   GA  0  0 15  0
-##   HI  0  0  0  2
-##   IA 10  0  0  0
-##   ID  0  0  0  5
-##   IL 16  0  0  0
-##   IN  9  0  0  0
-##   KS 11  0  0  0
-##   KY  0  0 15  0
-##   LA  0  0  3  0
-##   MA  0  1  0  0
-##   MD  0  0  2  0
-##   ME  0  1  0  0
-##   MI  6  0  0  0
-##   MN  9  0  0  0
-##   MO 10  0  0  0
-##   MS  0  0  6  0
-##   MT  0  0  0  7
-##   NC  0  0 16  0
-##   ND  2  0  0  0
-##   NE 12  0  0  0
-##   NJ  0  1  0  0
-##   NM  0  0  0  2
-##   NV  0  0  0  2
-##   NY  0  8  0  0
-##   OH  4  0  0  0
-##   OK  0  0  7  0
-##   OR  0  0  0  4
-##   PA  0  8  0  0
-##   SC  0  0  4  0
-##   SD  7  0  0  0
-##   TN  0  0  6  0
-##   TX  0  0 31  0
-##   UT  0  0  0  4
-##   VA  0  0  5  0
-##   VT  0  1  0  0
-##   WA  0  0  0  7
-##   WI  7  0  0  0
-##   WV  0  0  7  0
-##   WY  0  0  0  1</code></pre>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="rreview.html#cb307-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat<span class="op">$</span>state,agstrat<span class="op">$</span>region)  </span>
+<span id="cb307-2"><a href="rreview.html#cb307-2"></a><span class="co">##     </span></span>
+<span id="cb307-3"><a href="rreview.html#cb307-3"></a><span class="co">##      NC NE  S  W</span></span>
+<span id="cb307-4"><a href="rreview.html#cb307-4"></a><span class="co">##   AL  0  0  5  0</span></span>
+<span id="cb307-5"><a href="rreview.html#cb307-5"></a><span class="co">##   AR  0  0  9  0</span></span>
+<span id="cb307-6"><a href="rreview.html#cb307-6"></a><span class="co">##   AZ  0  0  0  1</span></span>
+<span id="cb307-7"><a href="rreview.html#cb307-7"></a><span class="co">##   CA  0  0  0  1</span></span>
+<span id="cb307-8"><a href="rreview.html#cb307-8"></a><span class="co">##   CO  0  0  0  5</span></span>
+<span id="cb307-9"><a href="rreview.html#cb307-9"></a><span class="co">##   CT  0  1  0  0</span></span>
+<span id="cb307-10"><a href="rreview.html#cb307-10"></a><span class="co">##   FL  0  0  4  0</span></span>
+<span id="cb307-11"><a href="rreview.html#cb307-11"></a><span class="co">##   GA  0  0 15  0</span></span>
+<span id="cb307-12"><a href="rreview.html#cb307-12"></a><span class="co">##   HI  0  0  0  2</span></span>
+<span id="cb307-13"><a href="rreview.html#cb307-13"></a><span class="co">##   IA 10  0  0  0</span></span>
+<span id="cb307-14"><a href="rreview.html#cb307-14"></a><span class="co">##   ID  0  0  0  5</span></span>
+<span id="cb307-15"><a href="rreview.html#cb307-15"></a><span class="co">##   IL 16  0  0  0</span></span>
+<span id="cb307-16"><a href="rreview.html#cb307-16"></a><span class="co">##   IN  9  0  0  0</span></span>
+<span id="cb307-17"><a href="rreview.html#cb307-17"></a><span class="co">##   KS 11  0  0  0</span></span>
+<span id="cb307-18"><a href="rreview.html#cb307-18"></a><span class="co">##   KY  0  0 15  0</span></span>
+<span id="cb307-19"><a href="rreview.html#cb307-19"></a><span class="co">##   LA  0  0  3  0</span></span>
+<span id="cb307-20"><a href="rreview.html#cb307-20"></a><span class="co">##   MA  0  1  0  0</span></span>
+<span id="cb307-21"><a href="rreview.html#cb307-21"></a><span class="co">##   MD  0  0  2  0</span></span>
+<span id="cb307-22"><a href="rreview.html#cb307-22"></a><span class="co">##   ME  0  1  0  0</span></span>
+<span id="cb307-23"><a href="rreview.html#cb307-23"></a><span class="co">##   MI  6  0  0  0</span></span>
+<span id="cb307-24"><a href="rreview.html#cb307-24"></a><span class="co">##   MN  9  0  0  0</span></span>
+<span id="cb307-25"><a href="rreview.html#cb307-25"></a><span class="co">##   MO 10  0  0  0</span></span>
+<span id="cb307-26"><a href="rreview.html#cb307-26"></a><span class="co">##   MS  0  0  6  0</span></span>
+<span id="cb307-27"><a href="rreview.html#cb307-27"></a><span class="co">##   MT  0  0  0  7</span></span>
+<span id="cb307-28"><a href="rreview.html#cb307-28"></a><span class="co">##   NC  0  0 16  0</span></span>
+<span id="cb307-29"><a href="rreview.html#cb307-29"></a><span class="co">##   ND  2  0  0  0</span></span>
+<span id="cb307-30"><a href="rreview.html#cb307-30"></a><span class="co">##   NE 12  0  0  0</span></span>
+<span id="cb307-31"><a href="rreview.html#cb307-31"></a><span class="co">##   NJ  0  1  0  0</span></span>
+<span id="cb307-32"><a href="rreview.html#cb307-32"></a><span class="co">##   NM  0  0  0  2</span></span>
+<span id="cb307-33"><a href="rreview.html#cb307-33"></a><span class="co">##   NV  0  0  0  2</span></span>
+<span id="cb307-34"><a href="rreview.html#cb307-34"></a><span class="co">##   NY  0  8  0  0</span></span>
+<span id="cb307-35"><a href="rreview.html#cb307-35"></a><span class="co">##   OH  4  0  0  0</span></span>
+<span id="cb307-36"><a href="rreview.html#cb307-36"></a><span class="co">##   OK  0  0  7  0</span></span>
+<span id="cb307-37"><a href="rreview.html#cb307-37"></a><span class="co">##   OR  0  0  0  4</span></span>
+<span id="cb307-38"><a href="rreview.html#cb307-38"></a><span class="co">##   PA  0  8  0  0</span></span>
+<span id="cb307-39"><a href="rreview.html#cb307-39"></a><span class="co">##   SC  0  0  4  0</span></span>
+<span id="cb307-40"><a href="rreview.html#cb307-40"></a><span class="co">##   SD  7  0  0  0</span></span>
+<span id="cb307-41"><a href="rreview.html#cb307-41"></a><span class="co">##   TN  0  0  6  0</span></span>
+<span id="cb307-42"><a href="rreview.html#cb307-42"></a><span class="co">##   TX  0  0 31  0</span></span>
+<span id="cb307-43"><a href="rreview.html#cb307-43"></a><span class="co">##   UT  0  0  0  4</span></span>
+<span id="cb307-44"><a href="rreview.html#cb307-44"></a><span class="co">##   VA  0  0  5  0</span></span>
+<span id="cb307-45"><a href="rreview.html#cb307-45"></a><span class="co">##   VT  0  1  0  0</span></span>
+<span id="cb307-46"><a href="rreview.html#cb307-46"></a><span class="co">##   WA  0  0  0  7</span></span>
+<span id="cb307-47"><a href="rreview.html#cb307-47"></a><span class="co">##   WI  7  0  0  0</span></span>
+<span id="cb307-48"><a href="rreview.html#cb307-48"></a><span class="co">##   WV  0  0  7  0</span></span>
+<span id="cb307-49"><a href="rreview.html#cb307-49"></a><span class="co">##   WY  0  0  0  1</span></span></code></pre></div>
 <p>So, for example, the data contains 5 counties in Alabama that are classified as southern. (Note that this isn’t a very interesting summary of two categorical variables, just an easy one to demonstrate the table command using this data set.)</p>
 </div>
 <div id="quantitative" class="section level3">
 <h3><span class="header-section-number">C.3.2</span> Quantitative:</h3>
 <p>Basic summary stats commands are</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="rreview.html#cb153-1"></a><span class="kw">summary</span>(agstrat<span class="op">$</span>farms92) </span></code></pre></div>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##     0.0   326.5   544.5   637.4   840.8  3157.0</code></pre>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="rreview.html#cb155-1"></a><span class="kw">mean</span>(agstrat<span class="op">$</span>farms92) </span></code></pre></div>
-<pre><code>## [1] 637.3833</code></pre>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="rreview.html#cb157-1"></a><span class="kw">median</span>(agstrat<span class="op">$</span>farms92) </span></code></pre></div>
-<pre><code>## [1] 544.5</code></pre>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="rreview.html#cb159-1"></a><span class="kw">sd</span>(agstrat<span class="op">$</span>farms92) </span></code></pre></div>
-<pre><code>## [1] 448.2621</code></pre>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="rreview.html#cb161-1"></a><span class="kw">min</span>(agstrat<span class="op">$</span>farms92) </span></code></pre></div>
-<pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="rreview.html#cb163-1"></a><span class="kw">max</span>(agstrat<span class="op">$</span>farms92)  </span></code></pre></div>
-<pre><code>## [1] 3157</code></pre>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="rreview.html#cb308-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(agstrat<span class="op">$</span>farms92) </span>
+<span id="cb308-2"><a href="rreview.html#cb308-2"></a><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span id="cb308-3"><a href="rreview.html#cb308-3"></a><span class="co">##     0.0   326.5   544.5   637.4   840.8  3157.0</span></span>
+<span id="cb308-4"><a href="rreview.html#cb308-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(agstrat<span class="op">$</span>farms92) </span>
+<span id="cb308-5"><a href="rreview.html#cb308-5"></a><span class="co">## [1] 637.3833</span></span>
+<span id="cb308-6"><a href="rreview.html#cb308-6"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">median</span>(agstrat<span class="op">$</span>farms92) </span>
+<span id="cb308-7"><a href="rreview.html#cb308-7"></a><span class="co">## [1] 544.5</span></span>
+<span id="cb308-8"><a href="rreview.html#cb308-8"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">sd</span>(agstrat<span class="op">$</span>farms92) </span>
+<span id="cb308-9"><a href="rreview.html#cb308-9"></a><span class="co">## [1] 448.2621</span></span>
+<span id="cb308-10"><a href="rreview.html#cb308-10"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">min</span>(agstrat<span class="op">$</span>farms92) </span>
+<span id="cb308-11"><a href="rreview.html#cb308-11"></a><span class="co">## [1] 0</span></span>
+<span id="cb308-12"><a href="rreview.html#cb308-12"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">max</span>(agstrat<span class="op">$</span>farms92)  </span>
+<span id="cb308-13"><a href="rreview.html#cb308-13"></a><span class="co">## [1] 3157</span></span></code></pre></div>
 <p>We can explore which county(s) have the highest number of farms (3157) in 1992 with</p>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="rreview.html#cb165-1"></a><span class="kw">which</span>(agstrat<span class="op">$</span>farms92 <span class="op">==</span><span class="st"> </span><span class="dv">3157</span>) </span></code></pre></div>
-<pre><code>## [1] 274</code></pre>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="rreview.html#cb167-1"></a>agstrat[<span class="dv">274</span>,]  </span></code></pre></div>
-<pre><code>##            county state acres92 acres87 acres82 farms92 farms87 farms82
-## 274 HAWAII COUNTY    HI  926607 1007287 1172448    3157    2810    2539
-##     largef92 largef87 largef82 smallf92 smallf87 smallf82 region  rn   weight
-## 274       55       60       58     1960     1602     1468      W 142 10.29268</code></pre>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="rreview.html#cb309-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">which</span>(agstrat<span class="op">$</span>farms92 <span class="op">==</span><span class="st"> </span><span class="dv">3157</span>) </span>
+<span id="cb309-2"><a href="rreview.html#cb309-2"></a><span class="co">## [1] 274</span></span>
+<span id="cb309-3"><a href="rreview.html#cb309-3"></a><span class="op">&gt;</span><span class="st"> </span>agstrat[<span class="dv">274</span>,]  </span>
+<span id="cb309-4"><a href="rreview.html#cb309-4"></a><span class="co">##            county state acres92 acres87 acres82 farms92 farms87 farms82</span></span>
+<span id="cb309-5"><a href="rreview.html#cb309-5"></a><span class="co">## 274 HAWAII COUNTY    HI  926607 1007287 1172448    3157    2810    2539</span></span>
+<span id="cb309-6"><a href="rreview.html#cb309-6"></a><span class="co">##     largef92 largef87 largef82 smallf92 smallf87 smallf82 region  rn   weight</span></span>
+<span id="cb309-7"><a href="rreview.html#cb309-7"></a><span class="co">## 274       55       60       58     1960     1602     1468      W 142 10.29268</span></span></code></pre></div>
 <p>The 0.05 and 0.95 quantiles (i.e. 5th and 95th percentiles) of farms92 are</p>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="rreview.html#cb169-1"></a><span class="kw">quantile</span>(agstrat<span class="op">$</span>farms92, <span class="kw">c</span>(.<span class="dv">05</span>, <span class="fl">.95</span>))  </span></code></pre></div>
-<pre><code>##      5%     95% 
-##   89.20 1441.15</code></pre>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="rreview.html#cb310-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">quantile</span>(agstrat<span class="op">$</span>farms92, <span class="kw">c</span>(.<span class="dv">05</span>, <span class="fl">.95</span>))  </span>
+<span id="cb310-2"><a href="rreview.html#cb310-2"></a><span class="co">##      5%     95% </span></span>
+<span id="cb310-3"><a href="rreview.html#cb310-3"></a><span class="co">##   89.20 1441.15</span></span></code></pre></div>
 <p>meaning that 5% of counties have fewer than 89.2 farms and 95% of counties have fewer than 1441.15 farms.</p>
 </div>
 <div id="Rreview-stats" class="section level3">
 <h3><span class="header-section-number">C.3.3</span> Quantitative grouped by a categorical</h3>
 <p>Suppose we want to know the average number of farms per county for each region. The R function <code>tapply(var, grp, fun)</code> will apply the function <code>fun</code> to the variable <code>var</code> for each group in <code>grp</code> and produces a <code>table</code> of output (hence the <code>t</code> in <code>tapply</code>). Here is this command in action for the farms variable</p>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="rreview.html#cb171-1"></a><span class="kw">tapply</span>(agstrat<span class="op">$</span>farms92, agstrat<span class="op">$</span>region, summary)  </span></code></pre></div>
-<pre><code>## $NC
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    58.0   489.5   738.0   750.7   968.5  1669.0 
-## 
-## $NE
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##     0.0   395.0   451.0   528.1   659.0  1367.0 
-## 
-## $S
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    14.0   265.5   440.0   578.6   777.5  2760.0 
-## 
-## $W
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    16.0   257.0   495.0   602.3   733.0  3157.0</code></pre>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="rreview.html#cb311-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">tapply</span>(agstrat<span class="op">$</span>farms92, agstrat<span class="op">$</span>region, summary)  </span>
+<span id="cb311-2"><a href="rreview.html#cb311-2"></a><span class="co">## $NC</span></span>
+<span id="cb311-3"><a href="rreview.html#cb311-3"></a><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span id="cb311-4"><a href="rreview.html#cb311-4"></a><span class="co">##    58.0   489.5   738.0   750.7   968.5  1669.0 </span></span>
+<span id="cb311-5"><a href="rreview.html#cb311-5"></a><span class="co">## </span></span>
+<span id="cb311-6"><a href="rreview.html#cb311-6"></a><span class="co">## $NE</span></span>
+<span id="cb311-7"><a href="rreview.html#cb311-7"></a><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span id="cb311-8"><a href="rreview.html#cb311-8"></a><span class="co">##     0.0   395.0   451.0   528.1   659.0  1367.0 </span></span>
+<span id="cb311-9"><a href="rreview.html#cb311-9"></a><span class="co">## </span></span>
+<span id="cb311-10"><a href="rreview.html#cb311-10"></a><span class="co">## $S</span></span>
+<span id="cb311-11"><a href="rreview.html#cb311-11"></a><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span id="cb311-12"><a href="rreview.html#cb311-12"></a><span class="co">##    14.0   265.5   440.0   578.6   777.5  2760.0 </span></span>
+<span id="cb311-13"><a href="rreview.html#cb311-13"></a><span class="co">## </span></span>
+<span id="cb311-14"><a href="rreview.html#cb311-14"></a><span class="co">## $W</span></span>
+<span id="cb311-15"><a href="rreview.html#cb311-15"></a><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span id="cb311-16"><a href="rreview.html#cb311-16"></a><span class="co">##    16.0   257.0   495.0   602.3   733.0  3157.0</span></span></code></pre></div>
 <p>The average number of farms per county in the northeast region is 528.1.</p>
 <p>The R package <code>dplyr</code> can also be used to get numerical summaries by groups using the <code>group_by</code> and <code>summarize</code> commands. Here we string together these two commands with the <em>piping</em> command <code>%&gt;%</code> to get the mean and standard deviation of <code>farms92</code> for each level of <code>region</code>:</p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="rreview.html#cb173-1"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb173-2"><a href="rreview.html#cb173-2"></a>agstrat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb173-3"><a href="rreview.html#cb173-3"></a><span class="st">    </span><span class="kw">group_by</span>(region) <span class="op">%&gt;%</span></span>
-<span id="cb173-4"><a href="rreview.html#cb173-4"></a><span class="st">    </span><span class="kw">summarize</span>(<span class="kw">mean</span>(farms92), <span class="kw">sd</span>(farms92))</span></code></pre></div>
-<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre><code>## # A tibble: 4 x 3
-##   region `mean(farms92)` `sd(farms92)`
-##   &lt;fct&gt;            &lt;dbl&gt;         &lt;dbl&gt;
-## 1 NC                751.          358.
-## 2 NE                528.          359.
-## 3 S                 579.          472.
-## 4 W                 602.          558.</code></pre>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="rreview.html#cb312-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb312-2"><a href="rreview.html#cb312-2"></a><span class="op">&gt;</span><span class="st"> </span>agstrat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb312-3"><a href="rreview.html#cb312-3"></a><span class="op">+</span><span class="st">     </span><span class="kw">group_by</span>(region) <span class="op">%&gt;%</span></span>
+<span id="cb312-4"><a href="rreview.html#cb312-4"></a><span class="op">+</span><span class="st">     </span><span class="kw">summarize</span>(<span class="kw">mean</span>(farms92), <span class="kw">sd</span>(farms92))</span>
+<span id="cb312-5"><a href="rreview.html#cb312-5"></a><span class="co">## # A tibble: 4 x 3</span></span>
+<span id="cb312-6"><a href="rreview.html#cb312-6"></a><span class="co">##   region `mean(farms92)` `sd(farms92)`</span></span>
+<span id="cb312-7"><a href="rreview.html#cb312-7"></a><span class="co">##   &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;</span></span>
+<span id="cb312-8"><a href="rreview.html#cb312-8"></a><span class="co">## 1 NC                751.          358.</span></span>
+<span id="cb312-9"><a href="rreview.html#cb312-9"></a><span class="co">## 2 NE                528.          359.</span></span>
+<span id="cb312-10"><a href="rreview.html#cb312-10"></a><span class="co">## 3 S                 579.          472.</span></span>
+<span id="cb312-11"><a href="rreview.html#cb312-11"></a><span class="co">## 4 W                 602.          558.</span></span></code></pre></div>
 <p>The output produced by this string of commands is actually a type of a data frame called a <code>tibble</code>.</p>
 </div>
 <div id="Rreview-graphs" class="section level3">
 <h3><span class="header-section-number">C.3.4</span> Graphs</h3>
 <p>R has very sophisticated graphing capabilities. This handout just gives you a summary of some of the most basic graphs. More complicated graphic features will be explained as needed in class. R has <em>high-level</em> plotting commands that create a complete graph, <em>low-level</em> commands which add to an existing graph, and a graphing window layout <code>par</code> command. Use the help command to see these options, e.g. <code>?hist</code> for the histogram options.</p>
 <p>A bar graph of the categorical variable region is given by</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="rreview.html#cb176-1"></a><span class="kw">barplot</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region))  </span></code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="rreview.html#cb313-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">barplot</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region))  </span></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-319-1.png" width="672" /></p>
 <p>The southern region contains the most counties in our sample (135) and the north east region the fewest counties (21). We can add a label to the y-axis and a title to the plot by adding the arguments</p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="rreview.html#cb177-1"></a><span class="kw">barplot</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region), <span class="dt">ylab=</span><span class="st">&quot;count&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Number of counties per region&quot;</span>)  </span></code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="rreview.html#cb314-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">barplot</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region), <span class="dt">ylab=</span><span class="st">&quot;count&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Number of counties per region&quot;</span>)  </span></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-320-1.png" width="672" /></p>
 <p>A histogram and boxplot of farms92 are given by</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="rreview.html#cb178-1"></a><span class="kw">hist</span>(agstrat<span class="op">$</span>farms92, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>) </span></code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="rreview.html#cb179-1"></a><span class="kw">boxplot</span>(agstrat<span class="op">$</span>farms92, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>)  </span></code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-58-2.png" width="672" /></p>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="rreview.html#cb315-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(agstrat<span class="op">$</span>farms92, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>) </span></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-321-1.png" width="672" /></p>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="rreview.html#cb316-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(agstrat<span class="op">$</span>farms92, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>)  </span></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-321-2.png" width="672" /></p>
 <p>We can get a side-by-side boxplot of farms92 by region with</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="rreview.html#cb180-1"></a><span class="kw">boxplot</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">data =</span> agstrat, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>)  </span></code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="rreview.html#cb317-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">data =</span> agstrat, <span class="dt">main =</span> <span class="st">&quot;Number of farms per county in 1992&quot;</span>)  </span></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-322-1.png" width="672" /></p>
 <p>Suppose we want to look at the distribution of counties across regions grouped by counties with fewer than 500 farms vs. 500 or more farms. First we need to create a factor variable that identifies counties as having less or more than 500 farms:</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="rreview.html#cb181-1"></a>agstrat<span class="op">$</span>farms500 &lt;-<span class="st"> </span><span class="kw">ifelse</span>(agstrat<span class="op">$</span>farms92 <span class="op">&lt;</span><span class="st"> </span><span class="dv">500</span>, <span class="st">&quot;fewer than 500 farms&quot;</span>, <span class="st">&quot;500 or more farms&quot;</span>)</span>
-<span id="cb181-2"><a href="rreview.html#cb181-2"></a><span class="kw">table</span>(agstrat<span class="op">$</span>farms500)  </span></code></pre></div>
-<pre><code>## 
-##    500 or more farms fewer than 500 farms 
-##                  164                  136</code></pre>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="rreview.html#cb318-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat<span class="op">$</span>farms500 &lt;-<span class="st"> </span><span class="kw">ifelse</span>(agstrat<span class="op">$</span>farms92 <span class="op">&lt;</span><span class="st"> </span><span class="dv">500</span>, <span class="st">&quot;fewer than 500 farms&quot;</span>, <span class="st">&quot;500 or more farms&quot;</span>)</span>
+<span id="cb318-2"><a href="rreview.html#cb318-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat<span class="op">$</span>farms500)  </span>
+<span id="cb318-3"><a href="rreview.html#cb318-3"></a><span class="co">## </span></span>
+<span id="cb318-4"><a href="rreview.html#cb318-4"></a><span class="co">##    500 or more farms fewer than 500 farms </span></span>
+<span id="cb318-5"><a href="rreview.html#cb318-5"></a><span class="co">##                  164                  136</span></span></code></pre></div>
 <p>The we create the stacked bar graph for <code>farms500</code> grouped by <code>region</code> using <code>ggplot2</code>:</p>
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="rreview.html#cb183-1"></a><span class="kw">library</span>(ggplot2)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: &#39;ggplot2&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:SDaA&#39;:
-## 
-##     seals</code></pre>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="rreview.html#cb186-1"></a><span class="kw">ggplot</span>(agstrat, <span class="kw">aes</span>(<span class="dt">x=</span>region, <span class="dt">fill =</span> farms500)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb186-2"><a href="rreview.html#cb186-2"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb186-3"><a href="rreview.html#cb186-3"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;proportion&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;Number of farms&quot;</span>, </span>
-<span id="cb186-4"><a href="rreview.html#cb186-4"></a>       <span class="dt">title =</span> <span class="st">&quot;Number of farms (categorized) by region&quot;</span>)</span></code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="rreview.html#cb187-1"></a><span class="kw">prop.table</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region, agstrat<span class="op">$</span>farms500), <span class="dv">1</span>)</span></code></pre></div>
-<pre><code>##     
-##      500 or more farms fewer than 500 farms
-##   NC         0.7281553            0.2718447
-##   NE         0.4285714            0.5714286
-##   S          0.4444444            0.5555556
-##   W          0.4878049            0.5121951</code></pre>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="rreview.html#cb319-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)</span>
+<span id="cb319-2"><a href="rreview.html#cb319-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(agstrat, <span class="kw">aes</span>(<span class="dt">x=</span>region, <span class="dt">fill =</span> farms500)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb319-3"><a href="rreview.html#cb319-3"></a><span class="op">+</span><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb319-4"><a href="rreview.html#cb319-4"></a><span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;proportion&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;Number of farms&quot;</span>, </span>
+<span id="cb319-5"><a href="rreview.html#cb319-5"></a><span class="op">+</span><span class="st">        </span><span class="dt">title =</span> <span class="st">&quot;Number of farms (categorized) by region&quot;</span>)</span></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-324-1.png" width="672" /></p>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="rreview.html#cb320-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">prop.table</span>(<span class="kw">table</span>(agstrat<span class="op">$</span>region, agstrat<span class="op">$</span>farms500), <span class="dv">1</span>)</span>
+<span id="cb320-2"><a href="rreview.html#cb320-2"></a><span class="co">##     </span></span>
+<span id="cb320-3"><a href="rreview.html#cb320-3"></a><span class="co">##      500 or more farms fewer than 500 farms</span></span>
+<span id="cb320-4"><a href="rreview.html#cb320-4"></a><span class="co">##   NC         0.7281553            0.2718447</span></span>
+<span id="cb320-5"><a href="rreview.html#cb320-5"></a><span class="co">##   NE         0.4285714            0.5714286</span></span>
+<span id="cb320-6"><a href="rreview.html#cb320-6"></a><span class="co">##   S          0.4444444            0.5555556</span></span>
+<span id="cb320-7"><a href="rreview.html#cb320-7"></a><span class="co">##   W          0.4878049            0.5121951</span></span></code></pre></div>
 <p>Of the 103 counties in the North Central region, about 72.8% have 500 or more farms. Of the 135 counties in the Southern region, about 44.4% have 500 or more farms.</p>
 <p>We can also use <code>ggplot2</code> to create histograms of <code>farms92</code> by <code>region</code>:</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="rreview.html#cb189-1"></a><span class="kw">ggplot</span>(agstrat, <span class="kw">aes</span>(<span class="dt">x=</span>farms92)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb189-2"><a href="rreview.html#cb189-2"></a><span class="st">  </span><span class="kw">geom_histogram</span>() <span class="op">+</span><span class="st"> </span></span>
-<span id="cb189-3"><a href="rreview.html#cb189-3"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb189-4"><a href="rreview.html#cb189-4"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Number of farms by region&quot;</span>)</span></code></pre></div>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="rreview.html#cb321-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(agstrat, <span class="kw">aes</span>(<span class="dt">x=</span>farms92)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb321-2"><a href="rreview.html#cb321-2"></a><span class="op">+</span><span class="st">   </span><span class="kw">geom_histogram</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb321-3"><a href="rreview.html#cb321-3"></a><span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb321-4"><a href="rreview.html#cb321-4"></a><span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Number of farms by region&quot;</span>)</span></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-325-1.png" width="672" /></p>
 <p>We can also use the <code>ggplot2</code> package to get side-by-side boxplots grouped by a third variable. Here we can compare the distribution of total farm acreage in 1992 (<code>acres92</code>) by region for counties that have fewer than 500 farms vs. 500 or more farms:</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="rreview.html#cb191-1"></a><span class="kw">ggplot</span>(agstrat, <span class="kw">aes</span>(<span class="dt">x =</span> farms500, <span class="dt">y=</span>acres92)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb191-2"><a href="rreview.html#cb191-2"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span></span>
-<span id="cb191-3"><a href="rreview.html#cb191-3"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb191-4"><a href="rreview.html#cb191-4"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Farm acres by number of farms and region&quot;</span>) </span></code></pre></div>
-<p><img src="Math245notes_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="rreview.html#cb322-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(agstrat, <span class="kw">aes</span>(<span class="dt">x =</span> farms500, <span class="dt">y=</span>acres92)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb322-2"><a href="rreview.html#cb322-2"></a><span class="op">+</span><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb322-3"><a href="rreview.html#cb322-3"></a><span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb322-4"><a href="rreview.html#cb322-4"></a><span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Farm acres by number of farms and region&quot;</span>) </span></code></pre></div>
+<p><img src="Math245notes_files/figure-html/unnamed-chunk-326-1.png" width="672" /></p>
 <p>The relationship between median acreage across the four regions looks similar regardless of how many farms are present in a county (with western counties having the highest acreage). But for all four regions, it looks like the median acreage is highest for counties with fewer than 500 farms. Counties with fewer farms may tend to have larger farms than counties with more (smaller) farms across all four regions.</p>
 </div>
 <div id="reporting-results" class="section level3">
@@ -1090,137 +1082,134 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="renaming-factor-levels" class="section level3">
 <h3><span class="header-section-number">C.4.1</span> Renaming factor levels</h3>
 <p>The R package <code>forcats</code> has a <code>fct_recode</code> command to rename the levels of your factor variable</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="rreview.html#cb192-1"></a><span class="kw">library</span>(forcats)</span>
-<span id="cb192-2"><a href="rreview.html#cb192-2"></a>mydata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">myfac=</span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;d&quot;</span>,<span class="st">&quot;e&quot;</span>))</span>
-<span id="cb192-3"><a href="rreview.html#cb192-3"></a><span class="kw">table</span>(mydata<span class="op">$</span>myfac)</span></code></pre></div>
-<pre><code>## 
-## a b c d e 
-## 1 1 2 1 1</code></pre>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="rreview.html#cb194-1"></a>mydata<span class="op">$</span>new_myfac &lt;-<span class="st"> </span><span class="kw">fct_recode</span>(mydata<span class="op">$</span>myfac, </span>
-<span id="cb194-2"><a href="rreview.html#cb194-2"></a>                              <span class="st">&quot;Aman&quot;</span> =<span class="st"> &quot;a&quot;</span>,</span>
-<span id="cb194-3"><a href="rreview.html#cb194-3"></a>                              <span class="st">&quot;Barb&quot;</span> =<span class="st"> &quot;b&quot;</span>, </span>
-<span id="cb194-4"><a href="rreview.html#cb194-4"></a>                              <span class="st">&quot;Chad&quot;</span> =<span class="st"> &quot;c&quot;</span>,</span>
-<span id="cb194-5"><a href="rreview.html#cb194-5"></a>                              <span class="st">&quot;Daryl&quot;</span> =<span class="st"> &quot;d&quot;</span>,</span>
-<span id="cb194-6"><a href="rreview.html#cb194-6"></a>                              <span class="st">&quot;Eliza&quot;</span> =<span class="st"> &quot;e&quot;</span>)</span>
-<span id="cb194-7"><a href="rreview.html#cb194-7"></a><span class="kw">table</span>(mydata<span class="op">$</span>new_myfac)  <span class="co"># check work</span></span></code></pre></div>
-<pre><code>## 
-##  Aman  Barb  Chad Daryl Eliza 
-##     1     1     2     1     1</code></pre>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="rreview.html#cb323-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(forcats)</span>
+<span id="cb323-2"><a href="rreview.html#cb323-2"></a><span class="op">&gt;</span><span class="st"> </span>mydata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">myfac=</span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;d&quot;</span>,<span class="st">&quot;e&quot;</span>))</span>
+<span id="cb323-3"><a href="rreview.html#cb323-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(mydata<span class="op">$</span>myfac)</span>
+<span id="cb323-4"><a href="rreview.html#cb323-4"></a><span class="co">## </span></span>
+<span id="cb323-5"><a href="rreview.html#cb323-5"></a><span class="co">## a b c d e </span></span>
+<span id="cb323-6"><a href="rreview.html#cb323-6"></a><span class="co">## 1 1 2 1 1</span></span>
+<span id="cb323-7"><a href="rreview.html#cb323-7"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>new_myfac &lt;-<span class="st"> </span><span class="kw">fct_recode</span>(mydata<span class="op">$</span>myfac, </span>
+<span id="cb323-8"><a href="rreview.html#cb323-8"></a><span class="op">+</span><span class="st">                               &quot;Aman&quot;</span> =<span class="st"> &quot;a&quot;</span>,</span>
+<span id="cb323-9"><a href="rreview.html#cb323-9"></a><span class="op">+</span><span class="st">                               &quot;Barb&quot;</span> =<span class="st"> &quot;b&quot;</span>, </span>
+<span id="cb323-10"><a href="rreview.html#cb323-10"></a><span class="op">+</span><span class="st">                               &quot;Chad&quot;</span> =<span class="st"> &quot;c&quot;</span>,</span>
+<span id="cb323-11"><a href="rreview.html#cb323-11"></a><span class="op">+</span><span class="st">                               &quot;Daryl&quot;</span> =<span class="st"> &quot;d&quot;</span>,</span>
+<span id="cb323-12"><a href="rreview.html#cb323-12"></a><span class="op">+</span><span class="st">                               &quot;Eliza&quot;</span> =<span class="st"> &quot;e&quot;</span>)</span>
+<span id="cb323-13"><a href="rreview.html#cb323-13"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(mydata<span class="op">$</span>new_myfac)  <span class="co"># check work</span></span>
+<span id="cb323-14"><a href="rreview.html#cb323-14"></a><span class="co">## </span></span>
+<span id="cb323-15"><a href="rreview.html#cb323-15"></a><span class="co">##  Aman  Barb  Chad Daryl Eliza </span></span>
+<span id="cb323-16"><a href="rreview.html#cb323-16"></a><span class="co">##     1     1     2     1     1</span></span></code></pre></div>
 </div>
 <div id="recode-a-categorical-variable-with-many-levels" class="section level3">
 <h3><span class="header-section-number">C.4.2</span> Recode a categorical variable with many levels</h3>
 <p>Suppose you have a variable <code>var</code> with response levels <code>strongly agree</code>, <code>agree</code>, <code>disagree</code>, and <code>strongly disagree</code>. You want to create a new version of this variable by combining all agree and all disagree answers. Here is one way to do this:</p>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="rreview.html#cb196-1"></a>mydata<span class="op">$</span>new_var &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mydata<span class="op">$</span>var <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;strongly agree&quot;</span>, <span class="st">&quot;agree&quot;</span>), <span class="st">&quot;agree&quot;</span>, <span class="st">&quot;disagree&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="rreview.html#cb324-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>new_var &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mydata<span class="op">$</span>var <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;strongly agree&quot;</span>, <span class="st">&quot;agree&quot;</span>), <span class="st">&quot;agree&quot;</span>, <span class="st">&quot;disagree&quot;</span>)</span></code></pre></div>
 <p>Any row in the dataset where <code>var</code> is in the set of responses listed (<code>c("strongly agree", "agree")</code>) will be coded at <code>agree</code> in the <code>newvar</code>. All other responses (<code>disagree</code>, and <code>strongly disagree</code>) will be recoded as <code>disagree</code> in the <code>newvar</code>.</p>
 <p>If you have lots of levels that you want to collapse into fewer (or you just don’t want to use the <code>ifelse</code> command), then you should use the <code>forcats</code> package command <code>fct_collapse</code>. Here we have a variable called <code>myfac</code> that has levels a-e that we want to collapose into new groups <code>low</code> (just level <code>a</code>), mid (levels <code>b</code> and <code>c</code>) and high (levels <code>d</code> and <code>e</code>)</p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="rreview.html#cb197-1"></a>mydata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">myfac=</span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;d&quot;</span>,<span class="st">&quot;e&quot;</span>))</span>
-<span id="cb197-2"><a href="rreview.html#cb197-2"></a>mydata<span class="op">$</span>new_myfac &lt;-<span class="st"> </span><span class="kw">fct_collapse</span>(mydata<span class="op">$</span>myfac, </span>
-<span id="cb197-3"><a href="rreview.html#cb197-3"></a>                          <span class="dt">low =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>),</span>
-<span id="cb197-4"><a href="rreview.html#cb197-4"></a>                          <span class="dt">mid =</span> <span class="kw">c</span>(<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>),</span>
-<span id="cb197-5"><a href="rreview.html#cb197-5"></a>                          <span class="dt">high =</span> <span class="kw">c</span>(<span class="st">&quot;d&quot;</span>,<span class="st">&quot;e&quot;</span>))</span>
-<span id="cb197-6"><a href="rreview.html#cb197-6"></a><span class="kw">table</span>(mydata<span class="op">$</span>myfac,mydata<span class="op">$</span>new_myfac)</span></code></pre></div>
-<pre><code>##    
-##     low mid high
-##   a   1   0    0
-##   b   0   1    0
-##   c   0   2    0
-##   d   0   0    1
-##   e   0   0    1</code></pre>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="rreview.html#cb325-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">myfac=</span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;d&quot;</span>,<span class="st">&quot;e&quot;</span>))</span>
+<span id="cb325-2"><a href="rreview.html#cb325-2"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>new_myfac &lt;-<span class="st"> </span><span class="kw">fct_collapse</span>(mydata<span class="op">$</span>myfac, </span>
+<span id="cb325-3"><a href="rreview.html#cb325-3"></a><span class="op">+</span><span class="st">                           </span><span class="dt">low =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>),</span>
+<span id="cb325-4"><a href="rreview.html#cb325-4"></a><span class="op">+</span><span class="st">                           </span><span class="dt">mid =</span> <span class="kw">c</span>(<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>),</span>
+<span id="cb325-5"><a href="rreview.html#cb325-5"></a><span class="op">+</span><span class="st">                           </span><span class="dt">high =</span> <span class="kw">c</span>(<span class="st">&quot;d&quot;</span>,<span class="st">&quot;e&quot;</span>))</span>
+<span id="cb325-6"><a href="rreview.html#cb325-6"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(mydata<span class="op">$</span>myfac,mydata<span class="op">$</span>new_myfac)</span>
+<span id="cb325-7"><a href="rreview.html#cb325-7"></a><span class="co">##    </span></span>
+<span id="cb325-8"><a href="rreview.html#cb325-8"></a><span class="co">##     low mid high</span></span>
+<span id="cb325-9"><a href="rreview.html#cb325-9"></a><span class="co">##   a   1   0    0</span></span>
+<span id="cb325-10"><a href="rreview.html#cb325-10"></a><span class="co">##   b   0   1    0</span></span>
+<span id="cb325-11"><a href="rreview.html#cb325-11"></a><span class="co">##   c   0   2    0</span></span>
+<span id="cb325-12"><a href="rreview.html#cb325-12"></a><span class="co">##   d   0   0    1</span></span>
+<span id="cb325-13"><a href="rreview.html#cb325-13"></a><span class="co">##   e   0   0    1</span></span></code></pre></div>
 <p>Just make sure that original factor levels of <code>myfac</code> are correctly spelled in the right-hand side of the assignment expressions.</p>
 </div>
 <div id="converting-some-factor-levels-to-nas" class="section level3">
 <h3><span class="header-section-number">C.4.3</span> Converting some factor levels to <code>NA</code>s</h3>
 <p>Sometimes you have too many levels to handle in a factor variable. Collapsing many levels into fewer is one solution (3.1), or we can create a version of the data that ignores the levels we don’t want to analyze. One way to do this is to turn those levels in <code>NA</code> (missing values) that R usually ignores. We can do this in the <code>read.csv</code> command (see section 1.3) or we can do this in the <code>fct_collapse</code> command or <code>fct_recode</code></p>
 <p>Here we convert the <code>d</code> and <code>e</code> responses in <code>myfac</code> to missing values, while all other levels stay the same:</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="rreview.html#cb199-1"></a>mydata<span class="op">$</span>try1 &lt;-<span class="st"> </span><span class="kw">fct_recode</span>(mydata<span class="op">$</span>myfac, <span class="dt">NULL =</span> <span class="st">&quot;d&quot;</span>, <span class="dt">NULL =</span> <span class="st">&quot;e&quot;</span>)</span>
-<span id="cb199-2"><a href="rreview.html#cb199-2"></a><span class="kw">summary</span>(mydata<span class="op">$</span>try1)</span></code></pre></div>
-<pre><code>##    a    b    c NA&#39;s 
-##    1    1    2    2</code></pre>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="rreview.html#cb326-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>try1 &lt;-<span class="st"> </span><span class="kw">fct_recode</span>(mydata<span class="op">$</span>myfac, <span class="dt">NULL =</span> <span class="st">&quot;d&quot;</span>, <span class="dt">NULL =</span> <span class="st">&quot;e&quot;</span>)</span>
+<span id="cb326-2"><a href="rreview.html#cb326-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(mydata<span class="op">$</span>try1)</span>
+<span id="cb326-3"><a href="rreview.html#cb326-3"></a><span class="co">##    a    b    c NA&#39;s </span></span>
+<span id="cb326-4"><a href="rreview.html#cb326-4"></a><span class="co">##    1    1    2    2</span></span></code></pre></div>
 <p>We can use similar syntax in the <code>fct_collapse</code> to both collapse levels and turn <code>d</code> and <code>e</code> into <code>NA</code>:</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="rreview.html#cb201-1"></a>mydata<span class="op">$</span>try2 &lt;-<span class="st"> </span><span class="kw">fct_collapse</span>(mydata<span class="op">$</span>myfac, </span>
-<span id="cb201-2"><a href="rreview.html#cb201-2"></a>                          <span class="dt">low =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>),</span>
-<span id="cb201-3"><a href="rreview.html#cb201-3"></a>                          <span class="dt">mid =</span> <span class="kw">c</span>(<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>),</span>
-<span id="cb201-4"><a href="rreview.html#cb201-4"></a>                          <span class="dt">NULL =</span> <span class="kw">c</span>(<span class="st">&quot;d&quot;</span>,<span class="st">&quot;e&quot;</span>))</span>
-<span id="cb201-5"><a href="rreview.html#cb201-5"></a><span class="kw">summary</span>(mydata<span class="op">$</span>try2)</span></code></pre></div>
-<pre><code>##  low  mid NA&#39;s 
-##    1    3    2</code></pre>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="rreview.html#cb327-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>try2 &lt;-<span class="st"> </span><span class="kw">fct_collapse</span>(mydata<span class="op">$</span>myfac, </span>
+<span id="cb327-2"><a href="rreview.html#cb327-2"></a><span class="op">+</span><span class="st">                           </span><span class="dt">low =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>),</span>
+<span id="cb327-3"><a href="rreview.html#cb327-3"></a><span class="op">+</span><span class="st">                           </span><span class="dt">mid =</span> <span class="kw">c</span>(<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>),</span>
+<span id="cb327-4"><a href="rreview.html#cb327-4"></a><span class="op">+</span><span class="st">                           </span><span class="dt">NULL =</span> <span class="kw">c</span>(<span class="st">&quot;d&quot;</span>,<span class="st">&quot;e&quot;</span>))</span>
+<span id="cb327-5"><a href="rreview.html#cb327-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(mydata<span class="op">$</span>try2)</span>
+<span id="cb327-6"><a href="rreview.html#cb327-6"></a><span class="co">##  low  mid NA&#39;s </span></span>
+<span id="cb327-7"><a href="rreview.html#cb327-7"></a><span class="co">##    1    3    2</span></span></code></pre></div>
 </div>
 <div id="changing-the-order-of-levels" class="section level3">
 <h3><span class="header-section-number">C.4.4</span> Changing the order of levels</h3>
 <p>You can reorder the levels of a factor variable. Suppose <code>newmyfac</code> has responses that are ordered <code>low</code>, <code>mid</code>, and <code>high</code>. You can rearrange the order of these levels using the <code>forcats</code> package is <code>fct_relevel</code> command:</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="rreview.html#cb203-1"></a><span class="kw">table</span>(mydata<span class="op">$</span>new_myfac) <span class="co"># first check original order and exact spelling</span></span></code></pre></div>
-<pre><code>## 
-##  low  mid high 
-##    1    3    2</code></pre>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="rreview.html#cb205-1"></a>mydata<span class="op">$</span>new_myfac2 &lt;-<span class="st"> </span><span class="kw">fct_relevel</span>(mydata<span class="op">$</span>new_myfac, <span class="st">&quot;high&quot;</span>,<span class="st">&quot;mid&quot;</span>,<span class="st">&quot;low&quot;</span>)</span>
-<span id="cb205-2"><a href="rreview.html#cb205-2"></a><span class="kw">table</span>(mydata<span class="op">$</span>new_myfac2)</span></code></pre></div>
-<pre><code>## 
-## high  mid  low 
-##    2    3    1</code></pre>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="rreview.html#cb328-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(mydata<span class="op">$</span>new_myfac) <span class="co"># first check original order and exact spelling</span></span>
+<span id="cb328-2"><a href="rreview.html#cb328-2"></a><span class="co">## </span></span>
+<span id="cb328-3"><a href="rreview.html#cb328-3"></a><span class="co">##  low  mid high </span></span>
+<span id="cb328-4"><a href="rreview.html#cb328-4"></a><span class="co">##    1    3    2</span></span>
+<span id="cb328-5"><a href="rreview.html#cb328-5"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>new_myfac2 &lt;-<span class="st"> </span><span class="kw">fct_relevel</span>(mydata<span class="op">$</span>new_myfac, <span class="st">&quot;high&quot;</span>,<span class="st">&quot;mid&quot;</span>,<span class="st">&quot;low&quot;</span>)</span>
+<span id="cb328-6"><a href="rreview.html#cb328-6"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(mydata<span class="op">$</span>new_myfac2)</span>
+<span id="cb328-7"><a href="rreview.html#cb328-7"></a><span class="co">## </span></span>
+<span id="cb328-8"><a href="rreview.html#cb328-8"></a><span class="co">## high  mid  low </span></span>
+<span id="cb328-9"><a href="rreview.html#cb328-9"></a><span class="co">##    2    3    1</span></span></code></pre></div>
 </div>
 <div id="recode-a-numerically-coded-categorical-variable" class="section level3">
 <h3><span class="header-section-number">C.4.5</span> Recode a numerically coded categorical variable</h3>
 <p>Suppose you have a variable <code>quant</code> that is a categorical variable that was numerically coded (e.g. a 1=a, 2=b, 3=c, etc). You will need to convert this to a factor variable to analyze it correctly. Here is one way to do this:</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="rreview.html#cb207-1"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb207-2"><a href="rreview.html#cb207-2"></a>mydata<span class="op">$</span>quant &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>)</span>
-<span id="cb207-3"><a href="rreview.html#cb207-3"></a>mydata<span class="op">$</span>quant</span>
-<span id="cb207-4"><a href="rreview.html#cb207-4"></a>mydata<span class="op">$</span>quant_fac &lt;-<span class="st"> </span><span class="kw">fct_recode</span>(<span class="kw">factor</span>(mydata<span class="op">$</span>quant), </span>
-<span id="cb207-5"><a href="rreview.html#cb207-5"></a>                               <span class="st">&quot;a&quot;</span> =<span class="st"> &quot;1&quot;</span>,</span>
-<span id="cb207-6"><a href="rreview.html#cb207-6"></a>                               <span class="st">&quot;b&quot;</span> =<span class="st"> &quot;2&quot;</span>,</span>
-<span id="cb207-7"><a href="rreview.html#cb207-7"></a>                               <span class="st">&quot;c&quot;</span> =<span class="st"> &quot;3&quot;</span>,</span>
-<span id="cb207-8"><a href="rreview.html#cb207-8"></a>                               <span class="st">&quot;d&quot;</span> =<span class="st"> &quot;4&quot;</span>,</span>
-<span id="cb207-9"><a href="rreview.html#cb207-9"></a>                               <span class="st">&quot;e&quot;</span> =<span class="st"> &quot;5&quot;</span>)</span>
-<span id="cb207-10"><a href="rreview.html#cb207-10"></a>mydata<span class="op">$</span>quant_fac</span></code></pre></div>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="rreview.html#cb329-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb329-2"><a href="rreview.html#cb329-2"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>quant &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>)</span>
+<span id="cb329-3"><a href="rreview.html#cb329-3"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>quant</span>
+<span id="cb329-4"><a href="rreview.html#cb329-4"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>quant_fac &lt;-<span class="st"> </span><span class="kw">fct_recode</span>(<span class="kw">factor</span>(mydata<span class="op">$</span>quant), </span>
+<span id="cb329-5"><a href="rreview.html#cb329-5"></a><span class="op">+</span><span class="st">                                &quot;a&quot;</span> =<span class="st"> &quot;1&quot;</span>,</span>
+<span id="cb329-6"><a href="rreview.html#cb329-6"></a><span class="op">+</span><span class="st">                                &quot;b&quot;</span> =<span class="st"> &quot;2&quot;</span>,</span>
+<span id="cb329-7"><a href="rreview.html#cb329-7"></a><span class="op">+</span><span class="st">                                &quot;c&quot;</span> =<span class="st"> &quot;3&quot;</span>,</span>
+<span id="cb329-8"><a href="rreview.html#cb329-8"></a><span class="op">+</span><span class="st">                                &quot;d&quot;</span> =<span class="st"> &quot;4&quot;</span>,</span>
+<span id="cb329-9"><a href="rreview.html#cb329-9"></a><span class="op">+</span><span class="st">                                &quot;e&quot;</span> =<span class="st"> &quot;5&quot;</span>)</span>
+<span id="cb329-10"><a href="rreview.html#cb329-10"></a><span class="op">&gt;</span><span class="st"> </span>mydata<span class="op">$</span>quant_fac</span></code></pre></div>
 </div>
 <div id="recode-a-factor-into-a-numeric" class="section level3">
 <h3><span class="header-section-number">C.4.6</span> Recode a factor into a numeric</h3>
 <p>There are times that a quantitative variable (like age) turns up as a factor after you read your data into R. This is due to at least one response in the column being a text response (non-numeric). R then defaults this column to the factor type.</p>
 <p>Suppose you’ve identified all character (text) entries in a variable that need to be either recoded into a number or turned into an <code>NA</code> to be ignored. You can use the <code>readr</code> package’s command <code>parse_number</code> to convert a factor variable into a numeric variable with a “best guess” at how to do this.</p>
 <p>For the <code>ages</code> variable with “over 90”, we see that <code>parse_number</code> strips away the “over” text and just leaves the number 90:</p>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="rreview.html#cb208-1"></a><span class="kw">library</span>(readr)</span>
-<span id="cb208-2"><a href="rreview.html#cb208-2"></a>ages &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">45</span>, <span class="dv">34</span>,<span class="st">&quot;over 90&quot;</span>))</span>
-<span id="cb208-3"><a href="rreview.html#cb208-3"></a>ages</span></code></pre></div>
-<pre><code>## [1] 20      18      45      34      over 90
-## Levels: 18 20 34 45 over 90</code></pre>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="rreview.html#cb210-1"></a>new.ages &lt;-<span class="st"> </span><span class="kw">parse_number</span>(<span class="kw">as.character</span>(ages))</span>
-<span id="cb210-2"><a href="rreview.html#cb210-2"></a>new.ages</span></code></pre></div>
-<pre><code>## [1] 20 18 45 34 90</code></pre>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="rreview.html#cb330-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(readr)</span>
+<span id="cb330-2"><a href="rreview.html#cb330-2"></a><span class="op">&gt;</span><span class="st"> </span>ages &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">45</span>, <span class="dv">34</span>,<span class="st">&quot;over 90&quot;</span>))</span>
+<span id="cb330-3"><a href="rreview.html#cb330-3"></a><span class="op">&gt;</span><span class="st"> </span>ages</span>
+<span id="cb330-4"><a href="rreview.html#cb330-4"></a><span class="co">## [1] 20      18      45      34      over 90</span></span>
+<span id="cb330-5"><a href="rreview.html#cb330-5"></a><span class="co">## Levels: 18 20 34 45 over 90</span></span>
+<span id="cb330-6"><a href="rreview.html#cb330-6"></a><span class="op">&gt;</span><span class="st"> </span>new.ages &lt;-<span class="st"> </span><span class="kw">parse_number</span>(<span class="kw">as.character</span>(ages))</span>
+<span id="cb330-7"><a href="rreview.html#cb330-7"></a><span class="op">&gt;</span><span class="st"> </span>new.ages</span>
+<span id="cb330-8"><a href="rreview.html#cb330-8"></a><span class="co">## [1] 20 18 45 34 90</span></span></code></pre></div>
 <p>For this version of <code>ages</code>, the function pulls the numbers that occur prior to the first character (<code>-</code>):</p>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="rreview.html#cb212-1"></a>ages &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">45</span>, <span class="dv">34</span>,<span class="st">&quot;90-100&quot;</span>))</span>
-<span id="cb212-2"><a href="rreview.html#cb212-2"></a>ages</span></code></pre></div>
-<pre><code>## [1] 20     18     45     34     90-100
-## Levels: 18 20 34 45 90-100</code></pre>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="rreview.html#cb214-1"></a>new.ages &lt;-<span class="st"> </span><span class="kw">parse_number</span>(<span class="kw">as.character</span>(ages))</span>
-<span id="cb214-2"><a href="rreview.html#cb214-2"></a>new.ages</span></code></pre></div>
-<pre><code>## [1] 20 18 45 34 90</code></pre>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="rreview.html#cb331-1"></a><span class="op">&gt;</span><span class="st"> </span>ages &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">45</span>, <span class="dv">34</span>,<span class="st">&quot;90-100&quot;</span>))</span>
+<span id="cb331-2"><a href="rreview.html#cb331-2"></a><span class="op">&gt;</span><span class="st"> </span>ages</span>
+<span id="cb331-3"><a href="rreview.html#cb331-3"></a><span class="co">## [1] 20     18     45     34     90-100</span></span>
+<span id="cb331-4"><a href="rreview.html#cb331-4"></a><span class="co">## Levels: 18 20 34 45 90-100</span></span>
+<span id="cb331-5"><a href="rreview.html#cb331-5"></a><span class="op">&gt;</span><span class="st"> </span>new.ages &lt;-<span class="st"> </span><span class="kw">parse_number</span>(<span class="kw">as.character</span>(ages))</span>
+<span id="cb331-6"><a href="rreview.html#cb331-6"></a><span class="op">&gt;</span><span class="st"> </span>new.ages</span>
+<span id="cb331-7"><a href="rreview.html#cb331-7"></a><span class="co">## [1] 20 18 45 34 90</span></span></code></pre></div>
 <p>Rather than 90, we may want the entry to be the midpoint between 90 and 100:</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="rreview.html#cb216-1"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb216-2"><a href="rreview.html#cb216-2"></a>ages2 &lt;-<span class="st"> </span><span class="kw">recode_factor</span>(ages, <span class="st">&#39;90-100&#39;</span> =<span class="st"> &quot;95&quot;</span>)</span>
-<span id="cb216-3"><a href="rreview.html#cb216-3"></a>ages2</span></code></pre></div>
-<pre><code>## [1] 20 18 45 34 95
-## Levels: 95 18 20 34 45</code></pre>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="rreview.html#cb218-1"></a>new.ages &lt;-<span class="st"> </span><span class="kw">parse_number</span>(<span class="kw">as.character</span>(ages2))</span>
-<span id="cb218-2"><a href="rreview.html#cb218-2"></a>new.ages</span></code></pre></div>
-<pre><code>## [1] 20 18 45 34 95</code></pre>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="rreview.html#cb332-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb332-2"><a href="rreview.html#cb332-2"></a><span class="op">&gt;</span><span class="st"> </span>ages2 &lt;-<span class="st"> </span><span class="kw">recode_factor</span>(ages, <span class="st">&#39;90-100&#39;</span> =<span class="st"> &quot;95&quot;</span>)</span>
+<span id="cb332-3"><a href="rreview.html#cb332-3"></a><span class="op">&gt;</span><span class="st"> </span>ages2</span>
+<span id="cb332-4"><a href="rreview.html#cb332-4"></a><span class="co">## [1] 20 18 45 34 95</span></span>
+<span id="cb332-5"><a href="rreview.html#cb332-5"></a><span class="co">## Levels: 95 18 20 34 45</span></span>
+<span id="cb332-6"><a href="rreview.html#cb332-6"></a><span class="op">&gt;</span><span class="st"> </span>new.ages &lt;-<span class="st"> </span><span class="kw">parse_number</span>(<span class="kw">as.character</span>(ages2))</span>
+<span id="cb332-7"><a href="rreview.html#cb332-7"></a><span class="op">&gt;</span><span class="st"> </span>new.ages</span>
+<span id="cb332-8"><a href="rreview.html#cb332-8"></a><span class="co">## [1] 20 18 45 34 95</span></span></code></pre></div>
 <p>Finally, if there is no numeric value in an entry then <code>parse_number</code> will recode it automatically into an <code>NA</code> and give you a warning that lets you know it did this action:</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="rreview.html#cb220-1"></a>ages &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">45</span>, <span class="dv">34</span>,<span class="st">&quot;way old&quot;</span>))</span>
-<span id="cb220-2"><a href="rreview.html#cb220-2"></a>ages</span></code></pre></div>
-<pre><code>## [1] 20      18      45      34      way old
-## Levels: 18 20 34 45 way old</code></pre>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="rreview.html#cb222-1"></a>new.ages &lt;-<span class="st"> </span><span class="kw">parse_number</span>(<span class="kw">as.character</span>(ages))</span></code></pre></div>
-<pre><code>## Warning: 1 parsing failure.
-## row col expected  actual
-##   5  -- a number way old</code></pre>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="rreview.html#cb224-1"></a>new.ages</span></code></pre></div>
-<pre><code>## [1] 20 18 45 34 NA
-## attr(,&quot;problems&quot;)
-## # A tibble: 1 x 4
-##     row   col expected actual 
-##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;  
-## 1     5    NA a number way old</code></pre>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="rreview.html#cb226-1"></a><span class="kw">summary</span>(new.ages)</span></code></pre></div>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
-##   18.00   19.50   27.00   29.25   36.75   45.00       1</code></pre>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="rreview.html#cb333-1"></a><span class="op">&gt;</span><span class="st"> </span>ages &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">45</span>, <span class="dv">34</span>,<span class="st">&quot;way old&quot;</span>))</span>
+<span id="cb333-2"><a href="rreview.html#cb333-2"></a><span class="op">&gt;</span><span class="st"> </span>ages</span>
+<span id="cb333-3"><a href="rreview.html#cb333-3"></a><span class="co">## [1] 20      18      45      34      way old</span></span>
+<span id="cb333-4"><a href="rreview.html#cb333-4"></a><span class="co">## Levels: 18 20 34 45 way old</span></span>
+<span id="cb333-5"><a href="rreview.html#cb333-5"></a><span class="op">&gt;</span><span class="st"> </span>new.ages &lt;-<span class="st"> </span><span class="kw">parse_number</span>(<span class="kw">as.character</span>(ages))</span>
+<span id="cb333-6"><a href="rreview.html#cb333-6"></a><span class="op">&gt;</span><span class="st"> </span>new.ages</span>
+<span id="cb333-7"><a href="rreview.html#cb333-7"></a><span class="co">## [1] 20 18 45 34 NA</span></span>
+<span id="cb333-8"><a href="rreview.html#cb333-8"></a><span class="co">## attr(,&quot;problems&quot;)</span></span>
+<span id="cb333-9"><a href="rreview.html#cb333-9"></a><span class="co">## # A tibble: 1 x 4</span></span>
+<span id="cb333-10"><a href="rreview.html#cb333-10"></a><span class="co">##     row   col expected actual </span></span>
+<span id="cb333-11"><a href="rreview.html#cb333-11"></a><span class="co">##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;  </span></span>
+<span id="cb333-12"><a href="rreview.html#cb333-12"></a><span class="co">## 1     5    NA a number way old</span></span>
+<span id="cb333-13"><a href="rreview.html#cb333-13"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(new.ages)</span>
+<span id="cb333-14"><a href="rreview.html#cb333-14"></a><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s </span></span>
+<span id="cb333-15"><a href="rreview.html#cb333-15"></a><span class="co">##   18.00   19.50   27.00   29.25   36.75   45.00       1</span></span></code></pre></div>
 
 </div>
 </div>

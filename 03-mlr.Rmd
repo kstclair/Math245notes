@@ -1577,26 +1577,24 @@ We can use the `plot(my.lm, which = 4)` command to plot Cook's distance against 
 plot(sleep.lm3a, which=4, id.n = 5)
 ```
 
-We can use the `plot(my.lm, which = 5)` command to plot standardized residuals (y-axis) against leverage (x-axis) with contours given by Cook's distance. For this model fit, we have two cases (15, 19) with standardized residuals below -2 but these are mid-range leverage cases and all Cook's distances are below 0.5. THe largest Cook's distance case, 32, has the third largest leverage value. 
+We can use the `plot(my.lm, which = 5)` command to plot standardized residuals (y-axis) against leverage (x-axis) with contours given by Cook's distance. For this model fit, we have two cases (13, 17) with standardized residuals below -2 but these are mid-range leverage cases and all Cook's distances are below 0.5. THe largest Cook's distance case, 32, has the third largest leverage value. 
 ```{r}
 plot(sleep.lm3a, which=5, id.n=5)
 ```
 
-The four cases that have the highest Cook's distance are rows 15, 19, 32 and 46 **in the original `sleep` data set**! These are the (hidden) row names that are being used by the `plot` command to ID cases. So using the **original** data frame, `sleep`, we can ID these cases:
+The four cases that have the highest Cook's distance are rows 13, 17, 28 and 39 in `sleep.noNA`. These are the (hidden) row names that are being used by the `plot` command to ID cases. So using the **original** data frame, `sleep`, we can ID these cases:
 ```{r}
-sleep %>%  select(Species, TS, BodyWt, Life) %>%
-  slice(15, 19, 32, 46) %>% kable()
+sleep.noNA %>%  select(Species, TS, BodyWt, Life) %>%
+  slice(13, 17, 28, 39) %>% kable()
 ```
 
-We can make the augmented data frame to see the  case influence stat values for cases. When creating the augmented data frame, I enter the data set `sleep.noNA` that was used to fit the model `sleep.lm3a`. This command creates a column, `.rownames`, that contains the **row numbers of the original** `sleep` data frame. We can't `slice` the augmented data frame because its row numbers done match those of the original data (54 cases vs. 62). So, instead, we can use `filter` to find the augmented data rows that have the `.rownames` of 15, 19, 32, and 46. We can see that these Cook's distance values align with those shown in the Cook's plot above. 
+We can make the augmented data frame to see the  case influence stat values for cases. When creating the augmented data frame, I enter the data set `sleep.noNA` that was used to fit the model `sleep.lm3a`. This command adds case influence stats and residuals to the the data set. We can see that these Cook's distance values align with those shown in the Cook's plot above. 
 ```{r}
 library(broom)
 sleep.noNA.aug <- augment(data=sleep.noNA, sleep.lm3a)
-nrow(sleep)
-nrow(sleep.noNA.aug)
 sleep.noNA.aug %>% 
-  select(.rownames, Species, TS, BodyWt, Life, danger, .cooksd, .std.resid, .hat) %>%
-  filter(.rownames %in% c(15, 19, 32, 46)) %>% 
+  select(Species, TS, BodyWt, Life, danger, .cooksd, .std.resid, .hat) %>%
+  slice(13, 17, 28, 39) %>% 
   arrange(desc(.cooksd)) # report in descending order according to cook's D
 ```
 
@@ -1616,29 +1614,22 @@ ggnostic(sleep.lm3a, columnsY = c(".std.resid", ".hat", ".cooksd"),
 We can use the `GGally` plots of case influence stats against predictors to help us understand the characteristics of cases that have concerning case influence stats. For example, the **smallest body weight** case, 0.005kg,  corresponds to the high Cook's distance value (Lesser short-tailed shrew). 
 ```{r}
 summary(sleep.noNA.aug %>% select(BodyWt, Life))
+sleep.noNA %>% slice(28)
 ```
 
-This shrew has a higher leverage value, in part because it also has one of the smallest life spans of 2.6 (min life span is 2). The **second smallest body weight** species also has high leverage, but it doesn't not have a high Cook's distance. Why? The standardized residual plot shows that this second smallest body weight case has a standardized residual below 1. Meaning that while it has higher leverage, it's response is not as far from the regression surface as the smallest body weight shrew. For the shrew, the combo of higher leverage and larger residual combine to give it the highest Cook's distance value. 
+This shrew has a higher leverage value, in part because it also has one of the smallest life spans of 2.6 (min life span is 2). The **smallest body weight** species also has high leverage, but it doesn't not have a high Cook's distance. Why? The standardized residual plot shows that this second smallest body weight case has a standardized residual below 1. Meaning that while it has higher leverage, it's response is not as far from the regression surface as the smallest body weight shrew. For the shrew, the combo of higher leverage and larger residual combine to give it the highest Cook's distance value. 
 
-We can remove a case(s) from a `lm` fit by either creating a data frame without the case(s) or by using the `subset` command in the `lm` fit: `lm(y ~ x, data = , subset = -c(row numbers))`. This second option is quick and easy for comparing model fits with and without a case. Here we remove row 32 (Lesser short-tailed shrew) from the model fit:
+We can remove a case(s) from a `lm` fit by either creating a data frame without the case(s) or by using the `subset` command in the `lm` fit: `lm(y ~ x, data = , subset = -c(row numbers))`. This second option is quick and easy for comparing model fits with and without a case. Here we remove row 28 (Lesser short-tailed shrew) by updating our original model with a `subset` command to omit row 28:
 ```{r}
 summary(sleep.lm3a)
 # we must use original sleep data to remove the correct
-summary(lm(log(TS) ~ log(BodyWt) + danger + log(Life), data=sleep, subset = -32))
+summary(update(sleep.lm3a, subset = -28))
 ```
 
-Note that the second model fit needed to be done with the `sleep` data and `subset=-32` because the shrew is row 32 of the original data set:
-```{r}
-sleep %>% slice(32)
-sleep.noNA %>% slice(32)  # wrong case!
-```
 
-But this second option of using `subset` in the `lm` command runs the risk of row number confusion when identifying cases in the usual residuals and case influence plots. For example, you can't `augment` the `sleep` or `sleep.noNA` data frames when a case is removed from the `lm` using `subset`. If you plan to omit a case "for good", the create a subsetted version of your data frame and use this to fit your `lm`.
-
-If you want to create a "no NA" version of the data set that also excludes the lesser short-tailed shrew, go back and delete row 32 from the original data frame and then omit NA cases:
+If you want to create a "no NA" version of the data set that also excludes the lesser short-tailed shrew, go back and delete row 28 from `sleep.noNA`:
 ```{r}
-sleep.noNA.noLSTShrew <- sleep %>% slice(-32) %>%
-  drop_na(TS, BodyWt, Life, danger)
+sleep.noNA.noLSTShrew <- sleep.noNA %>% slice(-28)
 # refit with subsetted data
 sleep.lm3a.noLSTshrew <- lm(log(TS) ~ log(BodyWt) + danger + log(Life), data = sleep.noNA.noLSTShrew)
 ```

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html >
-
+<html lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Review of Statistical Inference | Math 245 Notes</title>
-  <meta name="description" content="Course notes and examples for Applied Regression Analysis">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="Course notes and examples for Applied Regression Analysis" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Review of Statistical Inference | Math 245 Notes" />
   <meta property="og:type" content="book" />
@@ -22,18 +21,18 @@
   <meta name="twitter:description" content="Course notes and examples for Applied Regression Analysis" />
   
 
-<meta name="author" content="Katie St. Clair, Carleton College">
+<meta name="author" content="Katie St. Clair, Carleton College" />
 
 
-<meta name="date" content="2019-11-10">
+<meta name="date" content="2020-08-19" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="slr.html">
+<link rel="prev" href="index.html"/>
+<link rel="next" href="slr.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -41,6 +40,7 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
 
 
 
@@ -48,51 +48,81 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -142,7 +172,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.4.4" data-path="slr.html"><a href="slr.html#slr-simcor"><i class="fa fa-check"></i><b>2.4.4</b> Are slope and intercept estimates correlated?</a></li>
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="slr.html"><a href="slr.html#slr-inf"><i class="fa fa-check"></i><b>2.5</b> Inference for mean parameters</a><ul>
-<li class="chapter" data-level="2.5.1" data-path="slr.html"><a href="slr.html#confidence-intervals-1"><i class="fa fa-check"></i><b>2.5.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="2.5.1" data-path="review.html"><a href="review.html#confidence-intervals"><i class="fa fa-check"></i><b>2.5.1</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="2.5.2" data-path="slr.html"><a href="slr.html#hypothesis-tests"><i class="fa fa-check"></i><b>2.5.2</b> Hypothesis tests</a></li>
 </ul></li>
 <li class="chapter" data-level="2.6" data-path="slr.html"><a href="slr.html#slr-inf2"><i class="fa fa-check"></i><b>2.6</b> Inference for average or predicted response</a><ul>
@@ -151,7 +181,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="2.7" data-path="slr.html"><a href="slr.html#slr-example1"><i class="fa fa-check"></i><b>2.7</b> Example: SLR model (day 3)</a><ul>
 <li class="chapter" data-level="2.7.1" data-path="slr.html"><a href="slr.html#load-data"><i class="fa fa-check"></i><b>2.7.1</b> Load data</a></li>
-<li class="chapter" data-level="2.7.2" data-path="slr.html"><a href="slr.html#eda-1"><i class="fa fa-check"></i><b>2.7.2</b> EDA</a></li>
+<li class="chapter" data-level="2.7.2" data-path="review.html"><a href="review.html#eda"><i class="fa fa-check"></i><b>2.7.2</b> EDA</a></li>
 <li class="chapter" data-level="2.7.3" data-path="slr.html"><a href="slr.html#the-least-squares-line-the-estimated-slr-model"><i class="fa fa-check"></i><b>2.7.3</b> The least squares line (the estimated SLR model):</a></li>
 <li class="chapter" data-level="2.7.4" data-path="slr.html"><a href="slr.html#inference-for-coefficients"><i class="fa fa-check"></i><b>2.7.4</b> Inference for coefficients</a></li>
 <li class="chapter" data-level="2.7.5" data-path="slr.html"><a href="slr.html#additional-lm-information"><i class="fa fa-check"></i><b>2.7.5</b> Additional <code>lm</code> information</a></li>
@@ -189,7 +219,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="mlr.html"><a href="mlr.html"><i class="fa fa-check"></i><b>3</b> Multiple Regression</a><ul>
-<li class="chapter" data-level="3.1" data-path="mlr.html"><a href="mlr.html#the-variables-1"><i class="fa fa-check"></i><b>3.1</b> The variables</a></li>
+<li class="chapter" data-level="3.1" data-path="slr.html"><a href="slr.html#the-variables"><i class="fa fa-check"></i><b>3.1</b> The variables</a></li>
 <li class="chapter" data-level="3.2" data-path="mlr.html"><a href="mlr.html#mlr-model"><i class="fa fa-check"></i><b>3.2</b> The model form</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="mlr.html"><a href="mlr.html#mlr-interpretation"><i class="fa fa-check"></i><b>3.2.1</b> Interpretation</a></li>
 </ul></li>
@@ -228,7 +258,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="logistic.html"><a href="logistic.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a><ul>
-<li class="chapter" data-level="4.1" data-path="logistic.html"><a href="logistic.html#the-variables-2"><i class="fa fa-check"></i><b>4.1</b> The variables</a><ul>
+<li class="chapter" data-level="4.1" data-path="slr.html"><a href="slr.html#the-variables"><i class="fa fa-check"></i><b>4.1</b> The variables</a><ul>
 <li class="chapter" data-level="4.1.1" data-path="logistic.html"><a href="logistic.html#logistic-donner1"><i class="fa fa-check"></i><b>4.1.1</b> Example: Donner party EDA</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="logistic.html"><a href="logistic.html#logistic-bernoulli"><i class="fa fa-check"></i><b>4.2</b> The Bernoulli distribution</a></li>
@@ -275,15 +305,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5" data-path="poisson.html"><a href="poisson.html"><i class="fa fa-check"></i><b>5</b> Poisson Regression</a><ul>
 <li class="chapter" data-level="5.1" data-path="poisson.html"><a href="poisson.html#pois-dist"><i class="fa fa-check"></i><b>5.1</b> The Poisson distribution</a></li>
 <li class="chapter" data-level="5.2" data-path="logistic.html"><a href="logistic.html#logistic-model"><i class="fa fa-check"></i><b>5.2</b> The Poisson model form</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="poisson.html"><a href="poisson.html#interpretation-2"><i class="fa fa-check"></i><b>5.2.1</b> Interpretation</a></li>
+<li class="chapter" data-level="5.2.1" data-path="slr.html"><a href="slr.html#interpretation"><i class="fa fa-check"></i><b>5.2.1</b> Interpretation</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="poisson.html"><a href="poisson.html#eda-2"><i class="fa fa-check"></i><b>5.3</b> EDA</a><ul>
+<li class="chapter" data-level="5.3" data-path="review.html"><a href="review.html#eda"><i class="fa fa-check"></i><b>5.3</b> EDA</a><ul>
 <li class="chapter" data-level="5.3.1" data-path="poisson.html"><a href="poisson.html#example-possums"><i class="fa fa-check"></i><b>5.3.1</b> Example: Possums</a></li>
 </ul></li>
 <li class="chapter" data-level="5.4" data-path="poisson.html"><a href="poisson.html#poisson-est"><i class="fa fa-check"></i><b>5.4</b> Inference and estimation</a><ul>
-<li class="chapter" data-level="5.4.1" data-path="poisson.html"><a href="poisson.html#confidence-intervals-for-pmbbeta_i-1"><i class="fa fa-check"></i><b>5.4.1</b> Confidence intervals for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
-<li class="chapter" data-level="5.4.2" data-path="poisson.html"><a href="poisson.html#hypothesis-tests-for-pmbbeta_i-1"><i class="fa fa-check"></i><b>5.4.2</b> Hypothesis tests for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
-<li class="chapter" data-level="5.4.3" data-path="poisson.html"><a href="poisson.html#r-glm-1"><i class="fa fa-check"></i><b>5.4.3</b> R <code>glm</code></a></li>
+<li class="chapter" data-level="5.4.1" data-path="logistic.html"><a href="logistic.html#confidence-intervals-for-pmbbeta_i"><i class="fa fa-check"></i><b>5.4.1</b> Confidence intervals for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
+<li class="chapter" data-level="5.4.2" data-path="logistic.html"><a href="logistic.html#hypothesis-tests-for-pmbbeta_i"><i class="fa fa-check"></i><b>5.4.2</b> Hypothesis tests for <span class="math inline">\(\pmb{\beta_i}\)</span></a></li>
+<li class="chapter" data-level="5.4.3" data-path="logistic.html"><a href="logistic.html#r-glm"><i class="fa fa-check"></i><b>5.4.3</b> R <code>glm</code></a></li>
 <li class="chapter" data-level="5.4.4" data-path="poisson.html"><a href="poisson.html#pois-ex2"><i class="fa fa-check"></i><b>5.4.4</b> Example: Possums</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="poisson.html"><a href="poisson.html#pois-dev"><i class="fa fa-check"></i><b>5.5</b> Deviance for Binomial responses</a><ul>
@@ -358,7 +388,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="D.5" data-path="markdown.html"><a href="markdown.html#markdown-tables"><i class="fa fa-check"></i><b>D.5</b> Extra: Table formatting</a><ul>
 <li class="chapter" data-level="D.5.1" data-path="markdown.html"><a href="markdown.html#hiding-r-commands-and-r-output"><i class="fa fa-check"></i><b>D.5.1</b> Hiding R commands and R output</a></li>
-<li class="chapter" data-level="D.5.2" data-path="markdown.html"><a href="markdown.html#markdown-tables"><i class="fa fa-check"></i><b>D.5.2</b> Markdown tables</a></li>
+<li class="chapter" data-level="D.5.2" data-path="markdown.html"><a href="markdown.html#markdown-tables-1"><i class="fa fa-check"></i><b>D.5.2</b> Markdown tables</a></li>
 <li class="chapter" data-level="D.5.3" data-path="markdown.html"><a href="markdown.html#markdown-tables-via-kable"><i class="fa fa-check"></i><b>D.5.3</b> Markdown tables via <code>kable</code></a></li>
 <li class="chapter" data-level="D.5.4" data-path="markdown.html"><a href="markdown.html#the-pander-package"><i class="fa fa-check"></i><b>D.5.4</b> The <code>pander</code> package</a></li>
 <li class="chapter" data-level="D.5.5" data-path="markdown.html"><a href="markdown.html#the-stargazer-package"><i class="fa fa-check"></i><b>D.5.5</b> The <code>stargazer</code> package</a></li>
@@ -367,8 +397,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="E" data-path="mathreview.html"><a href="mathreview.html"><i class="fa fa-check"></i><b>E</b> Math review</a><ul>
 <li class="chapter" data-level="E.1" data-path="mathreview.html"><a href="mathreview.html#math-linear"><i class="fa fa-check"></i><b>E.1</b> Linear equations</a></li>
 <li class="chapter" data-level="E.2" data-path="mathreview.html"><a href="mathreview.html#math-log"><i class="fa fa-check"></i><b>E.2</b> Logarithms</a><ul>
-<li class="chapter" data-level="E.2.1" data-path="mathreview.html"><a href="mathreview.html#interpreting-logged-variables-1"><i class="fa fa-check"></i><b>E.2.1</b> Interpreting logged variables</a></li>
-<li class="chapter" data-level="E.2.2" data-path="mathreview.html"><a href="mathreview.html#inverse-i.e.reversing-the-log-getting-rid-of-the-log-1"><i class="fa fa-check"></i><b>E.2.2</b> Inverse (i.e. reversing the log, getting rid of the log, …)</a></li>
+<li class="chapter" data-level="E.2.1" data-path="slr.html"><a href="slr.html#interpreting-logged-variables"><i class="fa fa-check"></i><b>E.2.1</b> Interpreting logged variables</a></li>
+<li class="chapter" data-level="E.2.2" data-path="slr.html"><a href="slr.html#inverse-i.e.-reversing-the-log-getting-rid-of-the-log"><i class="fa fa-check"></i><b>E.2.2</b> Inverse (i.e. reversing the log, getting rid of the log, …)</a></li>
 <li class="chapter" data-level="E.2.3" data-path="mathreview.html"><a href="mathreview.html#logarithms-in-r"><i class="fa fa-check"></i><b>E.2.3</b> Logarithms in R</a></li>
 </ul></li>
 <li class="chapter" data-level="E.3" data-path="mathreview.html"><a href="mathreview.html#math-exercises"><i class="fa fa-check"></i><b>E.3</b> Exercises</a></li>
@@ -424,14 +454,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="standard-error" class="section level3">
 <h3><span class="header-section-number">1.2.1</span> Standard error</h3>
 <p>The standard error of the sample mean <span class="math inline">\(\bar{x}\)</span> measures the variability of this statistic and is the standard deviation of the sampling distribution for <span class="math inline">\(\bar{x}\)</span>. Roughly, the SE of any statistic tells us how it will vary from sample to sample.</p>
-<p>For the sample mean statistic, the <strong>estimated SE</strong> is equal to <span class="math display">\[
+<p>For the sample mean statistic, the <strong>estimated SE</strong> is equal to
+<span class="math display">\[
 SE(\bar{x}) = \dfrac{s}{\sqrt{n}}
-\]</span> where <span class="math inline">\(s\)</span> is the <strong>sample standard deviation</strong> of your variable. For the <strong>difference of two sample means</strong>, <span class="math inline">\(\bar{x}_1 - \bar{x}_2\)</span>, the standard error is <span class="math display">\[
+\]</span>
+where <span class="math inline">\(s\)</span> is the <strong>sample standard deviation</strong> of your variable. For the <strong>difference of two sample means</strong>, <span class="math inline">\(\bar{x}_1 - \bar{x}_2\)</span>, the standard error is
+<span class="math display">\[
 SE(\bar{x}_1 - \bar{x}_2) = \sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}{n_2}}
-\]</span> where <span class="math inline">\(n_i\)</span> is the sample size of sample <span class="math inline">\(i\)</span> and <span class="math inline">\(s_i\)</span> is the sample SD of population <span class="math inline">\(i\)</span>.</p>
-<p>For the sample proportion <span class="math inline">\(\hat{p}\)</span>, the standard error is <span class="math display">\[
+\]</span>
+where <span class="math inline">\(n_i\)</span> is the sample size of sample <span class="math inline">\(i\)</span> and <span class="math inline">\(s_i\)</span> is the sample SD of population <span class="math inline">\(i\)</span>.</p>
+<p>For the sample proportion <span class="math inline">\(\hat{p}\)</span>, the standard error is
+<span class="math display">\[
 SE(\hat{p}) = \sqrt{\dfrac{p(1-p)}{n}}
-\]</span> where <span class="math inline">\(p\)</span> is the true population proportion. To <strong>estimate</strong> this SE we just use the sample proportion <span class="math inline">\(\hat{p}\)</span> in the SE formula.</p>
+\]</span>
+where <span class="math inline">\(p\)</span> is the true population proportion. To <strong>estimate</strong> this SE we just use the sample proportion <span class="math inline">\(\hat{p}\)</span> in the SE formula.</p>
 </div>
 </div>
 <div id="hypothesis-testing" class="section level2">
@@ -447,15 +483,18 @@ SE(\hat{p}) = \sqrt{\dfrac{p(1-p)}{n}}
 <li><span class="math inline">\(H_0: \mu_1 - \mu_2 \neq 0\)</span> (the two populations have difference means)</li>
 </ul>
 <p>You then use a <strong>test statistic</strong> to measure how far the data (e.g. sample statistic) deviates from what is expected <strong>assuming the null is true</strong>. Often these test stats take form of a standardized values so large absolute values indicate data that deviates a lot from what is expected if the null is true.</p>
-<p>For a hypothesis about one population mean <span class="math inline">\(H_0: \mu = \mu_0\)</span>, we use a <strong>t-test statistic</strong>: <span class="math display">\[
+<p>For a hypothesis about one population mean <span class="math inline">\(H_0: \mu = \mu_0\)</span>, we use a <strong>t-test statistic</strong>:
+<span class="math display">\[
 t = \dfrac{\bar{x} - \mu_0}{s/\sqrt{n}}
-\]</span> To test for a <strong>difference in two means</strong>, we use another t-test stat: <span class="math display">\[
+\]</span>
+To test for a <strong>difference in two means</strong>, we use another t-test stat:
+<span class="math display">\[
 t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}{n_2}}}
 \]</span></p>
 <p>We then construct the sampling distribution of the test statistic under the assumption that <strong>the null hypothesis is true</strong>. Using this model, we compute a <strong>p-value</strong> by finding the probability of getting a test stat as, or more, extreme as the observed test stat. The p-value measures the probability of observing data as unusual, or more usual, than the observed data if the null is true. Small p-values indicate data that would rarely be seen if the null is true which means we have evidence (data) that supports the alternative hypothesis.</p>
 <p>If we use a t-test statistic, then we use a t-distribution to compute a p-value. If <code>t</code> is the test stat value then either command below will give a <strong>one-sided</strong> (<span class="math inline">\(&lt;\)</span> or <span class="math inline">\(&gt;\)</span>) p-value:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(t), <span class="dt">df =</span> , <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)  <span class="co"># method 1 (gives right tail value)</span>
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">pt</span>(<span class="op">-</span><span class="kw">abs</span>(t), <span class="dt">df =</span> )  <span class="co"># method 2 (gives left tail value)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="review.html#cb1-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(t), <span class="dt">df =</span> , <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)  <span class="co"># method 1 (gives right tail value)</span></span>
+<span id="cb1-2"><a href="review.html#cb1-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">pt</span>(<span class="op">-</span><span class="kw">abs</span>(t), <span class="dt">df =</span> )  <span class="co"># method 2 (gives left tail value)</span></span></code></pre></div>
 <p>If your alternative is two-sided, you need to double the value given by either command above.</p>
 <p>The degrees of freedom depends on the type of estimate:</p>
 <ul>
@@ -465,7 +504,8 @@ t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}
 </div>
 <div id="confidence-intervals" class="section level2">
 <h2><span class="header-section-number">1.4</span> Confidence Intervals</h2>
-<p>A confidence interval for a population parameter gives us a range of likely values of the parameter. Most confidence intervals we use in this class are of the form: <span class="math display">\[
+<p>A confidence interval for a population parameter gives us a range of likely values of the parameter. Most confidence intervals we use in this class are of the form:
+<span class="math display">\[
 \textrm{estimate} \pm \textrm{ margin of error}
 \]</span></p>
 <p>The idea behind constructing a confidence interval starts with our estimate’s (statistic’s) sampling distribution and <strong>margin of error</strong> for some level of <strong>confidence</strong>:</p>
@@ -486,18 +526,20 @@ t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}
 </ul></li>
 <li>A <strong>higher</strong> level of confidence will lead to a <strong>larger</strong> margin of error: We need a larger margin of error to get a higher fraction of samples that close to the population parameter.</li>
 </ul>
-<p>The margin of errors given above are ballpark values. We will mostly be using a more trustworthy distribution in our class, the t-distribution, to compute how many SE’s we go to be a certain level of confidence: <span class="math display">\[
+<p>The margin of errors given above are ballpark values. We will mostly be using a more trustworthy distribution in our class, the t-distribution, to compute how many SE’s we go to be a certain level of confidence:
+<span class="math display">\[
 \textrm{margin of error } = t^*_{df} \times SE
-\]</span> where <span class="math inline">\(t^*\)</span> is the <span class="math inline">\((100-C)/2\)</span> percentile from the t-distribution with <span class="math inline">\(df\)</span> degrees of freedom.</p>
+\]</span>
+where <span class="math inline">\(t^*\)</span> is the <span class="math inline">\((100-C)/2\)</span> percentile from the t-distribution with <span class="math inline">\(df\)</span> degrees of freedom.</p>
 <p>Examples of confidence levels:</p>
 <ul>
 <li>for 95% confidence, <span class="math inline">\(t^*\)</span> is the 2.5% percentile (or 97.5%)</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">025</span>, <span class="dt">df=</span> )   <span class="co"># for 95% confidence</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="review.html#cb2-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">025</span>, <span class="dt">df=</span> )   <span class="co"># for 95% confidence</span></span></code></pre></div>
 <ul>
 <li>for 90% confidence, <span class="math inline">\(t^*\)</span> is the 5% percentile (or 95%)</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">05</span>, <span class="dt">df=</span> )   <span class="co"># for 90% confidence</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="review.html#cb3-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">05</span>, <span class="dt">df=</span> )   <span class="co"># for 90% confidence</span></span></code></pre></div>
 <p>Examples of degrees of freedom:</p>
 <ul>
 <li>for a one-sample mean problem, use <span class="math inline">\(df = n-1\)</span></li>
@@ -540,57 +582,57 @@ t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}
 <div id="data" class="section level4">
 <h4><span class="header-section-number">1.5.2.1</span> Data</h4>
 <p>Read in the data and check variable names:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>agstrat&lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/agstrat.csv&quot;</span>)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">names</span>(agstrat)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="review.html#cb4-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat&lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://people.carleton.edu/~kstclair/data/agstrat.csv&quot;</span>)</span>
+<span id="cb4-2"><a href="review.html#cb4-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">names</span>(agstrat)</span></code></pre></div>
 <p><strong>(1a) How many counties were sampled from each region?</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat<span class="op">$</span>region)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="review.html#cb5-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat<span class="op">$</span>region)</span></code></pre></div>
 <p>We want to focus on W and NC for our comparison. I will do a lot of data manipulation in this class using the R package <code>dplyr</code>. This package is already available on the mirage server, but if you are using a newly installed version of Rstudio on your computer you will need to install the package first. (See Appendix <a href="rrstudio.html#packages">A.4</a>).</p>
 <p>The <code>filter</code> command from the <code>dplyr</code> package selects <strong>rows</strong> from a data set that we want to keep (Section <a href="rreview.html#Rreview-subset">C.2.4</a>). E.g. only rows from the W or NC regions. The argument used in this command is a <strong>logical</strong> statement and the row of a given case is kept in the data set when the statement is <code>TRUE</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)  <span class="co"># need to load the package commands</span>
-<span class="op">&gt;</span><span class="st"> </span>agstrat2 &lt;-<span class="st"> </span><span class="kw">filter</span>(agstrat, region <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;W&quot;</span>, <span class="st">&quot;NC&quot;</span>))
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat2<span class="op">$</span>region)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="review.html#cb6-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)  <span class="co"># need to load the package commands</span></span>
+<span id="cb6-2"><a href="review.html#cb6-2"></a><span class="op">&gt;</span><span class="st"> </span>agstrat2 &lt;-<span class="st"> </span><span class="kw">filter</span>(agstrat, region <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;W&quot;</span>, <span class="st">&quot;NC&quot;</span>))</span>
+<span id="cb6-3"><a href="review.html#cb6-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat2<span class="op">$</span>region)</span></code></pre></div>
 <p>Notice that <code>filter</code> it does not drop the unused levels (S and NE) from the <code>region</code> factor variable. We can use <code>droplevels</code> on the new data frame <code>agstrat2</code> to get rid of these unused levels. We assign this new and improved data set the name <code>agstrat2</code> again. (This overwrites the previous version without the dropped levels.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>agstrat2 &lt;-<span class="st"> </span><span class="kw">droplevels</span>(agstrat2)
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat2<span class="op">$</span>region)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="review.html#cb7-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat2 &lt;-<span class="st"> </span><span class="kw">droplevels</span>(agstrat2)</span>
+<span id="cb7-2"><a href="review.html#cb7-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(agstrat2<span class="op">$</span>region)</span></code></pre></div>
 </div>
 <div id="eda" class="section level4">
 <h4><span class="header-section-number">1.5.2.2</span> EDA</h4>
 <p><strong>(2a) In 2-3 sentences, compare the distributions (shape, center, spread) of <code>farms92</code> by <code>region</code> (W vs. NC).</strong></p>
 <p>Note that the commands below give basic R commands for comparing distributions graphically and numerically. You do not necessarily need to use or show all output below when answering this type of question for homework, exams or reports.</p>
 <p>Graphical options (Section <a href="rreview.html#Rreview-graphs">C.3.4</a>) include boxplots:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">data =</span> agstrat2, <span class="dt">horizontal=</span><span class="ot">TRUE</span>, <span class="dt">main=</span><span class="st">&quot;Number of farms (1992) by region&quot;</span>,
-<span class="op">+</span><span class="st">         </span><span class="dt">ylab =</span> <span class="st">&quot;region&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;# of farms per county in 1992&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="review.html#cb8-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">data =</span> agstrat2, <span class="dt">horizontal=</span><span class="ot">TRUE</span>, <span class="dt">main=</span><span class="st">&quot;Number of farms (1992) by region&quot;</span>,</span>
+<span id="cb8-2"><a href="review.html#cb8-2"></a><span class="op">+</span><span class="st">         </span><span class="dt">ylab =</span> <span class="st">&quot;region&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;# of farms per county in 1992&quot;</span>)</span></code></pre></div>
 <p>or faceted histograms from the <code>ggplot2</code> package:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)  <span class="co"># load ggplot2 package</span>
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(agstrat2, <span class="kw">aes</span>(<span class="dt">x=</span>farms92)) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">geom_histogram</span>() <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span>
-<span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Number of farms by region&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="review.html#cb9-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)  <span class="co"># load ggplot2 package</span></span>
+<span id="cb9-2"><a href="review.html#cb9-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">ggplot</span>(agstrat2, <span class="kw">aes</span>(<span class="dt">x=</span>farms92)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb9-3"><a href="review.html#cb9-3"></a><span class="op">+</span><span class="st">   </span><span class="kw">geom_histogram</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb9-4"><a href="review.html#cb9-4"></a><span class="op">+</span><span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb9-5"><a href="review.html#cb9-5"></a><span class="op">+</span><span class="st">   </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Number of farms by region&quot;</span>)</span></code></pre></div>
 <p>Summary stats, by region, can be found using multiple tools in R (Section <a href="rreview.html#Rreview-stats">C.3.3</a>). The <code>tapply</code> command is an option:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tapply</span>(agstrat2<span class="op">$</span>farms92, agstrat2<span class="op">$</span>region, summary)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="review.html#cb10-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">tapply</span>(agstrat2<span class="op">$</span>farms92, agstrat2<span class="op">$</span>region, summary)</span></code></pre></div>
 <p>So is using the <code>group_by</code> and <code>summarize</code> combination in <code>dplyr</code>. Here we get the mean and SD of <code>farms92</code> for both regions:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>agstrat2 <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="op">+</span><span class="st">     </span><span class="kw">group_by</span>(region) <span class="op">%&gt;%</span>
-<span class="op">+</span><span class="st">     </span><span class="kw">summarize</span>(<span class="kw">mean</span>(farms92), <span class="kw">sd</span>(farms92))</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="review.html#cb11-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-2"><a href="review.html#cb11-2"></a><span class="op">+</span><span class="st">     </span><span class="kw">group_by</span>(region) <span class="op">%&gt;%</span></span>
+<span id="cb11-3"><a href="review.html#cb11-3"></a><span class="op">+</span><span class="st">     </span><span class="kw">summarize</span>(<span class="kw">mean</span>(farms92), <span class="kw">sd</span>(farms92))</span></code></pre></div>
 <p><strong>(2b) What county has the unusually high number of farms in the western region? How many farms do they have? Any ideas why it is so large? How do the summary stats change when this county is omitted?</strong></p>
 <p>Here we find which row in <code>agstrat2</code> has a <code>farms92</code> value greater than 3000 (Section <a href="rreview.html#Rreview-subset">C.2.4</a>):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">which</span>(agstrat2<span class="op">$</span>farms92 <span class="op">&gt;</span><span class="st"> </span><span class="dv">3000</span>)   </code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="review.html#cb12-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">which</span>(agstrat2<span class="op">$</span>farms92 <span class="op">&gt;</span><span class="st"> </span><span class="dv">3000</span>)   </span></code></pre></div>
 <p>What county is this? We need to access row 118 in <code>agstrat2</code>. We use use <code>[]</code> subsetting or the <code>slice</code> command from <code>dplyr</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>agstrat2[<span class="dv">118</span>,]  <span class="co"># see row 118</span>
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">slice</span>(agstrat2, <span class="dv">118</span>)  <span class="co"># another way to see row 118</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="review.html#cb13-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat2[<span class="dv">118</span>,]  <span class="co"># see row 118</span></span>
+<span id="cb13-2"><a href="review.html#cb13-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">slice</span>(agstrat2, <span class="dv">118</span>)  <span class="co"># another way to see row 118</span></span></code></pre></div>
 <p>We can use the <code>dplyr</code> commands for (2a) with the <code>slice</code> command added to get stats without row 118</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>agstrat2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">slice</span>(<span class="op">-</span><span class="dv">118</span>) <span class="op">%&gt;%</span><span class="st">    </span><span class="co"># slice removes row 118</span>
-<span class="op">+</span><span class="st">     </span><span class="kw">group_by</span>(region) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># then get stats by region</span>
-<span class="op">+</span><span class="st">     </span><span class="kw">summarize</span>(<span class="kw">mean</span>(farms92), <span class="kw">sd</span>(farms92), <span class="kw">median</span>(farms92), <span class="kw">IQR</span>(farms92))</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="review.html#cb14-1"></a><span class="op">&gt;</span><span class="st"> </span>agstrat2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">slice</span>(<span class="op">-</span><span class="dv">118</span>) <span class="op">%&gt;%</span><span class="st">    </span><span class="co"># slice removes row 118</span></span>
+<span id="cb14-2"><a href="review.html#cb14-2"></a><span class="op">+</span><span class="st">     </span><span class="kw">group_by</span>(region) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># then get stats by region</span></span>
+<span id="cb14-3"><a href="review.html#cb14-3"></a><span class="op">+</span><span class="st">     </span><span class="kw">summarize</span>(<span class="kw">mean</span>(farms92), <span class="kw">sd</span>(farms92), <span class="kw">median</span>(farms92), <span class="kw">IQR</span>(farms92))</span></code></pre></div>
 </div>
 <div id="inference" class="section level4">
 <h4><span class="header-section-number">1.5.2.3</span> Inference</h4>
 <p><strong>(3a) What hypotheses are being tested with the <code>t.test</code> command below? What are the p-value and test statistics values for this test? How do you interepret the test statistic? How do you interpret the p-value? Are the assumptions met for this t-test?</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="co"># run t test to compare mean number of farms </span>
-<span class="er">&gt;</span><span class="st"> </span><span class="kw">t.test</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">data =</span> agstrat2)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="review.html#cb15-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co"># run t test to compare mean number of farms </span></span>
+<span id="cb15-2"><a href="review.html#cb15-2"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">t.test</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">data =</span> agstrat2)</span></code></pre></div>
 <p><strong>(3b) How and why do the test stat and p-value change when we omit row 118? Does your test conclusion change when omitting 118? Why?</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="co"># redo without row 118 outlier</span>
-<span class="er">&gt;</span><span class="st"> </span><span class="kw">t.test</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">subset =</span> <span class="op">-</span><span class="dv">118</span>, <span class="dt">data =</span> agstrat2)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="review.html#cb16-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co"># redo without row 118 outlier</span></span>
+<span id="cb16-2"><a href="review.html#cb16-2"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">t.test</span>(farms92 <span class="op">~</span><span class="st"> </span>region, <span class="dt">subset =</span> <span class="dv">-118</span>, <span class="dt">data =</span> agstrat2)</span></code></pre></div>
 </div>
 <div id="conclusion" class="section level4">
 <h4><span class="header-section-number">1.5.2.4</span> Conclusion</h4>
@@ -611,11 +653,13 @@ t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s^2_1}{n_1} + \dfrac{s^2_2}
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -623,12 +667,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -637,6 +680,10 @@ gitbook.start({
 },
 "edit": null,
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
@@ -653,10 +700,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
